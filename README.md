@@ -1,37 +1,78 @@
-# Beetl 高速模板引擎
+---
+typora-root-url: ../beetl3.0
+---
+
+# Beetl3 高速模板引擎
+
+iBeetl.com © 2011 ~ 2019，国内流行模板引擎，
+
+
+
+#### 功能
+
+http://ibeetl.com/guide/#beetl
+
+* 动态页面生成
+* 静态页面生成
+* 代码生成
+* 通过生成XML文本中间格式间接生成PDF，WORD等格式
+* 短信，微信等模板内容生成
+* 脚本引擎
+* 规则引擎
+
+
 
 #### 介绍
-Beetl3.0,从https://github.com/javamonkey/beetl2.0/ 迁移过来
 
-#### 软件架构
-软件架构说明
+Beetl  ['biːtl]  3.0,从https://github.com/javamonkey/beetl2.0/ 迁移过来
+
+Beetl的成长离不开以下人员的帮助（排名不分先后）：
+
+- [作死模式](javascript:;)
+- [一粟蜉蝣](javascript:;)
+- [逝水fox](javascript:;)
+- [kraken](javascript:;)
+- [西安玛雅牛](javascript:;)
+- [级?!](javascript:;)
+- [orangetys](javascript:;)
+- [Oo不懂oO](javascript:;)
+- [原上一颗草](javascript:;)
+- [龙图腾飞](javascript:;)
+- [nutz](javascript:;)
+- [天方地圆](javascript:;)
+- [九月](javascript:;)
+- [Daemons](javascript:;)
+- [Gavin.King](javascript:;)
+- [Sue](javascript:;)
+- [Zhoupan](javascript:;)
+- [woate](javascript:;)
+- [fitz](javascript:;)
+- [darren](http://darren.ink/)
+- [zqq](javascript:;)
+- [张世敏](javascript:;)
 
 
-#### 安装教程
-
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 使用说明
-
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 参与贡献
-
-1. Fork 本仓库
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
 
 
-#### 码云特技
+QQ交流群：636321496,219324263
 
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+Beetl官网   [ibeetl.com](ibeetl.com) 
+
+Beetl社区：[bbs.ibeetl.com](http://42.96.162.109/bbs/bbs/index/1.html)
+
+
+#### 性能
+
+<https://github.com/fizzed/template-benchmark>
+
+![p1](/doc/resources/p1.jpg) 
+
+
+
+#### 支持
+
+任何企业和个人都可以免费使用，并能免费得到社区，论坛，QQ群和作者的免费技术支持。以下情况需要收费技术支持
+
+* 任何公开申明了996工作制度得企业，将收取996元/年
+* 想获得商业技术支持，如培训，技术咨询，定制，售后等，可根据公司规模收取1K-10K 年费
+
