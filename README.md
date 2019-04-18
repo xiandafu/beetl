@@ -49,7 +49,7 @@ Beetl的成长离不开以下人员的帮助（排名不分先后）：
 - [fitz](javascript:;)
 - [darren](http://darren.ink/)
 - [zqq](javascript:;)
-- [张世敏](javascript:;)
+- [ 醉引花眠](javascript:;)
 
 
 
@@ -61,12 +61,13 @@ Beetl官网   [ibeetl.com](ibeetl.com)
 Beetl社区：[bbs.ibeetl.com](http://42.96.162.109/bbs/bbs/index/1.html)
 
 
+
+
 #### 性能
 
 <https://github.com/fizzed/template-benchmark>
 
 ![p1](/doc/resources/p1.jpg) 
-
 
 
 #### 支持
