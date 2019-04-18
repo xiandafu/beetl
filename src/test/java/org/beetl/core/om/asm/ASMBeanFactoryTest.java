@@ -38,16 +38,17 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 	public void testAttrByAsm() throws Exception {
 
 		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(CLASS_NAME, false);
-		ASMBeanFactory.setUsePropertyDescriptor(false);
+		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
+		asmBeanFactory.setUsePropertyDescriptor(false);
 		for (List<FieldNode> nodes : classDescription.fieldMap.values()) {
 			for (FieldNode node : nodes) {
-				System.out.println(node.name + ":" + ASMBeanFactory.value(user, node.name));
-				AssertJUnit.assertEquals(getValue(user, node.name), ASMBeanFactory.value(user, node.name));
+				System.out.println(node.name + ":" + asmBeanFactory.value(user, node.name));
+				AssertJUnit.assertEquals(getValue(user, node.name), asmBeanFactory.value(user, node.name));
 			}
 		}
-		AssertJUnit.assertEquals("哈哈是", ASMBeanFactory.value(user, "填写"));
-		AssertJUnit.assertEquals("哈哈是", ASMBeanFactory.value(user, "写"));
-		AssertJUnit.assertEquals("哈哈是", ASMBeanFactory.value(user, "填"));
+		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(user, "填写"));
+		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(user, "写"));
+		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(user, "填"));
 	}
 
 	private static Object getValue(User user, String attrName)
@@ -59,17 +60,17 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 
 	@Test
 	public void testByProp() throws Exception {
-
+		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
 		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(CLASS_NAME);
 		for (List<PropertyDescriptor> propDescs : classDescription.propertyMap.values()) {
 			for (PropertyDescriptor propDesc : propDescs) {
-				System.out.println(propDesc.getName() + ":" + ASMBeanFactory.value(user, propDesc.getName()));
-				AssertJUnit.assertEquals(getValue(user, propDesc), ASMBeanFactory.value(user, propDesc.getName()));
+				System.out.println(propDesc.getName() + ":" + asmBeanFactory.value(user, propDesc.getName()));
+				AssertJUnit.assertEquals(getValue(user, propDesc), asmBeanFactory.value(user, propDesc.getName()));
 			}
 		}
-		AssertJUnit.assertEquals("哈哈是", ASMBeanFactory.value(user, "填写"));
-		AssertJUnit.assertEquals("哈哈是", ASMBeanFactory.value(user, "写"));
-		AssertJUnit.assertEquals("哈哈是", ASMBeanFactory.value(user, "填"));
+		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(user, "填写"));
+		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(user, "写"));
+		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(user, "填"));
 	}
 
 

@@ -40,7 +40,6 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.misc.IntervalSet;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.exception.BeetlParserException;
 import org.beetl.core.statement.GrammarToken;

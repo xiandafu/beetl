@@ -109,7 +109,7 @@ class EnhanceClassGenerator implements Opcodes {
 	/**
 	 * 生成默认的构造方法
 	 * @param cw
-	 * @param 父类名称
+	 * @param superName
 	 */
 	static void generateDefaultConstruct(ClassWriter cw, String superName) {
 		MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
@@ -159,6 +159,7 @@ class EnhanceClassGenerator implements Opcodes {
 			mv.visitLabel(l2);
 			mv.visitVarInsn(ILOAD, LOCAL_VAR_HASH_CODE_INDEX);
 			Label[] lookupSwitchLabels = new Label[classDescription.fieldMap.size()];
+			System.out.println(beanClassName);
 			int[] hashCodes = BeanEnhanceUtils
 					.convertIntegerToPrimitiveType(classDescription.fieldMap.keySet().toArray(new Integer[1]));
 			for (int i = 0; i < lookupSwitchLabels.length; i++) {
@@ -314,8 +315,9 @@ class EnhanceClassGenerator implements Opcodes {
 			mv.visitLabel(l2);
 			mv.visitVarInsn(ILOAD, LOCAL_VAR_HASH_CODE_INDEX);
 			Label[] lookupSwitchLabels = new Label[classDescription.propertyMap.size()];
+//			System.out.println(beanClassName);
 			int[] hashCodes = BeanEnhanceUtils
-					.convertIntegerToPrimitiveType(classDescription.propertyMap.keySet().toArray(new Integer[1]));
+					.convertIntegerToPrimitiveType(classDescription.propertyMap.keySet().toArray(new Integer[0]));
 			for (int i = 0; i < lookupSwitchLabels.length; i++) {
 				lookupSwitchLabels[i] = new Label();
 			}

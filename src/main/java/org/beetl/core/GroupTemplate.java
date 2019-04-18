@@ -69,7 +69,7 @@ public class GroupTemplate {
 			? Thread.currentThread().getContextClassLoader()
 			: GroupTemplate.class.getClassLoader();
 
-	ByteClassLoader byteLoader = new ByteClassLoader(classLoader);
+
 	AABuilder attributeAccessFactory = new AABuilder();
 	ResourceLoader resourceLoader = null;
 	Configuration conf = null;
@@ -305,18 +305,9 @@ public class GroupTemplate {
 
 	public void setClassLoader(ClassLoader classLoader) {
 		this.classLoader = classLoader;
-		byteLoader = new ByteClassLoader(classLoader);
+
 	}
 
-
-	/**
-	 * 返回用来加载动态类的classloader，此加载类的parent loader是通过
-	 * setClassLoader 添加的，默认就是加载beetl包的classloader
-	 * @return
-	 */
-	public ByteClassLoader getByteLoader() {
-		return byteLoader;
-	}
 
 
 	/**

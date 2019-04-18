@@ -10,7 +10,7 @@ import org.beetl.core.exception.BeetlException;
  * @author joelli
  *
  */
-public final class PlaceholderST extends Statement {
+public  class PlaceholderST extends Statement {
 
 	public Expression expression;
 	
@@ -26,7 +26,7 @@ public final class PlaceholderST extends Statement {
 	}
 
 	@Override
-	public final void execute(Context ctx) {
+	public  void execute(Context ctx) {
 		Object value = expression.evaluate(ctx);
 		try {
 			if (format != null) {

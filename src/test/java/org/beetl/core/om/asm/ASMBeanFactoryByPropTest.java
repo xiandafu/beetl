@@ -31,17 +31,17 @@ public class ASMBeanFactoryByPropTest extends BasicTestCase {
 		user.setGender('M');
 //		user.setAAa(12);
 //		user.setABB(13);
-
+		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
 		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(CLASS_NAME);
 		for (List<PropertyDescriptor> propDescs : classDescription.propertyMap.values()) {
 			for (PropertyDescriptor propDesc : propDescs) {
-				System.out.println(propDesc.getName() + ":" + ASMBeanFactory.value(user, propDesc.getName()));
+				System.out.println(propDesc.getName() + ":" + asmBeanFactory.value(user, propDesc.getName()));
 //				AssertJUnit.assertEquals(getValue(user, propDesc), ASMBeanFactory.value(user, propDesc.getName()));
 			}
 		}
-		AssertJUnit.assertEquals("哈哈是", ASMBeanFactory.value(user, "填写"));
-		AssertJUnit.assertEquals("哈哈是", ASMBeanFactory.value(user, "写"));
-		AssertJUnit.assertEquals("哈哈是", ASMBeanFactory.value(user, "填"));
+		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(user, "填写"));
+		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(user, "写"));
+		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(user, "填"));
 	}
 
 
