@@ -19,7 +19,7 @@ import org.beetl.core.om.AttributeAccess;
  */
 public class ASMBeanFactory {
 
-	private  final Map<Class<?>, AttributeAccess> beanMap = new ConcurrentHashMap<>();
+	private final Map<Class<?>, AttributeAccess> beanMap = new ConcurrentHashMap<>();
 
 	ClassLoader classLoader = Thread.currentThread().getContextClassLoader() != null
 			? Thread.currentThread().getContextClassLoader()
@@ -27,10 +27,9 @@ public class ASMBeanFactory {
 
 	ByteClassLoader byteLoader = new ByteClassLoader(classLoader);
 
-
 	boolean usePropertyDescriptor;
 
-	public  Object value(Object bean, String attrName) {
+	public Object value(Object bean, String attrName) {
 		Class<?> beanClass = bean.getClass();
 		AttributeAccess generatedBean = generateBean(beanClass);
 		return generatedBean == null ? null : generatedBean.value(bean, attrName);
@@ -44,16 +43,16 @@ public class ASMBeanFactory {
 		this.usePropertyDescriptor = usePropertyDescriptor;
 	}
 
-	public  synchronized AttributeAccess generateBean(Class<?> beanClass) {
+	public synchronized AttributeAccess generateBean(Class<?> beanClass) {
 		if (beanMap.containsKey(beanClass)) {
 			return beanMap.get(beanClass);
 		}
 		try {
-		byte[] code = EnhanceClassGenerator.generate(beanClass, true);
-		String generatedBeanName = EnhanceClassGenerator.createGeneratedClassName(beanClass);
-		Class<?> enhanceClass = byteLoader.defineClass(generatedBeanName,code);
+			byte[] code = EnhanceClassGenerator.generate(beanClass, true);
+			String generatedBeanName = EnhanceClassGenerator.createGeneratedClassName(beanClass);
+			Class<?> enhanceClass = byteLoader.defineClass(generatedBeanName, code);
 
-		Object obj = enhanceClass.newInstance();
+			Object obj = enhanceClass.newInstance();
 			beanMap.put(beanClass, (AttributeAccess) obj);
 			return beanMap.get(beanClass);
 

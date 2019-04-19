@@ -13,11 +13,81 @@ import org.objectweb.asm.tree.FieldNode;
 
 
 /**
+ * 通过ASM生成{@link org.beetl.core.om.AttributeAccess}的子类，
+ * 假设类名称User，则为生成的类为：User$AttributeAccess
+ * 实现   {@link org.beetl.core.om.AttributeAccess#value(Object, Object)}方法。
+ *<p/>
+ * <h3>Bean中没有get(String)或get(Object)方法:</h3> 
+ * <pre>
+   public Object value(Object bean, Object attr) {
+   		String attrStr = attr.toString();
+        int hash = attrStr.hashCode();
+        User user = (User) bean;
+        switch (hash) {
+        case 1:
+            return user.getName();
+        case 2:
+            return user.getAddress();
+        case 3:
+        	if("numbers".equals(attrStr)){
+        		return user.getNumbers();
+        	}
+        	if("birthDate".equals(attrStr)){
+        	 	return user.getBirthDate();
+        	}
+        }
+        return null;        
+    }
+ *</pre>
+ * <h3>Bean中有get(String)方法:</h3> 
+ * <pre>
+   public Object value(Object bean, Object attr) {
+   		String attrStr = attr.toString();
+        int hash = attrStr.hashCode();
+        User user = (User) bean;
+        switch (hash) {
+        case 1:
+            return user.getName();
+        case 2:
+            return user.getAddress();
+        case 3:
+        	if("numbers".equals(attrStr)){
+        		return user.getNumbers();
+        	}
+        	if("birthDate".equals(attrStr)){
+        	 	return user.getBirthDate();
+        	}
+        }
+        return user.get(attrStr);        
+    }
+ *</pre>
+ *</pre>
+ * <h3>Bean中有get(Object)方法:</h3> 
+ * <pre>
+   public Object value(Object bean, Object attr) {
+   		String attrStr = attr.toString();
+        int hash = attrStr.hashCode();
+        User user = (User) bean;
+        switch (hash) {
+        case 1:
+            return user.getName();
+        case 2:
+            return user.getAddress();
+        case 3:
+        	if("numbers".equals(attrStr)){
+        		return user.getNumbers();
+        	}
+        	if("birthDate".equals(attrStr)){
+        	 	return user.getBirthDate();
+        	}
+        }
+        return user.get(attr);        
+    }
+ *</pre>
  * @author laozhaishaozuo@foxmail.com
  *
  */
 class EnhanceClassGenerator implements Opcodes {
-
 
 	/**
 	 * 实例方法this变量位置
@@ -30,26 +100,30 @@ class EnhanceClassGenerator implements Opcodes {
 	/**
 	 * 方法中第二个参数的位置
 	 */
-	private static final int VAR_ATTR_NAME_INDEX = 2;
+	private static final int VAR_ATTR_INDEX = 2;
+
+	/**
+	 * 本地变量对应attrName的toString变量
+	 */
+	private static final int LOCAL_VAR_ATTR_STRING_INDEX = 3;
 
 	/**
 	 * 本地变量hashCode位置
 	 */
-	private static final int LOCAL_VAR_HASH_CODE_INDEX = 3;
+	private static final int LOCAL_VAR_HASH_CODE_INDEX = 4;
 	/**
 	 * 本地变量innerClass类型变量的位置
 	 */
-	private static final int LOCAL_VAR_INTERNAL_CLASS_INDEX = 4;
-
+	private static final int LOCAL_VAR_INTERNAL_CLASS_INDEX = 5;
 
 	private EnhanceClassGenerator() {
 
 	}
 
-
 	/**
 	 * 生成beanClass对应的增强类的字节流
-	 * @param beanClass 
+	 * 
+	 * @param beanClass
 	 * @return
 	 * @throws Exception
 	 */
@@ -59,8 +133,10 @@ class EnhanceClassGenerator implements Opcodes {
 
 	/**
 	 * 生成beanClass对应的增强类的字节流
-	 * @param beanClass 
-	* @param usePropertyDescriptor 是否使{@link java.beans.PropertyDescriptor}来生成属性描述 
+	 * 
+	 * @param beanClass
+	 * @param usePropertyDescriptor
+	 *            是否使{@link java.beans.PropertyDescriptor}来生成属性描述
 	 * @return
 	 * @throws Exception
 	 */
@@ -70,8 +146,11 @@ class EnhanceClassGenerator implements Opcodes {
 
 	/**
 	 * 生成beanClass对应的增强类的字节流
-	 * @param beanClassName 形式如 java.lang.String
-	 * @param usePropertyDescriptor 是否使{@link java.beans.PropertyDescriptor}来生成属性描述
+	 * 
+	 * @param beanClassName
+	 *            形式如 java.lang.String
+	 * @param usePropertyDescriptor
+	 *            是否使{@link java.beans.PropertyDescriptor}来生成属性描述
 	 * @return
 	 * @throws Exception
 	 */
@@ -79,12 +158,15 @@ class EnhanceClassGenerator implements Opcodes {
 		return generate(beanClassName, BeanEnhanceConstants.SUPER_CLASS_NAME, null, usePropertyDescriptor);
 	}
 
-
 	/**
 	 * 生成beanClass对应的增强类的字节流
-	 * @param beanClassName 形式如 java.lang.String
-	 * @param superName 父类 形式如 java.lang.String
-	 * @param interfaces 要实现的接口 形式如 java.lang.String
+	 * 
+	 * @param beanClassName
+	 *            形式如 java.lang.String
+	 * @param superName
+	 *            父类 形式如 java.lang.String
+	 * @param interfaces
+	 *            要实现的接口 形式如 java.lang.String
 	 * @return
 	 * @throws Exception
 	 */
@@ -108,8 +190,9 @@ class EnhanceClassGenerator implements Opcodes {
 
 	/**
 	 * 生成默认的构造方法
+	 * 
 	 * @param cw
-	 * @param superName
+	 * @param 父类名称
 	 */
 	static void generateDefaultConstruct(ClassWriter cw, String superName) {
 		MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
@@ -132,10 +215,11 @@ class EnhanceClassGenerator implements Opcodes {
 
 	/**
 	 * 生成方法 方法
+	 * 
 	 * @param cw
 	 * @param beanClassName
 	 * @throws Exception
-	 * @See  {@link org.beetl.core.om.AttributeAccess#value(Object, Object)}
+	 * @See {@link org.beetl.core.om.AttributeAccess#value(Object, Object)}
 	 */
 	private static void generateMethod(ClassWriter cw, String beanClassName) throws Exception {
 		String internalClassName = BeanEnhanceUtils.getInternalName(beanClassName);
@@ -145,21 +229,29 @@ class EnhanceClassGenerator implements Opcodes {
 			mv = cw.visitMethod(ACC_PUBLIC, BeanEnhanceConstants.METHOD_TO_GENERATE,
 					BeanEnhanceConstants.METHOD_SIGNATURE, null, null);
 			mv.visitCode();
-			Label l0 = new Label();
-			mv.visitLabel(l0);
-			mv.visitVarInsn(ALOAD, VAR_ATTR_NAME_INDEX);// 参数 attrName
+			Label toStringLabel = new Label();
+			mv.visitLabel(toStringLabel);
+			mv.visitVarInsn(ALOAD, VAR_ATTR_INDEX);
+			mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.OBJECT_INTERNAL_NAME, "toString",
+					"()Ljava/lang/String;", false);
+			mv.visitVarInsn(ASTORE, LOCAL_VAR_ATTR_STRING_INDEX);// 对应attrName的toString变量
+
+			Label hashCodeLabel = new Label();
+			mv.visitLabel(hashCodeLabel);
+			mv.visitVarInsn(ALOAD, LOCAL_VAR_ATTR_STRING_INDEX);// toString变量
 			mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.OBJECT_INTERNAL_NAME, "hashCode", "()I", false);
 			mv.visitVarInsn(ISTORE, LOCAL_VAR_HASH_CODE_INDEX);// hashCode
-			Label l1 = new Label();
-			mv.visitLabel(l1);
+
+			Label castLabel = new Label();
+			mv.visitLabel(castLabel);
 			mv.visitVarInsn(ALOAD, VAR_BEAN_INDEX);// 参数 bean
 			mv.visitTypeInsn(CHECKCAST, internalClassName);
 			mv.visitVarInsn(ASTORE, LOCAL_VAR_INTERNAL_CLASS_INDEX);// 对应internalClassName类型的变量
+			
 			Label l2 = new Label();
 			mv.visitLabel(l2);
 			mv.visitVarInsn(ILOAD, LOCAL_VAR_HASH_CODE_INDEX);
 			Label[] lookupSwitchLabels = new Label[classDescription.fieldMap.size()];
-			System.out.println(beanClassName);
 			int[] hashCodes = BeanEnhanceUtils
 					.convertIntegerToPrimitiveType(classDescription.fieldMap.keySet().toArray(new Integer[1]));
 			for (int i = 0; i < lookupSwitchLabels.length; i++) {
@@ -173,7 +265,8 @@ class EnhanceClassGenerator implements Opcodes {
 				fieldNodes = classDescription.fieldMap.get(hashCodes[i]);
 				mv.visitLabel(lookupSwitchLabels[i]);
 				if (i == 0) {
-					mv.visitFrame(Opcodes.F_APPEND, 2, new Object[]{Opcodes.INTEGER, internalClassName}, 0, null);
+					mv.visitFrame(Opcodes.F_APPEND, 3,
+							new Object[]{"java/lang/String", Opcodes.INTEGER, internalClassName}, 0, null);
 				} else {
 					mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 				}
@@ -194,9 +287,18 @@ class EnhanceClassGenerator implements Opcodes {
 				mv.visitLabel(df);
 				mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 				mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);
-				mv.visitVarInsn(ALOAD, VAR_ATTR_NAME_INDEX);
+				mv.visitVarInsn(ALOAD, VAR_ATTR_INDEX);
 				mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, BeanEnhanceConstants.GET_METHOD_NAME,
 						BeanEnhanceConstants.GET_METHOD_DESC, false);
+				mv.visitInsn(ARETURN);
+			} else if (classDescription.methodNameDescSet
+					.contains(BeanEnhanceConstants.GET_BY_STRING_METHOD_NAME_DESC)) {
+				mv.visitLabel(df);
+				mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+				mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);
+				mv.visitVarInsn(ALOAD, LOCAL_VAR_ATTR_STRING_INDEX);
+				mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, BeanEnhanceConstants.GET_METHOD_NAME,
+						BeanEnhanceConstants.GET_BY_STRING_METHOD_DESC, false);
 				mv.visitInsn(ARETURN);
 			} else {
 				mv.visitLabel(df);
@@ -230,7 +332,7 @@ class EnhanceClassGenerator implements Opcodes {
 			curFieldNode = fieldNodes.get(i);
 			mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 			mv.visitLdcInsn(curFieldNode.name);
-			mv.visitVarInsn(ALOAD, VAR_ATTR_NAME_INDEX);
+			mv.visitVarInsn(ALOAD, LOCAL_VAR_ATTR_STRING_INDEX);
 			mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.OBJECT_INTERNAL_NAME, "equals",
 					"(Ljava/lang/Object;)Z", false);
 			// 如果不相等，跳转到下一个if判断,都不相等跳转到default defaultLabel
@@ -285,13 +387,13 @@ class EnhanceClassGenerator implements Opcodes {
 		}
 	}
 
-
 	/**
 	 * 生成方法 方法
+	 * 
 	 * @param cw
 	 * @param beanClassName
 	 * @throws Exception
-	 * @See  {@link org.beetl.core.om.AttributeAccess#value(Object, Object)}
+	 * @See {@link org.beetl.core.om.AttributeAccess#value(Object, Object)}
 	 */
 	private static void generateMethodByPropertyDescriptory(ClassWriter cw, String beanClassName) throws Exception {
 		String internalClassName = BeanEnhanceUtils.getInternalName(beanClassName);
@@ -301,21 +403,29 @@ class EnhanceClassGenerator implements Opcodes {
 			mv = cw.visitMethod(ACC_PUBLIC, BeanEnhanceConstants.METHOD_TO_GENERATE,
 					BeanEnhanceConstants.METHOD_SIGNATURE, null, null);
 			mv.visitCode();
-			Label l0 = new Label();
-			mv.visitLabel(l0);
-			mv.visitVarInsn(ALOAD, VAR_ATTR_NAME_INDEX);// 参数 attrName
+			Label toStringLabel = new Label();
+			mv.visitLabel(toStringLabel);
+			mv.visitVarInsn(ALOAD, VAR_ATTR_INDEX);
+			mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.OBJECT_INTERNAL_NAME, "toString",
+					"()Ljava/lang/String;", false);
+			mv.visitVarInsn(ASTORE, LOCAL_VAR_ATTR_STRING_INDEX);// 对应attrName的toString变量
+
+			Label hashCodeLabel = new Label();
+			mv.visitLabel(hashCodeLabel);
+			mv.visitVarInsn(ALOAD, LOCAL_VAR_ATTR_STRING_INDEX);// toString变量
 			mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.OBJECT_INTERNAL_NAME, "hashCode", "()I", false);
 			mv.visitVarInsn(ISTORE, LOCAL_VAR_HASH_CODE_INDEX);// hashCode
-			Label l1 = new Label();
-			mv.visitLabel(l1);
+
+			Label castLabel = new Label();
+			mv.visitLabel(castLabel);
 			mv.visitVarInsn(ALOAD, VAR_BEAN_INDEX);// 参数 bean
 			mv.visitTypeInsn(CHECKCAST, internalClassName);
 			mv.visitVarInsn(ASTORE, LOCAL_VAR_INTERNAL_CLASS_INDEX);// 对应internalClassName类型的变量
+			
 			Label l2 = new Label();
 			mv.visitLabel(l2);
 			mv.visitVarInsn(ILOAD, LOCAL_VAR_HASH_CODE_INDEX);
 			Label[] lookupSwitchLabels = new Label[classDescription.propertyMap.size()];
-//			System.out.println(beanClassName);
 			int[] hashCodes = BeanEnhanceUtils
 					.convertIntegerToPrimitiveType(classDescription.propertyMap.keySet().toArray(new Integer[0]));
 			for (int i = 0; i < lookupSwitchLabels.length; i++) {
@@ -330,7 +440,8 @@ class EnhanceClassGenerator implements Opcodes {
 				propDescriptors = classDescription.propertyMap.get(hashCodes[i]);
 				mv.visitLabel(lookupSwitchLabels[i]);
 				if (i == 0) {
-					mv.visitFrame(Opcodes.F_APPEND, 2, new Object[]{Opcodes.INTEGER, internalClassName}, 0, null);
+					mv.visitFrame(Opcodes.F_APPEND, 3,
+							new Object[]{"java/lang/String", Opcodes.INTEGER, internalClassName}, 0, null);
 				} else {
 					mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 				}
@@ -351,9 +462,18 @@ class EnhanceClassGenerator implements Opcodes {
 				mv.visitLabel(df);
 				mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 				mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);
-				mv.visitVarInsn(ALOAD, VAR_ATTR_NAME_INDEX);
+				mv.visitVarInsn(ALOAD, VAR_ATTR_INDEX);
 				mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, BeanEnhanceConstants.GET_METHOD_NAME,
 						BeanEnhanceConstants.GET_METHOD_DESC, false);
+				mv.visitInsn(ARETURN);
+			} else if (classDescription.methodNameDescSet
+					.contains(BeanEnhanceConstants.GET_BY_STRING_METHOD_NAME_DESC)) {
+				mv.visitLabel(df);
+				mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+				mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);
+				mv.visitVarInsn(ALOAD, LOCAL_VAR_ATTR_STRING_INDEX);
+				mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, BeanEnhanceConstants.GET_METHOD_NAME,
+						BeanEnhanceConstants.GET_BY_STRING_METHOD_DESC, false);
 				mv.visitInsn(ARETURN);
 			} else {
 				mv.visitLabel(df);
@@ -371,7 +491,6 @@ class EnhanceClassGenerator implements Opcodes {
 		String descriptor = Type.getMethodDescriptor(readMethod);
 		return descriptor.substring(descriptor.indexOf(PunctuationConstants.LEFT_BRACKET));
 	}
-
 
 	private static void handleSameHashAttrPropertyDescriptory(MethodVisitor mv,
 			List<PropertyDescriptor> propDescriptors, String internalClassName, Label defaultLabel) {
@@ -395,7 +514,7 @@ class EnhanceClassGenerator implements Opcodes {
 			curPropReadMethod = curPropDescriptor.getReadMethod();
 			mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 			mv.visitLdcInsn(curPropDescriptor.getName());
-			mv.visitVarInsn(ALOAD, VAR_ATTR_NAME_INDEX);
+			mv.visitVarInsn(ALOAD, LOCAL_VAR_ATTR_STRING_INDEX);
 			mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.OBJECT_INTERNAL_NAME, "equals",
 					"(Ljava/lang/Object;)Z", false);
 			// 如果不相等，跳转到下一个if判断,都不相等跳转到default defaultLabel
@@ -408,8 +527,6 @@ class EnhanceClassGenerator implements Opcodes {
 			mv.visitInsn(ARETURN);
 		}
 
-
 	}
-
 
 }

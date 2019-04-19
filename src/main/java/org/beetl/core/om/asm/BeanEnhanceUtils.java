@@ -88,7 +88,6 @@ final class BeanEnhanceUtils {
 		for (PropertyDescriptor prop : propList) {
 			if (prop.getReadMethod() != null && !ignoreSet.contains(prop.getReadMethod().getName())) {
 				hashCode = prop.getName().hashCode();
-
 				props = propertyMap.get(hashCode);
 				if (props == null) {
 					props = new ArrayList<>();
