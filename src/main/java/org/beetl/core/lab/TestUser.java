@@ -223,6 +223,9 @@ public class TestUser
 		this.id = id;
 	}
 
+	public Object get(String key){
+		return "="+key;
+	}
 	
 
 }
