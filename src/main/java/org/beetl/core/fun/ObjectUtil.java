@@ -68,6 +68,7 @@ import org.beetl.core.om.ObjectMethodMatchConf;
 public class ObjectUtil {
     //	TODO3.0 改成SoftReference，控制内存大小
     public final  static Map<Class, Map<String, MethodInvoker>> methodInvokerCache = new ConcurrentHashMap<Class, Map<String, MethodInvoker>>();
+
     public static Map<Class, ObjectInfo> cachedClassInfoMap = new ConcurrentHashMap<Class, ObjectInfo>();
     public static Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 
@@ -149,6 +150,8 @@ public class ObjectUtil {
         return invoker;
 
     }
+
+
 
     /**
      * 获取对象的某个方法，如果无此方法，则仅仅返回null

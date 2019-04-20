@@ -1,1 +1,1 @@
-${user.balbal}
+${user.isOk}
