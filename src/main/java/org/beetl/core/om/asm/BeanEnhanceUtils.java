@@ -5,6 +5,7 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -48,10 +49,10 @@ final class BeanEnhanceUtils {
 	 */
 	static ClassDescription getClassDescription(String clazzName, boolean usePropertyDescriptor) {
 		ClassDescription classDescription = new ClassDescription();
-
-		ClassReader reader;
+		InputStream in = null;
 		try {
-			reader = new ClassReader(clazzName);
+			in = BeanEnhanceUtils.class.getClassLoader().getResourceAsStream(getInternalName(clazzName) + ".class");
+			ClassReader reader = new ClassReader(in);
 			ClassNode cn = new ClassNode();
 			reader.accept(cn, 0);
 			if (usePropertyDescriptor) {
@@ -61,7 +62,15 @@ final class BeanEnhanceUtils {
 			}
 			classDescription.methodNameDescSet = buildMethodNameSet(cn);
 		} catch (IOException | ClassNotFoundException | IntrospectionException e) {
-			throw new BeetlException(BeetlException.ERROR, "ASM增加功能，生成类:" + clazzName + " 描述错误", e);
+			throw new BeetlException(BeetlException.ERROR, "ASM增强功能，生成类:" + clazzName + "时发生错误", e);
+		} finally {
+			try {
+				if (in != null) {
+					in.close();
+				}
+			} catch (IOException ioe) {
+				// ignore
+			}
 		}
 		return classDescription;
 	}
