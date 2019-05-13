@@ -187,6 +187,8 @@ public class TestUser  extends  TailBean
 	}
 
 
+
+
 	
 	public static Info getInfo(){
 		return new InfoImpl();

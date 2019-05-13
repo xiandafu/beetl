@@ -14,10 +14,16 @@ import org.objectweb.asm.tree.FieldNode;
  */
 class ClassDescription {
 
+	Class target = null;
+
 	Map<Integer, List<FieldNode>> fieldMap;
 
-	Set<String> methodNameDescSet;
+//	Set<String> methodNameDescSet;
 
 	Map<Integer, List<PropertyDescriptor>> propertyMap;
+
+
+	//0 ,1 get(Object),2 get(String)
+	 int  generalGetType = 0;
 
 }

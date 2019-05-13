@@ -37,7 +37,7 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 	@Test
 	public void testAttrByAsm() throws Exception {
 
-		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(CLASS_NAME, false);
+		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(CLASS_NAME);
 		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
 		asmBeanFactory.setUsePropertyDescriptor(false);
 		for (List<FieldNode> nodes : classDescription.fieldMap.values()) {

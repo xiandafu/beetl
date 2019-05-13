@@ -192,7 +192,7 @@ class EnhanceClassGenerator implements Opcodes {
 	 * 生成默认的构造方法
 	 * 
 	 * @param cw
-	 * @param 父类名称
+	 * @param superName 父类名称
 	 */
 	static void generateDefaultConstruct(ClassWriter cw, String superName) {
 		MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
@@ -223,7 +223,7 @@ class EnhanceClassGenerator implements Opcodes {
 	 */
 	private static void generateMethod(ClassWriter cw, String beanClassName) throws Exception {
 		String internalClassName = BeanEnhanceUtils.getInternalName(beanClassName);
-		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(beanClassName, false);
+		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(beanClassName);
 		MethodVisitor mv;
 		{
 			mv = cw.visitMethod(ACC_PUBLIC, BeanEnhanceConstants.METHOD_TO_GENERATE,
@@ -274,16 +274,16 @@ class EnhanceClassGenerator implements Opcodes {
 					curFieldNode = fieldNodes.get(0);
 					mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);// 对应internalClassName类型的变量
 					mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName,
-							BeanEnhanceUtils.createGetterMethodName(curFieldNode.name), "()" + curFieldNode.desc,
+							BeanEnhanceUtils.createGetterMethodName(classDescription,curFieldNode.name), "()" + curFieldNode.desc,
 							false);
 					addInvokeValueOfToPrimitive(mv, curFieldNode.desc);
 					mv.visitInsn(ARETURN);
 				} else {
-					handleSameHashAttr(mv, fieldNodes, internalClassName, df);
+					handleSameHashAttr(classDescription,mv, fieldNodes, internalClassName, df);
 				}
 
 			}
-			if (classDescription.methodNameDescSet.contains(BeanEnhanceConstants.GET_METHOD_NAME_DESC)) {
+			if (classDescription.generalGetType==1) {
 				mv.visitLabel(df);
 				mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 				mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);
@@ -291,8 +291,8 @@ class EnhanceClassGenerator implements Opcodes {
 				mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, BeanEnhanceConstants.GET_METHOD_NAME,
 						BeanEnhanceConstants.GET_METHOD_DESC, false);
 				mv.visitInsn(ARETURN);
-			} else if (classDescription.methodNameDescSet
-					.contains(BeanEnhanceConstants.GET_BY_STRING_METHOD_NAME_DESC)) {
+			} else if (classDescription.generalGetType==2
+					) {
 				mv.visitLabel(df);
 				mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 				mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);
@@ -312,7 +312,7 @@ class EnhanceClassGenerator implements Opcodes {
 
 	}
 
-	private static void handleSameHashAttr(MethodVisitor mv, List<FieldNode> fieldNodes, String internalClassName,
+	private static void handleSameHashAttr(ClassDescription classDescription,MethodVisitor mv, List<FieldNode> fieldNodes, String internalClassName,
 			Label defaultLabel) {
 		int fieldSize = fieldNodes.size();
 		// 用于if跳转的Label
@@ -340,7 +340,7 @@ class EnhanceClassGenerator implements Opcodes {
 			mv.visitLabel(invokeLabels[i]);// 相等则调用get方法
 			mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);
 			mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName,
-					BeanEnhanceUtils.createGetterMethodName(curFieldNode.name), "()" + curFieldNode.desc, false);
+					BeanEnhanceUtils.createGetterMethodName(classDescription,curFieldNode.name), "()" + curFieldNode.desc, false);
 			addInvokeValueOfToPrimitive(mv, curFieldNode.desc);
 			mv.visitInsn(ARETURN);
 		}
@@ -458,7 +458,7 @@ class EnhanceClassGenerator implements Opcodes {
 				}
 
 			}
-			if (classDescription.methodNameDescSet.contains(BeanEnhanceConstants.GET_METHOD_NAME_DESC)) {
+			if (classDescription.generalGetType==1) {
 				mv.visitLabel(df);
 				mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 				mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);
@@ -466,8 +466,7 @@ class EnhanceClassGenerator implements Opcodes {
 				mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, BeanEnhanceConstants.GET_METHOD_NAME,
 						BeanEnhanceConstants.GET_METHOD_DESC, false);
 				mv.visitInsn(ARETURN);
-			} else if (classDescription.methodNameDescSet
-					.contains(BeanEnhanceConstants.GET_BY_STRING_METHOD_NAME_DESC)) {
+			} else if (classDescription.generalGetType==2) {
 				mv.visitLabel(df);
 				mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 				mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);
