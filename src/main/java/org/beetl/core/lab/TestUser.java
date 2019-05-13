@@ -1,16 +1,13 @@
 package org.beetl.core.lab;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author 所有测试类采用的Pojo类
  *
  *
  */
-public class TestUser 
+public class TestUser  extends  TailBean
 {
 	String name = "default";
 	int age = 18;
@@ -22,6 +19,8 @@ public class TestUser
 	int id = 0;
 	byte recycle = 1;
 	String price="12";
+
+
 	
 
 	public static enum ORDER
@@ -223,9 +222,6 @@ public class TestUser
 		this.id = id;
 	}
 
-	public Object get(String key){
-		return "="+key;
-	}
-	
+
 
 }

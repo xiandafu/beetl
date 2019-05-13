@@ -1,5 +1,8 @@
 package org.beetl.core.text;
 
+import org.beetl.core.Configuration;
+import org.beetl.core.GroupTemplate;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -32,13 +35,24 @@ public class TextParser {
 	//文本里的回车
 	String textCr = null;
 
-	public TextParser(PlaceHolderDelimeter pd, ScriptDelimeter sd) {
+	AttributeNameConvert attributeNameConvert;
+
+	public TextParser(GroupTemplate groupTemplate,PlaceHolderDelimeter pd, ScriptDelimeter sd) {
+		if(groupTemplate==null){
+			attributeNameConvert = new DefaultAttributeNameConvert();
+		}
+
 		this.pd = pd;
 		this.sd = sd;
 	}
 
+	public TextParser(GroupTemplate groupTemplate,PlaceHolderDelimeter pd, ScriptDelimeter sd, HtmlTagConfig htmlTagConfig) {
+		this(groupTemplate,pd, sd);
+		this.htmlTagConfig = htmlTagConfig;
+	}
+
 	public TextParser(PlaceHolderDelimeter pd, ScriptDelimeter sd, HtmlTagConfig htmlTagConfig) {
-		this(pd, sd);
+		this(null,pd, sd);
 		this.htmlTagConfig = htmlTagConfig;
 	}
 
@@ -136,7 +150,7 @@ public class TextParser {
 
 //		String text ="  @a;";
 		StringReader str = new StringReader(text);
-		TextParser textParser = new TextParser(pd, sd, htmlConfig);
+		TextParser textParser = new TextParser(null,pd, sd, htmlConfig);
 		textParser.doParse(str);
 
 		System.out.println(textParser.getTextVars());

@@ -108,6 +108,9 @@ public class Configuration {
 	 */
 	String htmlTagBindingAttribute = "var";
 
+
+	String htmlTagAttributeConvert="org.beetl.core.text.DefaultAttributeNameConvert";
+
 	/**
 	 * 类搜索的包名列表
 	 */
@@ -168,6 +171,7 @@ public class Configuration {
 	public static String WEBAPP_EXT = "WEBAPP_EXT";
 	public static String HTML_TAG_SUPPORT = "HTML_TAG_SUPPORT";
 	public static String HTML_TAG_FLAG = "HTML_TAG_FLAG";
+	public static String HTML_TAG_ATTR_CONVERT = "HTML_TAG_ATTR_CONVERT";
 	public static String IMPORT_PACKAGE = "IMPORT_PACKAGE";
 	public static String ENGINE = "ENGINE";
 	public static String NATIVE_SECUARTY_MANAGER = "NATIVE_SECUARTY_MANAGER";
@@ -176,6 +180,7 @@ public class Configuration {
 
 	public static String BUFFER_SIZE = "buffer.maxSize";
 	public static String BUFFER_NUM = "buffer.num";
+
 	
 
 	Properties ps = null;
@@ -183,6 +188,9 @@ public class Configuration {
 	PlaceHolderDelimeter pd = null;
 	ScriptDelimeter sd = null;
 	HtmlTagConfig tagConf = null;
+
+
+
 
 	public Configuration() throws IOException {
 		// 总是添加这俩个
@@ -302,7 +310,12 @@ public class Configuration {
 			this.isStrict = isBoolean(value, false);
 		} else if (key.equalsIgnoreCase(HTML_TAG_SUPPORT)) {
 			this.isHtmlTagSupport = isBoolean(value, false);
-		} else if (key.equalsIgnoreCase(HTML_TAG_FLAG)) {
+		} else if (key.equalsIgnoreCase(HTML_TAG_ATTR_CONVERT)) {
+			if (value == null | value.length() == 0 ) {
+				this.htmlTagAttributeConvert = value;
+			}
+		}
+		else if (key.equalsIgnoreCase(HTML_TAG_FLAG)) {
 			this.htmlTagFlag = value;
 			htmlTagStart = "<" + htmlTagFlag;
 			htmlTagEnd = "</" + htmlTagFlag;
@@ -582,6 +595,14 @@ public class Configuration {
 		this.htmlTagBindingAttribute = htmlTagBindingAttribute;
 	}
 
+	public String getHtmlTagAttributeConvert() {
+		return htmlTagAttributeConvert;
+	}
+
+	public void setHtmlTagAttributeConvert(String htmlTagAttributeConvert) {
+		this.htmlTagAttributeConvert = htmlTagAttributeConvert;
+	}
+
 	public void setCharset(String charset) {
 		this.charset = charset;
 	}
@@ -722,6 +743,8 @@ public class Configuration {
 	public void setResourceMap(Map<String, String> resourceMap) {
 		this.resourceMap = resourceMap;
 	}
+
+
 
 	public Properties getPs() {
 		return ps;

@@ -27,10 +27,7 @@
  */
 package org.beetl.core.text;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 用于解析htmltag，转化成宏调用
@@ -52,6 +49,7 @@ class HTMLTagContentParser
 	List<String> crKey = new ArrayList<String>(1);
 	boolean hasVarBinding = false;
 	boolean hasExportBinding = false;
+	Map<String,String> htmlAttributeNameMap = new HashMap<String,String>();
 	String varBidingStr = null;
 	// -1非期望
 	int status = 0;
@@ -65,11 +63,14 @@ class HTMLTagContentParser
 	static char ENT_TAG = '>';
 	static char[] ENT_TAGS = new char[]
 	{ '/', '>' };
-//	char[] cr = new char[]	{ '\n' };
-	
 
-	public HTMLTagContentParser(char[] cs, int index, String bindingAttr, boolean isStart)
+	AttributeNameConvert attributeNameConvert = null;
+
+
+
+	public HTMLTagContentParser(AttributeNameConvert attributeNameConvert,char[] cs, int index, String bindingAttr, boolean isStart)
 	{
+		this.attributeNameConvert = attributeNameConvert;
 		this.cs = cs;
 		parseBindingAttr(bindingAttr);
 		this.index = index;
@@ -126,7 +127,7 @@ class HTMLTagContentParser
 			throw new RuntimeException("非法标签名");
 		}
 		StringBuilder tagSb = new StringBuilder();
-		tagSb.append(this.convertAttr(this.subString()));
+		tagSb.append(this.attributeNameConvert.convert(this.subString()));
 		this.t_consume();
 		while (match(':'))
 		{
@@ -214,8 +215,10 @@ class HTMLTagContentParser
 			return;
 		}
 
-		lastKey = this.subString();
-		lastKey = convertAttr(lastKey);
+		String colName = this.subString();
+		lastKey  = this.attributeNameConvert.convert(colName);
+		this.htmlAttributeNameMap.put(lastKey,colName);
+
 		this.t_consume();
 		this.stripSpace();
 		if (match('='))
@@ -246,36 +249,6 @@ class HTMLTagContentParser
 			throw new RuntimeException("没有找到属性");
 		}
 
-	}
-	
-	/**
-	 * 将带有-符号的属性去掉，换成下一个字母为大写
-	 * @param attr
-	 */
-	private String convertAttr(String attr){
-		char[] cs = attr.toCharArray();
-		StringBuilder sb = new StringBuilder(cs.length);
-		boolean upper = false;
-		for(int i=0;i<cs.length;i++){
-			if(upper){
-				if(cs[i]=='-'){
-					continue;
-				}
-				sb.append(Character.toUpperCase(cs[i]));
-				upper=false;
-				
-				
-			}else{
-				if(cs[i]=='-'){
-					upper=true;
-				}else{
-					sb.append(cs[i]);
-				}
-			}
-			
-			
-		}
-		return sb.toString();
 	}
 	
 
@@ -594,6 +567,23 @@ class HTMLTagContentParser
 		return c > '0' && c < '9';
 	}
 
+	public  String getHtmlColMapAsString(){
+		if(this.htmlAttributeNameMap.isEmpty()){
+			return "$cols:{}";
+		}
+		StringBuilder sb = new StringBuilder("$cols:{");
+		for(Map.Entry<String,String> entry:this.htmlAttributeNameMap.entrySet()){
+			String varName = entry.getKey();
+			String colName = entry.getValue();
+			sb.append("'").append(entry.getKey()).append("':'").append(colName).append("',");
+
+		}
+
+		sb.setCharAt(sb.length()-1,'}');
+		return sb.toString();
+	}
+
+
 	public boolean isEmptyTag()
 	{
 		return this.isEmptyTag;
@@ -627,7 +617,7 @@ class HTMLTagContentParser
 	public static void main(String[] args)
 	{
 		String input = "<#bbsListTag a='1' \nc='${ kk }' export='page,dd' >hello ${a}</#bbsListTag>";
-		HTMLTagContentParser htmltag = new HTMLTagContentParser(input.toCharArray(), 2, "var,export", true);
+		HTMLTagContentParser htmltag = new HTMLTagContentParser(new DefaultAttributeNameConvert(),input.toCharArray(), 2, "var,export", true);
 		htmltag.parser();
 		System.out.println(htmltag.getTagName());
 		System.out.println(htmltag.getExpMap());

@@ -59,7 +59,7 @@ public class HtmlTagEndFragment extends ScriptFragment {
     @Override
     public Fragment consumeAndReturnNext() {
     	String htmlTagBindingAttribute = source.htmlTagConfig.htmlTagBindingAttribute;
-		html = new HTMLTagContentParser(source.cs, source.p, htmlTagBindingAttribute, false);
+		html = new HTMLTagContentParser(source.getParser().attributeNameConvert, source.cs, source.p, htmlTagBindingAttribute, false);
 		html.parser();
 		source.move(html.index);
 		this.endLine = this.startLine;

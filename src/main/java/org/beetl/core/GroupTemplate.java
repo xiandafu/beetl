@@ -55,6 +55,7 @@ import org.beetl.core.resource.ClasspathResourceLoader;
 import org.beetl.core.statement.ErrorGrammarProgram;
 import org.beetl.core.statement.Program;
 import org.beetl.core.tag.TagFactory;
+import org.beetl.core.text.AttributeNameConvert;
 import org.beetl.core.text.TextParser;
 
 /**
@@ -93,6 +94,9 @@ public class GroupTemplate {
 	Map<String, Object> sharedVars = null;
 
 	ContextLocalBuffers buffers = null;
+
+	// 用于解析html tag得属性，转化为符合js变量名字
+	AttributeNameConvert htmlTagAttrNameConvert = null;
 
 
 	/**
@@ -178,6 +182,10 @@ public class GroupTemplate {
 			errorHandler = (ErrorHandler) ObjectUtil.instance(conf.errorHandlerClass, classLoader);
 
 		}
+
+		htmlTagAttrNameConvert = (AttributeNameConvert)ObjectUtil.instance(conf.htmlTagAttributeConvert, classLoader);
+
+
 
 
 

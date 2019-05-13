@@ -44,7 +44,7 @@ public class IncDecExpression extends Expression implements IVarIndex {
 		this.returnOrginal = returnOrginal;
 	}
 
-	public final Object evaluate(Context ctx) {
+	public  Object evaluate(Context ctx) {
 		Object c = ctx.vars[index];
 		Object newValue = isInc ? ALU.plusOne(c, this) : ALU.minusOne(c, this);
 		if (isInc) {

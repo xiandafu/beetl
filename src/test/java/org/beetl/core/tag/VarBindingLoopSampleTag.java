@@ -13,6 +13,9 @@ public class VarBindingLoopSampleTag extends GeneralVarTagBinding
 		String[] array = new String[]
 				{ "a", "b" };
 		Object paras1 = array;
+		Map<String,String> colsMap = (Map<String,String> )attributes.get("$cols");
+
+
 		for (int i = 0; i < loop; i++)
 		{
 			this.binds(paras1);

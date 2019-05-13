@@ -9,6 +9,8 @@ public class AsmAAFactory  extends DefaultAAFactory{
     public AsmAAFactory(){  
         super();
         asmBeanFactory = new ASMBeanFactory();
+        //beetl 里通过getter setter来获取属性,也可以直接设置通过fields
+        asmBeanFactory.setUsePropertyDescriptor(true);
 
     }
 

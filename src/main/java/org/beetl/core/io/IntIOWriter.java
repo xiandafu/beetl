@@ -6,15 +6,28 @@ import org.beetl.core.ByteWriter;
 
 public class IntIOWriter
 {
+	private static int max = 1024;
+	public static Object[] cache = new Object[max];
+	static{
+		for(int i=0;i<max;i++){
+			cache[i] = String.valueOf(i).toCharArray();
+		}
+	}
 
 	public static void writeShort(ByteWriter bw, Short i) throws IOException
 	{
 		writeInteger(bw, i.intValue());
 	}
 
-	public static void writeInteger(ByteWriter bw, Integer i) throws IOException
+	public static void writeInteger(ByteWriter bw, Integer integer) throws IOException
 	{
 
+		int i = integer.intValue();
+		if(i<max&&i>=0){
+			char[] buf = (char[])cache[i];
+			bw.writeNumberChars(buf, buf.length);
+			return ;
+		}
 		if (i == Integer.MIN_VALUE)
 		{
 			bw.writeString("-2147483648");

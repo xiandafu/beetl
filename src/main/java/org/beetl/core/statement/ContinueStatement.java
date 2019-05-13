@@ -42,7 +42,7 @@ public class ContinueStatement extends Statement {
 	}
 
 	@Override
-	public final void execute(Context ctx) {
+	public  void execute(Context ctx) {
 		ctx.gotoFlag = IGoto.CONTINUE;
 
 	}

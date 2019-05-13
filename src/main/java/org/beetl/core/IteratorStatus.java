@@ -183,6 +183,10 @@ public final class IteratorStatus
 		return this.index;
 	}
 
+	public final int getDataIndex(){
+		return this.index-1;
+	}
+
 	public final boolean isFirst()
 	{
 		return index == 1;

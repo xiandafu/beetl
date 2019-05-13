@@ -25,7 +25,7 @@ public class ASMBeanFactory {
 			? Thread.currentThread().getContextClassLoader()
 			: GroupTemplate.class.getClassLoader();
 
-	ByteClassLoader byteLoader = new ByteClassLoader(classLoader);
+	 ByteClassLoader byteLoader = new ByteClassLoader(classLoader);
 
 	boolean usePropertyDescriptor;
 
@@ -48,7 +48,7 @@ public class ASMBeanFactory {
 			return beanMap.get(beanClass);
 		}
 		try {
-			byte[] code = EnhanceClassGenerator.generate(beanClass, true);
+			byte[] code = EnhanceClassGenerator.generate(beanClass, this.usePropertyDescriptor);
 			String generatedBeanName = EnhanceClassGenerator.createGeneratedClassName(beanClass);
 			Class<?> enhanceClass = byteLoader.defineClass(generatedBeanName, code);
 
@@ -61,6 +61,8 @@ public class ASMBeanFactory {
 		}
 
 	}
+
+
 
 	private static void writeClassToFile(final byte[] code, final Class<?> beanClass, final String generatedBeanName) {
 		try {

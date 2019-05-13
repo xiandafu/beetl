@@ -34,13 +34,14 @@ public class Test {
 		gt.registerTag("table",TableTag.class);
 		gt.registerTag("col",ColTag.class);
 		TestUser user = new TestUser("a");
-
+		TestUser older = new TestUser("b");
+		user.set("older",older);
 
 		for (int i = 0; i < 1; i++) {
 
 			Template t = gt.getTemplate("/hello.txt");
 			t.binding("a",1);
-			t.binding("user",new TestUser("jo"));
+			t.binding("user",user);
 //			TestUser user = new TestUser("jo");
 //			user.lover = new TestUser("dddd");
 //			t.binding("user", user);

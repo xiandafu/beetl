@@ -45,7 +45,7 @@ public class AndExpression extends Expression {
 		this.exp2 = exp2;
 	}
 
-	public final Object evaluate(Context ctx) {
+	public  Object evaluate(Context ctx) {
 		if (ALU.isTrue(exp1.evaluate(ctx), exp1)) {
 			return ALU.isTrue(exp2.evaluate(ctx), exp2);
 		} else {

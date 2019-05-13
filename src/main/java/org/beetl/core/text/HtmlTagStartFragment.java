@@ -54,10 +54,15 @@ public class HtmlTagStartFragment extends ScriptFragment {
 				script.append(",");
 			}
 
-			script.setLength(script.length() - 1);
-			if (map.size() != 0) {
+			if (map.size() != 0)
+			{
+				script.append(html.getHtmlColMapAsString());
 				script.append("}");
+			}else{
+				//去掉逗号
+				script.setLength(script.length()-1);
 			}
+
 
 			if (html.hasVarBinding||html.hasExportBinding) {
 				if (map.size() == 0) {
@@ -109,7 +114,7 @@ public class HtmlTagStartFragment extends ScriptFragment {
 	@Override
 	public Fragment consumeAndReturnNext() {
 		String htmlTagBindingAttribute = source.htmlTagConfig.htmlTagBindingAttribute;
-		html = new HTMLTagContentParser(source.cs, source.p, htmlTagBindingAttribute, true);
+		html = new HTMLTagContentParser(source.getParser().attributeNameConvert,source.cs, source.p, htmlTagBindingAttribute, true);
 		html.parser();
 		source.move(html.index);
 		this.endLine = this.startLine+html.crKey.size();

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.beetl.core.GroupTemplate;
 import org.beetl.core.exception.BeetlException;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
@@ -51,7 +52,7 @@ final class BeanEnhanceUtils {
 		ClassDescription classDescription = new ClassDescription();
 		InputStream in = null;
 		try {
-			in = BeanEnhanceUtils.class.getClassLoader().getResourceAsStream(getInternalName(clazzName) + ".class");
+			in =getCurrentClassLoader().getResourceAsStream(getInternalName(clazzName) + ".class");
 			ClassReader reader = new ClassReader(in);
 			ClassNode cn = new ClassNode();
 			reader.accept(cn, 0);
@@ -164,4 +165,14 @@ final class BeanEnhanceUtils {
 		}
 		return target;
 	}
+
+
+	static ClassLoader getCurrentClassLoader(){
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader() != null
+				? Thread.currentThread().getContextClassLoader()
+				: BeanEnhanceUtils.class.getClassLoader();
+		return classLoader;
+	}
+
+
 }
