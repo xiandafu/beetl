@@ -13,8 +13,6 @@ import org.testng.annotations.Test;
 
 public class ASMBeanFactoryByPropTest extends BasicTestCase {
 
-	private static final String CLASS_NAME = User.class.getName();
-
 	@Test
 	public void testGetter() throws Exception {
 
@@ -29,14 +27,14 @@ public class ASMBeanFactoryByPropTest extends BasicTestCase {
 		user.setIsManager(false);
 		user.setHeight(1.73F);
 		user.setGender('M');
-//		user.setAAa(12);
-//		user.setABB(13);
+		// user.setAAa(12);
+		// user.setABB(13);
 		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
-		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(CLASS_NAME);
+		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(User.class);
 		for (List<PropertyDescriptor> propDescs : classDescription.propertyMap.values()) {
 			for (PropertyDescriptor propDesc : propDescs) {
 				System.out.println(propDesc.getName() + ":" + asmBeanFactory.value(user, propDesc.getName()));
-//				AssertJUnit.assertEquals(getValue(user, propDesc), ASMBeanFactory.value(user, propDesc.getName()));
+				// AssertJUnit.assertEquals(getValue(user, propDesc), ASMBeanFactory.value(user, propDesc.getName()));
 			}
 		}
 		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(user, "填写"));

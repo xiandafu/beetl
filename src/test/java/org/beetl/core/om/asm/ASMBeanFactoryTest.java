@@ -15,9 +15,6 @@ import org.testng.annotations.Test;
 
 public class ASMBeanFactoryTest extends BasicTestCase {
 
-	private static final String CLASS_NAME = User.class.getName();
-
-
 	static User user = new User();
 	static {
 		user.setName("shaozuo");
@@ -37,7 +34,7 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 	@Test
 	public void testAttrByAsm() throws Exception {
 
-		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(CLASS_NAME);
+		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(User.class);
 		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
 		asmBeanFactory.setUsePropertyDescriptor(false);
 		for (List<FieldNode> nodes : classDescription.fieldMap.values()) {
@@ -61,7 +58,7 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 	@Test
 	public void testByProp() throws Exception {
 		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
-		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(CLASS_NAME);
+		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(User.class);
 		for (List<PropertyDescriptor> propDescs : classDescription.propertyMap.values()) {
 			for (PropertyDescriptor propDesc : propDescs) {
 				System.out.println(propDesc.getName() + ":" + asmBeanFactory.value(user, propDesc.getName()));

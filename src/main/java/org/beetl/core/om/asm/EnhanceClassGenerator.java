@@ -128,7 +128,7 @@ class EnhanceClassGenerator implements Opcodes {
 	 * @throws Exception
 	 */
 	static byte[] generate(Class<?> beanClass) throws Exception {
-		return generate(beanClass.getName(), true);
+		return generate(beanClass, true);
 	}
 
 	/**
@@ -141,28 +141,13 @@ class EnhanceClassGenerator implements Opcodes {
 	 * @throws Exception
 	 */
 	static byte[] generate(Class<?> beanClass, boolean usePropertyDescriptor) throws Exception {
-		return generate(beanClass.getName(), usePropertyDescriptor);
+		return generate(beanClass, BeanEnhanceConstants.SUPER_CLASS_NAME, null, usePropertyDescriptor);
 	}
 
 	/**
 	 * 生成beanClass对应的增强类的字节流
 	 * 
-	 * @param beanClassName
-	 *            形式如 java.lang.String
-	 * @param usePropertyDescriptor
-	 *            是否使{@link java.beans.PropertyDescriptor}来生成属性描述
-	 * @return
-	 * @throws Exception
-	 */
-	protected static byte[] generate(String beanClassName, boolean usePropertyDescriptor) throws Exception {
-		return generate(beanClassName, BeanEnhanceConstants.SUPER_CLASS_NAME, null, usePropertyDescriptor);
-	}
-
-	/**
-	 * 生成beanClass对应的增强类的字节流
-	 * 
-	 * @param beanClassName
-	 *            形式如 java.lang.String
+	 * @param beanClass
 	 * @param superName
 	 *            父类 形式如 java.lang.String
 	 * @param interfaces
@@ -170,8 +155,9 @@ class EnhanceClassGenerator implements Opcodes {
 	 * @return
 	 * @throws Exception
 	 */
-	static byte[] generate(String beanClassName, String superName, String[] interfaces, boolean usePropertyDescriptor)
+	static byte[] generate(Class<?> beanClass, String superName, String[] interfaces, boolean usePropertyDescriptor)
 			throws Exception {
+		String beanClassName = beanClass.getName();
 		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);// 自动计算maxStack
 		String getterClassName = createGeneratedClassName(beanClassName);
 		cw.visit(V1_8, ACC_PUBLIC + ACC_SUPER, BeanEnhanceUtils.getInternalName(getterClassName), null, superName,
@@ -180,9 +166,9 @@ class EnhanceClassGenerator implements Opcodes {
 		generateDefaultConstruct(cw, superName);
 		// 生成GetterClass
 		if (usePropertyDescriptor) {
-			generateMethodByPropertyDescriptory(cw, beanClassName);
+			generateMethodByPropertyDescriptory(cw, beanClass);
 		} else {
-			generateMethod(cw, beanClassName);
+			generateMethod(cw, beanClass);
 		}
 		cw.visitEnd();
 		return cw.toByteArray();
@@ -217,13 +203,13 @@ class EnhanceClassGenerator implements Opcodes {
 	 * 生成方法 方法
 	 * 
 	 * @param cw
-	 * @param beanClassName
+	 * @param beanClass
 	 * @throws Exception
 	 * @See {@link org.beetl.core.om.AttributeAccess#value(Object, Object)}
 	 */
-	private static void generateMethod(ClassWriter cw, String beanClassName) throws Exception {
-		String internalClassName = BeanEnhanceUtils.getInternalName(beanClassName);
-		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(beanClassName);
+	private static void generateMethod(ClassWriter cw, Class<?> beanClass) throws Exception {
+		String internalClassName = BeanEnhanceUtils.getInternalName(beanClass.getName());
+		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(beanClass);
 		MethodVisitor mv;
 		{
 			mv = cw.visitMethod(ACC_PUBLIC, BeanEnhanceConstants.METHOD_TO_GENERATE,
@@ -247,7 +233,7 @@ class EnhanceClassGenerator implements Opcodes {
 			mv.visitVarInsn(ALOAD, VAR_BEAN_INDEX);// 参数 bean
 			mv.visitTypeInsn(CHECKCAST, internalClassName);
 			mv.visitVarInsn(ASTORE, LOCAL_VAR_INTERNAL_CLASS_INDEX);// 对应internalClassName类型的变量
-			
+
 			Label l2 = new Label();
 			mv.visitLabel(l2);
 			mv.visitVarInsn(ILOAD, LOCAL_VAR_HASH_CODE_INDEX);
@@ -274,16 +260,16 @@ class EnhanceClassGenerator implements Opcodes {
 					curFieldNode = fieldNodes.get(0);
 					mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);// 对应internalClassName类型的变量
 					mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName,
-							BeanEnhanceUtils.createGetterMethodName(classDescription,curFieldNode.name), "()" + curFieldNode.desc,
-							false);
+							BeanEnhanceUtils.createGetterMethodName(classDescription, curFieldNode.name),
+							"()" + curFieldNode.desc, false);
 					addInvokeValueOfToPrimitive(mv, curFieldNode.desc);
 					mv.visitInsn(ARETURN);
 				} else {
-					handleSameHashAttr(classDescription,mv, fieldNodes, internalClassName, df);
+					handleSameHashAttr(classDescription, mv, fieldNodes, internalClassName, df);
 				}
 
 			}
-			if (classDescription.generalGetType==1) {
+			if (classDescription.generalGetType == 1) {
 				mv.visitLabel(df);
 				mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 				mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);
@@ -291,8 +277,7 @@ class EnhanceClassGenerator implements Opcodes {
 				mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, BeanEnhanceConstants.GET_METHOD_NAME,
 						BeanEnhanceConstants.GET_METHOD_DESC, false);
 				mv.visitInsn(ARETURN);
-			} else if (classDescription.generalGetType==2
-					) {
+			} else if (classDescription.generalGetType == 2) {
 				mv.visitLabel(df);
 				mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 				mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);
@@ -312,8 +297,8 @@ class EnhanceClassGenerator implements Opcodes {
 
 	}
 
-	private static void handleSameHashAttr(ClassDescription classDescription,MethodVisitor mv, List<FieldNode> fieldNodes, String internalClassName,
-			Label defaultLabel) {
+	private static void handleSameHashAttr(ClassDescription classDescription, MethodVisitor mv,
+			List<FieldNode> fieldNodes, String internalClassName, Label defaultLabel) {
 		int fieldSize = fieldNodes.size();
 		// 用于if跳转的Label
 		Label[] ifLabels = new Label[fieldSize];
@@ -340,7 +325,8 @@ class EnhanceClassGenerator implements Opcodes {
 			mv.visitLabel(invokeLabels[i]);// 相等则调用get方法
 			mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);
 			mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName,
-					BeanEnhanceUtils.createGetterMethodName(classDescription,curFieldNode.name), "()" + curFieldNode.desc, false);
+					BeanEnhanceUtils.createGetterMethodName(classDescription, curFieldNode.name),
+					"()" + curFieldNode.desc, false);
 			addInvokeValueOfToPrimitive(mv, curFieldNode.desc);
 			mv.visitInsn(ARETURN);
 		}
@@ -395,9 +381,9 @@ class EnhanceClassGenerator implements Opcodes {
 	 * @throws Exception
 	 * @See {@link org.beetl.core.om.AttributeAccess#value(Object, Object)}
 	 */
-	private static void generateMethodByPropertyDescriptory(ClassWriter cw, String beanClassName) throws Exception {
-		String internalClassName = BeanEnhanceUtils.getInternalName(beanClassName);
-		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(beanClassName);
+	private static void generateMethodByPropertyDescriptory(ClassWriter cw, Class<?> beanClass) throws Exception {
+		String internalClassName = BeanEnhanceUtils.getInternalName(beanClass.getName());
+		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(beanClass);
 		MethodVisitor mv;
 		{
 			mv = cw.visitMethod(ACC_PUBLIC, BeanEnhanceConstants.METHOD_TO_GENERATE,
@@ -421,7 +407,7 @@ class EnhanceClassGenerator implements Opcodes {
 			mv.visitVarInsn(ALOAD, VAR_BEAN_INDEX);// 参数 bean
 			mv.visitTypeInsn(CHECKCAST, internalClassName);
 			mv.visitVarInsn(ASTORE, LOCAL_VAR_INTERNAL_CLASS_INDEX);// 对应internalClassName类型的变量
-			
+
 			Label l2 = new Label();
 			mv.visitLabel(l2);
 			mv.visitVarInsn(ILOAD, LOCAL_VAR_HASH_CODE_INDEX);
@@ -458,7 +444,7 @@ class EnhanceClassGenerator implements Opcodes {
 				}
 
 			}
-			if (classDescription.generalGetType==1) {
+			if (classDescription.generalGetType == 1) {
 				mv.visitLabel(df);
 				mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 				mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);
@@ -466,7 +452,7 @@ class EnhanceClassGenerator implements Opcodes {
 				mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, BeanEnhanceConstants.GET_METHOD_NAME,
 						BeanEnhanceConstants.GET_METHOD_DESC, false);
 				mv.visitInsn(ARETURN);
-			} else if (classDescription.generalGetType==2) {
+			} else if (classDescription.generalGetType == 2) {
 				mv.visitLabel(df);
 				mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 				mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);

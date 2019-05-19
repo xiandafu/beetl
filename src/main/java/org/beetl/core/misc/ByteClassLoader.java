@@ -32,16 +32,22 @@ package org.beetl.core.misc;
  * @author joelli
  *
  */
-public class ByteClassLoader extends ClassLoader
-{
+public class ByteClassLoader extends ClassLoader {
 
-	public ByteClassLoader(ClassLoader parent)
-	{
+	public ByteClassLoader(ClassLoader parent) {
 		super(parent);
 	}
 
-	public Class defineClass(String name, byte[] b)
-	{
+	public Class<?> defineClass(String name, byte[] b) {
 		return defineClass(name, b, 0, b.length);
+	}
+
+	public Class<?> findClassByName(String clazzName) {
+		try {
+			return getParent().loadClass(clazzName);
+		} catch (ClassNotFoundException e) {
+			// ignore
+		}
+		return null;
 	}
 }

@@ -20,12 +20,11 @@ import org.beetl.core.om.AttributeAccess;
 public class ASMBeanFactory {
 
 	private final Map<Class<?>, AttributeAccess> beanMap = new ConcurrentHashMap<>();
+	private final Map<ClassLoader, ByteClassLoader> classLoaders = new ConcurrentHashMap<>();
 
 	ClassLoader classLoader = Thread.currentThread().getContextClassLoader() != null
 			? Thread.currentThread().getContextClassLoader()
 			: GroupTemplate.class.getClassLoader();
-
-	 ByteClassLoader byteLoader = new ByteClassLoader(classLoader);
 
 	boolean usePropertyDescriptor;
 
@@ -48,10 +47,18 @@ public class ASMBeanFactory {
 			return beanMap.get(beanClass);
 		}
 		try {
+			ClassLoader beanClassLoader = beanClass.getClassLoader();
+			ByteClassLoader byteLoader = classLoaders.get(beanClassLoader);
+			if (byteLoader == null) {
+				byteLoader = new ByteClassLoader(beanClassLoader);
+				classLoaders.putIfAbsent(beanClassLoader, byteLoader);
+			}
 			byte[] code = EnhanceClassGenerator.generate(beanClass, this.usePropertyDescriptor);
 			String generatedBeanName = EnhanceClassGenerator.createGeneratedClassName(beanClass);
-			Class<?> enhanceClass = byteLoader.defineClass(generatedBeanName, code);
-
+			Class<?> enhanceClass = byteLoader.findClassByName(generatedBeanName);
+			if (enhanceClass == null) {
+				enhanceClass = byteLoader.defineClass(generatedBeanName, code);
+			}
 			Object obj = enhanceClass.newInstance();
 			beanMap.put(beanClass, (AttributeAccess) obj);
 			return beanMap.get(beanClass);
@@ -61,7 +68,6 @@ public class ASMBeanFactory {
 		}
 
 	}
-
 
 
 	private static void writeClassToFile(final byte[] code, final Class<?> beanClass, final String generatedBeanName) {

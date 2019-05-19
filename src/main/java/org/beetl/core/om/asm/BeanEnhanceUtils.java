@@ -1,6 +1,5 @@
 package org.beetl.core.om.asm;
 
-import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -15,12 +14,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.beetl.core.GroupTemplate;
 import org.beetl.core.exception.BeetlException;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.MethodNode;
 
 /**
  * 
@@ -40,30 +37,26 @@ final class BeanEnhanceUtils {
 	}
 
 
-
 	/**
 	 * 注意，使用propertyDescriptor获取的属性，与字段名称可能不一致
 	 * @param clazzName
 	 * @param usePropertyDescriptor
 	 * @return
 	 */
-	static ClassDescription getClassDescription(String clazzName) {
+	static ClassDescription getClassDescription(Class<?> beanClass) {
 		ClassDescription classDescription = new ClassDescription();
 		InputStream in = null;
 		try {
-			ClassLoader loader =  getCurrentClassLoader();
-
-			in =getCurrentClassLoader().getResourceAsStream(getInternalName(clazzName) + ".class");
+			in = beanClass.getClassLoader().getResourceAsStream(getInternalName(beanClass.getName()) + ".class");
 			ClassReader reader = new ClassReader(in);
 			ClassNode cn = new ClassNode();
 			reader.accept(cn, 0);
-			classDescription.propertyMap = buildPropertyMap(clazzName);
+			classDescription.propertyMap = buildPropertyMap(beanClass);
 			classDescription.fieldMap = buildFiledMap(cn);
-			Class target = loader.loadClass(clazzName);
-			classDescription.target = target;
-			classDescription.generalGetType = checkGenreal(target);
-		} catch (IOException | ClassNotFoundException | IntrospectionException e) {
-			throw new BeetlException(BeetlException.ERROR, "ASM增强功能，生成类:" + clazzName + "时发生错误", e);
+			classDescription.target = beanClass;
+			classDescription.generalGetType = checkGenreal(beanClass);
+		} catch (IOException | IntrospectionException e) {
+			throw new BeetlException(BeetlException.ERROR, "ASM增强功能，生成类:" + beanClass.getName() + "时发生错误", e);
 		} finally {
 			try {
 				if (in != null) {
@@ -77,17 +70,9 @@ final class BeanEnhanceUtils {
 	}
 
 
-	protected static PropertyDescriptor[] getPropertyDescriptors(String clazzName)
-			throws IntrospectionException, ClassNotFoundException {
-		Class<?> beanClassName = getCurrentClassLoader().loadClass(clazzName);
-		BeanInfo beanInfo = Introspector.getBeanInfo(beanClassName);
-		return beanInfo.getPropertyDescriptors();
-
-	}
-
-	private static Map<Integer, List<PropertyDescriptor>> buildPropertyMap(String clazzName)
-			throws ClassNotFoundException, IntrospectionException {
-		PropertyDescriptor[] propDescriptors = getPropertyDescriptors(clazzName);
+	private static Map<Integer, List<PropertyDescriptor>> buildPropertyMap(Class<?> beanClass)
+			throws IntrospectionException {
+		PropertyDescriptor[] propDescriptors = Introspector.getBeanInfo(beanClass).getPropertyDescriptors();
 		List<PropertyDescriptor> propList = new ArrayList<>(propDescriptors.length);
 		propList.addAll(Arrays.asList(propDescriptors));
 		Map<Integer, List<PropertyDescriptor>> propertyMap = new LinkedHashMap<>();
@@ -106,7 +91,6 @@ final class BeanEnhanceUtils {
 				propertyMap.put(hashCode, props);
 			}
 		}
-
 
 		return propertyMap;
 
@@ -138,34 +122,34 @@ final class BeanEnhanceUtils {
 	 * @param target
 	 * @return
 	 */
-	private static int  checkGenreal(Class target) {
-		try{
-			Method m = target.getMethod("get",new Class[]{java.lang.Object.class});
+	private static int checkGenreal(Class<?> target) {
+		try {
+			Method m = target.getMethod("get", new Class[]{java.lang.Object.class});
 			return 1;
-		}catch(Exception ex){
-			//ingnore
+		} catch (Exception ex) {
+			// ingnore
 		}
 
-		try{
-			Method m = target.getMethod("get",new Class[]{java.lang.String.class});
+		try {
+			Method m = target.getMethod("get", new Class[]{java.lang.String.class});
 			return 2;
-		}catch(Exception ex){
-			//ingnore
+		} catch (Exception ex) {
+			// ingnore
 		}
 
 
 		return 0;
 	}
 
-	static String createGetterMethodName(ClassDescription classDescription,String propertyName) {
-		for(Map.Entry<Integer,List<PropertyDescriptor>> list:classDescription.propertyMap.entrySet()){
-			for(PropertyDescriptor ps:list.getValue()){
-				if(ps.getName().equals(propertyName)){
+	static String createGetterMethodName(ClassDescription classDescription, String propertyName) {
+		for (Map.Entry<Integer, List<PropertyDescriptor>> list : classDescription.propertyMap.entrySet()) {
+			for (PropertyDescriptor ps : list.getValue()) {
+				if (ps.getName().equals(propertyName)) {
 					return ps.getReadMethod().getName();
 				}
 			}
 		}
-		throw new IllegalStateException("找不到徐星方法 "+propertyName);
+		throw new IllegalStateException("找不到Getter方法 " + propertyName);
 	}
 
 	static String getSimpleClassName(String className) {
@@ -184,14 +168,5 @@ final class BeanEnhanceUtils {
 		}
 		return target;
 	}
-
-
-	static ClassLoader getCurrentClassLoader(){
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader() != null
-				? Thread.currentThread().getContextClassLoader()
-				: BeanEnhanceUtils.class.getClassLoader();
-		return classLoader;
-	}
-
 
 }
