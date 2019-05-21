@@ -1,6 +1,6 @@
 /*
  [The "BSD license"]
- Copyright (c) 2011-2013  闲大赋 (李家智)
+ Copyright (c) 2011-2019  闲大赋 (李家智)
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@ import org.beetl.core.Function;
 
 /**
  * 内部使用
- * @author joelli
+ * @author 闲大赋予
  *
  */
 public class GetValueFunction implements Function

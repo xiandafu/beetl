@@ -842,5 +842,15 @@ public class GroupTemplate {
 		this.conf.setStrict(true);
 	}
 
+	/**
+	 * 设置一个自定义引擎
+	 * @return
+	 */
+	public TemplateEngine getEngine() {
+		return engine;
+	}
 
+	public void setEngine(TemplateEngine engine) {
+		this.engine = engine;
+	}
 }

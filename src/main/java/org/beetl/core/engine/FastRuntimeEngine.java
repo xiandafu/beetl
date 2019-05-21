@@ -16,6 +16,7 @@ public class FastRuntimeEngine extends DefaultTemplateEngine {
 
 	public FastRuntimeEngine(){
 		super();
+		//TOOD,改成非静态，跟引擎相关属性
 		AABuilder.defalutAAFactory = new AsmAAFactory();
 	}
 	@Override
