@@ -16,6 +16,7 @@ import java.util.Set;
 
 import org.beetl.core.exception.BeetlException;
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 
@@ -43,18 +44,23 @@ final class BeanEnhanceUtils {
 	 * @param usePropertyDescriptor
 	 * @return
 	 */
-	static ClassDescription getClassDescription(Class<?> beanClass) {
+	static ClassDescription getClassDescription(Class<?> beanClass, boolean usePropertyDescriptor) {
 		ClassDescription classDescription = new ClassDescription();
 		InputStream in = null;
 		try {
-			in = beanClass.getClassLoader().getResourceAsStream(getInternalName(beanClass.getName()) + ".class");
-			ClassReader reader = new ClassReader(in);
-			ClassNode cn = new ClassNode();
-			reader.accept(cn, 0);
-			classDescription.propertyMap = buildPropertyMap(beanClass);
-			classDescription.fieldMap = buildFiledMap(cn);
+			setPropertyDescriptors(classDescription, beanClass);
+			if (usePropertyDescriptor) {
+				buildFieldDescMapByProperty(classDescription);
+			} else {
+				in = beanClass.getClassLoader().getResourceAsStream(getInternalName(beanClass.getName()) + ".class");
+				ClassReader reader = new ClassReader(in);
+				ClassNode cn = new ClassNode();
+				reader.accept(cn, 0);
+				buildFieldDescMapByAsm(classDescription, cn);
+			}
 			classDescription.target = beanClass;
 			classDescription.generalGetType = checkGenreal(beanClass);
+			classDescription.hasField = !classDescription.fieldDescMap.isEmpty();
 		} catch (IOException | IntrospectionException e) {
 			throw new BeetlException(BeetlException.ERROR, "ASM增强功能，生成类:" + beanClass.getName() + "时发生错误", e);
 		} finally {
@@ -69,51 +75,72 @@ final class BeanEnhanceUtils {
 		return classDescription;
 	}
 
-
-	private static Map<Integer, List<PropertyDescriptor>> buildPropertyMap(Class<?> beanClass)
+	private static void setPropertyDescriptors(ClassDescription classDescription, Class<?> beanClass)
 			throws IntrospectionException {
 		PropertyDescriptor[] propDescriptors = Introspector.getBeanInfo(beanClass).getPropertyDescriptors();
 		List<PropertyDescriptor> propList = new ArrayList<>(propDescriptors.length);
 		propList.addAll(Arrays.asList(propDescriptors));
-		Map<Integer, List<PropertyDescriptor>> propertyMap = new LinkedHashMap<>();
 		// 先对其按照hashCode进行排序，方便后续生产代码
 		propList.sort((p1, p2) -> Integer.compare(p1.getName().hashCode(), p2.getName().hashCode()));
+		classDescription.propertyDescriptors = propList;
+	}
+
+	private static void buildFieldDescMapByProperty(ClassDescription classDescription) {
+		List<PropertyDescriptor> propList = classDescription.propertyDescriptors;
+		Map<Integer, List<FieldDescription>> filedDescMap = new LinkedHashMap<>();
 		int hashCode = 0;
-		List<PropertyDescriptor> props = null;
+		List<FieldDescription> filedDescs = null;
+		FieldDescription filedDesc = null;
+		Method curPropReadMethod = null;
 		for (PropertyDescriptor prop : propList) {
-			if (prop.getReadMethod() != null && !ignoreSet.contains(prop.getReadMethod().getName())) {
+			curPropReadMethod = prop.getReadMethod();
+			if (curPropReadMethod != null && !ignoreSet.contains(curPropReadMethod.getName())) {
 				hashCode = prop.getName().hashCode();
-				props = propertyMap.get(hashCode);
-				if (props == null) {
-					props = new ArrayList<>();
+				filedDescs = filedDescMap.get(hashCode);
+				if (filedDescs == null) {
+					filedDescs = new ArrayList<>();
 				}
-				props.add(prop);
-				propertyMap.put(hashCode, props);
+				filedDesc = new FieldDescription();
+				filedDesc.name = prop.getName();
+				filedDesc.desc = Type.getType(curPropReadMethod.getReturnType()).toString();
+				filedDesc.readMethodName = curPropReadMethod.getName();
+				filedDesc.readMethodDesc = getMethodDesc(curPropReadMethod);
+				filedDescs.add(filedDesc);
+				filedDescMap.put(hashCode, filedDescs);
 			}
 		}
 
-		return propertyMap;
+		classDescription.fieldDescMap = filedDescMap;
 
 	}
 
-	private static Map<Integer, List<FieldNode>> buildFiledMap(ClassNode cn) {
+	private static String getMethodDesc(Method readMethod) {
+		String descriptor = Type.getMethodDescriptor(readMethod);
+		return descriptor.substring(descriptor.indexOf(PunctuationConstants.LEFT_BRACKET));
+	}
+
+	private static void buildFieldDescMapByAsm(ClassDescription classDescription, ClassNode cn) {
 		@SuppressWarnings("unchecked")
 		List<FieldNode> fieldList = cn.fields;
-		Map<Integer, List<FieldNode>> filedMap = new LinkedHashMap<>();
 		// 先对其按照hashCode进行排序，方便后续生产代码
 		fieldList.sort((f1, f2) -> Integer.compare(f1.name.hashCode(), f2.name.hashCode()));
+
+		Map<Integer, List<FieldDescription>> filedDescMap = new LinkedHashMap<>();
 		int hashCode = 0;
-		List<FieldNode> fileNodes = null;
+		List<FieldDescription> filedDescs = null;
+		FieldDescription filedDesc = null;
 		for (FieldNode fieldNode : fieldList) {
 			hashCode = fieldNode.name.hashCode();
-			fileNodes = filedMap.get(hashCode);
-			if (fileNodes == null) {
-				fileNodes = new ArrayList<>();
+			filedDescs = filedDescMap.get(hashCode);
+			if (filedDescs == null) {
+				filedDescs = new ArrayList<>();
 			}
-			fileNodes.add(fieldNode);
-			filedMap.put(hashCode, fileNodes);
+			filedDesc = new FieldDescription(fieldNode.name, fieldNode.desc,
+					createGetterMethodName(classDescription, fieldNode.name), "()" + fieldNode.desc);
+			filedDescs.add(filedDesc);
+			filedDescMap.put(hashCode, filedDescs);
 		}
-		return filedMap;
+		classDescription.fieldDescMap = filedDescMap;
 	}
 
 
@@ -141,12 +168,10 @@ final class BeanEnhanceUtils {
 		return 0;
 	}
 
-	static String createGetterMethodName(ClassDescription classDescription, String propertyName) {
-		for (Map.Entry<Integer, List<PropertyDescriptor>> list : classDescription.propertyMap.entrySet()) {
-			for (PropertyDescriptor ps : list.getValue()) {
-				if (ps.getName().equals(propertyName)) {
-					return ps.getReadMethod().getName();
-				}
+	private static String createGetterMethodName(ClassDescription classDescription, String propertyName) {
+		for (PropertyDescriptor ps : classDescription.propertyDescriptors) {
+			if (ps.getName().equals(propertyName)) {
+				return ps.getReadMethod().getName();
 			}
 		}
 		throw new IllegalStateException("找不到Getter方法 " + propertyName);

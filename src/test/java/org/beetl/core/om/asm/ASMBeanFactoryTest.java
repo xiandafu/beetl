@@ -1,14 +1,11 @@
 package org.beetl.core.om.asm;
 
 
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
 
 import org.beetl.core.BasicTestCase;
-import org.objectweb.asm.tree.FieldNode;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
@@ -33,12 +30,12 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 
 	@Test
 	public void testAttrByAsm() throws Exception {
-
-		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(User.class);
+		boolean usePropertyDescriptor = false;
+		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(User.class, usePropertyDescriptor);
 		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
-		asmBeanFactory.setUsePropertyDescriptor(false);
-		for (List<FieldNode> nodes : classDescription.fieldMap.values()) {
-			for (FieldNode node : nodes) {
+		asmBeanFactory.setUsePropertyDescriptor(usePropertyDescriptor);
+		for (List<FieldDescription> nodes : classDescription.fieldDescMap.values()) {
+			for (FieldDescription node : nodes) {
 				System.out.println(node.name + ":" + asmBeanFactory.value(user, node.name));
 				AssertJUnit.assertEquals(getValue(user, node.name), asmBeanFactory.value(user, node.name));
 			}
@@ -58,11 +55,11 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 	@Test
 	public void testByProp() throws Exception {
 		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
-		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(User.class);
-		for (List<PropertyDescriptor> propDescs : classDescription.propertyMap.values()) {
-			for (PropertyDescriptor propDesc : propDescs) {
-				System.out.println(propDesc.getName() + ":" + asmBeanFactory.value(user, propDesc.getName()));
-				AssertJUnit.assertEquals(getValue(user, propDesc), asmBeanFactory.value(user, propDesc.getName()));
+		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(User.class, true);
+		for (List<FieldDescription> nodes : classDescription.fieldDescMap.values()) {
+			for (FieldDescription node : nodes) {
+				System.out.println(node.name + ":" + asmBeanFactory.value(user, node.name));
+				AssertJUnit.assertEquals(getValue(user, node.name), asmBeanFactory.value(user, node.name));
 			}
 		}
 		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(user, "填写"));
@@ -71,10 +68,13 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 	}
 
 
-	private static Object getValue(User user, PropertyDescriptor propDesc)
-			throws InvocationTargetException, IllegalAccessException, IllegalArgumentException {
-		return propDesc.getReadMethod().invoke(user);
+	@Test
+	public void testOnlyGet() throws Exception {
+		OnlyGet onlyGet = new OnlyGet();
+		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
+		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(onlyGet, "填写"));
+		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(onlyGet, "写"));
+		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(onlyGet, "填"));
 	}
-
 
 }

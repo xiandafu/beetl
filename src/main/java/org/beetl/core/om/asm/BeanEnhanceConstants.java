@@ -16,6 +16,12 @@ final class BeanEnhanceConstants {
 
 	static final String OBJECT_INTERNAL_NAME = "java/lang/Object";
 
+	static final String STRING_INTERNAL_NAME = "java/lang/String";
+
+	static final String TO_STRING_METHOD_NAME = "toString";
+
+	static final String TO_STRING_METHOD_DESCRIPTOR = "()Ljava/lang/String;";
+
 	static final String METHOD_TO_GENERATE = "value";
 
 	static final String METHOD_SIGNATURE = "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;";

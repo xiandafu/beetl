@@ -3,9 +3,6 @@ package org.beetl.core.om.asm;
 import java.beans.PropertyDescriptor;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import org.objectweb.asm.tree.FieldNode;
 
 /**
  * asm生成的类描述
@@ -14,16 +11,14 @@ import org.objectweb.asm.tree.FieldNode;
  */
 class ClassDescription {
 
-	Class target = null;
+	Class<?> target = null;
 
-	Map<Integer, List<FieldNode>> fieldMap;
+	List<PropertyDescriptor> propertyDescriptors;
 
-//	Set<String> methodNameDescSet;
+	// 0 ,1 get(Object),2 get(String)
+	int generalGetType = 0;
 
-	Map<Integer, List<PropertyDescriptor>> propertyMap;
+	Map<Integer, List<FieldDescription>> fieldDescMap;
 
-
-	//0 ,1 get(Object),2 get(String)
-	 int  generalGetType = 0;
-
+	boolean hasField = true;
 }
