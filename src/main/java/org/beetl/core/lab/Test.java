@@ -4,6 +4,7 @@ package org.beetl.core.lab;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
+import org.beetl.core.io.NoLockStringWriter;
 import org.beetl.core.resource.ClasspathResourceLoader;
 
 /**
@@ -36,20 +37,18 @@ public class Test {
 		TestUser user = new TestUser("a");
 		TestUser older = new TestUser("b");
 		user.set("older",older);
-
+		long start = System.currentTimeMillis();
 		for (int i = 0; i < 1; i++) {
 
 			Template t = gt.getTemplate("/hello.txt");
-			t.binding("a",1);
-			t.binding("user",user);
-//			TestUser user = new TestUser("jo");
-//			user.lover = new TestUser("dddd");
-//			t.binding("user", user);
-
-			System.out.println(t.render());
+			t.binding("u",user);
+			String str = t.render();
+			System.out.println(str);
 
 
 		}
+		long end = System.currentTimeMillis();
+		System.out.println(end-start);
 
 	}
 

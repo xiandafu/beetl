@@ -54,23 +54,34 @@ public class Program
 
 		if (metaData.hasGoto)
 		{
-			for (Statement node : metaData.statements)
-			{
-				node.execute(ctx);
-				if (ctx.gotoFlag == IGoto.RETURN)
-				{
-					return;
-				}
-			}
+			runWitchGoCheck(metaData.statements,ctx);
 		}
 		else
 		{
-			for (Statement node : metaData.statements)
-			{
-				node.execute(ctx);
-			}
+			run(metaData.statements,ctx);
 		}
 
 	}
+
+	protected  final void  run( Statement[] statements,Context ctx ){
+		int len = statements.length;
+		for(int i=0;i<len;i++){
+			statements[i].execute(ctx);
+		}
+	}
+
+	protected  final  void  runWitchGoCheck( Statement[] statements,Context ctx ){
+		int len = statements.length;
+		for(int i=0;i<len;i++){
+			statements[i].execute(ctx);
+			if (ctx.gotoFlag == IGoto.RETURN)
+			{
+				return;
+			}
+		}
+	}
+
+
+
 
 }
