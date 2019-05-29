@@ -121,7 +121,9 @@ public class TestUser  extends  TailBean
 		this.friends = friends;
 	}
 
-
+	public Object get(String key){
+		return "abc "+key;
+	}
 
 	public Object getMap()
 	{
@@ -223,6 +225,9 @@ public class TestUser  extends  TailBean
 	public void setId(int id) {
 		this.id = id;
 	}
+
+
+
 
 
 

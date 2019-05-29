@@ -4,6 +4,8 @@ package org.beetl.core.lab;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
+import org.beetl.core.exception.BeetlException;
+import org.beetl.core.exception.ErrorInfo;
 import org.beetl.core.io.NoLockStringWriter;
 import org.beetl.core.resource.ClasspathResourceLoader;
 
@@ -23,8 +25,8 @@ public class Test {
 		cfg.setDirectByteOutput(true);
 		cfg.getResourceMap().put("tagRoot", "");
 		cfg.getPkgList().add("org.beetl.core.lab.");
-		cfg.setStatementStart("<%");
-		cfg.setStatementEnd("%>");
+		cfg.setStatementStart("@");
+		cfg.setStatementEnd(null);
 		// js 里专用
 		cfg.setStatementStart2("//#");
 		cfg.setStatementEnd2(null);
@@ -41,6 +43,14 @@ public class Test {
 		for (int i = 0; i < 1; i++) {
 
 			Template t = gt.getTemplate("/hello.txt");
+			BeetlException ex = gt.validateTemplate("/hello.txt");
+			if(ex!=null){
+				ErrorInfo info = new ErrorInfo(ex);
+				System.out.println("错误行数:"+info.getErrorTokenLine());
+				System.out.println("错误符号:"+info.getErrorTokenText());
+				System.out.println("错误信息"+info.getMsg());
+				return;
+			}
 			t.binding("u",user);
 			String str = t.render();
 			System.out.println(str);

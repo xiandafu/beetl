@@ -1,1 +1,3 @@
-${allGlobal()}
+@ var age = 19;
+......
+@ var age = 20;

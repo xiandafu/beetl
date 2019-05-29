@@ -144,7 +144,7 @@ public class TextParser {
 		HtmlTagConfig htmlConfig = new HtmlTagConfig();
 //		String text = "<%a=1;%>\nabcd";
 		String text =""+
-				"<%a%>\n" +
+				"<#footer style=\"simple\"/>\n" +
 				"<%b%>   \n"
 				 ;
 
