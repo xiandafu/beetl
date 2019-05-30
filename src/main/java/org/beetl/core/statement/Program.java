@@ -42,7 +42,7 @@ public class Program
 	public ProgramMetaData metaData = null;
 	public Resource res = null;
 	public GroupTemplate gt = null;
-	public Resource rs = null;
+
 
 	public Program()
 	{

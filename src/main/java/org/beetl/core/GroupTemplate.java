@@ -441,7 +441,7 @@ public class GroupTemplate {
 			}
 		}
 
-		if (resourceLoader.isModified(program.rs)) {
+		if (resourceLoader.isModified(program.res)) {
 			synchronized (key) {
 				Resource resource = loader.getResource(key);
 				program = this.loadScript(resource);
@@ -529,7 +529,7 @@ public class GroupTemplate {
 			}
 		}
 
-		if (resourceLoader.isModified(program.rs)) {
+		if (resourceLoader.isModified(program.res)) {
 			synchronized (key) {
 				Resource resource = loader.getResource(key);
 				program = this.loadTemplate(resource);

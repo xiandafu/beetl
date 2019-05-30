@@ -45,7 +45,6 @@ public class ErrorGrammarProgram extends Program {
 	public ErrorGrammarProgram(Resource res, GroupTemplate gt, String cr) {
 		super();
 		this.res = res;
-		this.rs = res;
 		this.gt = gt;
 		this.metaData = new ProgramMetaData() {
 			public void initContext(Context ctx) {

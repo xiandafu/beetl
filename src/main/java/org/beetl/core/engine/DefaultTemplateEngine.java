@@ -57,7 +57,7 @@ public class DefaultTemplateEngine implements TemplateEngine {
 		Program program = new Program();
 		program.metaData = data;
 		program.res = resource;
-		program.rs = resource;
+
 		program.gt = gt;
 
 		program.metaData.staticTextArray = new Object[textMap.size()];
