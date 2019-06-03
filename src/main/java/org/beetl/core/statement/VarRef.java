@@ -43,7 +43,7 @@ public class VarRef extends Expression implements IVarIndex {
 	public Expression safe;
 	public int varIndex;
 	public boolean hasSafe;
-	private GrammarToken firstToken = null;
+	public GrammarToken firstToken = null;
 
 	public VarRef(VarAttribute[] attributes, boolean hasSafe, Expression safe, GrammarToken token) {
 		this(attributes, hasSafe, safe, token, token);

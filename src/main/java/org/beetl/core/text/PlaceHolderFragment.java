@@ -22,17 +22,18 @@ public class PlaceHolderFragment extends Fragment {
             script = new StringBuilder("<#");
         }
 
-        while (!source.isEof()&&!source.isPlaceHolderEnd(script)) {
-            script.append(source.consumeAndGet());
+        while (!source.isEof()) {
+        	if(source.isPlaceHolderEnd(script)){
+				script.append(">>");
+				break;
+			}else{
+				script.append(source.consumeAndGet());
+			}
         }
 
-		if (!source.isEof()) {
-			script.append(">>");
-		}
-
-
-
-        
+        if (source.isEof()) {
+            return null;
+        }
 
         return super.findNext();
     }

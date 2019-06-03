@@ -56,12 +56,14 @@ public class FastRuntimeEngine extends DefaultTemplateEngine {
 				GrammarToken firstToken) {
 			check("VarRefOptimal");
 			if(attributes.length==1&&!hasSafe){
-				VarRef express = new VarRefOptimal(attributes[0], null, firstToken);
+				VarRef express = new VarRefOptimal(attributes[0], token, firstToken);
 				return express;
 			}else{
 				VarRef express = new VarRef(attributes, hasSafe, safe, firstToken);
 				return express;
 			}
+
+
 
 		}
 		@Override

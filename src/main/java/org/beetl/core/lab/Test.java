@@ -43,7 +43,7 @@ public class Test {
 		for (int i = 0; i < 1; i++) {
 
 			Template t = gt.getTemplate("/hello.txt");
-			t.binding("u",user);
+			t.binding("user",user);
 			String str = t.render();
 			System.out.println(str);
 
