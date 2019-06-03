@@ -37,7 +37,7 @@ public  class PlaceholderST extends Statement {
 				return;
 			}
 			if (value != null) {
-				if (value.getClass() == String.class) {
+				if (value instanceof String) {
 					ctx.byteWriter.writeString((String) value);
 					return;
 				} else {

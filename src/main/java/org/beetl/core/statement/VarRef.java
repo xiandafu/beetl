@@ -76,6 +76,8 @@ public class VarRef extends Expression implements IVarIndex {
 			return value;
 		}
 
+
+
 		for (int i = 0; i < attributes.length; i++) {
 
 			VarAttribute attr = attributes[i];

@@ -1,3 +1,1 @@
-@ var age = 19;
-......
-@ var age = 20;
+hello,go ${user.age}

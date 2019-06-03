@@ -40,6 +40,7 @@ import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.ext.fn.CookieFunction;
+import org.beetl.ext.tag.IncludeUrlTag;
 
 /**
  *  通常web渲染的类，将request变量赋值给模板，同时赋值的还有session,request,ctxPath
@@ -54,6 +55,7 @@ public class WebRender
 	public WebRender(GroupTemplate gt)
 	{
 		this.gt = gt;
+//		gt.registerTag("includeUrl",new IncludeUrlTag());
 	}
 
 	/**

@@ -43,14 +43,6 @@ public class Test {
 		for (int i = 0; i < 1; i++) {
 
 			Template t = gt.getTemplate("/hello.txt");
-			BeetlException ex = gt.validateTemplate("/hello.txt");
-			if(ex!=null){
-				ErrorInfo info = new ErrorInfo(ex);
-				System.out.println("错误行数:"+info.getErrorTokenLine());
-				System.out.println("错误符号:"+info.getErrorTokenText());
-				System.out.println("错误信息"+info.getMsg());
-				return;
-			}
 			t.binding("u",user);
 			String str = t.render();
 			System.out.println(str);

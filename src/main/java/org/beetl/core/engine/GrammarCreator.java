@@ -302,7 +302,7 @@ public class GrammarCreator {
 
 	public VarRef createVarRef(VarAttribute[] attributes, boolean hasSafe, Expression safe, GrammarToken token,
 			GrammarToken firstToken) {
-		check("VarRef");
+		check("VarRefOptimal");
 		VarRef express = new VarRef(attributes, hasSafe, safe, firstToken);
 		return express;
 	}
