@@ -32,7 +32,7 @@ import org.objectweb.asm.Opcodes;
         	 	return user.getBirthDate();
         	}
         }
-        return null;        
+        throw new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND, "attribute : " + attrStr);        
     }
  *</pre>
  * <h3>Bean中有get(String)方法:</h3> 
@@ -84,6 +84,7 @@ import org.objectweb.asm.Opcodes;
  *
  */
 class EnhanceClassGenerator implements Opcodes {
+
 
 	/**
 	 * 实例方法this变量位置
@@ -292,12 +293,26 @@ class EnhanceClassGenerator implements Opcodes {
 		} else {
 			mv.visitLabel(df);
 			mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
-			mv.visitInsn(ACONST_NULL);
-			mv.visitInsn(ARETURN);
+			mv.visitTypeInsn(NEW, BeanEnhanceConstants.BEETL_EXCEPTION_INTERNAL_NAME);
+			mv.visitInsn(DUP);
+			mv.visitLdcInsn("ATTRIBUTE_NOT_FOUND");
+			mv.visitTypeInsn(NEW, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME);
+			mv.visitInsn(DUP);
+			mv.visitLdcInsn("attribute : ");
+			mv.visitMethodInsn(INVOKESPECIAL, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME, "<init>",
+					"(Ljava/lang/String;)V", false);
+			mv.visitVarInsn(ALOAD, LOCAL_VAR_ATTR_STRING_INDEX);
+			mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME, "append",
+					"(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+			mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME,
+					BeanEnhanceConstants.TO_STRING_METHOD_NAME, BeanEnhanceConstants.TO_STRING_METHOD_DESCRIPTOR,
+					false);
+			mv.visitMethodInsn(INVOKESPECIAL, BeanEnhanceConstants.BEETL_EXCEPTION_INTERNAL_NAME, "<init>",
+					"(Ljava/lang/String;Ljava/lang/String;)V", false);
+			mv.visitInsn(ATHROW);
 		}
 		mv.visitMaxs(1, 6);
 	}
-
 
 	private static void generateMethodWithNoFiled(MethodVisitor mv, ClassDescription classDescription,
 			String internalClassName) {
@@ -332,10 +347,33 @@ class EnhanceClassGenerator implements Opcodes {
 					BeanEnhanceConstants.GET_BY_STRING_METHOD_DESC, false);
 			mv.visitInsn(ARETURN);
 		} else {
+			Label toStringLabel = new Label();
+			mv.visitLabel(toStringLabel);
+			mv.visitVarInsn(ALOAD, VAR_ATTR_INDEX);
+			mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.OBJECT_INTERNAL_NAME,
+					BeanEnhanceConstants.TO_STRING_METHOD_NAME, BeanEnhanceConstants.TO_STRING_METHOD_DESCRIPTOR,
+					false);
+			mv.visitVarInsn(ASTORE, 4);// 对应attrName的toString变量
 			mv.visitLabel(df);
-			mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
-			mv.visitInsn(ACONST_NULL);
-			mv.visitInsn(ARETURN);
+			mv.visitFrame(Opcodes.F_APPEND, 2,
+					new Object[]{internalClassName, BeanEnhanceConstants.STRING_INTERNAL_NAME}, 0, null);
+			mv.visitTypeInsn(NEW, BeanEnhanceConstants.BEETL_EXCEPTION_INTERNAL_NAME);
+			mv.visitInsn(DUP);
+			mv.visitLdcInsn("ATTRIBUTE_NOT_FOUND");
+			mv.visitTypeInsn(NEW, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME);
+			mv.visitInsn(DUP);
+			mv.visitLdcInsn("attribute : ");
+			mv.visitMethodInsn(INVOKESPECIAL, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME, "<init>",
+					"(Ljava/lang/String;)V", false);
+			mv.visitVarInsn(ALOAD, 4);
+			mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME, "append",
+					"(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+			mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME,
+					BeanEnhanceConstants.TO_STRING_METHOD_NAME, BeanEnhanceConstants.TO_STRING_METHOD_DESCRIPTOR,
+					false);
+			mv.visitMethodInsn(INVOKESPECIAL, BeanEnhanceConstants.BEETL_EXCEPTION_INTERNAL_NAME, "<init>",
+					"(Ljava/lang/String;Ljava/lang/String;)V", false);
+			mv.visitInsn(ATHROW);
 		}
 		mv.visitMaxs(1, 4);
 	}

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.beetl.core.BasicTestCase;
+import org.beetl.core.exception.BeetlException;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
@@ -75,6 +76,20 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(onlyGet, "填写"));
 		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(onlyGet, "写"));
 		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(onlyGet, "填"));
+	}
+
+	@Test
+	public void testEmpty() throws Exception {
+		String name = "zhangsan";
+		TestObject empty = new TestObject(name);
+		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
+		try {
+			asmBeanFactory.value(empty, "ss");
+		} catch (BeetlException e) {
+			AssertJUnit.assertEquals(BeetlException.ATTRIBUTE_NOT_FOUND, e.detailCode);
+			AssertJUnit.assertTrue(e.getMessage().contains("ss"));
+		}
+		AssertJUnit.assertEquals(name, asmBeanFactory.value(empty, "name"));
 	}
 
 }

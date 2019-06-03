@@ -18,6 +18,10 @@ final class BeanEnhanceConstants {
 
 	static final String STRING_INTERNAL_NAME = "java/lang/String";
 
+	static final String BEETL_EXCEPTION_INTERNAL_NAME = "org/beetl/core/exception/BeetlException";
+
+	static final String STRING_BUILDER_INTERNAL_NAME = "java/lang/StringBuilder";
+
 	static final String TO_STRING_METHOD_NAME = "toString";
 
 	static final String TO_STRING_METHOD_DESCRIPTOR = "()Ljava/lang/String;";
