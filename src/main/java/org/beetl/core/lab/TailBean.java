@@ -19,7 +19,6 @@ public class TailBean {
 
     public Map<String, Object> getTails() {
 
-
         return extMap;
 
     }

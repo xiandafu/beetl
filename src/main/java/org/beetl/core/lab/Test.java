@@ -38,12 +38,13 @@ public class Test {
 		gt.registerTag("col",ColTag.class);
 		TestUser user = new TestUser("a");
 		TestUser older = new TestUser("b");
-		user.set("older",older);
+//		user.set("older",older);
 		long start = System.currentTimeMillis();
 		for (int i = 0; i < 1; i++) {
 
 			Template t = gt.getTemplate("/hello.txt");
 			t.binding("user",user);
+			t.binding("kk",new MyTestObject());
 			String str = t.render();
 			System.out.println(str);
 
