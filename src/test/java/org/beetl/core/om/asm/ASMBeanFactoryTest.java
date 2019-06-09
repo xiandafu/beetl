@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.beetl.core.BasicTestCase;
 import org.beetl.core.exception.BeetlException;
-import org.beetl.core.lab.TestUser;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
@@ -82,15 +81,14 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 	@Test
 	public void testEmpty() throws Exception {
 		String name = "zhangsan";
-		TestUser empty = new TestUser(name);
+		TestObject empty = new TestObject(name);
 		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
-		asmBeanFactory.setUsePropertyDescriptor(true);
 		try {
-			asmBeanFactory.value(empty, "agexxddfdf");
+			asmBeanFactory.value(empty, "ss");
 			AssertJUnit.fail();
 		} catch (BeetlException e) {
 			AssertJUnit.assertEquals(BeetlException.ATTRIBUTE_NOT_FOUND, e.detailCode);
-			AssertJUnit.assertTrue(e.getMessage().contains("agexxddfdf"));
+			AssertJUnit.assertTrue(e.getMessage().contains("ss"));
 		}
 		AssertJUnit.assertEquals(name, asmBeanFactory.value(empty, "name"));
 	}

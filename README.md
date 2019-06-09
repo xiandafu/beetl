@@ -67,7 +67,7 @@ Beetl社区：[bbs.ibeetl.com](http://42.96.162.109/bbs/bbs/index/1.html)
 
 <https://github.com/fizzed/template-benchmark>
 
-![p1](/doc/resources/p1.jpg) 
+![p1](/doc/resources/p1.png) 
 
 
 #### 支持

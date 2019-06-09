@@ -25,8 +25,8 @@ public class Test {
 		cfg.setDirectByteOutput(true);
 		cfg.getResourceMap().put("tagRoot", "");
 		cfg.getPkgList().add("org.beetl.core.lab.");
-		cfg.setStatementStart("@");
-		cfg.setStatementEnd(null);
+		cfg.setStatementStart("<%");
+		cfg.setStatementEnd("%>");
 		// js 里专用
 		cfg.setStatementStart2("//#");
 		cfg.setStatementEnd2(null);
