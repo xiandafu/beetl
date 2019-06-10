@@ -16,7 +16,7 @@ public class HtmlTagConfig {
     char[] start = null;
     char[] end = null;
     
-    //<#a attr="${abc}" >
+    //<#a attr="${abc}" > 目前总是固定值${}
     String phStart = "${";
     String phEnd = "}";
 

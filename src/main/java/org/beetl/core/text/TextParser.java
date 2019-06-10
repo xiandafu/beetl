@@ -37,23 +37,23 @@ public class TextParser {
 
 	AttributeNameConvert attributeNameConvert;
 
-	public TextParser(GroupTemplate groupTemplate,PlaceHolderDelimeter pd, ScriptDelimeter sd) {
+	public TextParser(GroupTemplate groupTemplate, Configuration.DelimeterHolder pdConfig, Configuration.DelimeterHolder sdConfig) {
 		if(groupTemplate==null){
 			attributeNameConvert = new DefaultAttributeNameConvert();
 		}
 
-		this.pd = pd;
-		this.sd = sd;
+		this.pd = pdConfig.createPhd();
+		this.sd = sdConfig.createSd();
 	}
 
-	public TextParser(GroupTemplate groupTemplate,PlaceHolderDelimeter pd, ScriptDelimeter sd, HtmlTagConfig htmlTagConfig) {
-		this(groupTemplate,pd, sd);
-		this.htmlTagConfig = htmlTagConfig;
+	public TextParser(GroupTemplate groupTemplate,Configuration.DelimeterHolder pdConfig, Configuration.DelimeterHolder sdConfig, Configuration.HtmlTagHolder tagConfig) {
+		this(groupTemplate,pdConfig, sdConfig);
+		this.htmlTagConfig = tagConfig.create();
 	}
 
-	public TextParser(PlaceHolderDelimeter pd, ScriptDelimeter sd, HtmlTagConfig htmlTagConfig) {
-		this(null,pd, sd);
-		this.htmlTagConfig = htmlTagConfig;
+	public TextParser(Configuration.DelimeterHolder pdConfig, Configuration.DelimeterHolder sdConfig, Configuration.HtmlTagHolder tagConfig) {
+		this(null,pdConfig, sdConfig);
+		this.htmlTagConfig = tagConfig.create();
 	}
 
 	public void doParse(Reader orginal) throws IOException {
@@ -137,11 +137,11 @@ public class TextParser {
 	}
 
 	public static void main(String[] args) throws IOException {
-		PlaceHolderDelimeter pd = new PlaceHolderDelimeter("${".toCharArray(), "}".toCharArray(), "#{".toCharArray(),
+		Configuration.DelimeterHolder pd = new Configuration.DelimeterHolder("${".toCharArray(), "}".toCharArray(), "#{".toCharArray(),
 				"}".toCharArray());
-		ScriptDelimeter sd = new ScriptDelimeter("@".toCharArray(), null, "<%".toCharArray(), "%>".toCharArray());
+		Configuration.DelimeterHolder sd = new Configuration.DelimeterHolder("@".toCharArray(), null, "<%".toCharArray(), "%>".toCharArray());
 
-		HtmlTagConfig htmlConfig = new HtmlTagConfig();
+		Configuration.HtmlTagHolder htmlConfig = new Configuration.HtmlTagHolder();;
 //		String text = "<%a=1;%>\nabcd";
 		String text =""+
 				"<#footer style=\"simple\"/>\n" +

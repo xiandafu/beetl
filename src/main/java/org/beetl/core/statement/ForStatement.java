@@ -30,7 +30,8 @@ package org.beetl.core.statement;
 import java.util.Collections;
 
 import org.beetl.core.Context;
-import org.beetl.core.IteratorStatus;
+import org.beetl.core.GeneralLoopStatus;
+import org.beetl.core.ILoopStatus;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.exception.BeetlParserException;
 
@@ -44,7 +45,7 @@ public final class ForStatement extends Statement implements IGoto {
 	public Statement forPart;
 	public Statement elseforPart;
 	public boolean hasGoto = false;
-	public short itType = 0;
+
 	public boolean hasSafe;
 
 	/**
@@ -70,18 +71,18 @@ public final class ForStatement extends Statement implements IGoto {
 		// idNode 是其后设置的
 		int varIndex = ((IVarIndex) idNode).getVarIndex();
 		Object collection = exp.evaluate(ctx);
-		IteratorStatus it = null;
+		ILoopStatus it = null;
 		if (collection == null) {
 			if (!this.hasSafe) {
 				BeetlException ex = new BeetlException(BeetlException.NULL);
 				ex.pushToken(exp.token);
 				throw ex;
 			} else {
-				it = new IteratorStatus(Collections.EMPTY_LIST);
+				it = new GeneralLoopStatus(Collections.EMPTY_LIST);
 			}
 
 		} else {
-			it = IteratorStatus.getIteratorStatusByType(collection, itType);
+			it = GeneralLoopStatus.getIteratorStatus(collection);
 			if (it == null) {
 				BeetlParserException ex = new BeetlParserException(BeetlParserException.COLLECTION_EXPECTED_ERROR,
 						"实际类型是:" + collection.getClass());

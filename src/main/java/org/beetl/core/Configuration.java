@@ -185,9 +185,9 @@ public class Configuration {
 
 	Properties ps = null;
 
-	PlaceHolderDelimeter pd = null;
-	ScriptDelimeter sd = null;
-	HtmlTagConfig tagConf = null;
+	DelimeterHolder pd = null;
+	DelimeterHolder sd = null;
+	HtmlTagHolder tagConf = null;
 
 
 
@@ -520,21 +520,21 @@ public class Configuration {
 	}
 
 
-	public PlaceHolderDelimeter getPlaceHolderDelimeter() {
+	public DelimeterHolder getPlaceHolderDelimeter() {
 		return pd;
 	}
 
 
-	public ScriptDelimeter getScriptDelimeter() {
+	public DelimeterHolder getScriptDelimeter() {
 		return sd;
 	}
 
 
-	public HtmlTagConfig getTagConf() {
+	public HtmlTagHolder getTagConf() {
 		return tagConf;
 	}
 
-	public void setTagConf(HtmlTagConfig tagConf) {
+	public void setTagConf(HtmlTagHolder tagConf) {
 		this.tagConf = tagConf;
 	}
 
@@ -756,25 +756,85 @@ public class Configuration {
 
 	private void buildDelimeter(){
 		if (this.placeholderStart2 != null) {
-			pd = new PlaceHolderDelimeter(placeholderStart.toCharArray(), placeholderEnd.toCharArray(),
+			pd = new DelimeterHolder(placeholderStart.toCharArray(), placeholderEnd.toCharArray(),
 					placeholderStart2.toCharArray(), placeholderEnd2.toCharArray());
 		} else {
-			pd = new PlaceHolderDelimeter(placeholderStart.toCharArray(), placeholderEnd.toCharArray());
+			pd = new DelimeterHolder(placeholderStart.toCharArray(), placeholderEnd.toCharArray());
 		}
 
 		if (this.statementStart2 != null) {
-			sd = new ScriptDelimeter(statementStart.toCharArray(),
+			sd = new DelimeterHolder(statementStart.toCharArray(),
 					statementEnd != null ? statementEnd.toCharArray() : null, statementStart2.toCharArray(),
 					statementEnd2 != null ? statementEnd2.toCharArray() : null);
 		} else {
-			sd = new ScriptDelimeter(statementStart.toCharArray(),
+			sd = new DelimeterHolder(statementStart.toCharArray(),
 					statementEnd != null ? statementEnd.toCharArray() : null);
 		}
 
 		if (this.isHtmlTagSupport) {
-			tagConf = new HtmlTagConfig(getHtmlTagStart(), getHtmlTagEnd(), getHtmlTagBindingAttribute());
+			tagConf = new HtmlTagHolder(getHtmlTagStart(), getHtmlTagEnd(), getHtmlTagBindingAttribute());
 		}
 	}
+
+	public static class HtmlTagHolder{
+		String htmlTagStart = "<#";
+		String htmlTagEnd = "</#";
+		String htmlTagBindingAttribute = "var";
+
+		public HtmlTagHolder() {
+			//默认
+		}
+		public HtmlTagHolder(String htmlTagStart, String htmlTagEnd, String htmlTagBindingAttribute) {
+			this.htmlTagStart = htmlTagStart;
+			this.htmlTagEnd = htmlTagEnd;
+			this.htmlTagBindingAttribute = htmlTagBindingAttribute;
+
+		}
+
+
+
+		public HtmlTagConfig create(){
+			return new HtmlTagConfig(htmlTagStart,htmlTagEnd,htmlTagBindingAttribute);
+		}
+
+	}
+	public static class DelimeterHolder{
+
+		char[] start, end;
+		char[] start1, end1;
+
+		public DelimeterHolder(char[] start, char[] end) {
+			this.start = start;
+			this.end = end;
+		}
+
+		public DelimeterHolder(char[] start, char[] end, char[] start1, char[] end1) {
+			this.start = start;
+			this.end = end;
+			this.start1 = start1;
+			this.end1 = end1;
+		}
+
+		public PlaceHolderDelimeter createPhd(){
+			if(start1!=null){
+				return new PlaceHolderDelimeter(start,end,start1,end1);
+			}else{
+				return new PlaceHolderDelimeter(start,end);
+			}
+
+		}
+
+		public ScriptDelimeter createSd(){
+			if(start1!=null){
+				return new ScriptDelimeter(start,end,start1,end1);
+			}else{
+				return new ScriptDelimeter(start,end);
+			}
+
+		}
+
+	}
+
 
 
 }

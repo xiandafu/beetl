@@ -9,6 +9,10 @@ import org.beetl.core.exception.ErrorInfo;
 import org.beetl.core.io.NoLockStringWriter;
 import org.beetl.core.resource.ClasspathResourceLoader;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * http://sports.qq.com/a/20151126/029300.htm
  * 
@@ -30,21 +34,30 @@ public class Test {
 		// js 里专用
 		cfg.setStatementStart2("//#");
 		cfg.setStatementEnd2(null);
-		cfg.setPlaceholderStart2("#{");
-		cfg.setPlaceholderEnd2("}");
+		cfg.setPlaceholderStart2("#");
+		cfg.setPlaceholderEnd2("#");
 		cfg.initOther();
 		GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
 		gt.registerTag("table",TableTag.class);
 		gt.registerTag("col",ColTag.class);
 		TestUser user = new TestUser("a");
 		TestUser older = new TestUser("b");
+
+
+		List list = new ArrayList();
+		list.add(1);
+		list.add(2);
+		Iterator it = list.iterator();
+
+
+
 //		user.set("older",older);
 		long start = System.currentTimeMillis();
 		for (int i = 0; i < 1; i++) {
 
 			Template t = gt.getTemplate("/hello.txt");
-			t.binding("user",user);
-			t.binding("kk",new MyTestObject());
+			t.binding("list",it);
+
 			String str = t.render();
 			System.out.println(str);
 

@@ -1,6 +1,12 @@
-<% var item=[1];
-for(i in item){
-print(iLP.first);
+<%
+for(item in list){
+    println("==== "+item);
+    println(itemLP.index);
+    println(itemLP.dataIndex);
+   // println(itemLP.size);
+    println(itemLP.first);
+    println(itemLP.last);
+    println(itemLP.even);
+    println(itemLP.odd);
 }
-
 %>
