@@ -11,6 +11,7 @@ public class Source {
     int curLine = 0;
     boolean isSupportHtmlTag = false;
     int lastCrSize = 0;
+	TextFragment lastTextFragment = null;
     
   
     public Source(char[] cs) {
@@ -89,12 +90,25 @@ public class Source {
     }
 
     public boolean hasEscape() {
-        if (p > 1) {
+        if (p > 0) {
             if (cs[p - 1] == '\\') {
-                if (p > 2) {
-                    return cs[p - 2] != '\\';
-                }
-                return true;
+                if (p > 1) {
+
+                    if(cs[p - 2] != '\\'){
+                    	// 删除最后一个\ \@
+						removeEscape();
+						return true;
+					}else{
+                    	//删除一个 \\@
+						removeEscape();
+						return false;
+					}
+                }else{
+					// 删除最后一个\ \@
+					removeEscape();
+					return true;
+				}
+
             } else {
                 return false;
             }
@@ -103,6 +117,11 @@ public class Source {
             return false;
         }
     }
+
+    public void removeEscape(){
+    	StringBuilder text = this.lastTextFragment.text;
+		text.setLength(text.length()-1);
+	}
 
 
     public boolean isMatch(char[] str) {

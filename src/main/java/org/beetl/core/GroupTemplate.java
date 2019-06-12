@@ -149,6 +149,7 @@ public class GroupTemplate {
 			this.resourceLoader = loader;
 			this.classLoader = classLoader == null ? this.classLoader : classLoader;
 			this.conf = conf;
+			conf.initOther();
 			init();
 			initResourceLoader();
 		} catch (Exception ex) {

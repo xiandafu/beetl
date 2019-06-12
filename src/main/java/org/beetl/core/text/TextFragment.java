@@ -7,6 +7,7 @@ public class TextFragment extends Fragment {
 	public TextFragment(Source source) {
 		super(source);
 		this.endLine = this.startLine;
+		source.lastTextFragment = this;
 
 	}
 	

@@ -525,4 +525,16 @@ public class ObjectUtil {
         return mbuffer.toString();
     }
 
+	/**
+	 *
+	 * @return
+	 */
+	public static ClassLoader getClassLoader(){
+    	ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    	if(classLoader==null){
+			classLoader = ObjectUtil.class.getClassLoader();
+		}
+    	return  classLoader;
+	}
+
 }

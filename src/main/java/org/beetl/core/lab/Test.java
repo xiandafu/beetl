@@ -29,13 +29,13 @@ public class Test {
 		cfg.setDirectByteOutput(true);
 		cfg.getResourceMap().put("tagRoot", "");
 		cfg.getPkgList().add("org.beetl.core.lab.");
-		cfg.setStatementStart("<%");
-		cfg.setStatementEnd("%>");
+		cfg.setStatementStart("@");
+		cfg.setStatementEnd(null);
 		// js 里专用
-		cfg.setStatementStart2("//#");
-		cfg.setStatementEnd2(null);
-		cfg.setPlaceholderStart2("#");
-		cfg.setPlaceholderEnd2("#");
+//		cfg.setStatementStart2("//#");
+//		cfg.setStatementEnd2(null);
+//		cfg.setPlaceholderStart2("#");
+//		cfg.setPlaceholderEnd2("#");
 		cfg.initOther();
 		GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
 		gt.registerTag("table",TableTag.class);

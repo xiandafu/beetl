@@ -21,8 +21,6 @@ public class TestUser  extends  TailBean
 	String price="12";
 
 
-	
-
 	public static enum ORDER
 	{
 		OK, CANCEL

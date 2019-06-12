@@ -142,13 +142,8 @@ public class TextParser {
 		Configuration.DelimeterHolder sd = new Configuration.DelimeterHolder("@".toCharArray(), null, "<%".toCharArray(), "%>".toCharArray());
 
 		Configuration.HtmlTagHolder htmlConfig = new Configuration.HtmlTagHolder();;
-//		String text = "<%a=1;%>\nabcd";
-		String text =""+
-				"<#footer style=\"simple\"/>\n" +
-				"<%b%>   \n"
-				 ;
+		String text = "\\@ a";
 
-//		String text ="  @a;";
 		StringReader str = new StringReader(text);
 		TextParser textParser = new TextParser(null,pd, sd, htmlConfig);
 		textParser.doParse(str);
