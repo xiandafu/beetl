@@ -119,9 +119,9 @@ public class VarRef extends Expression implements IVarIndex {
 
 	}
 
-	class Result {
-		Object value;
-		boolean safe = false;
+	protected class Result {
+		public Object value;
+		public boolean safe = false;
 
 		public Result(Object value, boolean safe) {
 			this.value = value;
@@ -134,7 +134,7 @@ public class VarRef extends Expression implements IVarIndex {
 
 	}
 
-	private Result getValue(Context ctx) {
+	protected Result getValue(Context ctx) {
 
 		Object value = ctx.vars[varIndex];
 		if (value == Context.NOT_EXIST_OBJECT) {

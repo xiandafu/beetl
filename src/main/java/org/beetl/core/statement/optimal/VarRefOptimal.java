@@ -55,8 +55,11 @@ public class VarRefOptimal extends VarRef  {
 	@Override
 	public Object evaluate(Context ctx) {
 
-		Object value = this.getValue(ctx);
+		Object value = this.getRefValue(ctx);
 		if (value == null) {
+			if(this.hasSafe){
+				return null;
+			}
 			BeetlException be = new BeetlException(BeetlException.NULL, "空指针");
 			be.pushToken(this.token);
 			throw be;
@@ -83,20 +86,18 @@ public class VarRefOptimal extends VarRef  {
 
 
 
-	private Object getValue(Context ctx) {
+	private Object getRefValue(Context ctx) {
 
 		Object value = ctx.vars[varIndex];
 		if (value == Context.NOT_EXIST_OBJECT) {
 			if (ctx.globalVar != null && ctx.globalVar.containsKey("_root")) {
 				// 如果有一个根对象
 				Object root = ctx.getGlobal("_root");
-				String attr = this.firstToken.text;
-				if (root == null) {
-					BeetlException be = new BeetlException(BeetlException.NULL, "_root为空指针，无" + this.token.text + "值");
-					be.pushToken(this.firstToken);
-					throw be;
-				}
 
+				if (root == null) {
+					return null;
+				}
+				String attr = this.firstToken.text;
 				AttributeAccess aa = AABuilder.buildFiledAccessor(root.getClass());
 				try {
 					value = aa.value(root, attr);
@@ -110,9 +111,7 @@ public class VarRefOptimal extends VarRef  {
 				return value;
 
 			} else {
-				BeetlException ex = new BeetlException(BeetlException.VAR_NOT_DEFINED);
-				ex.pushToken(this.firstToken);
-				throw ex;
+				return null;
 			}
 
 		}else{

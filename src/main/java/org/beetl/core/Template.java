@@ -116,15 +116,27 @@ public class Template {
 			}
 
 			if (ajaxId != null) {
-				AjaxStatement ajax = program.metaData.getAjax(ajaxId);
-				if (ajax == null) {
-					BeetlException be = new BeetlException(BeetlException.AJAX_NOT_FOUND);
-					be.pushToken(new GrammarToken(ajaxId, 0, 0));
-					throw be;
+				if(!(program instanceof  ErrorGrammarProgram)){
+					AjaxStatement ajax = program.metaData.getAjax(ajaxId);
+					if (ajax == null) {
+						BeetlException be = new BeetlException(BeetlException.AJAX_NOT_FOUND);
+						be.pushToken(new GrammarToken(ajaxId, 0, 0));
+						throw be;
+					}
+
+					ProgramMetaData localMetaData = ajax.getLocalProgramMetaData();
+					localMetaData.initContext(ctx);
+					Program ajaxProgram = new Program();
+					ajaxProgram.metaData = localMetaData;
+					ajaxProgram.res = this.program.res;
+					ajaxProgram.gt = this.gt;
+					ajaxProgram.execute(ctx);
+				}else{
+					//语法错误的模板
+					program.metaData.initContext(ctx);
+					program.execute(ctx);
 				}
-				ProgramMetaData localMetaData = ajax.getLocalProgramMetaData();
-				localMetaData.initContext(ctx);
-				ajax.execute(ctx);
+
 			} else {
 				program.metaData.initContext(ctx);
 				program.execute(ctx);

@@ -545,6 +545,7 @@ public class Configuration {
 
 	public void setHtmlTagSupport(boolean isHtmlTagSupport) {
 		this.isHtmlTagSupport = isHtmlTagSupport;
+		this.buildDelimeter();
 	}
 
 	public boolean isNativeCall() {
@@ -577,6 +578,7 @@ public class Configuration {
 
 	public void setHtmlTagStart(String htmlTagStart) {
 		this.htmlTagStart = htmlTagStart;
+		this.buildDelimeter();
 	}
 
 	public String getHtmlTagEnd() {
@@ -585,6 +587,7 @@ public class Configuration {
 
 	public void setHtmlTagEnd(String htmlTagEnd) {
 		this.htmlTagEnd = htmlTagEnd;
+		this.buildDelimeter();
 	}
 
 	public String getHtmlTagBindingAttribute() {
@@ -771,24 +774,30 @@ public class Configuration {
 					statementEnd != null ? statementEnd.toCharArray() : null);
 		}
 
-		if (this.isHtmlTagSupport) {
-			tagConf = new HtmlTagHolder(getHtmlTagStart(), getHtmlTagEnd(), getHtmlTagBindingAttribute());
-		}
+
+		tagConf = new HtmlTagHolder(getHtmlTagStart(), getHtmlTagEnd(), getHtmlTagBindingAttribute(),this.isHtmlTagSupport);
+
 	}
 
 	public static class HtmlTagHolder{
 		String htmlTagStart = "<#";
 		String htmlTagEnd = "</#";
 		String htmlTagBindingAttribute = "var";
+		boolean support = true;
 
 		public HtmlTagHolder() {
 			//默认
 		}
-		public HtmlTagHolder(String htmlTagStart, String htmlTagEnd, String htmlTagBindingAttribute) {
+		public HtmlTagHolder(String htmlTagStart, String htmlTagEnd, String htmlTagBindingAttribute,boolean support) {
 			this.htmlTagStart = htmlTagStart;
 			this.htmlTagEnd = htmlTagEnd;
 			this.htmlTagBindingAttribute = htmlTagBindingAttribute;
+			this.support = support;
 
+		}
+
+		public boolean isSupport() {
+			return support;
 		}
 
 

@@ -58,14 +58,18 @@ public class SourceFragement {
             if(fr instanceof  TextFragment){
             	 TextFragment text = (TextFragment)fr;
                  
-                 //往前看，合并CR和TextFragment
+                 //往后看，合并CR和TextFragment
                  for(int z = i+1;z<list.size();z++){
                      Fragment nextFr = list.get(z);
-                     if(nextFr instanceof  ScriptFragment || nextFr instanceof  PlaceHolderFragment){
+                     if(nextFr instanceof  BeetlFragment){
                          i=z;
                          break;
                      }
+                     if(nextFr.getStatus()==FragmentStatus.del){
+                     	continue;
+					 }
                      nextFr.setStatus(FragmentStatus.del);
+                     //合并
                      text.appendTextFragment(nextFr);
                      
                      

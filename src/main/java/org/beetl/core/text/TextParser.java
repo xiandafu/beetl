@@ -29,7 +29,6 @@ public class TextParser {
 	public final static String systemCrStr = System.getProperty("line.separator");
 	 
 	
-//	List<Fragment> list = new ArrayList<Fragment>();
 	SourceFragement sourceFragement = new SourceFragement();
 	HtmlTagConfig htmlTagConfig = null;
 	//文本里的回车
@@ -48,12 +47,17 @@ public class TextParser {
 
 	public TextParser(GroupTemplate groupTemplate,Configuration.DelimeterHolder pdConfig, Configuration.DelimeterHolder sdConfig, Configuration.HtmlTagHolder tagConfig) {
 		this(groupTemplate,pdConfig, sdConfig);
-		this.htmlTagConfig = tagConfig.create();
+		if(tagConfig.isSupport()){
+			this.htmlTagConfig = tagConfig.create();
+		}
 	}
 
 	public TextParser(Configuration.DelimeterHolder pdConfig, Configuration.DelimeterHolder sdConfig, Configuration.HtmlTagHolder tagConfig) {
 		this(null,pdConfig, sdConfig);
-		this.htmlTagConfig = tagConfig.create();
+		if(tagConfig.isSupport()){
+			this.htmlTagConfig = tagConfig.create();
+		}
+
 	}
 
 	public void doParse(Reader orginal) throws IOException {
@@ -142,7 +146,7 @@ public class TextParser {
 		Configuration.DelimeterHolder sd = new Configuration.DelimeterHolder("@".toCharArray(), null, "<%".toCharArray(), "%>".toCharArray());
 
 		Configuration.HtmlTagHolder htmlConfig = new Configuration.HtmlTagHolder();;
-		String text = "\\@ a";
+		String text = "   \n   @abc;";
 
 		StringReader str = new StringReader(text);
 		TextParser textParser = new TextParser(null,pd, sd, htmlConfig);

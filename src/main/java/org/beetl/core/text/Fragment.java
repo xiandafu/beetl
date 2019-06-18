@@ -33,7 +33,6 @@ public abstract class Fragment {
         } else if (source.isHtmlTagStart()) {
             this.setEndLine();
             return new HtmlTagStartFragment(source);
-
         } else if (source.isHtmlTagEnd()) {
             this.setEndLine();
             return new HtmlTagEndFragment(source);

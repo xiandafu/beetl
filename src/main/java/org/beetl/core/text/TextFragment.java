@@ -92,7 +92,12 @@ public class TextFragment extends Fragment {
 		}
 		return  true;
 	}
-	
+
+
+	/*删除一个\*/
+	public void removeTextEscape(){
+		text.setLength(text.length()-1);
+	}
 	
 
 

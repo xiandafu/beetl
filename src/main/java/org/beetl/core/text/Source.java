@@ -11,8 +11,9 @@ public class Source {
     int curLine = 0;
     boolean isSupportHtmlTag = false;
     int lastCrSize = 0;
+    // source正在哪个位置
 	TextFragment lastTextFragment = null;
-    
+	BeetlFragment beetlFragment = null;
   
     public Source(char[] cs) {
         this.cs = cs;
@@ -77,6 +78,14 @@ public class Source {
         return isMatch;
     }
 
+	public boolean matchAndSKipEnd(char[] text) {
+		boolean isMatch = this.isMatch(text) && !hasScriptEscape();
+		if (isMatch) {
+			this.consume(text.length);
+		}
+		return isMatch;
+	}
+
     public boolean isSupportHtmlTag() {
         return isSupportHtmlTag;
     }
@@ -96,16 +105,16 @@ public class Source {
 
                     if(cs[p - 2] != '\\'){
                     	// 删除最后一个\ \@
-						removeEscape();
+						removeTextEscape();
 						return true;
 					}else{
                     	//删除一个 \\@
-						removeEscape();
+						removeTextEscape();
 						return false;
 					}
                 }else{
 					// 删除最后一个\ \@
-					removeEscape();
+					removeTextEscape();
 					return true;
 				}
 
@@ -118,9 +127,45 @@ public class Source {
         }
     }
 
-    public void removeEscape(){
-    	StringBuilder text = this.lastTextFragment.text;
-		text.setLength(text.length()-1);
+
+	public boolean hasScriptEscape() {
+		if (p > 0) {
+			if (cs[p - 1] == '\\') {
+				if (p > 1) {
+
+					if(cs[p - 2] != '\\'){
+						// 删除最后一个\ \@
+						removeScriptEscape();
+						return true;
+					}else{
+						//删除一个 \\@
+						removeScriptEscape();
+						return false;
+					}
+				}else{
+					// 删除最后一个\ \@
+					removeScriptEscape();
+					return true;
+				}
+
+			} else {
+				return false;
+			}
+
+		} else {
+			return false;
+		}
+	}
+
+
+	public void removeScriptEscape(){
+		beetlFragment.removeEscape();
+
+	}
+
+    public void removeTextEscape(){
+		lastTextFragment.removeTextEscape();
+
 	}
 
 

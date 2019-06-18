@@ -20,6 +20,17 @@ import java.util.List;
  *
  */
 public class Test {
+	/**
+
+	 dfd
+	 df
+	 df
+	 fdf
+	 dsfdsf
+
+	 @param args
+	 @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
 
 		
@@ -57,7 +68,8 @@ public class Test {
 
 			Template t = gt.getTemplate("/hello.txt");
 			t.binding("list",it);
-
+			t.binding("user",new TestUser("abc"));
+			t.binding("title","hello");
 			String str = t.render();
 			System.out.println(str);
 

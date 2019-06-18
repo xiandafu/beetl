@@ -1,9 +1,10 @@
 package org.beetl.core.text;
 
-public class PlaceHolderFragment extends Fragment {
-    StringBuilder script = new StringBuilder("<<");
+public class PlaceHolderFragment extends BeetlFragment {
+
     public PlaceHolderFragment(Source source) {
         super(source);
+		script.append("<<");
         this.setEndLine();
     }
 
