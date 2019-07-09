@@ -160,7 +160,7 @@ public class VarRef extends Expression implements IVarIndex {
 					value = aa.value(root, attr);
 				}catch(RuntimeException e) {
 					BeetlException ex = new BeetlException(BeetlException.ATTRIBUTE_INVALID,
-							"_root " + root.getClass() + " 属性访问错误");
+							"访问 _root " + root.getClass() + "."+attr+" 属性访问错误");
 					ex.pushToken(this.firstToken);
 					throw ex;
 				}

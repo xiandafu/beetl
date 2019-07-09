@@ -146,7 +146,7 @@ public class TextParser {
 		Configuration.DelimeterHolder sd = new Configuration.DelimeterHolder("@".toCharArray(), null, "<%".toCharArray(), "%>".toCharArray());
 
 		Configuration.HtmlTagHolder htmlConfig = new Configuration.HtmlTagHolder();;
-		String text = "   \n   @abc;";
+		String text = "<% var a='bcd';%>";
 
 		StringReader str = new StringReader(text);
 		TextParser textParser = new TextParser(null,pd, sd, htmlConfig);

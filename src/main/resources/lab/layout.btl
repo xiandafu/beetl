@@ -1,0 +1,3 @@
+      <div class="rside" id="rside">
+        ${content}
+      </div>

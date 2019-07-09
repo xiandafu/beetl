@@ -1,1 +1,4 @@
-${ isEmpty(user.name) }
+<%
+var a = "\ncccc";
+%>
+${a}

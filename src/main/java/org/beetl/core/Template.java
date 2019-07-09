@@ -37,6 +37,7 @@ import java.util.Map.Entry;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.io.ByteWriter_Byte;
 import org.beetl.core.io.ByteWriter_Char;
+import org.beetl.core.io.NoLockStringWriter;
 import org.beetl.core.misc.BeetlUtil;
 import org.beetl.core.statement.*;
 
@@ -74,7 +75,7 @@ public class Template {
 	 * @throws BeetlException
 	 */
 	public String render() throws BeetlException {
-		StringWriter sw = new StringWriter();
+		NoLockStringWriter sw = new NoLockStringWriter();
 		renderTo(sw);
 		return sw.toString();
 	}
