@@ -1,4 +1,6 @@
 <%
-var a = "\ncccc";
+var a = [1,2,3];
+for(item in a){
+println(itemLP.odd);
+}
 %>
-${a}

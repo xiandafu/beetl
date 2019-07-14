@@ -64,6 +64,8 @@ class HTMLTagContentParser
 	static char[] ENT_TAGS = new char[]
 	{ '/', '>' };
 
+
+
 	AttributeNameConvert attributeNameConvert = null;
 
 
@@ -163,8 +165,10 @@ class HTMLTagContentParser
 	protected boolean matchCR(){
 		
 		if(index<cs.length){
-			if (cs[index ] =='\r'||cs[index ] =='\n')
+			if (cs[index ] =='\r'||cs[index ] =='\n'){
 				return true;
+			}
+
 		}
 		return false ;
 	
@@ -318,12 +322,12 @@ class HTMLTagContentParser
 			char illegal = cs[index];
 			if (illegal == '\r' || illegal == '\n')
 			{
-				throw new RuntimeException("标签未正确结束:" + this.tagName + ",碰到换行符号");
+				throw new RuntimeException("标签未正确结束:"  + ",碰到换行符号");
 
 			}
 			else
 			{
-				throw new RuntimeException("标签未正确结束:" + this.tagName + ",碰到非法符号'" + cs[index] + "'");
+				throw new RuntimeException("标签未正确结束:"  + ",碰到非法符号'" + cs[index] + "'");
 
 			}
 		}
@@ -616,7 +620,7 @@ class HTMLTagContentParser
 
 	public static void main(String[] args)
 	{
-		String input = "<#bbsListTag a='1' \nc='${ kk }' export='page,dd' >hello ${a}</#bbsListTag>";
+		String input = "<#ab id=\"1>";
 		HTMLTagContentParser htmltag = new HTMLTagContentParser(new DefaultAttributeNameConvert(),input.toCharArray(), 2, "var,export", true);
 		htmltag.parser();
 		System.out.println(htmltag.getTagName());

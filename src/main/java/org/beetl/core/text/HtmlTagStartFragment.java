@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Stack;
 
+import org.beetl.core.exception.BeetlException;
 import org.beetl.core.exception.HTMLTagParserException;
 import org.beetl.core.statement.GrammarToken;
 
@@ -101,7 +102,7 @@ public class HtmlTagStartFragment extends ScriptFragment {
 			if (tagName == null) {
 				tagName = "未知标签";
 			}
-			GrammarToken token = GrammarToken.createToken(tagName, source.curLine + 1);
+			GrammarToken token = GrammarToken.createToken(tagName, source.curLine +1);
 			HTMLTagParserException ex = new HTMLTagParserException(re.getMessage());
 			ex.pushToken(token);
 
@@ -115,7 +116,19 @@ public class HtmlTagStartFragment extends ScriptFragment {
 	public Fragment consumeAndReturnNext() {
 		String htmlTagBindingAttribute = source.htmlTagConfig.htmlTagBindingAttribute;
 		html = new HTMLTagContentParser(source.getParser().attributeNameConvert,source.cs, source.p, htmlTagBindingAttribute, true);
-		html.parser();
+		try{
+			html.parser();
+		}catch(RuntimeException ex){
+			BeetlException exception = new BeetlException(BeetlException.PARSER_HTML_TAG_ERROR,ex.getMessage(),ex);
+			String tagName = "<>";
+			if(html.tagName!=null){
+				tagName="<"+html.tagName+">";
+			}
+			GrammarToken grammarToken = GrammarToken.createToken(tagName,source.curLine+1);
+			exception.pushToken(grammarToken);
+			throw exception;
+		}
+
 		source.move(html.index);
 		this.endLine = this.startLine+html.crKey.size();
 		return super.findNext();

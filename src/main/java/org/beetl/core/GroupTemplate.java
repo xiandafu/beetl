@@ -149,11 +149,10 @@ public class GroupTemplate {
 			this.resourceLoader = loader;
 			this.classLoader = classLoader == null ? this.classLoader : classLoader;
 			this.conf = conf;
-			conf.initOther();
 			init();
 			initResourceLoader();
 		} catch (Exception ex) {
-			throw new RuntimeException("初始化失败", ex);
+			throw new IllegalStateException("初始化失败 "+ex.getMessage(), ex);
 		}
 
 	}
@@ -168,6 +167,7 @@ public class GroupTemplate {
 	}
 
 	protected void init() {
+		conf.build();
 		engine = TemplateEngineFactory.getEngine(conf.getEngine());
 		this.initFunction();
 		this.initFormatter();

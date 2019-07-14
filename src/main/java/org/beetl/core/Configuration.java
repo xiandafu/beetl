@@ -193,6 +193,24 @@ public class Configuration {
 
 
 	public Configuration() throws IOException {
+		initDefault();
+
+	}
+
+
+
+	public Configuration(Properties ps) throws IOException {
+		initDefault();
+		parseProperties(ps);
+
+	}
+
+
+	public void build(){
+		buildDelimeter();
+	}
+
+	private void initDefault() throws IOException{
 		// 总是添加这俩个
 		pkgList.add("java.util.");
 		pkgList.add("java.lang.");
@@ -208,24 +226,10 @@ public class Configuration {
 			ps.load(ins);
 			parseProperties(ps);
 		}
-
-
-	}
-
-	public Configuration(Properties ps) throws IOException {
-		this();
-		// this.ps.putAll(myPs);
-		parseProperties(ps);
-
-
 	}
 
 
-	public void initOther() {
 
-		buildDelimeter();
-
-	}
 
 	public void add(File path) throws IOException {
 		Properties ps = new Properties();
@@ -249,7 +253,7 @@ public class Configuration {
 			setValue(key, value == null ? null : value.trim());
 		}
 
-		initOther();
+
 	}
 
 	protected void setValue(String key, String value) {
@@ -279,7 +283,7 @@ public class Configuration {
 		} else if (key.equalsIgnoreCase(DELIMITER_STATEMENT_START2)) {
 			this.statementStart2 = value;
 		} else if (key.equalsIgnoreCase(DELIMITER_STATEMENT_END2)) {
-			if (value == null | value.length() == 0 || value.equals("null")) {
+			if (isBlank(value)|| value.equals("null")) {
 				this.statementEnd2 = null;
 			} else {
 				this.statementEnd2 = value;
@@ -292,7 +296,7 @@ public class Configuration {
 		} else if (key.equalsIgnoreCase(DIRECT_BYTE_OUTPUT)) {
 			this.directByteOutput = isBoolean(value, false);
 		} else if (key.equalsIgnoreCase(ERROR_HANDLER)) {
-			if (value == null | value.length() == 0 || value.equals("null")) {
+			if (isBlank(value)|| value.equals("null")) {
 				this.errorHandlerClass = null;
 			} else {
 				this.errorHandlerClass = value;
@@ -311,7 +315,7 @@ public class Configuration {
 		} else if (key.equalsIgnoreCase(HTML_TAG_SUPPORT)) {
 			this.isHtmlTagSupport = isBoolean(value, false);
 		} else if (key.equalsIgnoreCase(HTML_TAG_ATTR_CONVERT)) {
-			if (value == null | value.length() == 0 ) {
+			if (isBlank(value) ) {
 				this.htmlTagAttributeConvert = value;
 			}
 		}
@@ -447,7 +451,7 @@ public class Configuration {
 	public void setPlaceholderStart(String placeholderStart) {
 
 		this.placeholderStart = placeholderStart;
-		buildDelimeter();
+
 	}
 
 	public String getPlaceholderEnd() {
@@ -456,7 +460,6 @@ public class Configuration {
 
 	public void setPlaceholderEnd(String placeholderEnd) {
 		this.placeholderEnd = placeholderEnd;
-		buildDelimeter();
 	}
 
 	public String getStatementStart() {
@@ -465,7 +468,6 @@ public class Configuration {
 
 	public void setStatementStart(String statementStart) {
 		this.statementStart = statementStart;
-		buildDelimeter();
 	}
 
 	public String getStatementEnd() {
@@ -474,7 +476,6 @@ public class Configuration {
 
 	public void setStatementEnd(String statementEnd) {
 		this.statementEnd = statementEnd;
-		buildDelimeter();
 	}
 
 
@@ -545,7 +546,6 @@ public class Configuration {
 
 	public void setHtmlTagSupport(boolean isHtmlTagSupport) {
 		this.isHtmlTagSupport = isHtmlTagSupport;
-		this.buildDelimeter();
 	}
 
 	public boolean isNativeCall() {
@@ -578,7 +578,6 @@ public class Configuration {
 
 	public void setHtmlTagStart(String htmlTagStart) {
 		this.htmlTagStart = htmlTagStart;
-		this.buildDelimeter();
 	}
 
 	public String getHtmlTagEnd() {
@@ -587,7 +586,6 @@ public class Configuration {
 
 	public void setHtmlTagEnd(String htmlTagEnd) {
 		this.htmlTagEnd = htmlTagEnd;
-		this.buildDelimeter();
 	}
 
 	public String getHtmlTagBindingAttribute() {
@@ -747,8 +745,6 @@ public class Configuration {
 		this.resourceMap = resourceMap;
 	}
 
-
-
 	public Properties getPs() {
 		return ps;
 	}
@@ -758,18 +754,33 @@ public class Configuration {
 	}
 
 	private void buildDelimeter(){
+
+		if(isBlank(placeholderStart)||isBlank(placeholderEnd)){
+			throw new IllegalArgumentException("占位符不能为空");
+		}
+
 		if (this.placeholderStart2 != null) {
+			if(isBlank(placeholderStart2)||isBlank(placeholderEnd2)){
+				throw new IllegalArgumentException("定义了2对占位符配置，但占位符2不能为空");
+			}
 			pd = new DelimeterHolder(placeholderStart.toCharArray(), placeholderEnd.toCharArray(),
 					placeholderStart2.toCharArray(), placeholderEnd2.toCharArray());
 		} else {
 			pd = new DelimeterHolder(placeholderStart.toCharArray(), placeholderEnd.toCharArray());
 		}
 
+		if(isBlank(statementStart)){
+			throw new IllegalArgumentException("定界符起始符号不能为空");
+		}
 		if (this.statementStart2 != null) {
+			if(isBlank(statementStart2)){
+				throw new IllegalArgumentException("定义了2对定界符配置，但定界符起始符号不能为空");
+			}
 			sd = new DelimeterHolder(statementStart.toCharArray(),
 					statementEnd != null ? statementEnd.toCharArray() : null, statementStart2.toCharArray(),
 					statementEnd2 != null ? statementEnd2.toCharArray() : null);
 		} else {
+
 			sd = new DelimeterHolder(statementStart.toCharArray(),
 					statementEnd != null ? statementEnd.toCharArray() : null);
 		}
@@ -777,6 +788,14 @@ public class Configuration {
 
 		tagConf = new HtmlTagHolder(getHtmlTagStart(), getHtmlTagEnd(), getHtmlTagBindingAttribute(),this.isHtmlTagSupport);
 
+	}
+
+	private void checkDelimeter(){
+
+	}
+
+	private boolean isBlank(String str){
+		return str==null||str.trim().length()==0;
 	}
 
 	public static class HtmlTagHolder{

@@ -1,6 +1,5 @@
 package org.beetl.core;
 
-import java.util.Enumeration;
 import java.util.Iterator;
 
 public class IteratorLoopStatus implements  ILoopStatus  {
@@ -47,15 +46,12 @@ public class IteratorLoopStatus implements  ILoopStatus  {
 		return  !this.it.hasNext();
 	}
 
-	public final boolean isEven()
-	{
-
-		return index % 2 == 0;
+	public final boolean isEven(){
+		return (index & 1) != 1;
 	}
 
-	public final boolean isOdd()
-	{
-		return index % 2 == 1;
+	public final boolean isOdd(){
+		return (index & 1) == 1;
 	}
 
 	public final boolean hasSize()

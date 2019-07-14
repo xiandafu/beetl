@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * http://sports.qq.com/a/20151126/029300.htm
+ *
  * 
  * @author xiandafu
  *
@@ -45,9 +45,9 @@ public class Test {
 		// js 里专用
 //		cfg.setStatementStart2("//#");
 //		cfg.setStatementEnd2(null);
-//		cfg.setPlaceholderStart2("#");
-//		cfg.setPlaceholderEnd2("#");
-		cfg.initOther();
+//		cfg.setPlaceholderStart2("{");
+//		cfg.setPlaceholderEnd2();
+
 		GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
 		gt.registerTag("table",TableTag.class);
 		gt.registerTag("col",ColTag.class);

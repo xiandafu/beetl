@@ -49,7 +49,6 @@ public class VarRefOptimal extends VarRef  {
 		super(null,false,null,token,firstToken);
 		this.attribute = attribute;
 
-
 	}
 
 	@Override
