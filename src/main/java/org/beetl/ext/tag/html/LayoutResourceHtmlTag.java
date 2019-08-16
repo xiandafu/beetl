@@ -25,49 +25,52 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.beetl.ext.tag;
+package org.beetl.ext.tag.html;
 
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.beetl.core.ByteWriter;
+import org.beetl.core.BodyContent;
 import org.beetl.core.Resource;
 import org.beetl.core.Template;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.tag.Tag;
 
 /**
- *  一个html标签方式的tag,同includeTag
- *  
- *  <html:include file=""  arg1="" arg2=""/>
- * @author xiandafu
- *
+ * 同layoutTag，采用html方式布局
+ * <#html:layout parent="" attr1="" attr2="">
+ * 
+ * </#html:layout>
+ * 
  */
-public class IncludeResourceHtmlTag extends Tag {
+public class LayoutResourceHtmlTag extends Tag {
+	public static String defaultLayoutName = "layoutContent";
+	public static final String layoutNameAttr = "layoutContent";
+
 
 	@Override
 	public void render() {
-		String resourceId = getRelResourceId();
 
-		Template t = gt.getTemplate(resourceId, this.ctx);
-		// 快速复制父模板的变量
-		t.binding(this.ctx.globalVar);
+		String layoutFile = getRelResourceId();
+		Template t = this.gt.getTemplate(layoutFile, this.ctx);
+		t.binding(ctx.globalVar);
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> attrs = ((Map<String, Object>) this.args[1]);
+		String layoutName = attrs.containsKey(layoutNameAttr) ? (String) attrs.get(layoutNameAttr) : defaultLayoutName;
 		for (Entry<String, Object> entry : attrs.entrySet()) {
 			String attrName = entry.getKey();
-			if (attrName.equals("file")) {
+			if (attrName.equals("parent") || attrName.equals(layoutNameAttr)) {
 				// 子模板不设置file属性
 				continue;
 			}
 			Object value = entry.getValue();
 			t.binding(attrName, value);
-
 		}
 
-		ByteWriter bw = ctx.byteWriter;
-		t.renderTo(bw);
+		BodyContent content = this.getBodyContent();
+		t.binding(layoutName, content);
+		t.renderTo(ctx.byteWriter);
 
 	}
 
@@ -79,10 +82,11 @@ public class IncludeResourceHtmlTag extends Tag {
 
 	protected String getTargetResource() {
 		@SuppressWarnings("unchecked")
-		String targetResourceId = (String) ((Map<String, Object>) this.args[1]).get("file");
+		String targetResourceId = (String) ((Map<String, Object>) this.args[1]).get("parent");
 		if (targetResourceId == null || targetResourceId.trim().length() == 0) {
-			throw new BeetlException(BeetlException.ERROR, "缺少 file属性 ");
+			throw new BeetlException(BeetlException.ERROR, "缺少 parent 属性 ");
 		}
 		return targetResourceId;
 	}
+
 }

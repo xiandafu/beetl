@@ -126,16 +126,23 @@ public abstract class Tag {
 	 * @return
 	 */
 	public Object getHtmlAttribute(String attrName){
-		//html 标签 第一个参数是标签名字，第二个是所有属性
-		if(args.length!=2){
-			throw new IllegalStateException("非html标签");
-		}
+		//html 标签 第一个参数是标签名字，第二个是所有属性,第三个是所有列，第四个有可能是绑定的变量列表
+
 		Object obj = (Object) args[1];
 		if(!(obj instanceof Map)){
 			throw new IllegalStateException("非html标签");
 		}
 
 		return ((Map)obj).get(attrName);
+	}
+
+	public boolean containHtmlAttribute(String attrName){
+		Object obj = (Object) args[1];
+		if(!(obj instanceof Map)){
+			throw new IllegalStateException("非html标签");
+		}
+		return ((Map)obj).containsKey(attrName);
+
 	}
 
 

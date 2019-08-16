@@ -102,7 +102,7 @@ public class HtmlTagStartFragment extends ScriptFragment {
 			if (tagName == null) {
 				tagName = "未知标签";
 			}
-			GrammarToken token = GrammarToken.createToken(tagName, source.curLine +1);
+			GrammarToken token = GrammarToken.createToken(tagName, this.startLine +1);
 			HTMLTagParserException ex = new HTMLTagParserException(re.getMessage());
 			ex.pushToken(token);
 
@@ -159,8 +159,9 @@ public class HtmlTagStartFragment extends ScriptFragment {
 			}
 
 			if (end == -1){
-				throw new RuntimeException(attr + "标签属性错误，有站位符号，但找不到到结束符号");
+				throw new RuntimeException(attr + " 标签属性错误，有站位符号，但找不到到结束符号");
 			}
+
 			if (index != 0) {
 				// 字符串
 				sb.append(q).append(attr.substring(start, index)).append(q).append("+");
