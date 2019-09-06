@@ -48,7 +48,8 @@ public class HtmlTagStartFragment extends ScriptFragment {
 				if (html.crKey.contains(key)) {
 					script.append(TextParser.cr1);
 				}
-				script.append(key).append(":");
+//				script.append(key).append(":");
+				script.append("\""+key+"\"").append(":"); // ThinkGem 2017-4-4  增加双引号，支持特殊符号的属性名
 				String attrValue = this.parseAttr(quat.get(key), value);
 				script.append(attrValue);
 
