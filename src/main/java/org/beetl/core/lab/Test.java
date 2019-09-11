@@ -20,18 +20,7 @@ import java.util.List;
  *
  */
 public class Test {
-	/**
-
-	 dfd
-	 df
-	 df
-	 fdf
-	 dsfdsf
-
-	 @param args
-	 @throws Exception
-	 */
-	public static void main(String[] args) throws Exception {
+		public static void main(String[] args) throws Exception {
 
 		
 		ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("lab/");

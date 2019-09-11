@@ -40,7 +40,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <li>普通PoJo对象,</li>
  * </ul>
  *
- * @author joelli
+ * @author xiandafu
  */
 public class DefaultAAFactory {
 

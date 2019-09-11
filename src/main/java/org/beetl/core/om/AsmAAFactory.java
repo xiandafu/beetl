@@ -4,12 +4,16 @@ import org.beetl.core.om.asm.ASMBeanFactory;
 
 import java.lang.reflect.Modifier;
 
+/**
+ * 一个字节码增强来访问属性
+ * @author xiandafu
+ */
 public class AsmAAFactory  extends DefaultAAFactory{
     ASMBeanFactory asmBeanFactory = null;
     public AsmAAFactory(){  
         super();
         asmBeanFactory = new ASMBeanFactory();
-        //beetl 里通过getter setter来获取属性,也可以直接设置通过fields
+        //beetl 里主要通过JavaBean规范获取取属性,asmBeanFactory也可以直接设置通过fields来获取
         asmBeanFactory.setUsePropertyDescriptor(true);
 
     }
@@ -21,6 +25,7 @@ public class AsmAAFactory  extends DefaultAAFactory{
             classAttrs.put(c,aa);
             return aa;
         }else{
+        	//
             classAttrs.put(c,this.reflectBeanAA);
             return this.reflectBeanAA;
         }

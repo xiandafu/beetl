@@ -91,12 +91,22 @@ public class ObjectUtil {
         return null;
     }
 
+	protected static PropertyDescriptor findIsMethod(PropertyDescriptor[] pd, String methodName) {
+		for (PropertyDescriptor p : pd) {
+			if (p.getReadMethod().getName().equals(methodName)) {
+				return p;
+			}
+		}
+		return null;
+	}
+
     /**
      * 得到一个可供调用get属性的invoker,invoker用于封装对对象的属性读取
      *
      * @param c
      * @param name
      * @return
+	 * @see https://gitee.com/xiandafu/beetl/issues/I11WQV ，关于2.0兼容的一个bug修复
      */
     public static MethodInvoker getInvokder(Class c, String name) {
 
@@ -110,8 +120,9 @@ public class ObjectUtil {
         }
 
         PropertyDescriptor property = null;
+		PropertyDescriptor[] pd = null;
         try {
-            PropertyDescriptor[] pd = propertyDescriptors(c);
+        	pd = propertyDescriptors(c);
             property = find(pd, name);
         } catch (IntrospectionException e) {
             throw new BeetlException(BeetlException.ERROR, "获取类属性错", e);
@@ -121,6 +132,21 @@ public class ObjectUtil {
             invoker = new PojoMethodInvoker(property);
             return invoker;
         }
+
+		/**
+		 * 检测2.0兼容，就是isXXX对应的PropertyDescriptor，本来应该只能按照xxx访问，但2.0错误支持了
+		 * isXxx来访问此属性，3.0继续支持
+		 *
+		 */
+
+		if(name.startsWith("is")){
+			property = findIsMethod(pd, name);
+		}
+		if (property != null) {
+			invoker = new PojoMethodInvoker(property);
+			return invoker;
+		}
+
 
         // General Get
         Method method = getGetMethod(c, "get", new Class[]
@@ -136,6 +162,8 @@ public class ObjectUtil {
         }
 
         if(invoker==null){
+
+
             return null ;
         }
 

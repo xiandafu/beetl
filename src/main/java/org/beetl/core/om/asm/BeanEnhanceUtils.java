@@ -107,11 +107,35 @@ final class BeanEnhanceUtils {
 				filedDesc.readMethodDesc = getMethodDesc(curPropReadMethod);
 				filedDescs.add(filedDesc);
 				filedDescMap.put(hashCode, filedDescs);
+				//2.x兼容,{@see ObjectUtil#getInvokder}
+				if(prop.getPropertyType()==Boolean.class||prop.getPropertyType()==boolean.class){
+					//再生成一个FieldDescription
+					FieldDescription oldSupport = getBooleanFieldDescription(prop);
+					int booleanHashCode = oldSupport.name.hashCode();
+					List<FieldDescription> newFiledDescs = filedDescMap.get(booleanHashCode);
+					if (newFiledDescs == null) {
+						newFiledDescs = new ArrayList<>();
+					}
+					newFiledDescs.add(oldSupport);
+					filedDescMap.put(booleanHashCode, newFiledDescs);
+				}
+
 			}
 		}
 
 		classDescription.fieldDescMap = filedDescMap;
 
+	}
+
+	private static FieldDescription getBooleanFieldDescription(PropertyDescriptor prop){
+		Method curPropReadMethod = prop.getReadMethod();
+		String name = curPropReadMethod.getName();
+		FieldDescription booleanDesc = new FieldDescription();
+		booleanDesc.name = name;
+		booleanDesc.desc = Type.getType(curPropReadMethod.getReturnType()).toString();
+		booleanDesc.readMethodName = curPropReadMethod.getName();
+		booleanDesc.readMethodDesc = getMethodDesc(curPropReadMethod);
+		return booleanDesc;
 	}
 
 	private static String getMethodDesc(Method readMethod) {

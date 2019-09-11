@@ -7,7 +7,7 @@ import java.util.*;
  *
  *
  */
-public class TestUser  extends  TailBean
+public class TestUser
 {
 	String name = "default";
 	int age = 18;
