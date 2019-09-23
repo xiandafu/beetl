@@ -15,18 +15,18 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 
 	static User user = new User();
 	static {
-		user.setName("shaozuo");
-		user.setAddress("北京");
-		user.setNumbers(15);
-		user.setBirthDate(new Date());
-		user.setAge((short) 12);
-		user.setDistance(44L);
-		user.setFlag((byte) 1);
-		user.setIsManager(false);
-		user.setHeight(1.73F);
-		user.setGender('M');
-		user.setAaAa(12);
-		user.setAaBB(13);
+//		user.setName("shaozuo");
+//		user.setAddress("北京");
+//		user.setNumbers(15);
+//		user.setBirthDate(new Date());
+//		user.setAge((short) 12);
+//		user.setDistance(44L);
+//		user.setFlag((byte) 1);
+		user.setManager(false);
+//		user.setHeight(1.73F);
+//		user.setGender('M');
+//		user.setAaAa(12);
+//		user.setAaBB(13);
 	}
 
 	@Test

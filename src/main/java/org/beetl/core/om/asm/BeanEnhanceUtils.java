@@ -40,7 +40,7 @@ final class BeanEnhanceUtils {
 
 	/**
 	 * 注意，使用propertyDescriptor获取的属性，与字段名称可能不一致
-	 * @param clazzName
+	 * @param beanClass
 	 * @param usePropertyDescriptor
 	 * @return
 	 */
@@ -195,6 +195,10 @@ final class BeanEnhanceUtils {
 	private static String createGetterMethodName(ClassDescription classDescription, String propertyName) {
 		for (PropertyDescriptor ps : classDescription.propertyDescriptors) {
 			if (ps.getName().equals(propertyName)) {
+				return ps.getReadMethod().getName();
+			}
+
+			if(propertyName.startsWith("is")&&ps.getReadMethod().getName().equals(propertyName)){
 				return ps.getReadMethod().getName();
 			}
 		}

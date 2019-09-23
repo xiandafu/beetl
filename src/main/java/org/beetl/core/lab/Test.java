@@ -40,8 +40,8 @@ public class Test {
 		GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
 		gt.registerTag("table",TableTag.class);
 		gt.registerTag("col",ColTag.class);
-		TestUser user = new TestUser("a");
-		TestUser older = new TestUser("b");
+//		TestUser user = new TestUser("a");
+//		TestUser older = new TestUser("b");
 
 
 		List list = new ArrayList();
@@ -56,7 +56,7 @@ public class Test {
 
 			Template t = gt.getTemplate("/hello.txt");
 //			t.binding("json",json);
-			t.binding("user",new TestUser("abc"));
+			t.binding("user",new TestUser());
 //			t.binding("title","hello");
 			String str = t.render();
 			System.out.println(str);

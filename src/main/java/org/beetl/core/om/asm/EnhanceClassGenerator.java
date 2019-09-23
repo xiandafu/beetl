@@ -298,7 +298,7 @@ class EnhanceClassGenerator implements Opcodes {
 			mv.visitLdcInsn("ATTRIBUTE_NOT_FOUND");
 			mv.visitTypeInsn(NEW, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME);
 			mv.visitInsn(DUP);
-			mv.visitLdcInsn("attribute : ");
+			mv.visitLdcInsn("属性未找到("+classDescription.target.getName()+") : ");
 			mv.visitMethodInsn(INVOKESPECIAL, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME, "<init>",
 					"(Ljava/lang/String;)V", false);
 			mv.visitVarInsn(ALOAD, LOCAL_VAR_ATTR_STRING_INDEX);
