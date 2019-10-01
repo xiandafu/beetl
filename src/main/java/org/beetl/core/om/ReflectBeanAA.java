@@ -11,6 +11,12 @@ import org.beetl.core.fun.ObjectUtil;
 
 
 public class ReflectBeanAA extends AttributeAccess {
+
+	public static ReflectBeanAA instance = new ReflectBeanAA();
+
+	private ReflectBeanAA(){
+
+	}
     @Override
     public Object value(Object o, Object name) {
         MethodInvoker mi = ObjectUtil.getInvokder(o.getClass(),(String)name);

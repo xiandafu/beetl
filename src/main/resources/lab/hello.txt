@@ -1,5 +1,5 @@
-<%
-var ret = @user.add(1).group("cccc").build("1","ok");
-%>
-${ret}
-${@user.build("1","ok")}
+${user.name}
+${user.isSuccess}
+
+
+

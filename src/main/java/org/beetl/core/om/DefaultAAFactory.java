@@ -53,7 +53,7 @@ public class DefaultAAFactory {
      *
      */
 
-    protected  ReflectBeanAA reflectBeanAA = new  ReflectBeanAA();
+    protected  ReflectBeanAA reflectBeanAA = ReflectBeanAA.instance;
     protected  Map<Class, AttributeAccess> classAttrs = new ConcurrentHashMap<Class, AttributeAccess>();
 
 

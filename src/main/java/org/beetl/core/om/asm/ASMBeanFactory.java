@@ -5,6 +5,7 @@ package org.beetl.core.om.asm;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.misc.ByteClassLoader;
 import org.beetl.core.om.AttributeAccess;
+import org.beetl.core.om.ReflectBeanAA;
 
 /**
  * @author laozhaishaozuo@foxmail.com
@@ -48,12 +50,21 @@ public class ASMBeanFactory {
 		}
 		try {
 			ClassLoader beanClassLoader = beanClass.getClassLoader();
+			if(beanClassLoader==null){
+				//java自带类或者没有classloader的类
+				beanMap.put(beanClass,ReflectBeanAA.instance);
+				return ReflectBeanAA.instance;
+			}
 			ByteClassLoader byteLoader = classLoaders.get(beanClassLoader);
 			if (byteLoader == null) {
 				byteLoader = new ByteClassLoader(beanClassLoader);
 				classLoaders.putIfAbsent(beanClassLoader, byteLoader);
 			}
 			byte[] code = EnhanceClassGenerator.generate(beanClass, this.usePropertyDescriptor);
+			FileOutputStream fw = new FileOutputStream( new File("TestUser$AttributeAccess.class"));
+			fw.write(code);
+			fw.close();
+
 			String generatedBeanName = EnhanceClassGenerator.createGeneratedClassName(beanClass);
 			Class<?> enhanceClass = byteLoader.findClassByName(generatedBeanName);
 			if (enhanceClass == null) {

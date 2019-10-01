@@ -21,8 +21,10 @@ import java.util.List;
  */
 public class Test {
 		public static void main(String[] args) throws Exception {
-
-		
+//			TestUserAccess ta = new TestUserAccess();
+//			System.out.println(ta.value(new TestUser(),"isSuccess"));
+			System.out.println("isSuccess".hashCode());
+			System.out.println("success".hashCode());
 		ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("lab/");
 		Configuration cfg = Configuration.defaultConfiguration();
 
@@ -57,6 +59,7 @@ public class Test {
 			Template t = gt.getTemplate("/hello.txt");
 //			t.binding("json",json);
 			t.binding("user",new TestUser());
+
 //			t.binding("title","hello");
 			String str = t.render();
 			System.out.println(str);
