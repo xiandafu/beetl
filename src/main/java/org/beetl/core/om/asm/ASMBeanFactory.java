@@ -5,7 +5,6 @@ package org.beetl.core.om.asm;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -50,9 +49,9 @@ public class ASMBeanFactory {
 		}
 		try {
 			ClassLoader beanClassLoader = beanClass.getClassLoader();
-			if(beanClassLoader==null){
-				//java自带类或者没有classloader的类
-				beanMap.put(beanClass,ReflectBeanAA.instance);
+			if (beanClassLoader == null) {
+				// java自带类或者没有classloader的类
+				beanMap.put(beanClass, ReflectBeanAA.instance);
 				return ReflectBeanAA.instance;
 			}
 			ByteClassLoader byteLoader = classLoaders.get(beanClassLoader);
@@ -61,15 +60,13 @@ public class ASMBeanFactory {
 				classLoaders.putIfAbsent(beanClassLoader, byteLoader);
 			}
 			byte[] code = EnhanceClassGenerator.generate(beanClass, this.usePropertyDescriptor);
-			FileOutputStream fw = new FileOutputStream( new File("TestUser$AttributeAccess.class"));
-			fw.write(code);
-			fw.close();
 
 			String generatedBeanName = EnhanceClassGenerator.createGeneratedClassName(beanClass);
 			Class<?> enhanceClass = byteLoader.findClassByName(generatedBeanName);
 			if (enhanceClass == null) {
 				enhanceClass = byteLoader.defineClass(generatedBeanName, code);
 			}
+			// writeClassToFile(code, beanClass, generatedBeanName);
 			Object obj = enhanceClass.newInstance();
 			beanMap.put(beanClass, (AttributeAccess) obj);
 			return beanMap.get(beanClass);

@@ -85,26 +85,7 @@ final class BeanEnhanceUtils {
 
 
 	private static void buildFieldDescMapByProperty(ClassDescription classDescription) {
-		List<FieldDescription> fieldDescs = converPropToFieldDesc(classDescription.propertyDescriptors);
-		// 先对其按照hashCode进行排序，方便后续生产代码
-		fieldDescs.sort((p1, p2) -> Integer.compare(p1.name.hashCode(), p2.name.hashCode()));
-
-
-		Map<Integer, List<FieldDescription>> filedDescMap = new LinkedHashMap<>();
-		int hashCode = 0;
-		List<FieldDescription> filedDescs = null;
-		for (FieldDescription fieldDesc : fieldDescs) {
-			hashCode = fieldDesc.name.hashCode();
-			filedDescs = filedDescMap.get(hashCode);
-			if (filedDescs == null) {
-				filedDescs = new ArrayList<>();
-			}
-			filedDescs.add(fieldDesc);
-			filedDescMap.put(hashCode, filedDescs);
-		}
-
-		classDescription.fieldDescMap = filedDescMap;
-
+		buildFieldDescMap(classDescription, converPropToFieldDesc(classDescription.propertyDescriptors));
 	}
 
 	/**
@@ -136,6 +117,7 @@ final class BeanEnhanceUtils {
 		return fieldDescs;
 	}
 
+
 	private static FieldDescription getBooleanFieldDescription(PropertyDescriptor prop) {
 		Method curPropReadMethod = prop.getReadMethod();
 		String name = curPropReadMethod.getName();
@@ -147,6 +129,28 @@ final class BeanEnhanceUtils {
 		return booleanDesc;
 	}
 
+
+	private static void buildFieldDescMap(ClassDescription classDescription, List<FieldDescription> allFieldDescs) {
+		// 先对其按照hashCode进行排序，方便后续生产代码
+		allFieldDescs.sort((p1, p2) -> Integer.compare(p1.name.hashCode(), p2.name.hashCode()));
+
+
+		Map<Integer, List<FieldDescription>> filedDescMap = new LinkedHashMap<>();
+		int hashCode = 0;
+		List<FieldDescription> filedDescs = null;
+		for (FieldDescription fieldDesc : allFieldDescs) {
+			hashCode = fieldDesc.name.hashCode();
+			filedDescs = filedDescMap.get(hashCode);
+			if (filedDescs == null) {
+				filedDescs = new ArrayList<>();
+			}
+			filedDescs.add(fieldDesc);
+			filedDescMap.put(hashCode, filedDescs);
+		}
+		classDescription.fieldDescMap = filedDescMap;
+	}
+
+
 	private static String getMethodDesc(Method readMethod) {
 		String descriptor = Type.getMethodDescriptor(readMethod);
 		return descriptor.substring(descriptor.indexOf(PunctuationConstants.LEFT_BRACKET));
@@ -155,27 +159,35 @@ final class BeanEnhanceUtils {
 	private static void buildFieldDescMapByAsm(ClassDescription classDescription, ClassNode cn) {
 		@SuppressWarnings("unchecked")
 		List<FieldNode> fieldList = cn.fields;
-		// 先对其按照hashCode进行排序，方便后续生产代码
-		fieldList.sort((f1, f2) -> Integer.compare(f1.name.hashCode(), f2.name.hashCode()));
 
-		Map<Integer, List<FieldDescription>> filedDescMap = new LinkedHashMap<>();
-		int hashCode = 0;
-		List<FieldDescription> filedDescs = null;
-		FieldDescription filedDesc = null;
-		for (FieldNode fieldNode : fieldList) {
-			hashCode = fieldNode.name.hashCode();
-			filedDescs = filedDescMap.get(hashCode);
-			if (filedDescs == null) {
-				filedDescs = new ArrayList<>();
-			}
-			filedDesc = new FieldDescription(fieldNode.name, fieldNode.desc,
-					createGetterMethodName(classDescription, fieldNode.name), "()" + fieldNode.desc);
-			filedDescs.add(filedDesc);
-			filedDescMap.put(hashCode, filedDescs);
-		}
-		classDescription.fieldDescMap = filedDescMap;
+		List<FieldDescription> allFiledDescs = convertFieldNodeToFieldDesc(classDescription, fieldList);
+		buildFieldDescMap(classDescription, allFiledDescs);
 	}
 
+	private static List<FieldDescription> convertFieldNodeToFieldDesc(ClassDescription classDescription,
+			List<FieldNode> fieldList) {
+		List<FieldDescription> fieldDescs = new ArrayList<>(fieldList.size() * 2);
+		FieldDescription filedDesc = null;
+		for (FieldNode fieldNode : fieldList) {
+			filedDesc = new FieldDescription(fieldNode.name, fieldNode.desc,
+					createGetterMethodName(classDescription, fieldNode.name), "()" + fieldNode.desc);
+			fieldDescs.add(filedDesc);
+			if (TypeDescriptorConstants.BOOLEAN_.equals(filedDesc.desc) && filedDesc.name.startsWith("is")) {
+				fieldDescs.add(getBooleanFieldDescription(filedDesc));
+			}
+		}
+		return fieldDescs;
+	}
+
+	private static FieldDescription getBooleanFieldDescription(FieldDescription curFiledDesc) {
+		FieldDescription booleanDesc = new FieldDescription();
+		String name = curFiledDesc.name.substring(2);
+		booleanDesc.name = name.substring(0, 1).toLowerCase() + name.substring(1);
+		booleanDesc.desc = curFiledDesc.desc;
+		booleanDesc.readMethodName = curFiledDesc.readMethodName;
+		booleanDesc.readMethodDesc = curFiledDesc.readMethodDesc;
+		return booleanDesc;
+	}
 
 	/**
 	 *

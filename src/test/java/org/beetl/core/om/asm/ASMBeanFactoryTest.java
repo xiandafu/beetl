@@ -1,12 +1,11 @@
 package org.beetl.core.om.asm;
 
 
-import java.lang.reflect.Field;
-import java.util.Date;
 import java.util.List;
 
 import org.beetl.core.BasicTestCase;
 import org.beetl.core.exception.BeetlException;
+import org.beetl.core.fun.ObjectUtil;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
@@ -15,18 +14,18 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 
 	static User user = new User();
 	static {
-//		user.setName("shaozuo");
-//		user.setAddress("北京");
-//		user.setNumbers(15);
-//		user.setBirthDate(new Date());
-//		user.setAge((short) 12);
-//		user.setDistance(44L);
-//		user.setFlag((byte) 1);
-		user.setManager(false);
-//		user.setHeight(1.73F);
-//		user.setGender('M');
-//		user.setAaAa(12);
-//		user.setAaBB(13);
+		// user.setName("shaozuo");
+		// user.setAddress("北京");
+		// user.setNumbers(15);
+		// user.setBirthDate(new Date());
+		// user.setAge((short) 12);
+		// user.setDistance(44L);
+		// user.setFlag((byte) 1);
+		user.setManager(true);
+		// user.setHeight(1.73F);
+		// user.setGender('M');
+		// user.setAaAa(12);
+		// user.setAaBB(13);
 	}
 
 	@Test
@@ -38,7 +37,8 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 		for (List<FieldDescription> nodes : classDescription.fieldDescMap.values()) {
 			for (FieldDescription node : nodes) {
 				System.out.println(node.name + ":" + asmBeanFactory.value(user, node.name));
-				AssertJUnit.assertEquals(getValue(user, node.name), asmBeanFactory.value(user, node.name));
+				AssertJUnit.assertEquals(ObjectUtil.getInvokder(User.class, node.name).get(user),
+						asmBeanFactory.value(user, node.name));
 			}
 		}
 		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(user, "填写"));
@@ -46,21 +46,18 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(user, "填"));
 	}
 
-	private static Object getValue(User user, String attrName)
-			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-		Field field = user.getClass().getDeclaredField(attrName);
-		field.setAccessible(true);
-		return field.get(user);
-	}
 
 	@Test
 	public void testByProp() throws Exception {
-		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
 		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(User.class, true);
+		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
+		asmBeanFactory.setUsePropertyDescriptor(true);
 		for (List<FieldDescription> nodes : classDescription.fieldDescMap.values()) {
 			for (FieldDescription node : nodes) {
+				System.out.println(node.name + ":" + node.name.hashCode());
 				System.out.println(node.name + ":" + asmBeanFactory.value(user, node.name));
-				AssertJUnit.assertEquals(getValue(user, node.name), asmBeanFactory.value(user, node.name));
+				AssertJUnit.assertEquals(ObjectUtil.getInvokder(User.class, node.name).get(user),
+						asmBeanFactory.value(user, node.name));
 			}
 		}
 		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(user, "填写"));
