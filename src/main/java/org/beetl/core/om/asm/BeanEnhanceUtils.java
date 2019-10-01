@@ -80,54 +80,63 @@ final class BeanEnhanceUtils {
 		PropertyDescriptor[] propDescriptors = Introspector.getBeanInfo(beanClass).getPropertyDescriptors();
 		List<PropertyDescriptor> propList = new ArrayList<>(propDescriptors.length);
 		propList.addAll(Arrays.asList(propDescriptors));
-		// 先对其按照hashCode进行排序，方便后续生产代码
-		propList.sort((p1, p2) -> Integer.compare(p1.getName().hashCode(), p2.getName().hashCode()));
 		classDescription.propertyDescriptors = propList;
 	}
 
+
 	private static void buildFieldDescMapByProperty(ClassDescription classDescription) {
-		List<PropertyDescriptor> propList = classDescription.propertyDescriptors;
+		List<FieldDescription> fieldDescs = converPropToFieldDesc(classDescription.propertyDescriptors);
+		// 先对其按照hashCode进行排序，方便后续生产代码
+		fieldDescs.sort((p1, p2) -> Integer.compare(p1.name.hashCode(), p2.name.hashCode()));
+
+
 		Map<Integer, List<FieldDescription>> filedDescMap = new LinkedHashMap<>();
 		int hashCode = 0;
 		List<FieldDescription> filedDescs = null;
-		FieldDescription filedDesc = null;
-		Method curPropReadMethod = null;
-		for (PropertyDescriptor prop : propList) {
-			curPropReadMethod = prop.getReadMethod();
-			if (curPropReadMethod != null && !ignoreSet.contains(curPropReadMethod.getName())) {
-				hashCode = prop.getName().hashCode();
-				filedDescs = filedDescMap.get(hashCode);
-				if (filedDescs == null) {
-					filedDescs = new ArrayList<>();
-				}
-				filedDesc = new FieldDescription();
-				filedDesc.name = prop.getName();
-				filedDesc.desc = Type.getType(curPropReadMethod.getReturnType()).toString();
-				filedDesc.readMethodName = curPropReadMethod.getName();
-				filedDesc.readMethodDesc = getMethodDesc(curPropReadMethod);
-				filedDescs.add(filedDesc);
-				filedDescMap.put(hashCode, filedDescs);
-				//2.x兼容,{@see ObjectUtil#getInvokder}
-				if(prop.getPropertyType()==Boolean.class||prop.getPropertyType()==boolean.class){
-					//再生成一个FieldDescription
-					FieldDescription oldSupport = getBooleanFieldDescription(prop);
-					int booleanHashCode = oldSupport.name.hashCode();
-					List<FieldDescription> newFiledDescs = filedDescMap.get(booleanHashCode);
-					if (newFiledDescs == null) {
-						newFiledDescs = new ArrayList<>();
-					}
-					newFiledDescs.add(oldSupport);
-					filedDescMap.put(booleanHashCode, newFiledDescs);
-				}
-
+		for (FieldDescription fieldDesc : fieldDescs) {
+			hashCode = fieldDesc.name.hashCode();
+			filedDescs = filedDescMap.get(hashCode);
+			if (filedDescs == null) {
+				filedDescs = new ArrayList<>();
 			}
+			filedDescs.add(fieldDesc);
+			filedDescMap.put(hashCode, filedDescs);
 		}
 
 		classDescription.fieldDescMap = filedDescMap;
 
 	}
 
-	private static FieldDescription getBooleanFieldDescription(PropertyDescriptor prop){
+	/**
+	 * 构建 FieldDescription
+	 * @param propList
+	 * @return
+	 */
+	private static List<FieldDescription> converPropToFieldDesc(List<PropertyDescriptor> propList) {
+		List<FieldDescription> fieldDescs = new ArrayList<>(propList.size() * 2);
+		FieldDescription fieldDesc = null;
+		Method curPropReadMethod = null;
+		for (PropertyDescriptor prop : propList) {
+			curPropReadMethod = prop.getReadMethod();
+			if (curPropReadMethod != null && !ignoreSet.contains(curPropReadMethod.getName())) {
+				fieldDesc = new FieldDescription();
+				fieldDesc.name = prop.getName();
+				fieldDesc.desc = Type.getType(curPropReadMethod.getReturnType()).toString();
+				fieldDesc.readMethodName = curPropReadMethod.getName();
+				fieldDesc.readMethodDesc = getMethodDesc(curPropReadMethod);
+				fieldDescs.add(fieldDesc);
+				// 2.x兼容,{@see ObjectUtil#getInvokder}
+				if (prop.getPropertyType() == Boolean.class || prop.getPropertyType() == boolean.class) {
+					// 再生成一个FieldDescription
+					fieldDescs.add(getBooleanFieldDescription(prop));
+				}
+
+			}
+		}
+		return fieldDescs;
+	}
+
+	private static FieldDescription getBooleanFieldDescription(PropertyDescriptor prop) {
 		Method curPropReadMethod = prop.getReadMethod();
 		String name = curPropReadMethod.getName();
 		FieldDescription booleanDesc = new FieldDescription();
@@ -198,7 +207,7 @@ final class BeanEnhanceUtils {
 				return ps.getReadMethod().getName();
 			}
 
-			if(propertyName.startsWith("is")&&ps.getReadMethod().getName().equals(propertyName)){
+			if (propertyName.startsWith("is") && ps.getReadMethod().getName().equals(propertyName)) {
 				return ps.getReadMethod().getName();
 			}
 		}
