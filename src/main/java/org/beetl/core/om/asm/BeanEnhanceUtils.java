@@ -59,7 +59,7 @@ final class BeanEnhanceUtils {
 				buildFieldDescMapByAsm(classDescription, cn);
 			}
 			classDescription.target = beanClass;
-			classDescription.generalGetType = checkGenreal(beanClass);
+			classDescription.generalGetMethodDesc = getGeneralGetMethodDescription(beanClass);
 			classDescription.hasField = !classDescription.fieldDescMap.isEmpty();
 		} catch (IOException | IntrospectionException e) {
 			throw new BeetlException(BeetlException.ERROR, "ASM增强功能，生成类:" + beanClass.getName() + "时发生错误", e);
@@ -83,13 +83,13 @@ final class BeanEnhanceUtils {
 		classDescription.propertyDescriptors = propList;
 	}
 
-
 	private static void buildFieldDescMapByProperty(ClassDescription classDescription) {
 		buildFieldDescMap(classDescription, converPropToFieldDesc(classDescription.propertyDescriptors));
 	}
 
 	/**
 	 * 构建 FieldDescription
+	 * 
 	 * @param propList
 	 * @return
 	 */
@@ -117,7 +117,6 @@ final class BeanEnhanceUtils {
 		return fieldDescs;
 	}
 
-
 	private static FieldDescription getBooleanFieldDescription(PropertyDescriptor prop) {
 		Method curPropReadMethod = prop.getReadMethod();
 		String name = curPropReadMethod.getName();
@@ -129,11 +128,9 @@ final class BeanEnhanceUtils {
 		return booleanDesc;
 	}
 
-
 	private static void buildFieldDescMap(ClassDescription classDescription, List<FieldDescription> allFieldDescs) {
 		// 先对其按照hashCode进行排序，方便后续生产代码
 		allFieldDescs.sort((p1, p2) -> Integer.compare(p1.name.hashCode(), p2.name.hashCode()));
-
 
 		Map<Integer, List<FieldDescription>> filedDescMap = new LinkedHashMap<>();
 		int hashCode = 0;
@@ -149,7 +146,6 @@ final class BeanEnhanceUtils {
 		}
 		classDescription.fieldDescMap = filedDescMap;
 	}
-
 
 	private static String getMethodDesc(Method readMethod) {
 		String descriptor = Type.getMethodDescriptor(readMethod);
@@ -194,23 +190,30 @@ final class BeanEnhanceUtils {
 	 * @param target
 	 * @return
 	 */
-	private static int checkGenreal(Class<?> target) {
+	private static MethodDescription getGeneralGetMethodDescription(Class<?> target) {
+		MethodDescription md = new MethodDescription();
+		md.name = BeanEnhanceConstants.GET_METHOD_NAME;
 		try {
-			Method m = target.getMethod("get", new Class[]{java.lang.Object.class});
-			return 1;
+			Method getMethod = target.getMethod(md.name, new Class[]{java.lang.Object.class});
+			md.parameterInternalName = BeanEnhanceConstants.OBJECT_INTERNAL_NAME;
+			md.desc = getMethodDesc(getMethod);
+			md.returnTypeInternalName = getInternalName(getMethod.getReturnType().getName());
+			return md;
 		} catch (Exception ex) {
 			// ingnore
 		}
 
 		try {
-			Method m = target.getMethod("get", new Class[]{java.lang.String.class});
-			return 2;
+			Method getMethod = target.getMethod(md.name, new Class[]{java.lang.String.class});
+			md.parameterInternalName = BeanEnhanceConstants.STRING_INTERNAL_NAME;
+			md.desc = getMethodDesc(getMethod);
+			md.returnTypeInternalName = getInternalName(getMethod.getReturnType().getName());
+			return md;
 		} catch (Exception ex) {
 			// ingnore
 		}
 
-
-		return 0;
+		return null;
 	}
 
 	private static String createGetterMethodName(ClassDescription classDescription, String propertyName) {
@@ -229,7 +232,6 @@ final class BeanEnhanceUtils {
 	static String getSimpleClassName(String className) {
 		return className.substring(className.lastIndexOf(PunctuationConstants.PERIOD) + 1);
 	}
-
 
 	static String getInternalName(final String className) {
 		return className.replace(PunctuationConstants.PERIOD_CHAR, PunctuationConstants.SLASH_CHAR);

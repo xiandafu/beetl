@@ -76,6 +76,15 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 	}
 
 	@Test
+	public void testOnlyGetString() throws Exception {
+		OnlyGetString onlyGetStr = new OnlyGetString();
+		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
+		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(onlyGetStr, "填写"));
+		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(onlyGetStr, "写"));
+		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(onlyGetStr, "cs"));
+	}
+
+	@Test
 	public void testEmpty() throws Exception {
 		String name = "zhangsan";
 		TestObject empty = new TestObject(name);

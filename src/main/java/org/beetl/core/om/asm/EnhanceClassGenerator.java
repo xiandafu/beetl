@@ -85,7 +85,6 @@ import org.objectweb.asm.Opcodes;
  */
 class EnhanceClassGenerator implements Opcodes {
 
-
 	/**
 	 * 实例方法this变量位置
 	 */
@@ -132,10 +131,9 @@ class EnhanceClassGenerator implements Opcodes {
 	 * 生成beanClass对应的增强类的字节流
 	 * 
 	 * @param beanClass
-	 * @param usePropertyDescriptor
-	 *            是否使{@link java.beans.PropertyDescriptor}来生成属性描述
+	 * @param usePropertyDescriptor 是否使{@link java.beans.PropertyDescriptor}来生成属性描述
 	 * @return
-	 * @throws Exception
+	 * @throws Exceptionsss
 	 */
 	static byte[] generate(Class<?> beanClass, boolean usePropertyDescriptor) throws Exception {
 		return generate(beanClass, BeanEnhanceConstants.SUPER_CLASS_NAME, null, usePropertyDescriptor);
@@ -145,10 +143,8 @@ class EnhanceClassGenerator implements Opcodes {
 	 * 生成beanClass对应的增强类的字节流
 	 * 
 	 * @param beanClass
-	 * @param superName
-	 *            父类 形式如 java.lang.String
-	 * @param interfaces
-	 *            要实现的接口 形式如 java.lang.String
+	 * @param superName  父类 形式如 java.lang.String
+	 * @param interfaces 要实现的接口 形式如 java.lang.String
 	 * @return
 	 * @throws Exception
 	 */
@@ -274,21 +270,25 @@ class EnhanceClassGenerator implements Opcodes {
 			}
 
 		}
-		if (classDescription.generalGetType == 1) {
+		if (classDescription.generalGetMethodDesc != null && BeanEnhanceConstants.OBJECT_INTERNAL_NAME
+				.equals(classDescription.generalGetMethodDesc.parameterInternalName)) {
+			// 是否有get(Object)方法
 			mv.visitLabel(df);
 			mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 			mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);
 			mv.visitVarInsn(ALOAD, VAR_ATTR_INDEX);
 			mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, BeanEnhanceConstants.GET_METHOD_NAME,
-					BeanEnhanceConstants.GET_METHOD_DESC, false);
+					classDescription.generalGetMethodDesc.desc, false);
 			mv.visitInsn(ARETURN);
-		} else if (classDescription.generalGetType == 2) {
+		} else if (classDescription.generalGetMethodDesc != null && BeanEnhanceConstants.STRING_INTERNAL_NAME
+				.equals(classDescription.generalGetMethodDesc.parameterInternalName)) {
+			// 是否有get(String)方法
 			mv.visitLabel(df);
 			mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 			mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);
 			mv.visitVarInsn(ALOAD, LOCAL_VAR_ATTR_STRING_INDEX);
 			mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, BeanEnhanceConstants.GET_METHOD_NAME,
-					BeanEnhanceConstants.GET_BY_STRING_METHOD_DESC, false);
+					classDescription.generalGetMethodDesc.desc, false);
 			mv.visitInsn(ARETURN);
 		} else {
 			mv.visitLabel(df);
@@ -298,7 +298,7 @@ class EnhanceClassGenerator implements Opcodes {
 			mv.visitLdcInsn("ATTRIBUTE_NOT_FOUND");
 			mv.visitTypeInsn(NEW, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME);
 			mv.visitInsn(DUP);
-			mv.visitLdcInsn("属性未找到("+classDescription.target.getName()+") : ");
+			mv.visitLdcInsn("属性未找到(" + classDescription.target.getName() + ") : ");
 			mv.visitMethodInsn(INVOKESPECIAL, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME, "<init>",
 					"(Ljava/lang/String;)V", false);
 			mv.visitVarInsn(ALOAD, LOCAL_VAR_ATTR_STRING_INDEX);
@@ -322,15 +322,17 @@ class EnhanceClassGenerator implements Opcodes {
 		mv.visitTypeInsn(CHECKCAST, internalClassName);
 		mv.visitVarInsn(ASTORE, 3);// 此时不需要转换String与计算hashCode，所以是第三个变量
 		Label df = new Label();
-		if (classDescription.generalGetType == 1) {
+		if (classDescription.generalGetMethodDesc != null && BeanEnhanceConstants.OBJECT_INTERNAL_NAME
+				.equals(classDescription.generalGetMethodDesc.parameterInternalName)) {
 			mv.visitLabel(df);
 			mv.visitFrame(Opcodes.F_APPEND, 1, new Object[]{internalClassName}, 0, null);
 			mv.visitVarInsn(ALOAD, 3);
 			mv.visitVarInsn(ALOAD, VAR_ATTR_INDEX);
 			mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, BeanEnhanceConstants.GET_METHOD_NAME,
-					BeanEnhanceConstants.GET_METHOD_DESC, false);
+					classDescription.generalGetMethodDesc.desc, false);
 			mv.visitInsn(ARETURN);
-		} else if (classDescription.generalGetType == 2) {
+		} else if (classDescription.generalGetMethodDesc != null && BeanEnhanceConstants.STRING_INTERNAL_NAME
+				.equals(classDescription.generalGetMethodDesc.parameterInternalName)) {
 			Label toStringLabel = new Label();
 			mv.visitLabel(toStringLabel);
 			mv.visitVarInsn(ALOAD, VAR_ATTR_INDEX);
@@ -344,7 +346,7 @@ class EnhanceClassGenerator implements Opcodes {
 			mv.visitVarInsn(ALOAD, 3);// internalClassName
 			mv.visitVarInsn(ALOAD, 4);// attrName.toString()
 			mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, BeanEnhanceConstants.GET_METHOD_NAME,
-					BeanEnhanceConstants.GET_BY_STRING_METHOD_DESC, false);
+					classDescription.generalGetMethodDesc.desc, false);
 			mv.visitInsn(ARETURN);
 		} else {
 			Label toStringLabel = new Label();
@@ -377,7 +379,6 @@ class EnhanceClassGenerator implements Opcodes {
 		}
 		mv.visitMaxs(1, 4);
 	}
-
 
 	private static void handleSameHashAttr(ClassDescription classDescription, MethodVisitor mv,
 			List<FieldDescription> fieldDescs, String internalClassName, Label defaultLabel) {

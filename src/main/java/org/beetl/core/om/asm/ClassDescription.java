@@ -15,8 +15,10 @@ class ClassDescription {
 
 	List<PropertyDescriptor> propertyDescriptors;
 
-	// 0 ,1 get(Object),2 get(String)
-	int generalGetType = 0;
+	/**
+	 * get(Object)或get(String)或null
+	 */
+	MethodDescription generalGetMethodDesc;
 
 	Map<Integer, List<FieldDescription>> fieldDescMap;
 

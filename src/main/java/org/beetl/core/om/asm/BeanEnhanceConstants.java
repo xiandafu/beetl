@@ -38,19 +38,4 @@ final class BeanEnhanceConstants {
 
 	static final String GET_METHOD_NAME = "get";
 
-	static final String GET_METHOD_DESC = "(Ljava/lang/Object;)Ljava/lang/Object;";
-
-	static final String GET_BY_STRING_METHOD_DESC = "(Ljava/lang/String;)Ljava/lang/Object;";
-
-	/**
-	 * 表示方法：Object get(Object)
-	 */
-	static final String GET_METHOD_NAME_DESC = GET_METHOD_NAME + GET_METHOD_DESC;
-
-	/**
-	 * 表示方法：Object get(String)
-	 */
-	static final String GET_BY_STRING_METHOD_NAME_DESC = GET_METHOD_NAME + GET_BY_STRING_METHOD_DESC;
-
-
 }
