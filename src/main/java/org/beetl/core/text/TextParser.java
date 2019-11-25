@@ -141,12 +141,12 @@ public class TextParser {
 	}
 
 	public static void main(String[] args) throws IOException {
-		Configuration.DelimeterHolder pd = new Configuration.DelimeterHolder("${".toCharArray(), "}".toCharArray(), "#{".toCharArray(),
+		Configuration.DelimeterHolder pd = new Configuration.DelimeterHolder("{{".toCharArray(), "}}".toCharArray(), "{".toCharArray(),
 				"}".toCharArray());
 		Configuration.DelimeterHolder sd = new Configuration.DelimeterHolder("@".toCharArray(), null, "<%".toCharArray(), "%>".toCharArray());
 
 		Configuration.HtmlTagHolder htmlConfig = new Configuration.HtmlTagHolder();;
-		String text = "<% var a='bcd';%>";
+		String text = "{d},{{n}}";
 
 		StringReader str = new StringReader(text);
 		TextParser textParser = new TextParser(null,pd, sd, htmlConfig);

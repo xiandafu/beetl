@@ -33,6 +33,8 @@ public class Delimeter {
             if (match) {
                 isMatchFirstGroup = false;
             }
+        }else{
+            isMatchFirstGroup = true;
         }
         return match;
     }

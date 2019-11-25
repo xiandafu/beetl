@@ -8,67 +8,45 @@ import org.beetl.core.exception.BeetlException;
 import org.beetl.core.exception.ErrorInfo;
 import org.beetl.core.io.NoLockStringWriter;
 import org.beetl.core.resource.ClasspathResourceLoader;
+import org.beetl.core.resource.MapResourceLoader;
+import org.beetl.core.resource.StringTemplateResourceLoader;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 /**
- *
- * 
  * @author xiandafu
- *
  */
 public class Test {
-		public static void main(String[] args) throws Exception {
-//			TestUserAccess ta = new TestUserAccess();
-//			System.out.println(ta.value(new TestUser(),"isSuccess"));
-			System.out.println("isSuccess".hashCode());
-			System.out.println("success".hashCode());
-		ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("lab/");
-		Configuration cfg = Configuration.defaultConfiguration();
+    public static void main(String[] args) {
+        Template t = null;
+        try {
+//初始化代码
+            StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();
+            Configuration cfg = Configuration.defaultConfiguration();
+            cfg.setPlaceholderStart2("{");
+            cfg.setPlaceholderEnd2("}");
+            cfg.setPlaceholderStart("{{");
+            cfg.setPlaceholderEnd("}}");
+            cfg.setEngine("org.beetl.core.engine.FastRuntimeEngine");
+            GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
+            MapResourceLoader dbLoader = new MapResourceLoader();
 
-		cfg.setDirectByteOutput(true);
-		cfg.getResourceMap().put("tagRoot", "");
-		cfg.getPkgList().add("org.beetl.core.lab.");
-		cfg.setStatementStart("<%");
-		cfg.setStatementEnd("%>");
-		// js 里专用
-//		cfg.setStatementStart2("//#");
-//		cfg.setStatementEnd2(null);
-//		cfg.setPlaceholderStart2("{");
-//		cfg.setPlaceholderEnd2();
+            String str = "今天是星期{day},我的名字叫{{name}},性别{sex}";
+			dbLoader.put("1",str);
+            t = gt.getTemplate("1", dbLoader);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("name", "lisr");
+        map.put("day", "星期五");
+        map.put("sex", "男");
+        t.binding(map);
+        String str = t.render();
+        System.out.println(str);
 
-		GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
-		gt.registerTag("table",TableTag.class);
-		gt.registerTag("col",ColTag.class);
-//		TestUser user = new TestUser("a");
-//		TestUser older = new TestUser("b");
-
-
-		List list = new ArrayList();
-		list.add(1);
-		list.add(2);
-		Iterator it = list.iterator();
-
-
-
-//		user.set("older",older);
-		for (int i = 0; i < 1; i++) {
-
-			Template t = gt.getTemplate("/hello.txt");
-//			t.binding("json",json);
-			t.binding("user",new TestUser());
-
-//			t.binding("title","hello");
-			String str = t.render();
-			System.out.println(str);
-
-
-		}
-
-
-	}
+    }
 
 
 }

@@ -4,7 +4,7 @@
 
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl</artifactId>
-	<version>3.0.11.RELEASE</version>
+	<version>3.0.15.RELEASE</version>
 	<packaging>jar</packaging>
 	<name>com.ibeetl:beetl</name>
 	<description>java template language</description>
@@ -196,9 +196,9 @@
 					<source>1.8</source>
 					<target>1.8</target>
 					<encoding>UTF-8</encoding>
-					 <!--<excludes>-->
-	                    <!--<exclude>org/beetl/core/lab/**</exclude>-->
-	                <!--</excludes>-->
+					 <excludes>
+	                    <exclude>org/beetl/core/lab/**</exclude>
+	                </excludes>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -285,10 +285,7 @@
 			<id>snapshots</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
-		<repository>
-			<id>releases</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
+
 	</distributionManagement>
 
 </project>
