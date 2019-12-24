@@ -115,24 +115,7 @@
 			<artifactId>struts2-core</artifactId>
 			<scope>provided</scope>
 			<optional>true</optional>
-			<version>2.3.24</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.struts.xwork</groupId>
-			<artifactId>xwork-core</artifactId>
-			<scope>provided</scope>
-			<optional>true</optional>
-			<version>2.3.24</version>
-			<exclusions>
-				<exclusion>
-					<groupId>asm</groupId>
-					<artifactId>asm</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>asm</groupId>
-					<artifactId>asm-commons</artifactId>
-				</exclusion>
-			</exclusions>
+			<version>2.5.22</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jodd</groupId>
