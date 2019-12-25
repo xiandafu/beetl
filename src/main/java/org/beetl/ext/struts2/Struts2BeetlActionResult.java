@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.dispatcher.StrutsResultSupport;
+import org.apache.struts2.result.StrutsResultSupport;
 import org.apache.struts2.views.util.ResourceUtil;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
