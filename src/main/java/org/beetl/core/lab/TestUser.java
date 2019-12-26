@@ -7,7 +7,7 @@ import java.util.*;
  *
  *
  */
-public class TestUser
+public class TestUser implements  BaseEntity
 {
 	String name = "default";
 

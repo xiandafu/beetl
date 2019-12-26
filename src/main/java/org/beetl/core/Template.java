@@ -81,7 +81,7 @@ public class Template {
 	}
 
 	/**
-	 * 获取模板输出的文本,输出到Writer里
+	 * 获取模板输出的文本,输出到Writer里.可以使用{@code CachedStringWriter}来提高极限性能
 	 * 
 	 * @param writer
 	 * @throws BeetlException
