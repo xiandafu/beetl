@@ -29,7 +29,11 @@ public class HtmlTagStartFragment extends ScriptFragment {
 			} else if(html.hasExportBinding){
 				//AntlrProgramBuilder 遇到此htmltagexport 会认为是htmltagvar，但变量作用域不限制
 				script.append("htmltagexport");
-			}else {
+			} else if(html.hasRootExportBinding){
+				//AntlrProgramBuilder 遇到此htmltagRootexport 会认为是htmltagvar，变量作用域在整个模板，相当于在模板最开始定义了一个变量
+				script.append("htmltagRootExport");
+			}
+			else {
 				script.append("htmltag");
 
 			}
@@ -66,7 +70,7 @@ public class HtmlTagStartFragment extends ScriptFragment {
 			}
 
 
-			if (html.hasVarBinding||html.hasExportBinding) {
+			if (html.hasVarBinding||html.hasExportBinding||html.hasRootExportBinding) {
 				if (map.size() == 0) {
 					// 保持三个参数，第一个为标签函数名，第二个为属性，第三个为申明的变量
 					script.append(",{}");

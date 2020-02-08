@@ -37,6 +37,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.beetl.core.exception.BeetlException;
 import org.beetl.core.statement.ASTNode;
 import org.beetl.core.statement.GrammarToken;
 import org.beetl.core.statement.IGoto;
@@ -80,6 +81,8 @@ public class ProgramBuilderContext
 		current = blockVar;
 	}
 
+
+
 	public void exitBlock()
 	{
 		current = current.parent;
@@ -89,6 +92,45 @@ public class ProgramBuilderContext
 	{
 		this.addVar(first.token.text);
 		this.setVarPosition(first.token.text, first);
+	}
+
+	/**
+	 * 动态添加一个顶级变量
+	 * @param first
+	 * @return
+	 */
+	public boolean addRootVarAdnPosition(ASTNode first){
+		String varName =first.token.text;
+		//需要查找是否已经被定义过了，不能定义
+		if(searchVar(root,varName)!=null){
+			return true;
+		}
+
+		VarDescrption varDesc = new VarDescrption();
+		varDesc.setVarName(varName);
+		varDesc.where.add(first);
+		root.getVars().put(varName,varDesc);
+		return false;
+	}
+
+
+	/**
+	 * 自上向下查找
+	 * @param ctx
+	 * @param name
+	 * @return
+	 */
+	public ASTNode searchVar(BlockEnvContext ctx,String name){
+		if(ctx.getVarDescrption(name)!=null){
+			return ctx.getVarDescrption(name).where.get(0);
+		}
+		for(BlockEnvContext child:ctx.blockList){
+			ASTNode node = searchVar(child,name);
+			if(node!=null){
+				return node;
+			}
+		}
+		return null;
 	}
 
 	/**在当前context定义变量
@@ -102,7 +144,7 @@ public class ProgramBuilderContext
 	}
 
 	/**
-	 * 变量属性，展示没用上，本来想用在ide属性提示
+	 * 变量属性，展示没用上，本来想用在ide属性提示,但ide插件门槛太高了，搞不定
 	 * @param varName
 	 * @param attrName
 	 */

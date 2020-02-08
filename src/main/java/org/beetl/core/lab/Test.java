@@ -23,10 +23,8 @@ import java.util.List;
  */
 public class Test {
 		public static void main(String[] args) throws Exception {
-//			TestUserAccess ta = new TestUserAccess();
-//			System.out.println(ta.value(new TestUser(),"isSuccess"));
-			System.out.println("isSuccess".hashCode());
-			System.out.println("success".hashCode());
+
+
 		ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("lab/");
 		Configuration cfg = Configuration.defaultConfiguration();
 
@@ -53,23 +51,11 @@ public class Test {
 		list.add(2);
 		Iterator it = list.iterator();
 
-
-
-//		user.set("older",older);
 		for (int i = 0; i < 1; i++) {
 
 			Template t = gt.getTemplate("/hello.txt");
-//			t.binding("json",json);
 			t.binding("user",new TestUser());
-
-//			t.binding("title","hello");
-
-			     Writer writer = CachedStringWriter.buffers.get();
-			t.renderTo(writer);
-
-			System.out.println(writer.toString());
-
-
+			System.out.println(t.render());
 		}
 
 

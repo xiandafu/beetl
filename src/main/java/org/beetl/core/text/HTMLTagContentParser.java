@@ -49,6 +49,7 @@ class HTMLTagContentParser
 	List<String> crKey = new ArrayList<String>(1);
 	boolean hasVarBinding = false;
 	boolean hasExportBinding = false;
+	boolean hasRootExportBinding = false;
 	Map<String,String> htmlAttributeNameMap = new HashMap<String,String>();
 	String varBidingStr = null;
 	// -1非期望
@@ -60,6 +61,7 @@ class HTMLTagContentParser
 	//默认是var
 	String _var = null;
 	String _export = null;
+	String _rootExport = null;
 	static char ENT_TAG = '>';
 	static char[] ENT_TAGS = new char[]
 	{ '/', '>' };
@@ -86,9 +88,11 @@ class HTMLTagContentParser
 		if(bindConf.length==1) {
 			_var = bindConf[0];
 			_export= "export";
+			_rootExport="$export$";
 		}else {
 			_var = bindConf[0];
 			_export= bindConf[1];
+			_rootExport="$"+_export;
 		}
 	}
 
@@ -239,6 +243,10 @@ class HTMLTagContentParser
 				return;
 			}else if(lastKey.equals(this._export)){
 				this.hasExportBinding = true;
+				this.varBidingStr = value;
+				return;
+			}else if(lastKey.equals(this._rootExport)){
+				this.hasRootExportBinding = true;
 				this.varBidingStr = value;
 				return;
 			}
@@ -556,7 +564,7 @@ class HTMLTagContentParser
 	 */
 	private boolean isID(char c)
 	{
-		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'|c == '-')
+		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'||c == '-'|c=='$')
 		{
 			return true;
 		}

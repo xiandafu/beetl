@@ -693,27 +693,48 @@ public class AntlrProgramBuilder {
 		}
 
 		Expression[] expList = this.parseExpressionCtxList(list);
-		if (id.equals("htmltagvar")||id.equals("htmltagexport")) {
+		if (id.equals("htmltagvar")||id.equals("htmltagexport")||id.equals("htmltagRootExport")) {
 			int line = fc.functionNs().getStart().getLine();
 			// 标签具有绑定变量功能
 			Literal l = (Literal) expList[2];
 			String varList = (String) l.obj;
 			String[] vars = varList.split(",");
-			// 定义的变量仅仅在标签体内可见
-			if(id.equals("htmltagvar")) {
-				this.pbCtx.enterBlock();
-			}
+			Statement block = null;
 			VarDefineNode[] varDefine = new VarDefineNode[vars.length];
-			for (int i = 0; i < vars.length; i++) {
-				VarDefineNode varNode = new VarDefineNode(this.getBTToken(vars[i].trim(), line));
-				this.pbCtx.addVarAndPostion(varNode);
-				varDefine[i] = varNode;
+			if(id.equals("htmltagRootExport")) {
+				for (int i = 0; i < vars.length; i++) {
+					VarDefineNode varNode = new VarDefineNode(this.getBTToken(vars[i].trim(), line));
+					boolean hasDefined = pbCtx.addRootVarAdnPosition(varNode);
+					if(hasDefined){
+						String name = varNode.token.text;
+						ASTNode node= pbCtx.searchVar(pbCtx.root,name);
+						BeetlException ex = new BeetlException(BeetlException.VAR_ALREADY_DEFINED, "动态定义的模板顶级变量"+name+ "已经定义在"+node.token.line+" 行");
+						ex.pushToken(varNode.token);
+						throw ex;
+					}
+					varDefine[i] = varNode;
+				}
+				BlockContext blockCtx = fc.block();
+				block = parseBlock(blockCtx.statement(), blockCtx);
+			}else{
+				if(id.equals("htmltagvar")) {
+					// htmltagvar定义的变量仅仅在标签体内可见,htmltagexport则跟随标签所在的范围
+					this.pbCtx.enterBlock();
+				}
+
+				for (int i = 0; i < vars.length; i++) {
+					VarDefineNode varNode = new VarDefineNode(this.getBTToken(vars[i].trim(), line));
+					this.pbCtx.addVarAndPostion(varNode);
+					varDefine[i] = varNode;
+				}
+				BlockContext blockCtx = fc.block();
+				block = parseBlock(blockCtx.statement(), blockCtx);
+				if(id.equals("htmltagvar")) {
+					this.pbCtx.exitBlock();
+				}
 			}
-			BlockContext blockCtx = fc.block();
-			Statement block = parseBlock(blockCtx.statement(), blockCtx);
-			if(id.equals("htmltagvar")) {
-				this.pbCtx.exitBlock();
-			}
+
+
 			
 			TagFactory tf = this.gt.getTagFactory(id);
 			if (tf == null) {
