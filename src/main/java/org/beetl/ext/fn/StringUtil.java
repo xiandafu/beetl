@@ -1,6 +1,6 @@
 /*
  [The "BSD license"]
- Copyright (c) 2011-2013  闲大赋 (李家智)
+ Copyright (c) 2011-2020  闲大赋 (李家智)
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -29,12 +29,13 @@ package org.beetl.ext.fn;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
  *  操作字符串的简便方法，如：<p>
  *  ${strutil.startWith("hello",'he')}
- * @author joeli
+ * @author xiandafu,方志文
  *
  */
 public class StringUtil
@@ -166,6 +167,35 @@ public class StringUtil
 		if (str == null)
 			throw new NullPointerException("Error:lastIndex(null)");
 		return str.lastIndexOf(search);
+	}
+
+	/**
+	 * 完成字符串扩展到固定长度
+	 * @param str 需要扩展的字符串
+	 * @param length 长度
+	 * @param fill 填充字符
+	 * @param fillFront 是否前填充，否则后填充
+	 * @param truncation 如果过长是否需是要截断
+	 * @return
+	 */
+	public static String extendString(String str,int length,char fill,boolean fillFront,boolean truncation){
+		if(str == null)return null;
+		if(length < 0) throw  new IllegalArgumentException("length must bigger than 0.");
+		if(str.length() > length) return truncation?str.substring(str.length()-length):str;
+		char[] cs = new char[length-str.length()];
+		Arrays.fill(cs,fill);
+		return fillFront?new String(cs)+str:str+new String(cs);
+	}
+
+	/**
+	 * 把数字扩展到固定长度.
+	 * 不足的在前面填充0
+	 * @param value 数字值
+	 * @param length 长度
+	 * @return 对应的长度的字串
+	 */
+	public static String extendString(int value,int length){
+		return extendString(String.valueOf(value),length,'0',true,true);
 	}
 
 }
