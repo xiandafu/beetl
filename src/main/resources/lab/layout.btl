@@ -1,3 +1,11 @@
-go ${title}
-${layoutContent}
-go1
+<% #fragment frag1:{ %>
+
+内容片段一
+
+<%}%>
+
+<% #fragment frag2:{ %>
+
+内容片段二
+
+<%}%>

@@ -27,38 +27,36 @@
  */
 package org.beetl.ext.tag.html;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.beetl.core.ByteWriter;
 import org.beetl.core.Resource;
 import org.beetl.core.Template;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.tag.Tag;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 /**
  *  一个html标签方式的tag,同includeTag
  *  
- *  <#html:include file=""  arg1="" arg2=""/>
+ *  <#html:includeFragment file=""  fragment="" arg1="" arg2=""/>
  * @author xiandafu
  *
  */
-public class IncludeResourceHtmlTag extends Tag {
+public class IncludeResourceFragmentHtmlTag extends Tag {
 
 	@Override
 	public void render() {
 		String resourceId = getRelResourceId();
-
-		Template t = gt.getTemplate(resourceId, this.ctx);
+		Map<String, Object> attrs = ((Map<String, Object>) this.args[1]);
+		String fragment = (String)attrs.get("fragment");
+		Template t = gt.getAjaxTemplate(resourceId,fragment);
+		t.isRoot = false;
 		// 快速复制父模板的变量
 		t.binding(this.ctx.globalVar);
-
-		@SuppressWarnings("unchecked")
-		Map<String, Object> attrs = ((Map<String, Object>) this.args[1]);
 		for (Entry<String, Object> entry : attrs.entrySet()) {
 			String attrName = entry.getKey();
-			if (attrName.equals("file")) {
-				// 子模板不设置file属性
+			if (attrName.equals("file")||attrName.equals("fragment")) {
 				continue;
 			}
 			Object value = entry.getValue();

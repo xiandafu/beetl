@@ -25,45 +25,55 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.beetl.ext.tag.html;
-
-import java.util.Map;
-import java.util.Map.Entry;
+package org.beetl.ext.tag;
 
 import org.beetl.core.ByteWriter;
 import org.beetl.core.Resource;
 import org.beetl.core.Template;
-import org.beetl.core.exception.BeetlException;
 import org.beetl.core.tag.Tag;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 /**
- *  一个html标签方式的tag,同includeTag
- *  
- *  <#html:include file=""  arg1="" arg2=""/>
- * @author xiandafu
+ * 包含模板的一部分内容，类似ajax渲染
+ * <pre>
+ * <%
+ * includeFragment("/layout.btl","c1"){}
+ * %>
+ * </pre>
  *
+ * <pre>
+ * //layout.btl
+ * <%
+ * #fragment c1:{
+ * print("ok c1" +1/0);
+ * }
+ * %>
+ * <%
+ * #fragment c2:{
+ * print("ok c2");
+ * }
+ * %>
+ * </pre>
  */
-public class IncludeResourceHtmlTag extends Tag {
+public class IncludeFragmentTag extends Tag {
 
 	@Override
 	public void render() {
 		String resourceId = getRelResourceId();
-
-		Template t = gt.getTemplate(resourceId, this.ctx);
+		String key = (String)this.args[1];
+		Template t = gt.getAjaxTemplate(resourceId,key);
+		t.isRoot = false;
 		// 快速复制父模板的变量
 		t.binding(this.ctx.globalVar);
-
-		@SuppressWarnings("unchecked")
-		Map<String, Object> attrs = ((Map<String, Object>) this.args[1]);
-		for (Entry<String, Object> entry : attrs.entrySet()) {
-			String attrName = entry.getKey();
-			if (attrName.equals("file")) {
-				// 子模板不设置file属性
-				continue;
+		if (this.args.length == 3) {
+			@SuppressWarnings("unchecked")
+			Map<String, Object> map = (Map<String, Object>) this.args[2];
+			for (Entry<String, Object> entry : map.entrySet()) {
+				Object value = entry.getValue();
+				t.binding(entry.getKey(), value);
 			}
-			Object value = entry.getValue();
-			t.binding(attrName, value);
-
 		}
 
 		ByteWriter bw = ctx.byteWriter;
@@ -72,17 +82,10 @@ public class IncludeResourceHtmlTag extends Tag {
 	}
 
 	protected String getRelResourceId() {
+
 		Resource sibling = ctx.getResource();
-		return gt.getResourceLoader().getResourceId(sibling, this.getTargetResource());
-	}
+		// 不要使用resource的loder，因为有可能是
+		return gt.getResourceLoader().getResourceId(sibling, (String) this.args[0]);
 
-
-	protected String getTargetResource() {
-		@SuppressWarnings("unchecked")
-		String targetResourceId = (String) ((Map<String, Object>) this.args[1]).get("file");
-		if (targetResourceId == null || targetResourceId.trim().length() == 0) {
-			throw new BeetlException(BeetlException.ERROR, "缺少 file属性 ");
-		}
-		return targetResourceId;
 	}
 }
