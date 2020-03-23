@@ -262,41 +262,16 @@ public class GroupTemplate {
 	}
 
 	protected void initVirtual() {
-		// 可以根据类型做一定优化
-		this.registerVirtualAttributeEval(new VirtualAttributeEval() {
-			public Integer eval(Object o, String attributeName, Context ctx) {
-				if (attributeName.equals("size")) {
-					if (o instanceof Collection) {
-						return ((Collection) o).size();
-					} else if (o instanceof Map) {
-						return ((Map) o).size();
-					} else if (o.getClass().isArray()) {
 
-						if (o.getClass().getComponentType().isPrimitive()) {
-							return PrimitiveArrayUtil.getSize(o);
-						} else {
-							return ((Object[]) o).length;
-						}
 
-					} else {
-						throw new IllegalArgumentException();
-					}
 
-				} else {
-					throw new IllegalArgumentException();
-				}
-
-			}
-
-			public boolean isSupport(Class c, String attributeName) {
-				if ((Map.class.isAssignableFrom(c) || Collection.class.isAssignableFrom(c) || c.isArray())
-						&& attributeName.equals("size")) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});
+		Map<String, String> map = conf.getVirtualClass();
+		for(Entry<String,String> entry:map.entrySet()){
+			String attr = entry.getKey();
+			Class clz = ObjectUtil.getClassByName(entry.getValue(),this.classLoader);
+			VirtualAttributeEval virtualAttributeEval = (VirtualAttributeEval)ObjectUtil.instance(entry.getValue(),this.classLoader);
+			this.registerVirtualAttributeEval(virtualAttributeEval);
+		}
 	}
 
 	protected void initBuffers(){
@@ -853,5 +828,41 @@ public class GroupTemplate {
 
 	public void setEngine(TemplateEngine engine) {
 		this.engine = engine;
+	}
+
+	public static class SizeVirtualAttributeEval implements VirtualAttributeEval{
+
+		public Integer eval(Object o, String attributeName, Context ctx) {
+			if (attributeName.equals("size")) {
+				if (o instanceof Collection) {
+					return ((Collection) o).size();
+				} else if (o instanceof Map) {
+					return ((Map) o).size();
+				} else if (o.getClass().isArray()) {
+
+					if (o.getClass().getComponentType().isPrimitive()) {
+						return PrimitiveArrayUtil.getSize(o);
+					} else {
+						return ((Object[]) o).length;
+					}
+
+				} else {
+					throw new IllegalArgumentException();
+				}
+
+			} else {
+				throw new IllegalArgumentException();
+			}
+
+		}
+
+		public boolean isSupport(Class c, String attributeName) {
+			if ((Map.class.isAssignableFrom(c) || Collection.class.isAssignableFrom(c) || c.isArray())
+					&& attributeName.equals("size")) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 }

@@ -4,13 +4,9 @@ package org.beetl.core.lab;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
-import org.beetl.core.exception.BeetlException;
-import org.beetl.core.exception.ErrorInfo;
-import org.beetl.core.io.CachedStringWriter;
-import org.beetl.core.io.NoLockStringWriter;
+import org.beetl.core.ReUseTemplate;
 import org.beetl.core.resource.ClasspathResourceLoader;
 
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -50,12 +46,12 @@ public class Test {
 		list.add(1);
 		list.add(2);
 		Iterator it = list.iterator();
+		Template t = gt.getTemplate("/hello.txt");
+		ReUseTemplate st = new ReUseTemplate(t);
+		for (int i = 0; i < 100000;i++) {
 
-		for (int i = 0; i < 1; i++) {
-
-			Template t = gt.getTemplate("/hello.txt");
-			t.binding("user",new TestUser());
-			System.out.println(t.render());
+			st.binding("user",new TestUser());
+			System.out.println(i+" "+st.render());
 		}
 
 
