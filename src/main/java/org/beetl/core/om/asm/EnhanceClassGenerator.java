@@ -2,10 +2,10 @@ package org.beetl.core.om.asm;
 
 import java.util.List;
 
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
+import org.beetl.ow2.asm.ClassWriter;
+import org.beetl.ow2.asm.Label;
+import org.beetl.ow2.asm.MethodVisitor;
+import org.beetl.ow2.asm.Opcodes;
 
 
 /**
@@ -133,7 +133,7 @@ class EnhanceClassGenerator implements Opcodes {
 	 * @param beanClass
 	 * @param usePropertyDescriptor 是否使{@link java.beans.PropertyDescriptor}来生成属性描述
 	 * @return
-	 * @throws Exceptionsss
+	 * @throws Exception
 	 */
 	static byte[] generate(Class<?> beanClass, boolean usePropertyDescriptor) throws Exception {
 		return generate(beanClass, BeanEnhanceConstants.SUPER_CLASS_NAME, null, usePropertyDescriptor);

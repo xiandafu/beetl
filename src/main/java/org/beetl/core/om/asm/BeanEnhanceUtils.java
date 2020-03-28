@@ -15,10 +15,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.beetl.core.exception.BeetlException;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldNode;
+import org.beetl.ow2.asm.ClassReader;
+import org.beetl.ow2.asm.Type;
+import org.beetl.ow2.asm.tree.ClassNode;
+import org.beetl.ow2.asm.tree.FieldNode;
 
 /**
  * 

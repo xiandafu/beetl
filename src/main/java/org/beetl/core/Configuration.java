@@ -190,6 +190,9 @@ public class Configuration {
 	HtmlTagHolder tagConf = null;
 
 
+	ClassLoader classLoader = Thread.currentThread().getContextClassLoader() != null
+			? Thread.currentThread().getContextClassLoader()
+			: Configuration.class.getClassLoader();
 
 
 	public Configuration() throws IOException {
@@ -388,31 +391,55 @@ public class Configuration {
 	}
 
 	private void addTag(String key, String value) {
+		value = checkValue(value);
+		if(value==null){
+			return ;
+		}
 		String name = this.getExtName(key);
 		this.tagMap.put(name, value);
 	}
 
 	private void addVirtual(String key, String value) {
+		value = checkValue(value);
+		if(value==null){
+			return ;
+		}
 		String name = this.getExtName(key);
 		this.virtualClass.put(name, value);
 	}
 
 	private void addDefaultFormat(String key, String value) {
+		value = checkValue(value);
+		if(value==null){
+			return ;
+		}
 		String name = this.getExtName(key);
 		this.defaultFormatMap.put(name, value);
 	}
 
 	private void addFormat(String key, String value) {
+		value = checkValue(value);
+		if(value==null){
+			return ;
+		}
 		String name = this.getExtName(key);
 		this.formatMap.put(name, value);
 	}
 
 	private void addFunction(String key, String value) {
+		value = checkValue(value);
+		if(value==null){
+			return ;
+		}
 		String name = this.getExtName(key);
 		this.fnMap.put(name, value);
 	}
 
 	private void addFunctionPackage(String key, String value) {
+		value = checkValue(value);
+		if(value==null){
+			return ;
+		}
 		String name = this.getExtName(key);
 		this.fnPkgMap.put(name, value);
 	}
@@ -860,6 +887,22 @@ public class Configuration {
 			}
 
 		}
+
+	}
+
+	protected  String checkValue(String value){
+		String[] vals = value.split(",");
+		if(vals.length==1){
+			return value;
+		}
+		String cls = vals[1];
+		try{
+			//如果此类不存在，则不加入配置
+			Class.forName(cls,false,classLoader);
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
+		return vals[0];
 
 	}
 

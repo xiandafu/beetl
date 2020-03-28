@@ -46,11 +46,7 @@ public class Context {
 
 	protected Context(GroupTemplate gt,ContextBuffer buffer) {
 		this.gt = gt ;
-		if(buffer==null){
-			this.localBuffer = gt.buffers.getContextLocalBuffer();
-		}else{
-			this.localBuffer = buffer;
-		}
+		this.localBuffer = buffer;
 
 	}
 

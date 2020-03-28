@@ -4,7 +4,7 @@
 
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl</artifactId>
-	<version>3.0.21.RELEASE</version>
+	<version>3.1.1.RELEASE</version>
 	<packaging>jar</packaging>
 	<name>com.ibeetl:beetl</name>
 	<description>java template language</description>
@@ -156,18 +156,6 @@
 			<artifactId>mockito-core</artifactId>
 			<version>2.0.31-beta</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm</artifactId>
-			<version>5.2</version>
-			<!--<scope>provided</scope>-->
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm-commons</artifactId>
-			<version>5.2</version>
-			<!--<scope>provided</scope>-->
 		</dependency>
 	</dependencies>
 	<build>
