@@ -15,6 +15,7 @@ import org.beetl.core.om.AttributeAccess;
 import org.beetl.core.om.ReflectBeanAA;
 
 /**
+ *
  * @author laozhaishaozuo@foxmail.com
  *
  */
@@ -27,8 +28,17 @@ public class ASMBeanFactory {
 			? Thread.currentThread().getContextClassLoader()
 			: GroupTemplate.class.getClassLoader();
 
+	ByteClassLoader byteContextLoader = new ByteClassLoader(classLoader);
+
 	boolean usePropertyDescriptor;
 
+	public ASMBeanFactory(){
+		usePropertyDescriptor = false;
+	}
+
+	public ASMBeanFactory(boolean usePropertyDescriptor){
+		this.usePropertyDescriptor = usePropertyDescriptor;
+	}
 	public Object value(Object bean, String attrName) {
 		Class<?> beanClass = bean.getClass();
 		AttributeAccess generatedBean = generateBean(beanClass);
@@ -54,20 +64,27 @@ public class ASMBeanFactory {
 				beanMap.put(beanClass, ReflectBeanAA.instance);
 				return ReflectBeanAA.instance;
 			}
+
+			byte[] code = EnhanceClassGenerator.generate(beanClass, this.usePropertyDescriptor);
+			String generatedBeanName = EnhanceClassGenerator.createGeneratedClassName(beanClass);
+
+			Object obj = loadContextClassLoader(code,generatedBeanName);
+			if(obj!=null){
+				beanMap.put(beanClass, (AttributeAccess) obj);
+				return beanMap.get(beanClass);
+			}
+			//使用加载Bean的classloader，https://gitee.com/xiandafu/beetl/issues/IWLSS
 			ByteClassLoader byteLoader = classLoaders.get(beanClassLoader);
 			if (byteLoader == null) {
 				byteLoader = new ByteClassLoader(beanClassLoader);
 				classLoaders.putIfAbsent(beanClassLoader, byteLoader);
 			}
-			byte[] code = EnhanceClassGenerator.generate(beanClass, this.usePropertyDescriptor);
-
-			String generatedBeanName = EnhanceClassGenerator.createGeneratedClassName(beanClass);
 			Class<?> enhanceClass = byteLoader.findClassByName(generatedBeanName);
 			if (enhanceClass == null) {
 				enhanceClass = byteLoader.defineClass(generatedBeanName, code);
 			}
 			// writeClassToFile(code, beanClass, generatedBeanName);
-			Object obj = enhanceClass.newInstance();
+		    obj = obj = enhanceClass.newInstance();
 			beanMap.put(beanClass, (AttributeAccess) obj);
 			return beanMap.get(beanClass);
 
@@ -76,6 +93,24 @@ public class ASMBeanFactory {
 		}
 
 	}
+
+	private Object loadContextClassLoader(byte[] code,String className){
+		Object obj = null;
+		try{
+
+			Class<?> enhanceClass = byteContextLoader.findClassByName(className);
+			if (enhanceClass == null) {
+				enhanceClass = byteContextLoader.defineClass(className, code);
+			}
+			obj = obj = enhanceClass.newInstance();
+		}catch(Exception ex){
+			return null;
+		}
+
+		return obj;
+	}
+
+
 
 
 	private static void writeClassToFile(final byte[] code, final Class<?> beanClass, final String generatedBeanName) {

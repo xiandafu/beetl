@@ -1,5 +1,8 @@
 package org.beetl.core.text;
 
+/**
+ * html标签的属性名转为为变量名字 ，user-provider 转化userProvider
+ */
 public class DefaultAttributeNameConvert implements AttributeNameConvert {
 
   @Override

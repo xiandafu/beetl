@@ -793,7 +793,9 @@ public class AntlrProgramBuilder {
 
 	
 
-	/** directive dynamic xxx,yy
+	/**
+	 * 1.x，2.x 定义全局安全输出办法，这里兼容，新方法是可以使用配置
+	 * directive dynamic xxx,yy
 	 * @param node
 	 * @return
 	 */
@@ -802,41 +804,34 @@ public class AntlrProgramBuilder {
 		DirectiveExpContext direExp = stContext.directiveExp();
 		Token token = direExp.Identifier().getSymbol();
 		String directive = token.getText().toLowerCase().intern();
+		boolean isSafeOutput = directive.equalsIgnoreCase("safe_output_open");
 		TerminalNode value = direExp.StringLiteral();
 		List<TerminalNode> idNodeList = null;
 		DirectiveExpIDListContext directExpidLisCtx = direExp.directiveExpIDList();
 		if (directExpidLisCtx != null) {
 			idNodeList = directExpidLisCtx.Identifier();
 		}
-
+		//兼容以前语法定义
 		Set<String> idList = null;
 		DirectiveStatement ds = null;
 
 		if (value != null) {
 			String idListValue = this.getStringValue(value.getText());
 			idList = new HashSet(Arrays.asList(idListValue.split(",")));
-			ds = new DirectiveStatement(directive, idList, this.getBTToken(token));
-
+			ds = new DirectiveStatement(isSafeOutput, this.getBTToken(token));
 		} else if (idNodeList != null) {
 			idList = new HashSet<String>();
 			for (TerminalNode t : idNodeList) {
 				idList.add(t.getText());
 			}
-			ds = new DirectiveStatement(directive, idList, this.getBTToken(token));
+			ds = new DirectiveStatement(isSafeOutput, this.getBTToken(token));
 
 		} else {
-			ds = new DirectiveStatement(directive, Collections.EMPTY_SET, this.getBTToken(token));
+			ds = new DirectiveStatement(isSafeOutput, this.getBTToken(token));
 		}
 
-		if (directive.equalsIgnoreCase("safe_output_open".intern())) {
-			this.pbCtx.isSafeOutput = true;
-			return ds;
-		} else if (directive.equalsIgnoreCase("safe_output_close".intern())) {
-			this.pbCtx.isSafeOutput = false;
-			return ds;
-		} else {
-			return ds;
-		}
+		return ds;
+
 	}
 
 	protected FunctionExpression parseFunExp(FunctionCallContext ctx) {
@@ -851,9 +846,6 @@ public class AntlrProgramBuilder {
 			hasSafe = true;
 
 		}
-		if (this.pbCtx.isSafeOutput) {
-			hasSafe = true;
-		}
 
 		VarAttribute[] vs = this.parseVarAttribute(vaListCtx);
 
@@ -865,35 +857,43 @@ public class AntlrProgramBuilder {
 		if (safeParameters.contains(nsId)) {
 
 			if (exps.length != 0) {
-				Expression one = exps[0];
-				if (one instanceof VarRef) {
-					// 强制为变量引用增加一个安全输出
-					VarRef ref = (VarRef) one;
-					if (!ref.hasSafe) {
-						ref.hasSafe = true;
-						ref.safe = null;
+				for(Expression one:exps){
+					if (one instanceof VarRef) {
+						// 强制为变量引用增加一个安全输出
+						VarRef ref = (VarRef) one;
+						if (!ref.hasSafe) {
+							ref.hasSafe = true;
+							ref.safe = null;
+						}
 					}
 				}
+
 			}
 
 		} else if (nsId.equals("has")) {
 			if (exps.length != 0) {
-				Expression one = exps[0];
-				if (one instanceof VarRef) {
-
-					// 强制为变量引用增加一个安全输出
-					VarRef ref = (VarRef) one;
-					if (ref.attributes.length != 0) {
+				for(int i=0;i<exps.length;i++){
+					Expression one = exps[i];
+					if (one instanceof VarRef) {
+						VarRef ref = (VarRef) one;
+						if (ref.attributes.length != 0) {
+							BeetlException ex = new BeetlException(BeetlException.HAS_CALL_ILLEGAL,
+									"has函数用于判断全局变量是否存在，不能判断其属性是否有值，可以使用安全输出符号或者isEmpty函数");
+							ex.pushToken(ref.token);
+							throw ex;
+						}
+						String name = ref.token.text;
+						Literal newExp = gc.createLiteral(name, ref.token);
+						// 将变量名引用转化为字符串
+						exps[i] = newExp;
+					}else{
 						BeetlException ex = new BeetlException(BeetlException.HAS_CALL_ILLEGAL,
-								"has函数用于判断全局变量是否存在，不能判断其属性是否有值，可以使用安全输出符号或者isEmpty函数");
-						ex.pushToken(ref.token);
+								"has函数用于判断全局变量是否存在,请传入一个全局变量名");
+						ex.pushToken(exps[i].token);
 						throw ex;
 					}
-					String name = ref.token.text;
-					Literal newExp = gc.createLiteral(name, ref.token);
-					// 将变量引用转化为字符串
-					exps[0] = newExp;
 				}
+
 			}
 		} else if (nsId.equals("debug")) {
 			// debug函数传递额外的行数
@@ -1047,9 +1047,6 @@ public class AntlrProgramBuilder {
 				hasSafe = varRef.hasSafe;
 			}
 
-			if (pbCtx.isSafeOutput) {
-				hasSafe = true;
-			}
 
 			ForStatement forStatement = gc.createForIn(forVar, exp, hasSafe, forPart, elseForPart, forVar.token);
 
@@ -1560,10 +1557,6 @@ public class AntlrProgramBuilder {
 			safeExp = this.parseSafeOutput(soctx);
 			hasSafe = true;
 
-		}
-
-		if (this.pbCtx.isSafeOutput) {
-			hasSafe = true;
 		}
 
 		List<VarAttributeContext> list = varRef.varAttribute();

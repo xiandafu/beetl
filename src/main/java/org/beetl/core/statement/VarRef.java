@@ -82,7 +82,7 @@ public class VarRef extends Expression implements IVarIndex {
 
 			VarAttribute attr = attributes[i];
 			if (value == null) {
-				if (hasSafe) {
+				if (hasSafe||ctx.safeOutput) {
 					return safe == null ? null : safe.evaluate(ctx);
 				} else {
 					BeetlException be = new BeetlException(BeetlException.NULL, "空指针");
@@ -111,7 +111,7 @@ public class VarRef extends Expression implements IVarIndex {
 
 		}
 
-		if (value == null && hasSafe) {
+		if (value == null && (hasSafe||ctx.safeOutput)) {
 			return safe == null ? null : safe.evaluate(ctx);
 		} else {
 			return value;
@@ -144,7 +144,7 @@ public class VarRef extends Expression implements IVarIndex {
 				Object root = ctx.getGlobal("_root");
 				String attr = firstToken.text;
 				if (root == null) {
-					if (hasSafe) {
+					if (hasSafe||ctx.safeOutput) {
 						return new Result(safe == null ? null : safe.evaluate(ctx), true);
 					} else {
 						BeetlException be = new BeetlException(BeetlException.NULL,
@@ -167,14 +167,14 @@ public class VarRef extends Expression implements IVarIndex {
 				
 				ctx.vars[varIndex] = value;
 
-			} else if (hasSafe) {
+			} else if (hasSafe||ctx.safeOutput) {
 				return new Result(safe == null ? null : safe.evaluate(ctx), true);
 			} else {
 				BeetlException ex = new BeetlException(BeetlException.VAR_NOT_DEFINED);
 				ex.pushToken(this.firstToken);
 				throw ex;
 			}
-		} else if (value == null && hasSafe) {
+		} else if (value == null && (hasSafe||ctx.safeOutput)) {
 			return new Result(safe == null ? null : safe.evaluate(ctx), true);
 		}
 

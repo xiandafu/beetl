@@ -18,11 +18,12 @@ import org.beetl.ext.web.WebVariable;
 public class IncludeJSPTag extends Tag
 {
 
-	static File root = new File(BeetlUtil.getWebRoot());
+
 
 	public void render()
 	{
 
+		File root = new File(BeetlUtil.getWebRoot());
 		String child = (String) args[0];
 		child = BeetlUtil.getRelPath(ctx.getResourceId(), (String) this.args[0]);
 
@@ -61,7 +62,7 @@ public class IncludeJSPTag extends Tag
 
 			BeetlServletResponseWrapper rspWrapper = new BeetlServletResponseWrapper(response);
 			//jsp path 总是从webroot目录开始，因此要将相对于模板root目录的jsp转成相对于webroot目录
-			String prefix = this.getPrefix();
+			String prefix = this.getPrefix(root);
 			String realJspPath = getJSPPath(prefix, child);
 			request.getRequestDispatcher(realJspPath).include(request, rspWrapper);
 
@@ -92,7 +93,7 @@ public class IncludeJSPTag extends Tag
 
 	}
 
-	protected String getPrefix()
+	protected String getPrefix(File root)
 	{
 
 		ResourceLoader rs = ctx.gt.getResourceLoader();

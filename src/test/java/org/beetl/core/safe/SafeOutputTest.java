@@ -36,4 +36,28 @@ public class SafeOutputTest extends BasicTestCase
 
 	}
 
+	@Test
+	public void testSafeAll() throws Exception
+	{
+		boolean oldConf = gt.getConf().isSafeOutput();
+		gt.getConf().setSafeOutput(true);
+		Template t = gt.getTemplate("/safe/safeAll_template.html");
+
+		String str = t.render();
+		AssertJUnit.assertEquals(this.getFileContent("/safe/safeAll_expected.html"), str);
+		gt.getConf().setSafeOutput(oldConf);
+
+	}
+
+	@Test
+	public void testHas() throws Exception
+	{
+		Template t = gt.getTemplate("/safe/has_template.html");
+		String str = t.render();
+		AssertJUnit.assertEquals(this.getFileContent("/safe/has_expected.html"), str);
+
+	}
+
+
+
 }

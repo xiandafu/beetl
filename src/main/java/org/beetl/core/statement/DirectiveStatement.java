@@ -38,34 +38,22 @@ import org.beetl.core.Context;
 public class DirectiveStatement extends Statement {
 
 	String directive;
-	Set<String> idList;
 	static final String SAFE_OUTPUT_OPEN = "safe_output_open".intern();
 	static final String SAFE_OUTPUT_CLOSE = "safe_output_close".intern();
-
-	public DirectiveStatement(String directive, Set<String> idList, GrammarToken token) {
+	boolean safeOutput = false;
+	public DirectiveStatement(boolean safeOutput, GrammarToken token) {
 		super(token);
-		this.directive = directive;
-		this.idList = idList;
+		this.safeOutput = safeOutput;
 
 	}
 
 	@Override
 	public void execute(Context ctx) {
-		if (directive == SAFE_OUTPUT_OPEN) {
-			ctx.safeOutput = true;
-		} else if (directive == SAFE_OUTPUT_CLOSE) {
-			ctx.safeOutput = false;
-		}
+		ctx.safeOutput = safeOutput;
 
 	}
 
 
-	public String getDirective() {
-		return directive;
-	}
 
-	public Set<String> getIdList() {
-		return idList;
-	}
 
 }

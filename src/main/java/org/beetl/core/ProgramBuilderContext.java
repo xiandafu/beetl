@@ -54,7 +54,7 @@ public class ProgramBuilderContext
 	// 当前block
 	BlockEnvContext current = root;
 
-	boolean isSafeOutput = false;
+
 	// 节点运算辅助对象
 	List<Object> listNodeEval = new LinkedList<Object>();
 	// 全局变量名以及描述

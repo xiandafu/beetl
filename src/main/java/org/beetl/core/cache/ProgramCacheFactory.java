@@ -49,7 +49,13 @@ public class ProgramCacheFactory
 		if(loader==null) {
 			loader = ProgramCacheFactory.class.getClassLoader();
 		}
-		return (Cache) ObjectUtil.instance(CACHE,loader);
+		try{
+			return (Cache) ObjectUtil.instance(CACHE,loader);
+		}catch(Exception ex){
+			System.out.println("load "+CACHE+ " by "+loader+" error ,instead local");
+			return new  LocalCache();
+		}
+
 
 	}
 }

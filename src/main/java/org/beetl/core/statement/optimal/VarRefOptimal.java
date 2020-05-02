@@ -56,7 +56,7 @@ public class VarRefOptimal extends VarRef  {
 
 		Object value = this.getRefValue(ctx);
 		if (value == null) {
-			if(this.hasSafe){
+			if(this.hasSafe||ctx.safeOutput){
 				return null;
 			}
 			BeetlException be = new BeetlException(BeetlException.NULL, "空指针");

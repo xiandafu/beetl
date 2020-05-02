@@ -73,7 +73,7 @@ public final class ForStatement extends Statement implements IGoto {
 		Object collection = exp.evaluate(ctx);
 		ILoopStatus it = null;
 		if (collection == null) {
-			if (!this.hasSafe) {
+			if (!(this.hasSafe||ctx.safeOutput) ){
 				BeetlException ex = new BeetlException(BeetlException.NULL);
 				ex.pushToken(exp.token);
 				throw ex;

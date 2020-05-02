@@ -41,7 +41,7 @@ import org.beetl.core.io.NoLockStringWriter;
 import org.beetl.core.misc.BeetlUtil;
 import org.beetl.core.statement.*;
 
-/** 模板类
+/** 模板类,不能被重用，如果需要一个可重用的Template，使用{@link ReUseTemplate}
  * @author joelli
  *
  */
@@ -58,13 +58,23 @@ public class Template {
 		this.cf = cf;
 		this.gt = gt;
 		ctx = new Context(gt);
+		if(cf.safeOutput){
+			ctx.safeOutput = true;
+		}
 	}
+
 	protected Template(GroupTemplate gt, Program program, Configuration cf,ContextBuffer buffer) {
 		this.program = program;
 		this.cf = cf;
 		this.gt = gt;
 		ctx = new Context(gt,buffer);
+		if(cf.safeOutput){
+			ctx.safeOutput = true;
+		}
 	}
+
+
+
 
 
 
@@ -256,6 +266,8 @@ public class Template {
 
 	/**
 	 * 语法校验，如果返回BeetlException，则表示语法有错，返回null，语法无错误
+	 *
+	 * 可以是使用ErrorInfo 来解析此错误
 	 * @return
 	 */
 	public BeetlException validate() {

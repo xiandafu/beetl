@@ -151,6 +151,14 @@ public class Configuration {
 	// 缓冲数组
 	int bufferSize = 4096;
 	int  buffeerNum = 64;
+
+	/**
+	 * 模板是否整体使用安全输出功能，如果是，则不存在的值返回空，而不是报错
+	 */
+	boolean safeOutput = false;
+
+
+
 	
 
 	public static String DELIMITER_PLACEHOLDER_START = "DELIMITER_PLACEHOLDER_START";
@@ -181,7 +189,7 @@ public class Configuration {
 	public static String BUFFER_SIZE = "buffer.maxSize";
 	public static String BUFFER_NUM = "buffer.num";
 
-	
+	public static String SAFE_OUTPUT = "SAFE_OUTPUT";
 
 	Properties ps = null;
 
@@ -294,7 +302,11 @@ public class Configuration {
 
 		} else if (key.equalsIgnoreCase(NATIVE_CALL)) {
 			this.nativeCall = isBoolean(value, false);
-		} else if (key.equalsIgnoreCase(IGNORE_CLIENT_IO_ERROR)) {
+		}
+		 else if (key.equalsIgnoreCase(SAFE_OUTPUT)) {
+			this.safeOutput = isBoolean(value, false);
+		}
+		else if (key.equalsIgnoreCase(IGNORE_CLIENT_IO_ERROR)) {
 			this.isIgnoreClientIOError = isBoolean(value, false);
 		} else if (key.equalsIgnoreCase(DIRECT_BYTE_OUTPUT)) {
 			this.directByteOutput = isBoolean(value, false);
@@ -906,6 +918,11 @@ public class Configuration {
 
 	}
 
+	public boolean isSafeOutput() {
+		return safeOutput;
+	}
 
-
+	public void setSafeOutput(boolean safeOutput) {
+		this.safeOutput = safeOutput;
+	}
 }

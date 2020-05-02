@@ -12,9 +12,9 @@ public class AsmAAFactory  extends DefaultAAFactory{
     ASMBeanFactory asmBeanFactory = null;
     public AsmAAFactory(){  
         super();
-        asmBeanFactory = new ASMBeanFactory();
         //beetl 里主要通过JavaBean规范获取取属性,asmBeanFactory也可以直接设置通过fields来获取
-        asmBeanFactory.setUsePropertyDescriptor(true);
+        asmBeanFactory = new ASMBeanFactory(true);
+
 
     }
 

@@ -57,15 +57,33 @@ public class EmptyExpressionFunction implements Function
 
 		if (paras.length == 0)
 			return true;
-		Object result = paras[0];
+
+		if(paras.length==1){
+			Object result = paras[0];
+			return isEmpty(result);
+		}
+
+		for(Object result:paras){
+
+			boolean isEmpty =  isEmpty(result);
+			if(!isEmpty){
+				return false;
+			}
+		}
+		return true;
+
+	}
+
+	protected  boolean isEmpty(Object result){
 		if (result == null)
 			return true;
-		if (result instanceof String)
-		{
 
+		if (result instanceof String){
 			if (((String) result).length() != 0)
 			{
 				return false;
+			}else{
+				return  true;
 			}
 
 		}
@@ -75,17 +93,22 @@ public class EmptyExpressionFunction implements Function
 			{
 				return false;
 			}
+			else{
+				return  true;
+			}
 		}
 		else if (result instanceof Map)
 		{
 			if (((Map) result).size() != 0)
 			{
 				return false;
+			}else{
+				return  true;
 			}
 		}
 		else if (result.getClass().isArray())
 		{
-			
+
 			Class ct = result.getClass().getComponentType();
 			if (ct.isPrimitive())
 			{
@@ -95,14 +118,12 @@ public class EmptyExpressionFunction implements Function
 			{
 				return ((Object[]) result).length==0;
 			}
-		
+
 		}
 		else
 		{
 			return false;
 		}
-
-		return true;
 
 	}
 
