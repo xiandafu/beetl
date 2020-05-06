@@ -48,7 +48,7 @@ public class Test {
 		Iterator it = list.iterator();
 		Template t = gt.getTemplate("/hello.txt");
 		ReUseTemplate st = new ReUseTemplate(t);
-		for (int i = 0; i < 100000;i++) {
+		for (int i = 0; i < 1;i++) {
 
 			st.binding("user",new TestUser());
 			System.out.println(i+" "+st.render());

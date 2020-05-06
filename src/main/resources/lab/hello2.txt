@@ -1,3 +1,0 @@
-<%
-includeFragment("/layout.btl","c1"){}
-%>

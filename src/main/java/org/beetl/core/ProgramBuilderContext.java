@@ -66,6 +66,8 @@ public class ProgramBuilderContext
 	// 全局变量在空间中的位置
 	public Map<String, Integer> globalIndexMap = new HashMap<String, Integer>();
 
+	boolean isSafeOutput = false;
+
 	/**
 	 *  顶级变量在空间中的位置
 	 */

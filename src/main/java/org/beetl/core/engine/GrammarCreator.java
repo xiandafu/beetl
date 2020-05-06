@@ -326,6 +326,7 @@ public class GrammarCreator {
 	}
 
 	protected void check(String ast) {
+		//禁止使用的语法列表
 		if (this.disable.contains(ast)) {
 			throw new BeetlException(BeetlException.GRAMMAR_NOT_ALLOWED, "语法 " + ast + "不允许");
 		}

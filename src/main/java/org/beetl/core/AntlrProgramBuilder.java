@@ -805,32 +805,8 @@ public class AntlrProgramBuilder {
 		Token token = direExp.Identifier().getSymbol();
 		String directive = token.getText().toLowerCase().intern();
 		boolean isSafeOutput = directive.equalsIgnoreCase("safe_output_open");
-		TerminalNode value = direExp.StringLiteral();
-		List<TerminalNode> idNodeList = null;
-		DirectiveExpIDListContext directExpidLisCtx = direExp.directiveExpIDList();
-		if (directExpidLisCtx != null) {
-			idNodeList = directExpidLisCtx.Identifier();
-		}
-		//兼容以前语法定义
-		Set<String> idList = null;
-		DirectiveStatement ds = null;
-
-		if (value != null) {
-			String idListValue = this.getStringValue(value.getText());
-			idList = new HashSet(Arrays.asList(idListValue.split(",")));
-			ds = new DirectiveStatement(isSafeOutput, this.getBTToken(token));
-		} else if (idNodeList != null) {
-			idList = new HashSet<String>();
-			for (TerminalNode t : idNodeList) {
-				idList.add(t.getText());
-			}
-			ds = new DirectiveStatement(isSafeOutput, this.getBTToken(token));
-
-		} else {
-			ds = new DirectiveStatement(isSafeOutput, this.getBTToken(token));
-		}
-
-		return ds;
+		pbCtx.isSafeOutput = isSafeOutput;
+		return null;
 
 	}
 
@@ -845,6 +821,10 @@ public class AntlrProgramBuilder {
 			safeExp = this.parseSafeOutput(soctx);
 			hasSafe = true;
 
+		}
+		//方法调用返回值的输出，比如 call().name.cc!"abc"
+		if(pbCtx.isSafeOutput){
+			hasSafe = true;
 		}
 
 		VarAttribute[] vs = this.parseVarAttribute(vaListCtx);
@@ -1045,6 +1025,10 @@ public class AntlrProgramBuilder {
 			if (exp instanceof VarRef) {
 				VarRef varRef = (VarRef) exp;
 				hasSafe = varRef.hasSafe;
+			}
+
+			if(pbCtx.isSafeOutput){
+				hasSafe = true;
 			}
 
 
@@ -1559,6 +1543,10 @@ public class AntlrProgramBuilder {
 
 		}
 
+		if(pbCtx.isSafeOutput){
+			hasSafe = true;
+		}
+
 		List<VarAttributeContext> list = varRef.varAttribute();
 		VarAttribute[] vas = this.parseVarAttribute(list);
 		if (vas.length > 0) {
@@ -1568,7 +1556,6 @@ public class AntlrProgramBuilder {
 			}
 
 		}
-
 		VarRef var = gc.createVarRef(vas, hasSafe, safeExp,
 				this.getBTToken(varRef.getText(), varRef.Identifier().getSymbol().getLine()),
 				this.getBTToken(varRef.Identifier().getSymbol()));

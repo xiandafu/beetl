@@ -35,6 +35,7 @@ import org.beetl.core.Context;
  * @author joelli
  *
  */
+@Deprecated
 public class DirectiveStatement extends Statement {
 
 	String directive;
