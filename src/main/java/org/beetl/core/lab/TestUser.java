@@ -29,4 +29,12 @@ public class TestUser implements  BaseEntity
 	public void setSuccess(boolean success) {
 		isSuccess = success;
 	}
+
+	public void printStr(String str){
+		System.out.println(" str ="+str);
+	}
+
+	public void printStr(String[] strs){
+		System.out.println(" strs ="+strs);
+	}
 }

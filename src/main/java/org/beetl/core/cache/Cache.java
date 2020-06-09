@@ -27,6 +27,8 @@
  */
 package org.beetl.core.cache;
 
+import java.util.function.Function;
+
 /**
  * Cache标准接口,每个方法都必须线程安全
  * @author joelli
@@ -34,8 +36,9 @@ package org.beetl.core.cache;
  */
 public interface Cache
 {
-
 	public Object get(String key);
+
+	public Object get(String key, Function function);
 
 	public void remove(String key);
 

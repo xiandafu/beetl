@@ -29,6 +29,7 @@ package org.beetl.core.cache;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * 本地的一个实现，采用ConcurrentHashMap
@@ -41,9 +42,15 @@ public class LocalCache implements Cache
 	Map map = new ConcurrentHashMap();
 
 	@Override
-	public Object get(String key)
-	{
+	public Object get(String key) {
 		return map.get(key);
+	}
+
+	@Override
+	public Object get(String key, Function function)
+	{
+		return map.computeIfAbsent(key,function);
+
 	}
 
 	@Override

@@ -1,2 +1,7 @@
-<%DIRECTIVE SAFE_OUTPUT_CLOSE%>
-abc
+<%
+printStr("abc");
+printStr(array);
+printStr("abc");
+printStr(array);
+printStr("abc");
+%>

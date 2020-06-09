@@ -39,6 +39,8 @@ public class TextParser {
 	public TextParser(GroupTemplate groupTemplate, Configuration.DelimeterHolder pdConfig, Configuration.DelimeterHolder sdConfig) {
 		if(groupTemplate==null){
 			attributeNameConvert = new DefaultAttributeNameConvert();
+		}else{
+			attributeNameConvert = groupTemplate.getHtmlTagAttrNameConvert();
 		}
 
 		this.pd = pdConfig.createPhd();

@@ -150,7 +150,7 @@ public class Configuration {
 
 	// 缓冲数组
 	int bufferSize = 4096;
-	int  buffeerNum = 64;
+	int bufferNum = 64;
 
 	/**
 	 * 模板是否整体使用安全输出功能，如果是，则不存在的值返回空，而不是报错
@@ -330,7 +330,7 @@ public class Configuration {
 		} else if (key.equalsIgnoreCase(HTML_TAG_SUPPORT)) {
 			this.isHtmlTagSupport = isBoolean(value, false);
 		} else if (key.equalsIgnoreCase(HTML_TAG_ATTR_CONVERT)) {
-			if (isBlank(value) ) {
+			if (!isBlank(value) ) {
 				this.htmlTagAttributeConvert = value;
 			}
 		}
@@ -362,7 +362,7 @@ public class Configuration {
 				throw new IllegalStateException("GLOBAL.buffer.maxSize 配置不能小于256");
 			}
 		} else if (key.equalsIgnoreCase(BUFFER_NUM)) {
-			this.buffeerNum =Integer.parseInt(value);
+			this.bufferNum =Integer.parseInt(value);
 		} else {
 			// 扩展
 

@@ -47,7 +47,6 @@ import org.beetl.core.exception.HTMLTagParserException;
 import org.beetl.core.fun.FunctionWrapper;
 import org.beetl.core.fun.ObjectUtil;
 import org.beetl.core.misc.BeetlUtil;
-import org.beetl.core.misc.ByteClassLoader;
 import org.beetl.core.misc.ClassSearch;
 import org.beetl.core.misc.PrimitiveArrayUtil;
 import org.beetl.core.om.AABuilder;
@@ -188,8 +187,6 @@ public class GroupTemplate {
 
 
 
-
-
 	}
 
 	protected void initFunction() {
@@ -275,8 +272,7 @@ public class GroupTemplate {
 	}
 
 	protected void initBuffers(){
-		//TODO3.0
-		buffers = new ContextLocalBuffers(conf.buffeerNum,conf.bufferSize);
+		buffers = new ContextLocalBuffers(conf.bufferNum,conf.bufferSize);
 	}
 
 	/**
@@ -404,27 +400,34 @@ public class GroupTemplate {
 		return result;
 	}
 
+//	private Script loadScriptTemplate(String key, ResourceLoader loader) {
+//
+//		Program program = (Program) this.programCache.get(key,k->{
+//			Resource resource = loader.getResource(key);
+//			Program loadProgram = this.loadTemplate(resource);
+//			return loadProgram;
+//		});
+//		if (resourceLoader.isModified(program.res)) {
+//			Resource resource = loader.getResource(key);
+//			program = this.loadScript(resource);
+//			this.programCache.set(key, program);
+//		}
+//		return new Script(this, program, this.conf);
+//	}
+
 	private Script loadScriptTemplate(String key, ResourceLoader loader) {
-		Program program = (Program) this.programCache.get(key);
-		if (program == null) {
-			synchronized (key) {
-				if (program == null) {
-					Resource resource = loader.getResource(key);
-					program = this.loadScript(resource);
-					this.programCache.set(key, program);
-					return new Script(this, program, this.conf);
-				}
-			}
-		}
+		Program program = (Program) this.programCache.get(key,k->{
+			Resource resource = loader.getResource(key);
+			Program prog = this.loadScript(resource);
+			return prog;
+
+		});
 
 		if (resourceLoader.isModified(program.res)) {
-			synchronized (key) {
 				Resource resource = loader.getResource(key);
 				program = this.loadScript(resource);
 				this.programCache.set(key, program);
-			}
 		}
-
 		return new Script(this, program, this.conf);
 	}
 
@@ -491,26 +494,27 @@ public class GroupTemplate {
 		return t;
 	}
 
+	/**
+	 * Template类是线程安全和高效的，但只能运行一次就抛弃。如果想一直持有Template
+	 * 可以调用此方法获得一个TemplateProxy
+	 * @param t
+	 * @return
+	 */
+	public Template getTemplateProxy(Template t){
+		return new TemplateProxy(t);
+	}
+
 	private Template getTemplateByLoader(String key, ResourceLoader loader,ContextBuffer  buffers) {
-//		key = key.intern();
-		Program program = (Program) this.programCache.get(key);
-		if (program == null) {
-			synchronized (key) {
-				if (program == null) {
-					Resource resource = loader.getResource(key);
-					program = this.loadTemplate(resource);
-					this.programCache.set(key, program);
-					return buffers==null?new Template(this, program, this.conf):new Template(this, program, this.conf,buffers);
-				}
-			}
-		}
+		Program program = (Program) this.programCache.get(key,k->{
+			Resource resource = loader.getResource(key);
+			Program loadProgram = this.loadTemplate(resource);
+			return loadProgram;
+		});
 
 		if (resourceLoader.isModified(program.res)) {
-			synchronized (key) {
-				Resource resource = loader.getResource(key);
-				program = this.loadTemplate(resource);
-				this.programCache.set(key, program);
-			}
+			Resource resource = loader.getResource(key);
+			program = this.loadTemplate(resource);
+			this.programCache.set(key, program);
 		}
 
 		return buffers==null?new Template(this, program, this.conf):new Template(this, program, this.conf,buffers);
@@ -541,7 +545,7 @@ public class GroupTemplate {
 		TextParser text = null;
 		try {
 			Reader reader = res.openReader();
-			text = new TextParser(conf.getPlaceHolderDelimeter(), conf.getScriptDelimeter(), conf.getTagConf());
+			text = new TextParser(this,conf.getPlaceHolderDelimeter(), conf.getScriptDelimeter(), conf.getTagConf());
 			text.doParse(reader);
 
 			Reader scriptReader = new StringReader(text.getScript().toString());
@@ -660,10 +664,25 @@ public class GroupTemplate {
 
 	}
 
+	/**
+	 * 注册一个类的所有方法，packageName+方法名是beetl的方法名
+	 * @param packageName
+	 * @param cls
+	 */
 	public void registerFunctionPackage(String packageName, Class cls) {
 		checkFunctionName(packageName);
 		Object o = ObjectUtil.tryInstance(cls.getName(), this.classLoader);
 		registerFunctionPackage(packageName, cls, o);
+
+	}
+
+	/**
+	 * 注册一个类的所有方法，方法名是beetl的方法名，类似registerFunction
+	 * @param cls
+	 */
+	public void registerFunctionPackageAsRoot(Class cls) {
+		Object o = ObjectUtil.tryInstance(cls.getName(), this.classLoader);
+		registerFunctionPackageAsRoot( cls, o);
 
 	}
 
@@ -676,10 +695,25 @@ public class GroupTemplate {
 	}
 
 	protected void registerFunctionPackage(String packageName, Class target, Object o) {
+		if(packageName.equals("_root")){
+			registerFunctionPackageAsRoot(target,o);
+		}else{
+			List<FunctionWrapper> list = FunctionWrapper.getFunctionWrapper(packageName, target, o);
+			for (FunctionWrapper fw : list) {
+				this.registerFunction(fw.functionName, fw);
+			}
+		}
 
+
+	}
+
+	protected void registerFunctionPackageAsRoot(Class target, Object o) {
+		String packageName="_root";
 		List<FunctionWrapper> list = FunctionWrapper.getFunctionWrapper(packageName, target, o);
 		for (FunctionWrapper fw : list) {
-			this.registerFunction(fw.functionName, fw);
+			//去掉前缀
+			String functionName = fw.functionName.replace("_root.","");
+			this.registerFunction(functionName, fw);
 		}
 
 	}
@@ -864,5 +898,9 @@ public class GroupTemplate {
 				return false;
 			}
 		}
+	}
+
+	public AttributeNameConvert getHtmlTagAttrNameConvert() {
+		return htmlTagAttrNameConvert;
 	}
 }

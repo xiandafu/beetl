@@ -29,7 +29,6 @@ package org.beetl.core;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -41,7 +40,7 @@ import org.beetl.core.io.NoLockStringWriter;
 import org.beetl.core.misc.BeetlUtil;
 import org.beetl.core.statement.*;
 
-/** 模板类,不能被重用，如果需要一个可重用的Template，使用{@link ReUseTemplate}
+/** 模板类,不能被重用，如果需要一个可重用的Template，使用{@link TemplateProxy}
  * @author joelli
  *
  */
