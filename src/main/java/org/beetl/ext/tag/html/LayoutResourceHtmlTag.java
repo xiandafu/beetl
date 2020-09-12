@@ -51,7 +51,7 @@ public class LayoutResourceHtmlTag extends Tag {
 	@Override
 	public void render() {
 
-		String layoutFile = getRelResourceId();
+		Object layoutFile = getRelResourceId();
 		Template t = this.gt.getTemplate(layoutFile, this.ctx);
 		t.binding(ctx.globalVar);
 
@@ -74,7 +74,7 @@ public class LayoutResourceHtmlTag extends Tag {
 
 	}
 
-	protected String getRelResourceId() {
+	protected Object getRelResourceId() {
 		Resource sibling = ctx.getResource();
 		return gt.getResourceLoader().getResourceId(sibling, this.getTargetResource());
 	}

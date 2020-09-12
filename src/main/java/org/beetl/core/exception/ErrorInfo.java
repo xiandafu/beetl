@@ -75,7 +75,7 @@ public class ErrorInfo
 		errorLocalMap.put(BeetlException.ATTRIBUTE_NOT_FOUND, concat("未找到属性", BeetlException.ATTRIBUTE_NOT_FOUND));
 		errorLocalMap.put(BeetlException.CAST_LIST_OR_MAP_ERROR,
 				concat("模板里使用了[]指示应该是Map或者List，但实际上不是此类型", BeetlException.CAST_LIST_OR_MAP_ERROR));
-		errorLocalMap.put(BeetlException.ATTRIBUTE_NOT_FOUND, concat("未找到属性", BeetlException.ATTRIBUTE_NOT_FOUND));
+		errorLocalMap.put(BeetlException.ATTRIBUTE_NOT_FOUND_PRIVATE, concat("未找到属性，可能是私有属性", BeetlException.ATTRIBUTE_NOT_FOUND));
 		errorLocalMap.put(BeetlException.NULL, concat("表达式值为空", BeetlException.NULL));
 		errorLocalMap.put(BeetlException.DIV_ZERO_ERROR, concat("除0错误", BeetlException.DIV_ZERO_ERROR));
 		errorLocalMap.put(BeetlException.ARRAY_INDEX_ERROR, concat("数组index错", BeetlException.ARRAY_INDEX_ERROR));

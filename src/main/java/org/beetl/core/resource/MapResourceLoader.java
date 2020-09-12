@@ -14,7 +14,7 @@ import org.beetl.core.exception.BeetlException;
  * @author wendal(wendal1985@gmail.com)
  *
  */
-public class MapResourceLoader extends HashMap<String, String> implements ResourceLoader {
+public class MapResourceLoader extends HashMap<String, String> implements ResourceLoader<String> {
     
     private static final long serialVersionUID = 5361058943317379270L;
     

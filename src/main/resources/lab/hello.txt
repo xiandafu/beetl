@@ -1,7 +1,6 @@
 <%
-printStr("abc");
-printStr(array);
-printStr("abc");
-printStr(array);
-printStr("abc");
+var c = [];
+
 %>
+
+${@c.contains1("b")}

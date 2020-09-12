@@ -18,7 +18,8 @@ import org.beetl.core.statement.nat.NativeMethodNode;
 import org.beetl.core.statement.nat.NativeNode;
 
 /**
-
+ * Java方法直接调用
+ * xxx.abc().ef.ttt();
  *@author joelli
  */
 public class NativeCallExpression extends Expression {
@@ -135,13 +136,13 @@ public class NativeCallExpression extends Expression {
 				if (mf == null) {
 					BeetlException ex = new BeetlException(BeetlParserException.NATIVE_CALL_INVALID,
 							"根据参数未找到匹配的方法" + method + BeetlUtil.getParameterDescription(parameterType));
-					ex.pushToken(GrammarToken.createToken(lastNode.getName(), token.line));
+					ex.pushToken(GrammarToken.createToken(token.text, token.line));
 					throw ex;
 				}
 
 				if (targetObj == null && !Modifier.isStatic(mf.method.getModifiers())) {
 					BeetlException ex = new BeetlException(BeetlException.NULL);
-					ex.pushToken(GrammarToken.createToken(lastNode.getName(), token.line));
+					ex.pushToken(GrammarToken.createToken(token.text, token.line));
 					throw ex;
 				}
 

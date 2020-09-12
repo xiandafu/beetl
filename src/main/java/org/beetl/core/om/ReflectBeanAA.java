@@ -20,9 +20,16 @@ public class ReflectBeanAA extends AttributeAccess {
 	}
     @Override
     public Object value(Object o, Object name) {
-        MethodInvoker mi = ObjectUtil.getInvokder(o.getClass(),(String)name);
+		Class c =  o.getClass();
+		String key = (String)name;
+        MethodInvoker mi = ObjectUtil.getInvokder(c,key);
 		if(mi==null){
-			BeetlException ex = new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND, (String) name);
+			BeetlException ex = null;
+			if(ObjectUtil.hasPrivateAttribute(c, key)){
+				ex = new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND_PRIVATE,  key);
+			}else{
+				ex = new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND, key);
+			}
 			throw ex;
 		}
       	return mi.get(o);

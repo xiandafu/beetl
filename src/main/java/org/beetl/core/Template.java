@@ -188,7 +188,7 @@ public class Template {
 
 				BeetlException be = new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR, e.getMessage(), e);
 				be.pushResource(this.program.res);
-				be.pushToken(new GrammarToken(this.program.res.id, 0, 0));
+				be.pushToken(new GrammarToken(this.program.res.id.toString(), 0, 0));
 				ErrorHandler errorHandler = this.gt.getErrorHandler();
 
 				if (errorHandler == null) {

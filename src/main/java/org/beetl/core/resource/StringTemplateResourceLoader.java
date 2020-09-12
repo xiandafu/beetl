@@ -36,7 +36,7 @@ import org.beetl.core.ResourceLoader;
  * @author joelli
  *
  */
-public class StringTemplateResourceLoader implements ResourceLoader
+public class StringTemplateResourceLoader implements ResourceLoader<String>
 {
 
 	public StringTemplateResourceLoader()

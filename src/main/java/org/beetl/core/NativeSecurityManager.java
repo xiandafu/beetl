@@ -41,5 +41,5 @@ public interface NativeSecurityManager
 	 * @param method 调用类的方法名
 	 * @return
 	 */
-	public boolean permit(String resourceId, Class c, Object target, String method);
+	public boolean permit(Object resourceId, Class c, Object target, String method);
 }

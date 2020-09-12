@@ -64,7 +64,7 @@ public class FunctionExpression extends Expression {
 			// 检查html实现
 			Resource resource = getResource(ctx.gt, name);
 			if (resource.getResourceLoader().exist(resource.getId())) {
-				fn = new FileFunctionWrapper(resource.getId());
+				fn = new FileFunctionWrapper(resource.getId().toString());
 
 			} else {
 				BeetlException ex = new BeetlException(BeetlException.FUNCTION_NOT_FOUND);

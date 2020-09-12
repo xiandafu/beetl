@@ -42,26 +42,26 @@ public class LocalCache implements Cache
 	Map map = new ConcurrentHashMap();
 
 	@Override
-	public Object get(String key) {
+	public Object get(Object key) {
 		return map.get(key);
 	}
 
 	@Override
-	public Object get(String key, Function function)
+	public Object get(Object key, Function function)
 	{
 		return map.computeIfAbsent(key,function);
 
 	}
 
 	@Override
-	public void remove(String key)
+	public void remove(Object key)
 	{
 		map.remove(key);
 
 	}
 
 	@Override
-	public void set(String key, Object value)
+	public void set(Object key, Object value)
 	{
 		map.put(key, value);
 

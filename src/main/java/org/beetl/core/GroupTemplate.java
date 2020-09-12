@@ -260,8 +260,6 @@ public class GroupTemplate {
 
 	protected void initVirtual() {
 
-
-
 		Map<String, String> map = conf.getVirtualClass();
 		for(Entry<String,String> entry:map.entrySet()){
 			String attr = entry.getKey();
@@ -295,7 +293,7 @@ public class GroupTemplate {
 	 * @param key
 	 * @return
 	 */
-	public Script getScript(String key){
+	public Script getScript(Object key){
 	  Script t = loadScriptTemplate(key, this.resourceLoader);
 	  return t;
 	}
@@ -306,7 +304,7 @@ public class GroupTemplate {
 	 * @param loader
 	 * @return
 	 */
-	public Script getScript(String key,ResourceLoader loader){
+	public Script getScript(Object key,ResourceLoader loader){
 		Script t = loadScriptTemplate(key, loader);
 		return t;
 	}
@@ -319,7 +317,7 @@ public class GroupTemplate {
 	 * @return
 	 * @throws BeetlException ,可以通过ErrorInfo 来获取异常信息详细信息
 	 */
-	public Map runScript(String key, Map<String, Object> paras) throws BeetlException {
+	public Map runScript(Object key, Map<String, Object> paras) throws BeetlException {
 		return this.runScript(key, paras, new StringWriter());
 
 	}
@@ -330,7 +328,7 @@ public class GroupTemplate {
 	 * @param w
 	 * @return
 	 */
-	public Map runScript(String key, Map<String, Object> paras, Writer w) throws BeetlException {
+	public Map runScript(Object key, Map<String, Object> paras, Writer w) throws BeetlException {
 		return this.runScript(key, paras, w, this.resourceLoader);
 	}
 
@@ -344,7 +342,7 @@ public class GroupTemplate {
 	 * @return
 	 * @throws BeetlException
 	 */
-	public Map runScript(String key, Map<String, Object> paras, Writer w, ResourceLoader loader)
+	public Map runScript(Object key, Map<String, Object> paras, Writer w, ResourceLoader loader)
 			throws BeetlException {
 		Script t = loadScriptTemplate(key, loader);
 		t.fastBinding(paras);
@@ -359,22 +357,22 @@ public class GroupTemplate {
 
 	}
 
-	public BeetlException validateTemplate(String key, ResourceLoader loader) {
+	public BeetlException validateTemplate(Object key, ResourceLoader loader) {
 		Template t = getTemplate(key, loader);
 		return t.validate();
 	}
 
-	public BeetlException validateTemplate(String key) {
+	public BeetlException validateTemplate(Object key) {
 		Template t = getTemplate(key, this.resourceLoader);
 		return t.validate();
 	}
 
-	public BeetlException validateScript(String key, ResourceLoader loader) {
+	public BeetlException validateScript(Object key, ResourceLoader loader) {
 		Script t = loadScriptTemplate(key, loader);
 		return t.validate();
 	}
 
-	public BeetlException validateScript(String key) {
+	public BeetlException validateScript(Object key) {
 		Script t = loadScriptTemplate(key, this.resourceLoader);
 		return t.validate();
 	}
@@ -400,22 +398,9 @@ public class GroupTemplate {
 		return result;
 	}
 
-//	private Script loadScriptTemplate(String key, ResourceLoader loader) {
-//
-//		Program program = (Program) this.programCache.get(key,k->{
-//			Resource resource = loader.getResource(key);
-//			Program loadProgram = this.loadTemplate(resource);
-//			return loadProgram;
-//		});
-//		if (resourceLoader.isModified(program.res)) {
-//			Resource resource = loader.getResource(key);
-//			program = this.loadScript(resource);
-//			this.programCache.set(key, program);
-//		}
-//		return new Script(this, program, this.conf);
-//	}
 
-	private Script loadScriptTemplate(String key, ResourceLoader loader) {
+
+	private Script loadScriptTemplate(Object key, ResourceLoader loader) {
 		Program program = (Program) this.programCache.get(key,k->{
 			Resource resource = loader.getResource(key);
 			Program prog = this.loadScript(resource);
@@ -436,7 +421,7 @@ public class GroupTemplate {
 	 * @param loader 
 	 * @return
 	 */
-	public Template getTemplate(String key, ResourceLoader loader) {
+	public Template getTemplate(Object key, ResourceLoader loader) {
 		return this.getTemplateByLoader(key, loader,null);
 	}
 
@@ -446,7 +431,7 @@ public class GroupTemplate {
 	 * @param loader
 	 * @return
 	 */
-	public Template getAjaxTemplate(String key, String ajaxId, ResourceLoader loader) {
+	public Template getAjaxTemplate(Object key, String ajaxId, ResourceLoader loader) {
 		Template template = this.getTemplateByLoader(key, loader,null);
 		template.ajaxId = ajaxId;
 		return template;
@@ -457,7 +442,7 @@ public class GroupTemplate {
 	 * @param parent
 	 * @return
 	 */
-	public Template getTemplate(String key, String parent, ResourceLoader loader) {
+	public Template getTemplate(Object key, String parent, ResourceLoader loader) {
 		Template template = this.getTemplate(key, loader);
 		template.isRoot = false;
 		return template;
@@ -465,7 +450,7 @@ public class GroupTemplate {
 
 
 
-	public Template getTemplate(String key, Context parent) {
+	public Template getTemplate(Object key, Context parent) {
 		Template template = this.getTemplateByLoader(key,this.resourceLoader,parent.localBuffer);
 		template.isRoot = false;
 		return template;
@@ -476,7 +461,7 @@ public class GroupTemplate {
 	 * @param key
 	 * @return
 	 */
-	public Template getTemplate(String key) {
+	public Template getTemplate(Object key) {
 
 		return getTemplateByLoader(key, this.resourceLoader,null);
 	}
@@ -487,7 +472,7 @@ public class GroupTemplate {
 	 * @param ajaxId,ajax标示
 	 * @return
 	 */
-	public Template getAjaxTemplate(String key, String ajaxId) {
+	public Template getAjaxTemplate(Object key, String ajaxId) {
 
 		Template t = getTemplateByLoader(key, this.resourceLoader,null);
 		t.ajaxId = ajaxId;
@@ -504,7 +489,7 @@ public class GroupTemplate {
 		return new TemplateProxy(t);
 	}
 
-	private Template getTemplateByLoader(String key, ResourceLoader loader,ContextBuffer  buffers) {
+	private Template getTemplateByLoader(Object key, ResourceLoader loader,ContextBuffer  buffers) {
 		Program program = (Program) this.programCache.get(key,k->{
 			Resource resource = loader.getResource(key);
 			Program loadProgram = this.loadTemplate(resource);

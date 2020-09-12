@@ -43,10 +43,14 @@ public class ObjectSetterUtil {
 			Class c = o.getClass();
 			MethodInvoker invoker = ObjectUtil.getInvokder(c, (String) key);
 			if (invoker != null) {
-
 				invoker.set(o, value);
 			} else {
-				BeetlException ex = new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND, (String) key);
+				BeetlException ex = null;
+				if(ObjectUtil.hasPrivateAttribute(c,(String) key)){
+					ex = new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND_PRIVATE, (String) key);
+				}else{
+					ex = new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND, (String) key);
+				}
 				throw ex;
 			}
 

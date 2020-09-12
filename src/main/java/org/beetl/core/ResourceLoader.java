@@ -35,7 +35,7 @@ package org.beetl.core;
  * 
  * 
  */
-public interface ResourceLoader
+public interface ResourceLoader<T>
 {
 
 	/**
@@ -44,7 +44,7 @@ public interface ResourceLoader
 	 * @param key
 	 * @return
 	 */
-	public Resource getResource(String key);
+	public Resource getResource(T key);
 
 	/** 检测模板是否更改，每次渲染模板前，都需要调用此方法，所以此方法不能占用太多时间，否则会影响渲染功能
 	 * @param key
@@ -52,7 +52,7 @@ public interface ResourceLoader
 	 */
 	public boolean isModified(Resource key);
 
-	public boolean exist(String key);
+	public boolean exist(T key);
 
 	/**
 	 * 关闭ResouceLoader，通常是GroupTemplate关闭的时候也关闭对应的ResourceLoader
@@ -69,7 +69,7 @@ public interface ResourceLoader
 	 * @param key
 	 * @return
 	 */
-	public String getResourceId(Resource resource, String key);
+	public T getResourceId(Resource resource, T key);
 	
 	/**
 	 * 得到资源加载器说明，用于获取不到资源的时候输出提示信息

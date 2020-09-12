@@ -61,7 +61,7 @@ public class IncludeFragmentTag extends Tag {
 
 	@Override
 	public void render() {
-		String resourceId = getRelResourceId();
+		Object resourceId = getRelResourceId();
 		String key = (String)this.args[1];
 		Template t = gt.getAjaxTemplate(resourceId,key);
 		t.isRoot = false;
@@ -81,7 +81,7 @@ public class IncludeFragmentTag extends Tag {
 
 	}
 
-	protected String getRelResourceId() {
+	protected Object getRelResourceId() {
 
 		Resource sibling = ctx.getResource();
 		// 不要使用resource的loder，因为有可能是

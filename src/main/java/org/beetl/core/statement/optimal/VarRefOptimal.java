@@ -29,6 +29,7 @@ package org.beetl.core.statement.optimal;
 
 import org.beetl.core.Context;
 import org.beetl.core.exception.BeetlException;
+import org.beetl.core.fun.ObjectUtil;
 import org.beetl.core.om.AABuilder;
 import org.beetl.core.om.AttributeAccess;
 import org.beetl.core.statement.*;
@@ -69,6 +70,12 @@ public class VarRefOptimal extends VarRef  {
 			value = attribute.evaluate(ctx, value);
 		} catch (BeetlException ex) {
 			ex.pushToken(attribute.token);
+			if(ex.detailCode==BeetlException.ATTRIBUTE_NOT_FOUND){
+				//进一步可出可能友好的提示
+				if(ObjectUtil.hasPrivateAttribute(value.getClass(),attribute.token.text)){
+					ex.detailCode = BeetlException.ATTRIBUTE_NOT_FOUND_PRIVATE;
+				}
+			}
 			throw ex;
 
 		} catch (RuntimeException ex) {

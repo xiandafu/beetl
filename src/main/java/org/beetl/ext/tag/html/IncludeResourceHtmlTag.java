@@ -47,7 +47,7 @@ public class IncludeResourceHtmlTag extends Tag {
 
 	@Override
 	public void render() {
-		String resourceId = getRelResourceId();
+		Object resourceId = getRelResourceId();
 
 		Template t = gt.getTemplate(resourceId, this.ctx);
 		// 快速复制父模板的变量
@@ -71,7 +71,7 @@ public class IncludeResourceHtmlTag extends Tag {
 
 	}
 
-	protected String getRelResourceId() {
+	protected Object getRelResourceId() {
 		Resource sibling = ctx.getResource();
 		return gt.getResourceLoader().getResourceId(sibling, this.getTargetResource());
 	}

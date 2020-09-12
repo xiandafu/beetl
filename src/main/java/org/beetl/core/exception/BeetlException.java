@@ -148,6 +148,8 @@ public class BeetlException extends RuntimeException {
 	 */
 	public static final String ATTRIBUTE_INVALID = "ATTRIBUTE_INVALID";
 	public static final String ATTRIBUTE_NOT_FOUND = "ATTRIBUTE_NOT_FOUND";
+	//属性不存在，但可能是私有
+	public static final String ATTRIBUTE_NOT_FOUND_PRIVATE = "ATTRIBUTE_NOT_FOUND_PRIVATE";
 	/**
 	 * 模板里使用了[]指示应该是Map或者List，但实际上不是此类型
 	 */

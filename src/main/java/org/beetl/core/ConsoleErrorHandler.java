@@ -149,7 +149,7 @@ public class ConsoleErrorHandler implements ErrorHandler
 
 	}
 
-	protected String getResourceName(String resourceId)
+	protected Object getResourceName(Object resourceId)
 	{
 		return resourceId;
 	}

@@ -45,7 +45,7 @@ import org.beetl.core.exception.BeetlException;
  * @author joelli
  *
  */
-public class ClasspathResource extends Resource
+public class ClasspathResource extends Resource<String>
 {
 	String path = null;
 

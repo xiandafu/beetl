@@ -25,7 +25,7 @@ public class IncludeJSPTag extends Tag
 
 		File root = new File(BeetlUtil.getWebRoot());
 		String child = (String) args[0];
-		child = BeetlUtil.getRelPath(ctx.getResourceId(), (String) this.args[0]);
+		child = BeetlUtil.getRelPath(ctx.getResourceId().toString(), child);
 
 		try
 		{

@@ -46,7 +46,7 @@ import org.beetl.core.misc.BeetlUtil;
  * 
  * 
  */
-public class ClasspathResourceLoader implements ResourceLoader
+public class ClasspathResourceLoader implements ResourceLoader<String>
 {
 	private String root = null;
 	boolean autoCheck = false;
@@ -234,7 +234,7 @@ public class ClasspathResourceLoader implements ResourceLoader
 		if (resource == null)
 			return id;
 		else
-			return BeetlUtil.getRelPath(resource.getId(), id);
+			return BeetlUtil.getRelPath(resource.getId().toString(), id);
 	}
 
 	public ClassLoader getClassLoader() {

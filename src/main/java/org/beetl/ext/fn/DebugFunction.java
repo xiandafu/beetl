@@ -83,7 +83,7 @@ public class DebugFunction implements Function
 		}
 
 		String line = paras[paras.length - 1].toString();
-		String resourceId = ctx.getResourceId();
+		Object resourceId = ctx.getResourceId();
 		sb.append(" [在").append(line).append("行@").append(resourceId).append("]");
 
 		System.out.println(sb);

@@ -40,7 +40,7 @@ import org.beetl.core.misc.BeetlUtil;
  * @author joelli
  *
  */
-public class FileResourceLoader implements ResourceLoader
+public class FileResourceLoader implements ResourceLoader<String>
 {
 
 	String root = null;
@@ -173,7 +173,7 @@ public class FileResourceLoader implements ResourceLoader
 		if (resource == null)
 			return id;
 		else
-			return BeetlUtil.getRelPath(resource.getId(), id);
+			return BeetlUtil.getRelPath(resource.getId().toString(), id);
 	}
 
 	@Override

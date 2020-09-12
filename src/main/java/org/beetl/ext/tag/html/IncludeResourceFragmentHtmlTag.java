@@ -47,7 +47,7 @@ public class IncludeResourceFragmentHtmlTag extends Tag {
 
 	@Override
 	public void render() {
-		String resourceId = getRelResourceId();
+		Object resourceId = getRelResourceId();
 		Map<String, Object> attrs = ((Map<String, Object>) this.args[1]);
 		String fragment = (String)attrs.get("fragment");
 		Template t = gt.getAjaxTemplate(resourceId,fragment);
@@ -69,7 +69,7 @@ public class IncludeResourceFragmentHtmlTag extends Tag {
 
 	}
 
-	protected String getRelResourceId() {
+	protected Object getRelResourceId() {
 		Resource sibling = ctx.getResource();
 		return gt.getResourceLoader().getResourceId(sibling, this.getTargetResource());
 	}

@@ -146,7 +146,7 @@ public class Context {
 		return globalVar.get(key);
 	}
 
-	public String getResourceId() {
+	public Object getResourceId() {
 		return this.template.program.res.getId();
 	}
 

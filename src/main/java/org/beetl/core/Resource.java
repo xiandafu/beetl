@@ -35,13 +35,13 @@ import java.io.Reader;
  * @author joelli
  *
  */
-public abstract class Resource
+public abstract class Resource<T>
 {
 
 	protected ResourceLoader resourceLoader = null;
-	protected String id = null;
+	protected T id = null;
 
-	public Resource(String id, ResourceLoader loader)
+	public Resource(T id, ResourceLoader loader)
 	{
 		this.id = id;
 		this.resourceLoader = loader;
@@ -76,7 +76,7 @@ public abstract class Resource
 		this.resourceLoader = resourceLoader;
 	}
 
-	public String getId()
+	public T getId()
 	{
 		return this.id;
 	}
@@ -113,6 +113,6 @@ public abstract class Resource
 	}
 	
 	public String toString() {
-		return this.id;
+		return this.id.toString();
 	}
 }

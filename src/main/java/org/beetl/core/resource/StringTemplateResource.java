@@ -33,7 +33,7 @@ import java.io.StringReader;
 import org.beetl.core.Resource;
 import org.beetl.core.ResourceLoader;
 
-public class StringTemplateResource extends Resource
+public class StringTemplateResource extends Resource<String>
 {
 
 	public StringTemplateResource(String template, ResourceLoader resourceLoader)

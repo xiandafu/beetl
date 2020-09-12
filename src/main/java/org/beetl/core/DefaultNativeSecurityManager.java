@@ -42,7 +42,7 @@ public class DefaultNativeSecurityManager implements NativeSecurityManager {
 	 * java.lang.Class, java.lang.Object, java.lang.String)
 	 */
 	@Override
-	public boolean permit(String resourceId, Class c, Object target, String method) {
+	public boolean permit(Object resourceId, Class c, Object target, String method) {
 		if (c.isArray()) {
 			// 允许调用，但实际上会在在其后调用中报错。不归此处管理
 			return true;

@@ -36,13 +36,13 @@ import java.util.function.Function;
  */
 public interface Cache
 {
-	public Object get(String key);
+	public Object get(Object key);
 
-	public Object get(String key, Function function);
+	public Object get(Object key, Function function);
 
-	public void remove(String key);
+	public void remove(Object key);
 
-	public void set(String key, Object value);
+	public void set(Object key, Object value);
 
 	public void clearAll();
 

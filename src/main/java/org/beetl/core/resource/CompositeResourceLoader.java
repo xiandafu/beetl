@@ -44,7 +44,7 @@ import org.beetl.core.exception.BeetlException;
  * @author 李飞 (lifei@wellbole.com 
  * 
  **/
-public class CompositeResourceLoader implements ResourceLoader
+public class CompositeResourceLoader implements ResourceLoader<String>
 {
 
 	/**
@@ -222,7 +222,7 @@ public class CompositeResourceLoader implements ResourceLoader
 		ResourceLoaderKeyEntry rlke = this.match(id);
 		if (resource.getResourceLoader() == rlke.getResourceLoader())
 		{
-			return resource.getResourceLoader().getResourceId(resource, id);
+			return (String)resource.getResourceLoader().getResourceId(resource, id);
 		}
 		else
 		{

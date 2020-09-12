@@ -565,4 +565,20 @@ public class ObjectUtil {
     	return  classLoader;
 	}
 
+
+    /**
+     * 判断对象是否有此变量，从方法用于友好提示，属性无法访问的时候，是否是没有getter方法
+     * @param c
+     * @param name
+     * @return
+     */
+    public static boolean hasPrivateAttribute(Class c, String name) {
+        try {
+            c.getDeclaredField(name);
+            return true;
+        } catch (NoSuchFieldException e) {
+            return false;
+        }
+    }
+
 }

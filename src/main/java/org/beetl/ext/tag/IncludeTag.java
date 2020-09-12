@@ -39,7 +39,7 @@ public class IncludeTag extends Tag {
 
 	@Override
 	public void render() {
-		String resourceId = getRelResourceId();
+		Object resourceId = getRelResourceId();
 
 		Template t = gt.getTemplate(resourceId,ctx);
 		// 快速复制父模板的变量
@@ -58,7 +58,7 @@ public class IncludeTag extends Tag {
 
 	}
 
-	protected String getRelResourceId() {
+	protected Object getRelResourceId() {
 
 		Resource sibling = ctx.getResource();
 		// 不要使用resource的loder，因为有可能是
