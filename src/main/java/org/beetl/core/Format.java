@@ -36,37 +36,32 @@ package org.beetl.core;
  * 字符串是需要格式化的样式，如果没有，可以不写，如：
  * <p></p>
  * ${user.birthday,dateFormat},格式化函数应该支持pattern为null的情况
- * 
+ *
  * <pre>
  * public Object format(Object data, String pattern) {
  * 	if (data instanceof Date) {
  * 		SimpleDateFormat sdf = null;
  * 		if (pattern == null) {
  * 			sdf = new SimpleDateFormat();
- * 		} else {
+ *        } else {
  * 			sdf = new SimpleDateFormat(pattern);
- * 		}
+ *        }
  * 		return sdf.format(data);
- * 
- * 	} else {
+ *
+ *    } else {
  * 		throw new RuntimeException(&quot;Arg Error:Type should be Date&quot;);
- * 	}
+ *    }
  * }
  * </pre>
- * 
+ *
  * @author xiandafu
- * 
  */
-public interface Format
-{
+public interface Format {
 
-	/**
-	 * @param data
-	 *            格式化对象
-	 * @param pattern
-	 *            ，模式，格式换函数需要考虑到pattern为null的情况
-	 * @return
-	 */
-	public Object format(Object data, String pattern);
+    /**
+     * @param data    格式化对象
+     * @param pattern ，模式，格式换函数需要考虑到pattern为null的情况
+     */
+    public Object format(Object data, String pattern);
 
 }

@@ -29,7 +29,7 @@ public class Test {
         Template t = gt.getTemplate("/hello.txt");
 
         for (int i = 0; i < 1; i++) {
-            t.binding("testUser",new MyTestObject("abc"));
+            t.binding("testUser", new MyTestObject("abc"));
             System.out.println(i + " " + t.render());
         }
 

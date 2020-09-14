@@ -28,18 +28,17 @@
 package org.beetl.core.statement;
 
 /**
- *  流程控制
- * @author xiandafu
+ * 流程控制
  *
+ * @author xiandafu
  */
-public interface IGoto
-{
-	public final static short NORMAL = 0;
-	public final static short CONTINUE = 1;
-	public final static short BREAK = 2;
-	public final static short RETURN = 3;
+public interface IGoto {
+    public final static short NORMAL = 0;
+    public final static short CONTINUE = 1;
+    public final static short BREAK = 2;
+    public final static short RETURN = 3;
 
-	public boolean hasGoto();
+    public boolean hasGoto();
 
-	public void setGoto(boolean occour);
+    public void setGoto(boolean occour);
 }

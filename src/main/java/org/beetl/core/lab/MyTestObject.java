@@ -1,13 +1,15 @@
 package org.beetl.core.lab;
 
 public class MyTestObject {
-	String name;
-	public MyTestObject() {
-	}
-	public MyTestObject(String name) {
-		super();
-		this.name = name;
-	}
+    String name;
+
+    public MyTestObject() {
+    }
+
+    public MyTestObject(String name) {
+        super();
+        this.name = name;
+    }
 //
 //	public String getName() {
 //		return name;
@@ -17,7 +19,7 @@ public class MyTestObject {
 //		this.name = name;
 //	}
 
-	public MyTestObject self(){
-		return this;
-	}
+    public MyTestObject self() {
+        return this;
+    }
 }

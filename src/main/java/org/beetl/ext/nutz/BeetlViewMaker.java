@@ -33,28 +33,27 @@ import org.nutz.mvc.ViewMaker;
  * ERROR_HANDLER=org.beetl.ext.nutz.LogErrorHandler <p></p>
  * </code><p></p>
  * @author wendal
- * 
  */
 public class BeetlViewMaker implements ViewMaker {
-    
+
     private static final Log log = Logs.get();
 
     public GroupTemplate groupTemplate;
-    
+
     public WebRender render;
-    
+
     public BeetlViewMaker() throws IOException {
         // 主动设置webroot, 解决maven项目下,Beetl无法找到正确的webapp路径的问题
-    		String webroot = null;
-    		if(Mvcs.getServletContext()!=null){
-    			webroot = Mvcs.getServletContext().getRealPath("/");
-    	        if (!Strings.isBlank(webroot))
-    	            BeetlUtil.setWebroot(webroot);
+        String webroot = null;
+        if (Mvcs.getServletContext() != null) {
+            webroot = Mvcs.getServletContext().getRealPath("/");
+            if (!Strings.isBlank(webroot))
+                BeetlUtil.setWebroot(webroot);
         }
-    		 
+
         init();
     }
-    
+
     public void init() throws IOException {
         log.debug("beetl init ....");
         Configuration cfg = Configuration.defaultConfiguration();
@@ -64,8 +63,7 @@ public class BeetlViewMaker implements ViewMaker {
             log.debug("found beetl.properties, loading ...");
             try {
                 prop.load(ins);
-            }
-            finally {
+            } finally {
                 Streams.safeClose(ins);
             }
         }

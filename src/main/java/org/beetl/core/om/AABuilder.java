@@ -47,7 +47,7 @@ public class AABuilder {
 
     public static AttributeAccess buildFiledAccessor(Class c) {
 
-      return defalutAAFactory.buildFiledAccessor(c);
+        return defalutAAFactory.buildFiledAccessor(c);
 
     }
 

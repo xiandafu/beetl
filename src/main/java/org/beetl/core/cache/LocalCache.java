@@ -33,45 +33,40 @@ import java.util.function.Function;
 
 /**
  * 本地的一个实现，采用ConcurrentHashMap
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public class LocalCache implements Cache
-{
+public class LocalCache implements Cache {
 
-	Map map = new ConcurrentHashMap();
+    Map map = new ConcurrentHashMap();
 
-	@Override
-	public Object get(Object key) {
-		return map.get(key);
-	}
+    @Override
+    public Object get(Object key) {
+        return map.get(key);
+    }
 
-	@Override
-	public Object get(Object key, Function function)
-	{
-		return map.computeIfAbsent(key,function);
+    @Override
+    public Object get(Object key, Function function) {
+        return map.computeIfAbsent(key, function);
 
-	}
+    }
 
-	@Override
-	public void remove(Object key)
-	{
-		map.remove(key);
+    @Override
+    public void remove(Object key) {
+        map.remove(key);
 
-	}
+    }
 
-	@Override
-	public void set(Object key, Object value)
-	{
-		map.put(key, value);
+    @Override
+    public void set(Object key, Object value) {
+        map.put(key, value);
 
-	}
+    }
 
-	@Override
-	public void clearAll()
-	{
-		map.clear();
+    @Override
+    public void clearAll() {
+        map.clear();
 
-	}
+    }
 
 }

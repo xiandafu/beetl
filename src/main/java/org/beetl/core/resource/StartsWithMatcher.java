@@ -28,149 +28,123 @@
 package org.beetl.core.resource;
 
 
-/**  
- * 检查key以给定的字符串开头的匹配器  
- * @author 李飞 (lifei@wellbole.com)   
+/**
+ * 检查key以给定的字符串开头的匹配器
+ *
+ * @author 李飞 (lifei@wellbole.com)
  */
-public class StartsWithMatcher implements Matcher
-{
+public class StartsWithMatcher implements Matcher {
 
-	/**
-	 * 前缀
-	 */
-	private String prefix;
+    /**
+     * 前缀
+     */
+    private String prefix;
 
-	/**
-	 * 前缀长度
-	 */
-	private int prefixLen = 0;
+    /**
+     * 前缀长度
+     */
+    private int prefixLen = 0;
 
-	/**
-	 * 返回的newKey是否保留前缀，默认不保留。
-	 */
-	private boolean withPrefix = false;
+    /**
+     * 返回的newKey是否保留前缀，默认不保留。
+     */
+    private boolean withPrefix = false;
 
-	public StartsWithMatcher()
-	{
-	}
+    public StartsWithMatcher() {
+    }
 
-	public StartsWithMatcher(String prefix)
-	{
-		this.prefix = prefix;
-		this.prefixLen = prefix.length();
-	}
+    public StartsWithMatcher(String prefix) {
+        this.prefix = prefix;
+        this.prefixLen = prefix.length();
+    }
 
-	public StartsWithMatcher withPrefix()
-	{
-		this.withPrefix = true;
-		return this;
-	}
+    public StartsWithMatcher withPrefix() {
+        this.withPrefix = true;
+        return this;
+    }
 
-	public StartsWithMatcher withoutPrefix()
-	{
-		this.withPrefix = false;
-		return this;
-	}
+    public StartsWithMatcher withoutPrefix() {
+        this.withPrefix = false;
+        return this;
+    }
 
-	@Override
-	public String match(String key)
-	{
-		if (key.startsWith(prefix))
-		{
-			if (this.withPrefix)
-			{
-				return key;
-			}
-			else
-			{
-				return key.substring(prefixLen);
-			}
-		}
-		return null;
-	}
+    @Override
+    public String match(String key) {
+        if (key.startsWith(prefix)) {
+            if (this.withPrefix) {
+                return key;
+            } else {
+                return key.substring(prefixLen);
+            }
+        }
+        return null;
+    }
 
-	public final boolean isWithPrefix()
-	{
-		return withPrefix;
-	}
+    public final boolean isWithPrefix() {
+        return withPrefix;
+    }
 
-	public final void setWithPrefix(boolean withPrefix)
-	{
-		this.withPrefix = withPrefix;
-	}
+    public final void setWithPrefix(boolean withPrefix) {
+        this.withPrefix = withPrefix;
+    }
 
-	public final String getPrefix()
-	{
-		return prefix;
-	}
+    public final String getPrefix() {
+        return prefix;
+    }
 
-	public final void setPrefix(String prefix)
-	{
-		this.prefix = prefix;
-		this.prefixLen = prefix.length();
-	}
+    public final void setPrefix(String prefix) {
+        this.prefix = prefix;
+        this.prefixLen = prefix.length();
+    }
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((prefix == null) ? 0 : prefix.hashCode());
-		result = prime * result + prefixLen;
-		result = prime * result + (withPrefix ? 1231 : 1237);
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((prefix == null) ? 0 : prefix.hashCode());
+        result = prime * result + prefixLen;
+        result = prime * result + (withPrefix ? 1231 : 1237);
+        return result;
+    }
 
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (!(obj instanceof StartsWithMatcher))
-		{
-			return false;
-		}
-		StartsWithMatcher other = (StartsWithMatcher) obj;
-		if (prefix == null)
-		{
-			if (other.prefix != null)
-			{
-				return false;
-			}
-		}
-		else if (!prefix.equals(other.prefix))
-		{
-			return false;
-		}
-		if (prefixLen != other.prefixLen)
-		{
-			return false;
-		}
-		if (withPrefix != other.withPrefix)
-		{
-			return false;
-		}
-		return true;
-	}
-	
-	
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof StartsWithMatcher)) {
+            return false;
+        }
+        StartsWithMatcher other = (StartsWithMatcher) obj;
+        if (prefix == null) {
+            if (other.prefix != null) {
+                return false;
+            }
+        } else if (!prefix.equals(other.prefix)) {
+            return false;
+        }
+        if (prefixLen != other.prefixLen) {
+            return false;
+        }
+        if (withPrefix != other.withPrefix) {
+            return false;
+        }
+        return true;
+    }
 
-	@Override
-	public String toString() {
-		return "StartsWithMatcher "+prefix;
-	}
 
-	public static void main(String[] args)
-	{
-		StartsWithMatcher swm = new StartsWithMatcher("/com/wellbole").withoutPrefix();
-		System.out.println(swm.match("/com/wellbole/app/pg/index.html"));
-		swm = new StartsWithMatcher("/com/wellbole").withPrefix();
-		System.out.println(swm.match("/com/wellbole/app/pg/index.html"));
-	}
+    @Override
+    public String toString() {
+        return "StartsWithMatcher " + prefix;
+    }
+
+    public static void main(String[] args) {
+        StartsWithMatcher swm = new StartsWithMatcher("/com/wellbole").withoutPrefix();
+        System.out.println(swm.match("/com/wellbole/app/pg/index.html"));
+        swm = new StartsWithMatcher("/com/wellbole").withPrefix();
+        System.out.println(swm.match("/com/wellbole/app/pg/index.html"));
+    }
 }

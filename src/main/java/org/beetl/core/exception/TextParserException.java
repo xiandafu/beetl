@@ -29,20 +29,17 @@ package org.beetl.core.exception;
 
 /**
  * 将文本转为模板语言解析过程中的异常
- * 
+ *
  * @author xiandafu
- * 
  */
-public class TextParserException extends BeetlException
-{
+public class TextParserException extends BeetlException {
 
-	public int line = 0;
+    public int line = 0;
 
-	public TextParserException(String message)
-	{
-		super(BeetlException.ERROR, message);
+    public TextParserException(String message) {
+        super(BeetlException.ERROR, message);
 
-	}
+    }
 
-	
+
 }

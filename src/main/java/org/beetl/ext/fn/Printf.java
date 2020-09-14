@@ -36,42 +36,34 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * @author miaojun
- *
  */
-public class Printf implements Function
-{
+public class Printf implements Function {
 
-	public String call(Object[] paras, Context ctx)
-	{
-		String template = (String) paras[0];
-		Object[] args = new Object[paras.length - 1];
-		for (int i = 0; i < args.length; i++)
-		{
-			args[i] = paras[i + 1];
+    public String call(Object[] paras, Context ctx) {
+        String template = (String) paras[0];
+        Object[] args = new Object[paras.length - 1];
+        for (int i = 0; i < args.length; i++) {
+            args[i] = paras[i + 1];
 
-		}
-		StringBuilder sb = new StringBuilder();
-		Formatter f = new Formatter(sb);
-		f.format(template, args);
+        }
+        StringBuilder sb = new StringBuilder();
+        Formatter f = new Formatter(sb);
+        f.format(template, args);
 
-		try
-		{
-			ctx.byteWriter.writeString(sb.toString());
-		}
-		catch (IOException e)
-		{
-			BeetlException be = new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR);
-			throw be;
-		}
+        try {
+            ctx.byteWriter.writeString(sb.toString());
+        } catch (IOException e) {
+            BeetlException be = new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR);
+            throw be;
+        }
 
-		return "";
+        return "";
 
-	}
+    }
 
-	public static void main(String[] args)
-	{
-		String name = "joel";
-		int age = 12;
-		System.out.printf("Hello, %s. Next year, you'll be %d", name, age);
-	}
+    public static void main(String[] args) {
+        String name = "joel";
+        int age = 12;
+        System.out.printf("Hello, %s. Next year, you'll be %d", name, age);
+    }
 }

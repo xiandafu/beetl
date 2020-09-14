@@ -1,13 +1,13 @@
 /*
  * [The "BSD license"] Copyright (c) 2011-2019  闲大赋 (李家智) All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
  * following conditions are met: 1. Redistributions of source code must retain the above copyright notice, this list of
  * conditions and the following disclaimer. 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation and/or other materials provided with the
  * distribution. 3. The name of the author may not be used to endorse or promote products derived from this software
  * without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
  * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
  * THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
@@ -102,7 +102,7 @@ public final class ByteWriter_Char extends ByteWriter {
 
     @Override
     public void fill(ByteWriter bw) throws IOException {
-        NoLockStringWriter blw = ((NoLockStringWriter)((ByteWriter_Char)bw).w);
+        NoLockStringWriter blw = ((NoLockStringWriter) ((ByteWriter_Char) bw).w);
         char[] buf = blw.buf;
         this.write(buf, blw.count);
 
@@ -110,7 +110,7 @@ public final class ByteWriter_Char extends ByteWriter {
 
     @Override
     public BodyContent getTempConent() {
-        NoLockStringWriter blw = (NoLockStringWriter)w;
+        NoLockStringWriter blw = (NoLockStringWriter) w;
         return new StringBodyContent(blw.buf, blw.count);
     }
 
@@ -131,9 +131,7 @@ public final class ByteWriter_Char extends ByteWriter {
     }
 
     @Override
-    public void writeNumberChars(char[] chars, int len) throws IOException
-
-    {
+    public void writeNumberChars(char[] chars, int len) throws IOException {
         this.w.write(chars, 0, len);
 
     }

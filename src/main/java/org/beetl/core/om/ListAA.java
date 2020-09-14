@@ -32,34 +32,29 @@ import java.util.List;
 
 import org.beetl.core.exception.BeetlException;
 
-/**访问List的封装类,attr是整形或者BigDecimal
- * @author xiandafu
+/**
+ * 访问List的封装类,attr是整形或者BigDecimal
  *
+ * @author xiandafu
  */
-public class ListAA extends AttributeAccess
-{
+public class ListAA extends AttributeAccess {
 
-	@Override
-	public Object value(Object o, Object attr)
-	{
+    @Override
+    public Object value(Object o, Object attr) {
 
-		if (attr instanceof Integer || attr instanceof Long || attr instanceof Short || attr instanceof Byte
-				|| attr instanceof BigDecimal)
-		{
-			int index = ((Number) attr).intValue();
-			if (index < 0)
-			{
-				BeetlException ex = new BeetlException(BeetlException.ARRAY_INDEX_ERROR, "索引必须大于或者等于");
-				throw ex;
-			}
-			return ((List) o).get(index);
-		}
-		else
-		{
-			BeetlException ex = new BeetlException(BeetlException.ARRAY_INDEX_ERROR, "期望是整形或者是BigDecimal类型");
-			throw ex;
-		}
+        if (attr instanceof Integer || attr instanceof Long || attr instanceof Short || attr instanceof Byte
+                || attr instanceof BigDecimal) {
+            int index = ((Number) attr).intValue();
+            if (index < 0) {
+                BeetlException ex = new BeetlException(BeetlException.ARRAY_INDEX_ERROR, "索引必须大于或者等于");
+                throw ex;
+            }
+            return ((List) o).get(index);
+        } else {
+            BeetlException ex = new BeetlException(BeetlException.ARRAY_INDEX_ERROR, "期望是整形或者是BigDecimal类型");
+            throw ex;
+        }
 
-	}
+    }
 
 }

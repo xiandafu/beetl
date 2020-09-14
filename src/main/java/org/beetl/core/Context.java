@@ -34,148 +34,143 @@ import org.beetl.core.tag.Tag;
 
 /**
  * 模板渲染的Context
- * @author xiandafu
  *
+ * @author xiandafu
  */
 public class Context {
 
-	protected Context(GroupTemplate gt) {
-		this.gt = gt ;
-		this.localBuffer = gt.buffers.getContextLocalBuffer();
-	}
+    protected Context(GroupTemplate gt) {
+        this.gt = gt;
+        this.localBuffer = gt.buffers.getContextLocalBuffer();
+    }
 
-	protected Context(GroupTemplate gt,ContextBuffer buffer) {
-		this.gt = gt ;
-		this.localBuffer = buffer;
+    protected Context(GroupTemplate gt, ContextBuffer buffer) {
+        this.gt = gt;
+        this.localBuffer = buffer;
 
-	}
+    }
 
-	public void completed(){
+    public void completed() {
 
-	}
+    }
 
-	public static Object NOT_EXIST_OBJECT = new Object();
+    public static Object NOT_EXIST_OBJECT = new Object();
 
-	/**
-	 * 采用的输出流
-	 */
-	public ByteWriter byteWriter;
+    /**
+     * 采用的输出流
+     */
+    public ByteWriter byteWriter;
 
-	/**
-	 * 当前模板
-	 */
-	public Template template;
+    /**
+     * 当前模板
+     */
+    public Template template;
 
-	/**
-	 * 模板组
-	 */
-	public GroupTemplate gt = null;
-	/** 全局变量 */
-	public Map<String, Object> globalVar = new HashMap<String, Object>();;
-
-
-	/**
-	 * 输出模式
-	 */
-	public boolean byteOutputMode;
-
-	/**
-	 *  当前会话相关变量全局变量和临时变量都放在数组里，全局变量放在前面，Beetl并没有使用Map来存放变量名和值，世为了提高性能
-		
-	 */
-	public Object[] vars;
-
-	/**
-	 * 这些变量来自于ProgrameMeta，模板的静态文本，TODO，能否改成SoftRefernce，避免占用较大内存？
-	 * 或者采用其他机制
-	 */
-	public Object[] staticTextArray;
-
-	/**
-	 * 临时变量开始计数的位置
-	 */
-	public int tempVarStartIndex;
-
-	/**
-	 * 0 正常语句，继续执行，1 continue，2 break，3 return；
-	 */
-	public short gotoFlag;
-
-	public boolean isInit;
-
-	/**
-	 * 当前所有变量是否都是安全输出
-	 */
-	public boolean safeOutput;
-
-	/**
-	 * 一个字符和字节的buffer
-	 */
-	public ContextBuffer localBuffer = null;
+    /**
+     * 模板组
+     */
+    public GroupTemplate gt = null;
+    /** 全局变量 */
+    public Map<String, Object> globalVar = new HashMap<String, Object>();
+    ;
 
 
-	/**
-	 * 判断全局变量是否存在
-	 * 
-	 * @param i
-	 * @return
-	 */
-	protected boolean exist(int i) {
-		if (i >= this.tempVarStartIndex) {
-			return true;
-		} else {
-			Object object = vars[i];
-			return object != NOT_EXIST_OBJECT;
-		}
-	}
+    /**
+     * 输出模式
+     */
+    public boolean byteOutputMode;
 
-	/**设置全局变量
-	 * @param key
-	 * @param value
-	 */
-	public void set(String key, Object value) {
-		globalVar.put(key, value);
-	}
+    /**
+     * 当前会话相关变量全局变量和临时变量都放在数组里，全局变量放在前面，Beetl并没有使用Map来存放变量名和值，世为了提高性能
+     */
+    public Object[] vars;
+
+    /**
+     * 这些变量来自于ProgrameMeta，模板的静态文本，TODO，能否改成SoftRefernce，避免占用较大内存？
+     * 或者采用其他机制
+     */
+    public Object[] staticTextArray;
+
+    /**
+     * 临时变量开始计数的位置
+     */
+    public int tempVarStartIndex;
+
+    /**
+     * 0 正常语句，继续执行，1 continue，2 break，3 return；
+     */
+    public short gotoFlag;
+
+    public boolean isInit;
+
+    /**
+     * 当前所有变量是否都是安全输出
+     */
+    public boolean safeOutput;
+
+    /**
+     * 一个字符和字节的buffer
+     */
+    public ContextBuffer localBuffer = null;
 
 
-	/** 得到全局变量
-	 * @param key
-	 * @return
-	 */
-	public Object getGlobal(String key) {
-		return globalVar.get(key);
-	}
+    /**
+     * 判断全局变量是否存在
+     */
+    protected boolean exist(int i) {
+        if (i >= this.tempVarStartIndex) {
+            return true;
+        } else {
+            Object object = vars[i];
+            return object != NOT_EXIST_OBJECT;
+        }
+    }
 
-	public Object getResourceId() {
-		return this.template.program.res.getId();
-	}
+    /**
+     * 设置全局变量
+     */
+    public void set(String key, Object value) {
+        globalVar.put(key, value);
+    }
 
-	/** 当前处于哪个Resource
-	 * @return
-	 */
-	public Resource getResource() {
-		return this.template.program.res;
-	}
 
-	public void setCurrentTag(Tag tag) {
-		Map map = (Map) getGlobal("$page");
-		if (map == null) {
-			map = new HashMap();
-			this.set("$page",map);
+    /**
+     * 得到全局变量
+     */
+    public Object getGlobal(String key) {
+        return globalVar.get(key);
+    }
 
-		}
-		map.put("$parentTag", tag);
-	}
+    public Object getResourceId() {
+        return this.template.program.res.getId();
+    }
 
-	public Tag getCurrentTag() {
-		Map map = (Map) getGlobal("$page");
-		if (map == null) {
-			return null;
-		}
-		return (Tag) map.get("$parentTag");
-	}
+    /**
+     * 当前处于哪个Resource
+     */
+    public Resource getResource() {
+        return this.template.program.res;
+    }
 
-	public void destory(){
-		this.gt.buffers.putContextLocalBuffer(this.localBuffer);
-	}
+    public void setCurrentTag(Tag tag) {
+        Map map = (Map) getGlobal("$page");
+        if (map == null) {
+            map = new HashMap();
+            this.set("$page", map);
+
+        }
+        map.put("$parentTag", tag);
+    }
+
+    public Tag getCurrentTag() {
+        Map map = (Map) getGlobal("$page");
+        if (map == null) {
+            return null;
+        }
+        return (Tag) map.get("$parentTag");
+    }
+
+    public void destory() {
+        this.gt.buffers.putContextLocalBuffer(this.localBuffer);
+    }
 }

@@ -29,18 +29,15 @@ package org.beetl.core.statement.nat;
 
 import org.beetl.core.statement.VarRef;
 
-public class InstanceNode extends NativeNode
-{
-	public VarRef ref;
+public class InstanceNode extends NativeNode {
+    public VarRef ref;
 
-	public InstanceNode(VarRef ref)
-	{
-		this.ref = ref;
-	}
+    public InstanceNode(VarRef ref) {
+        this.ref = ref;
+    }
 
-	@Override
-	public String getName()
-	{
-		return this.ref.token.text;
-	}
+    @Override
+    public String getName() {
+        return this.ref.token.text;
+    }
 }

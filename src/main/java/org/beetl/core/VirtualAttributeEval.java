@@ -29,12 +29,10 @@ package org.beetl.core;
 
 /**
  * 虚拟属性,
- * 
+ *
  * @author xiandafu
- * 
  */
-public interface VirtualAttributeEval extends VirtualClassAttribute
-{
+public interface VirtualAttributeEval extends VirtualClassAttribute {
 
-	public boolean isSupport(Class c, String attributeName);
+    public boolean isSupport(Class c, String attributeName);
 }

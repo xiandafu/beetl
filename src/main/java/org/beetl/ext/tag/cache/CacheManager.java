@@ -28,50 +28,40 @@
 package org.beetl.ext.tag.cache;
 
 /**
- *  cache标签的接口，默认使用SimpleCacheManager，用户可以实现自定义的CacheManager
- *  并调用CacheTag.cacheManager = yourCacheManager来实现
- *    
- * @author xiandafu
+ * cache标签的接口，默认使用SimpleCacheManager，用户可以实现自定义的CacheManager
+ * 并调用CacheTag.cacheManager = yourCacheManager来实现
  *
+ * @author xiandafu
  */
-public interface CacheManager
-{
-	/**
-	 * 获取key值对应的对象
-	 * @param key
-	 * @return
-	 */
-	public Object getObject(String key);
+public interface CacheManager {
+    /**
+     * 获取key值对应的对象
+     */
+    public Object getObject(String key);
 
-	/**
-	 * @param key
-	 * @param value
-	 * @param period 多少秒后过期
-	 */
-	public void setObject(String key, Object value, long period);
+    /**
+     * @param period 多少秒后过期
+     */
+    public void setObject(String key, Object value, long period);
 
-	/**
-	 * 查看key值对应的对象是否存在
-	 * @param key
-	 * @return
-	 */
-	public boolean isDisable(String key);
+    /**
+     * 查看key值对应的对象是否存在
+     */
+    public boolean isDisable(String key);
 
-	/**
-	 * 清除cache
-	 */
-	public void clearAll();
+    /**
+     * 清除cache
+     */
+    public void clearAll();
 
-	/**
-	 * 删除key对应的对象
-	 * @param key
-	 */
-	public void clearAll(String key);
+    /**
+     * 删除key对应的对象
+     */
+    public void clearAll(String key);
 
-	/**
-	 * 删除keys对应的所有缓存对象
-	 * @param keys
-	 */
-	public void clearAll(String... keys);
+    /**
+     * 删除keys对应的所有缓存对象
+     */
+    public void clearAll(String... keys);
 
 }

@@ -35,72 +35,59 @@ import org.beetl.core.statement.ExpressionRuntime.ExpressionRuntimeObject;
 
 /**
  * if else 函数的简单实现
- *${decode(a,1,"a=1",2,"a=2","不知道了")}
+ * ${decode(a,1,"a=1",2,"a=2","不知道了")}
  * 如果a是1，这decode输出"a=1",如果a是2，则输出"a==2",
  * 如果是其他值，则输出"不知道了"
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public class DecodeFunction implements Function
-{
+public class DecodeFunction implements Function {
 
-	public Object call(Object[] paras, Context ctx)
-	{
-		
-		Object ret = null;
-		try
-		{
-			Object o = paras[0];
-			int i = 1;
-			while (true)
-			{
-				if (same(o, paras[i],ctx))
-				{
-					ret = paras[i + 1];
-					break ;
-				}
-				else
-				{
-					if (paras.length - 1 == i + 2)
-					{
-						//default
-						ret =  paras[i + 2];
-						break ;
-					}
-					else
-					{
-						i = i + 2;
-						continue;
-					}
-				}
-			}
-		}
-		catch (ArrayIndexOutOfBoundsException ex)
-		{
+    public Object call(Object[] paras, Context ctx) {
 
-			throw new RuntimeException("decode函数使用错误:DECODE(value, if1, then1, if2,then2, if3,then3, . . . else )");
-		}
-		return unwrap(ret,ctx);
-		
+        Object ret = null;
+        try {
+            Object o = paras[0];
+            int i = 1;
+            while (true) {
+                if (same(o, paras[i], ctx)) {
+                    ret = paras[i + 1];
+                    break;
+                } else {
+                    if (paras.length - 1 == i + 2) {
+                        //default
+                        ret = paras[i + 2];
+                        break;
+                    } else {
+                        i = i + 2;
+                        continue;
+                    }
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
 
-	}
+            throw new RuntimeException("decode函数使用错误:DECODE(value, if1, then1, if2,then2, if3,then3, . . . else )");
+        }
+        return unwrap(ret, ctx);
 
-	private boolean same(Object a, Object b,Context ctx)
-	{
-		Object real = unwrap(b,ctx);
-		return ALU.equals(a, real);
-	
-		
-	}
-	
-	private Object unwrap(Object b,Context ctx){
-		if(b instanceof ExpressionRuntime.ExpressionRuntimeObject){
-			ExpressionRuntimeObject  eo = (ExpressionRuntimeObject)b;
-			Object realValue = eo.get(ctx);
-			return realValue;
-		}else{
-			return b ;
-		}
-	}
+
+    }
+
+    private boolean same(Object a, Object b, Context ctx) {
+        Object real = unwrap(b, ctx);
+        return ALU.equals(a, real);
+
+
+    }
+
+    private Object unwrap(Object b, Context ctx) {
+        if (b instanceof ExpressionRuntime.ExpressionRuntimeObject) {
+            ExpressionRuntimeObject eo = (ExpressionRuntimeObject) b;
+            Object realValue = eo.get(ctx);
+            return realValue;
+        } else {
+            return b;
+        }
+    }
 
 }

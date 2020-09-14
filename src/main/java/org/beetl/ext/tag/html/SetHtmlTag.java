@@ -9,9 +9,9 @@ import org.beetl.core.tag.GeneralVarTagBinding;
  * </pre>
  */
 public class SetHtmlTag extends GeneralVarTagBinding {
-  @Override
-  public void render() {
-      Object value = this.getAttributeValue("value");
-      this.binds(value);
-  }
+    @Override
+    public void render() {
+        Object value = this.getAttributeValue("value");
+        this.binds(value);
+    }
 }

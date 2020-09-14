@@ -32,32 +32,33 @@ import org.beetl.core.misc.BeetlUtil;
 import org.beetl.core.om.AttributeAccess;
 import org.beetl.core.om.AABuilder;
 
-/** user.name
- * @author xiandafu
+/**
+ * user.name
  *
+ * @author xiandafu
  */
 public class VarAttribute extends Expression {
-	public int aaIndex = -1;
-	String name = null;
+    public int aaIndex = -1;
+    String name = null;
 
-	public VarAttribute(GrammarToken token) {
-		super(token);
-		name = token.text;
-	}
+    public VarAttribute(GrammarToken token) {
+        super(token);
+        name = token.text;
+    }
 
-	@Override
-	public Object evaluate(Context ctx) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public Object evaluate(Context ctx) {
+        throw new UnsupportedOperationException();
+    }
 
-	public Object evaluate(Context ctx, Object o) {
-		try {
-			AttributeAccess aa = AABuilder.buildFiledAccessor(o.getClass());
-			return aa.value(o, name);
-		} catch (ClassCastException ex) {
-			throw BeetlUtil.throwCastException(ex, ctx.gt);
-		}
+    public Object evaluate(Context ctx, Object o) {
+        try {
+            AttributeAccess aa = AABuilder.buildFiledAccessor(o.getClass());
+            return aa.value(o, name);
+        } catch (ClassCastException ex) {
+            throw BeetlUtil.throwCastException(ex, ctx.gt);
+        }
 
-	}
+    }
 
 }

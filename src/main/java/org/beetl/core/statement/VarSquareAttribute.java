@@ -34,33 +34,32 @@ import org.beetl.core.om.AABuilder;
 
 /**
  * a.[]
- * 
+ *
  * @author xiandafu
- * 
  */
 public class VarSquareAttribute extends VarAttribute {
-	public Expression exp;
+    public Expression exp;
 
-	public VarSquareAttribute(Expression exp, GrammarToken token) {
-		super(token);
-		this.exp = exp;
-	}
+    public VarSquareAttribute(Expression exp, GrammarToken token) {
+        super(token);
+        this.exp = exp;
+    }
 
-	@Override
-	public Object evaluate(Context ctx) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public Object evaluate(Context ctx) {
+        throw new UnsupportedOperationException();
+    }
 
-	public Object evaluate(Context ctx, Object o) {
+    public Object evaluate(Context ctx, Object o) {
 
-		try {
-			Object value = exp.evaluate(ctx);
-			AttributeAccess aa = AABuilder.buildFiledAccessor(o.getClass());
-			return aa.value(o, value);
-		} catch (ClassCastException ex) {
-			throw BeetlUtil.throwCastException(ex, ctx.gt);
-		}
+        try {
+            Object value = exp.evaluate(ctx);
+            AttributeAccess aa = AABuilder.buildFiledAccessor(o.getClass());
+            return aa.value(o, value);
+        } catch (ClassCastException ex) {
+            throw BeetlUtil.throwCastException(ex, ctx.gt);
+        }
 
-	}
+    }
 
 }

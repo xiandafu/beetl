@@ -40,69 +40,69 @@ import org.beetl.core.tag.TagFactory;
  * ......
  * }
  * </pre>
- * @author xiandafu
  *
+ * @author xiandafu
  */
 public class TagStatement extends Statement {
 
-	String tagName;
-	public Expression[] paras;
-	public Statement block;
+    String tagName;
+    public Expression[] paras;
+    public Statement block;
 
-	public TagStatement(String tagName, Expression[] paras, Statement block, GrammarToken token) {
-		super(token);
-		this.tagName = tagName;
-		this.paras = paras;
-		this.block = block;
+    public TagStatement(String tagName, Expression[] paras, Statement block, GrammarToken token) {
+        super(token);
+        this.tagName = tagName;
+        this.paras = paras;
+        this.block = block;
 
-	}
+    }
 
-	@Override
-	public void execute(Context ctx) {
-		Tag tag = null;
-		try {
-			TagFactory tagFactory = ctx.gt.getTagFactory(this.tagName);
-			tag = tagFactory.createTag();
-			Object[] args = null;
-			if (paras.length == 0) {
-				args = ObjectUtil.EMPTY_OBJECT_ARRAY;
-			} else {
-				args = new Object[paras.length];
-				for (int i = 0; i < args.length; i++) {
-					args[i] = paras[i].evaluate(ctx);
-				}
+    @Override
+    public void execute(Context ctx) {
+        Tag tag = null;
+        try {
+            TagFactory tagFactory = ctx.gt.getTagFactory(this.tagName);
+            tag = tagFactory.createTag();
+            Object[] args = null;
+            if (paras.length == 0) {
+                args = ObjectUtil.EMPTY_OBJECT_ARRAY;
+            } else {
+                args = new Object[paras.length];
+                for (int i = 0; i < args.length; i++) {
+                    args[i] = paras[i].evaluate(ctx);
+                }
 
-			}
+            }
 
-			tag.init(ctx, args, block);
-			runTag(tag, ctx);
-		} catch (BeetlException ex) {
-			if (!ex.inTagBody) {
-				ex.pushToken(this.token);
-			}
-			throw ex;
-		} catch (RuntimeException ex) {
-			BeetlException bex = new BeetlException(BeetlException.TAG_INSTANCE_ERROR, ex.getMessage(), ex);
-			bex.pushToken(token);
-			throw bex;
-		}
+            tag.init(ctx, args, block);
+            runTag(tag, ctx);
+        } catch (BeetlException ex) {
+            if (!ex.inTagBody) {
+                ex.pushToken(this.token);
+            }
+            throw ex;
+        } catch (RuntimeException ex) {
+            BeetlException bex = new BeetlException(BeetlException.TAG_INSTANCE_ERROR, ex.getMessage(), ex);
+            bex.pushToken(token);
+            throw bex;
+        }
 
-	}
+    }
 
-	protected void runTag(Tag tag, Context ctx) {
-		try {
+    protected void runTag(Tag tag, Context ctx) {
+        try {
 
-			tag.render();
-			tag.afterRender();
-		} catch (BeetlException ex) {
-			// BeetlException异常时不要设置token，因为抛出的地方已经设置了
-			throw ex;
-		} catch (RuntimeException ex) {
-			BeetlException be = new BeetlException(BeetlException.ERROR, "tag执行抛错", ex);
-			be.pushToken(token);
-			throw be;
-		}
-	}
+            tag.render();
+            tag.afterRender();
+        } catch (BeetlException ex) {
+            // BeetlException异常时不要设置token，因为抛出的地方已经设置了
+            throw ex;
+        } catch (RuntimeException ex) {
+            BeetlException be = new BeetlException(BeetlException.ERROR, "tag执行抛错", ex);
+            be.pushToken(token);
+            throw be;
+        }
+    }
 
 
 }

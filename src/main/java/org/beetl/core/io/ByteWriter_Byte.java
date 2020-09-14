@@ -54,6 +54,7 @@ package org.beetl.core.io;
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -61,139 +62,120 @@ import org.beetl.core.BodyContent;
 import org.beetl.core.ByteWriter;
 import org.beetl.core.Context;
 
-public class ByteWriter_Byte extends ByteWriter
-{
+public class ByteWriter_Byte extends ByteWriter {
 
-	protected OutputStream os;
-	protected String cs;
-	DefaultEncoder encode = null;
+    protected OutputStream os;
+    protected String cs;
+    DefaultEncoder encode = null;
 
-	//	protected Charset charset = null;
-	//	CharsetEncoder encoder = null;
-	//	ByteBuffer byteBuffer = null;
-	//	byte[] bs = new byte[256];
+    //	protected Charset charset = null;
+    //	CharsetEncoder encoder = null;
+    //	ByteBuffer byteBuffer = null;
+    //	byte[] bs = new byte[256];
 
-	public ByteWriter_Byte(OutputStream os, String cs, Context ctx)
-	{
-		super(ctx);
-		this.os = os;
-		this.cs = cs;
-		encode = new DefaultEncoder(cs, this.localBuffer);
+    public ByteWriter_Byte(OutputStream os, String cs, Context ctx) {
+        super(ctx);
+        this.os = os;
+        this.cs = cs;
+        encode = new DefaultEncoder(cs, this.localBuffer);
 
-	}
+    }
 
-	public ByteWriter_Byte(OutputStream os, String cs, Context ctx, ByteWriter parent)
-	{
-		this(os, cs, ctx);
-		this.parent = parent;
+    public ByteWriter_Byte(OutputStream os, String cs, Context ctx, ByteWriter parent) {
+        this(os, cs, ctx);
+        this.parent = parent;
 
-	}
+    }
 
-	@Override
-	public final void write(final char[] cbuf) throws IOException
-	{
-		this.write(cbuf, cbuf.length);
+    @Override
+    public final void write(final char[] cbuf) throws IOException {
+        this.write(cbuf, cbuf.length);
 
-		//todo:性能如何？
+        //todo:性能如何？
 
-	}
+    }
 
-	@Override
-	public final void write(final char[] cbuf, final int len) throws IOException
-	{
-		byte[] bs = new String(cbuf, 0, len).getBytes(cs);
-		write(bs);
+    @Override
+    public final void write(final char[] cbuf, final int len) throws IOException {
+        byte[] bs = new String(cbuf, 0, len).getBytes(cs);
+        write(bs);
 
-	}
+    }
 
-	@Override
-	public final void write(final byte[] bs) throws IOException
-	{
+    @Override
+    public final void write(final byte[] bs) throws IOException {
 
-		os.write(bs);
+        os.write(bs);
 
-	}
+    }
 
-	public void write(byte[] bs, int count) throws IOException
-	{
-		os.write(bs, 0, count);
+    public void write(byte[] bs, int count) throws IOException {
+        os.write(bs, 0, count);
 
-	}
+    }
 
-	public void writeString(String str) throws IOException
-	{
+    public void writeString(String str) throws IOException {
 
-		if (str != null)
-		{
-			encode.write(str, os);
-			//			os.write(str.getBytes(cs));
-		}
+        if (str != null) {
+            encode.write(str, os);
+            //			os.write(str.getBytes(cs));
+        }
 
-	}
+    }
 
-	@Override
-	public ByteWriter getTempWriter(ByteWriter parent)
-	{
-		return new ByteWriter_Byte(new NoLockByteArrayOutputStream(), cs, this.ctx, parent);
-	}
+    @Override
+    public ByteWriter getTempWriter(ByteWriter parent) {
+        return new ByteWriter_Byte(new NoLockByteArrayOutputStream(), cs, this.ctx, parent);
+    }
 
-	@Override
-	public void flush() throws IOException
-	{
-		if (parent != null)
-			parent.flush();
-		this.os.flush();
+    @Override
+    public void flush() throws IOException {
+        if (parent != null)
+            parent.flush();
+        this.os.flush();
 
-	}
+    }
 
-	@Override
-	public void fill(ByteWriter bw) throws IOException
-	{
-		ByteWriter_Byte bwb = (ByteWriter_Byte) bw;
-		NoLockByteArrayOutputStream byteArray = (NoLockByteArrayOutputStream) bwb.os;
-		this.write(byteArray.buf, byteArray.count);
+    @Override
+    public void fill(ByteWriter bw) throws IOException {
+        ByteWriter_Byte bwb = (ByteWriter_Byte) bw;
+        NoLockByteArrayOutputStream byteArray = (NoLockByteArrayOutputStream) bwb.os;
+        this.write(byteArray.buf, byteArray.count);
 
-	}
+    }
 
-	@Override
-	public BodyContent getTempConent()
-	{
-		NoLockByteArrayOutputStream byteArray = (NoLockByteArrayOutputStream) this.os;
-		return new ByteBodyContent(byteArray.buf, byteArray.count, this.cs);
-	}
+    @Override
+    public BodyContent getTempConent() {
+        NoLockByteArrayOutputStream byteArray = (NoLockByteArrayOutputStream) this.os;
+        return new ByteBodyContent(byteArray.buf, byteArray.count, this.cs);
+    }
 
-	public OutputStream getOs()
-	{
-		return os;
-	}
+    public OutputStream getOs() {
+        return os;
+    }
 
-	public void setOs(OutputStream os)
-	{
-		this.os = os;
-	}
+    public void setOs(OutputStream os) {
+        this.os = os;
+    }
 
-	public String getCs()
-	{
-		return cs;
-	}
+    public String getCs() {
+        return cs;
+    }
 
-	public void setCs(String cs)
-	{
-		this.cs = cs;
-	}
+    public void setCs(String cs) {
+        this.cs = cs;
+    }
 
-	@Override
-	public void writeNumberChars(char[] chars, int len) throws IOException
-	{
+    @Override
+    public void writeNumberChars(char[] chars, int len) throws IOException {
 
-		byte[] bs = ctx.localBuffer.getByteBuffer(len);
-		for (int i = 0; i < len; i++)
-		{
+        byte[] bs = ctx.localBuffer.getByteBuffer(len);
+        for (int i = 0; i < len; i++) {
 
-			bs[i] = (byte) chars[i];
+            bs[i] = (byte) chars[i];
 
-		}
-		this.os.write(bs, 0, len);
+        }
+        this.os.write(bs, 0, len);
 
-	}
+    }
 }

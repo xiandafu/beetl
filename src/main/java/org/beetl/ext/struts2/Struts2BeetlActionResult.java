@@ -48,76 +48,66 @@ import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.inject.Inject;
 import com.opensymphony.xwork2.util.reflection.ReflectionProvider;
 
-public class Struts2BeetlActionResult extends StrutsResultSupport
-{
+public class Struts2BeetlActionResult extends StrutsResultSupport {
 
-	ReflectionProvider reflectionProvider = null;
-	public static GroupTemplate groupTemplate;
-	private String pContentType = "text/html; charset=UTF-8";
-	static
-	{
-		Configuration cfg;
-		try
-		{
-			cfg = Configuration.defaultConfiguration();
-			WebAppResourceLoader resourceLoader = new WebAppResourceLoader();
-			groupTemplate = new GroupTemplate(resourceLoader, cfg);
+    ReflectionProvider reflectionProvider = null;
+    public static GroupTemplate groupTemplate;
+    private String pContentType = "text/html; charset=UTF-8";
 
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException("加载GroupTemplate失败", e);
-		}
-	}
-	
-	public Struts2BeetlActionResult() {
-		
-	}
+    static {
+        Configuration cfg;
+        try {
+            cfg = Configuration.defaultConfiguration();
+            WebAppResourceLoader resourceLoader = new WebAppResourceLoader();
+            groupTemplate = new GroupTemplate(resourceLoader, cfg);
 
-	@Inject
-	public void setReflectionProvider(ReflectionProvider prov)
-	{
-		this.reflectionProvider = prov;
-	}
+        } catch (IOException e) {
+            throw new RuntimeException("加载GroupTemplate失败", e);
+        }
+    }
 
-	protected void doExecute(String locationArg, ActionInvocation invocation) throws Exception
-	{
+    public Struts2BeetlActionResult() {
 
-		ActionContext ctx = invocation.getInvocationContext();
+    }
 
-		HttpServletRequest req = (HttpServletRequest) ctx.get(ServletActionContext.HTTP_REQUEST);
-		HttpServletResponse rsp = (HttpServletResponse) ctx.get(ServletActionContext.HTTP_RESPONSE);
+    @Inject
+    public void setReflectionProvider(ReflectionProvider prov) {
+        this.reflectionProvider = prov;
+    }
 
-		if (!locationArg.startsWith("/"))
-		{
-			String base = ResourceUtil.getResourceBase(req);
-			locationArg = base + "/" + locationArg;
-		}
+    protected void doExecute(String locationArg, ActionInvocation invocation) throws Exception {
 
-		Object action = invocation.getAction();
-		Map<String, Object> values = reflectionProvider.getBeanMap(action);
-		rsp.setContentType(this.pContentType);
-		WebRender render = new WebRender(groupTemplate) {
-			protected void modifyTemplate(Template template, String key, HttpServletRequest request,
-					HttpServletResponse response, Object... args)
-			{
-				Object action = args[0];
-				template.binding("_root",action);
-			}
-		};
-		render.render(locationArg, req, rsp, action);
+        ActionContext ctx = invocation.getInvocationContext();
 
-	}
+        HttpServletRequest req = (HttpServletRequest) ctx.get(ServletActionContext.HTTP_REQUEST);
+        HttpServletResponse rsp = (HttpServletResponse) ctx.get(ServletActionContext.HTTP_RESPONSE);
 
-	public void setContentType(String aContentType)
-	{
-		pContentType = aContentType;
-	}
+        if (!locationArg.startsWith("/")) {
+            String base = ResourceUtil.getResourceBase(req);
+            locationArg = base + "/" + locationArg;
+        }
 
-	public String getContentType()
-	{
-		return pContentType;
-	}
+        Object action = invocation.getAction();
+        Map<String, Object> values = reflectionProvider.getBeanMap(action);
+        rsp.setContentType(this.pContentType);
+        WebRender render = new WebRender(groupTemplate) {
+            protected void modifyTemplate(Template template, String key, HttpServletRequest request,
+                                          HttpServletResponse response, Object... args) {
+                Object action = args[0];
+                template.binding("_root", action);
+            }
+        };
+        render.render(locationArg, req, rsp, action);
+
+    }
+
+    public void setContentType(String aContentType) {
+        pContentType = aContentType;
+    }
+
+    public String getContentType() {
+        return pContentType;
+    }
 
 }
 

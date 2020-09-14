@@ -29,24 +29,22 @@ package org.beetl.core.statement;
 
 import org.beetl.core.Context;
 
-/** 表达式基类
- * @author xiandafu
+/**
+ * 表达式基类
  *
+ * @author xiandafu
  */
-public abstract class Expression extends ASTNode
-{
+public abstract class Expression extends ASTNode {
 
 
-	public Expression(GrammarToken token)
-	{
-		super(token);
-		// TODO Auto-generated constructor stub
-	}
+    public Expression(GrammarToken token) {
+        super(token);
+        // TODO Auto-generated constructor stub
+    }
 
-	public Object evaluate(Context ctx)
-	{
-		throw new RuntimeException("MUST IMPLEMENT");
-	}
+    public Object evaluate(Context ctx) {
+        throw new RuntimeException("MUST IMPLEMENT");
+    }
 
-	
+
 }

@@ -37,7 +37,7 @@ import org.beetl.core.misc.PrimitiveArrayUtil;
 /**
  * 判断全局变量是否为“空”，下列情况属于为空·的情况,将返回为false
  * <ul>
- * 
+ *
  * <li>变量不存在</li>
  * <li>变量存在，但为null</li>
  * <li>变量存在，但是字符，其长途为0</li>
@@ -46,16 +46,15 @@ import org.beetl.core.misc.PrimitiveArrayUtil;
  * </ul>
  * 参数可以一个到多个,如<p>
  * ${empty("list")}
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public class IsNotEmptyExpressionFunction implements Function
-{
-	EmptyExpressionFunction  fn = new EmptyExpressionFunction ();
-	public Boolean call(Object[] paras, Context ctx)
-	{
-		return !fn.call(paras, ctx);
+public class IsNotEmptyExpressionFunction implements Function {
+    EmptyExpressionFunction fn = new EmptyExpressionFunction();
 
-	}
+    public Boolean call(Object[] paras, Context ctx) {
+        return !fn.call(paras, ctx);
+
+    }
 
 }

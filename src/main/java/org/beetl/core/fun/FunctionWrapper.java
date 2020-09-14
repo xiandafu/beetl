@@ -38,67 +38,56 @@ import org.beetl.core.Function;
 
 /**
  * 将native方法包装成Function
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public abstract class FunctionWrapper implements Function
-{
-	boolean requiredContext = false;
-	public String functionName = null;
-	Object target;
-	Class cls;
+public abstract class FunctionWrapper implements Function {
+    boolean requiredContext = false;
+    public String functionName = null;
+    Object target;
+    Class cls;
 
-	public FunctionWrapper(String funName)
-	{
-		this.functionName = funName;
-	}
+    public FunctionWrapper(String funName) {
+        this.functionName = funName;
+    }
 
-	protected boolean checkContextRequried(Class[] paras)
-	{
-		return paras.length != 0 && paras[paras.length - 1] == Context.class;
-	}
+    protected boolean checkContextRequried(Class[] paras) {
+        return paras.length != 0 && paras[paras.length - 1] == Context.class;
+    }
 
-	protected Object[] getContextParas(Object[] paras, Context ctx)
-	{
-		Object[] newParas = new Object[paras.length + 1];
-		System.arraycopy(paras, 0, newParas, 0, paras.length);
-		newParas[paras.length] = ctx;
-		return newParas;
+    protected Object[] getContextParas(Object[] paras, Context ctx) {
+        Object[] newParas = new Object[paras.length + 1];
+        System.arraycopy(paras, 0, newParas, 0, paras.length);
+        newParas[paras.length] = ctx;
+        return newParas;
 
-	}
+    }
 
-	/**得到对象的所有FunctionWrapper，改对象的所有Public 方法都将注册到Beetl里
-	 * @param ns
-	 * @param o
-	 * @return
-	 */
-	public static List<FunctionWrapper> getFunctionWrapper(String ns, Class c, Object o)
-	{
+    /**
+     * 得到对象的所有FunctionWrapper，改对象的所有Public 方法都将注册到Beetl里
+     */
+    public static List<FunctionWrapper> getFunctionWrapper(String ns, Class c, Object o) {
 
-		ObjectInfo info = ObjectUtil.getObjectInfo(c);
-		Map<String, List<Method>> map = info.getMap();
-		List<FunctionWrapper> fwList = new ArrayList<FunctionWrapper>();
-		for (Entry<String, List<Method>> entry : map.entrySet())
-		{
+        ObjectInfo info = ObjectUtil.getObjectInfo(c);
+        Map<String, List<Method>> map = info.getMap();
+        List<FunctionWrapper> fwList = new ArrayList<FunctionWrapper>();
+        for (Entry<String, List<Method>> entry : map.entrySet()) {
 
-			if (entry.getValue().size() == 1)
-			{
+            if (entry.getValue().size() == 1) {
 
-				Method method = entry.getValue().get(0);
-				FunctionWrapper fw = new SingleFunctionWrapper(ns.concat(".").concat(method.getName()), c, o, method);
-				fwList.add(fw);
-			}
-			else
-			{
-				Method method = entry.getValue().get(0);
-				String name = method.getName();
-				FunctionWrapper fw = new MutipleFunctionWrapper(ns.concat(".").concat(name), c, o, entry.getValue()
-						.toArray(new Method[0]));
-				fwList.add(fw);
-			}
+                Method method = entry.getValue().get(0);
+                FunctionWrapper fw = new SingleFunctionWrapper(ns.concat(".").concat(method.getName()), c, o, method);
+                fwList.add(fw);
+            } else {
+                Method method = entry.getValue().get(0);
+                String name = method.getName();
+                FunctionWrapper fw = new MutipleFunctionWrapper(ns.concat(".").concat(name), c, o, entry.getValue()
+                        .toArray(new Method[0]));
+                fwList.add(fw);
+            }
 
-		}
-		return fwList;
+        }
+        return fwList;
 
-	}
+    }
 }

@@ -39,54 +39,53 @@ import org.beetl.core.tag.Tag;
 /**
  * 同layoutTag，采用html方式布局
  * <#html:layout parent="" attr1="" attr2="">
- * 
+ *
  * </#html:layout>
- * 
  */
 public class LayoutResourceHtmlTag extends Tag {
-	public static String defaultLayoutName = "layoutContent";
-	public static final String layoutNameAttr = "layoutContent";
+    public static String defaultLayoutName = "layoutContent";
+    public static final String layoutNameAttr = "layoutContent";
 
 
-	@Override
-	public void render() {
+    @Override
+    public void render() {
 
-		Object layoutFile = getRelResourceId();
-		Template t = this.gt.getTemplate(layoutFile, this.ctx);
-		t.binding(ctx.globalVar);
+        Object layoutFile = getRelResourceId();
+        Template t = this.gt.getTemplate(layoutFile, this.ctx);
+        t.binding(ctx.globalVar);
 
-		@SuppressWarnings("unchecked")
-		Map<String, Object> attrs = ((Map<String, Object>) this.args[1]);
-		String layoutName = attrs.containsKey(layoutNameAttr) ? (String) attrs.get(layoutNameAttr) : defaultLayoutName;
-		for (Entry<String, Object> entry : attrs.entrySet()) {
-			String attrName = entry.getKey();
-			if (attrName.equals("parent") || attrName.equals(layoutNameAttr)) {
-				// 子模板不设置file属性
-				continue;
-			}
-			Object value = entry.getValue();
-			t.binding(attrName, value);
-		}
+        @SuppressWarnings("unchecked")
+        Map<String, Object> attrs = ((Map<String, Object>) this.args[1]);
+        String layoutName = attrs.containsKey(layoutNameAttr) ? (String) attrs.get(layoutNameAttr) : defaultLayoutName;
+        for (Entry<String, Object> entry : attrs.entrySet()) {
+            String attrName = entry.getKey();
+            if (attrName.equals("parent") || attrName.equals(layoutNameAttr)) {
+                // 子模板不设置file属性
+                continue;
+            }
+            Object value = entry.getValue();
+            t.binding(attrName, value);
+        }
 
-		BodyContent content = this.getBodyContent();
-		t.binding(layoutName, content);
-		t.renderTo(ctx.byteWriter);
+        BodyContent content = this.getBodyContent();
+        t.binding(layoutName, content);
+        t.renderTo(ctx.byteWriter);
 
-	}
+    }
 
-	protected Object getRelResourceId() {
-		Resource sibling = ctx.getResource();
-		return gt.getResourceLoader().getResourceId(sibling, this.getTargetResource());
-	}
+    protected Object getRelResourceId() {
+        Resource sibling = ctx.getResource();
+        return gt.getResourceLoader().getResourceId(sibling, this.getTargetResource());
+    }
 
 
-	protected String getTargetResource() {
-		@SuppressWarnings("unchecked")
-		String targetResourceId = (String) ((Map<String, Object>) this.args[1]).get("parent");
-		if (targetResourceId == null || targetResourceId.trim().length() == 0) {
-			throw new BeetlException(BeetlException.ERROR, "缺少 parent 属性 ");
-		}
-		return targetResourceId;
-	}
+    protected String getTargetResource() {
+        @SuppressWarnings("unchecked")
+        String targetResourceId = (String) ((Map<String, Object>) this.args[1]).get("parent");
+        if (targetResourceId == null || targetResourceId.trim().length() == 0) {
+            throw new BeetlException(BeetlException.ERROR, "缺少 parent 属性 ");
+        }
+        return targetResourceId;
+    }
 
 }

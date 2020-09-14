@@ -31,30 +31,30 @@ import java.util.Set;
 
 import org.beetl.core.Context;
 
-/** directive safe_output_open
- * @author xiandafu
+/**
+ * directive safe_output_open
  *
+ * @author xiandafu
  */
 @Deprecated
 public class DirectiveStatement extends Statement {
 
-	String directive;
-	static final String SAFE_OUTPUT_OPEN = "safe_output_open".intern();
-	static final String SAFE_OUTPUT_CLOSE = "safe_output_close".intern();
-	boolean safeOutput = false;
-	public DirectiveStatement(boolean safeOutput, GrammarToken token) {
-		super(token);
-		this.safeOutput = safeOutput;
+    String directive;
+    static final String SAFE_OUTPUT_OPEN = "safe_output_open".intern();
+    static final String SAFE_OUTPUT_CLOSE = "safe_output_close".intern();
+    boolean safeOutput = false;
 
-	}
+    public DirectiveStatement(boolean safeOutput, GrammarToken token) {
+        super(token);
+        this.safeOutput = safeOutput;
 
-	@Override
-	public void execute(Context ctx) {
-		ctx.safeOutput = safeOutput;
+    }
 
-	}
+    @Override
+    public void execute(Context ctx) {
+        ctx.safeOutput = safeOutput;
 
-
+    }
 
 
 }

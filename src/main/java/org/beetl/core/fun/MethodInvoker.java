@@ -4,11 +4,10 @@ import java.lang.reflect.Method;
 
 /**
  * 传入对象，获取对象对应的属性值 {@link PojoMethodInvoker}
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public interface MethodInvoker
-{
+public interface MethodInvoker {
     /**
      * @param o 传入的Pojo对象
      * @return 返回值
@@ -22,5 +21,5 @@ public interface MethodInvoker
 
     public Method getMethod();
 
-    public void set(Object ins,Object value);
+    public void set(Object ins, Object value);
 }

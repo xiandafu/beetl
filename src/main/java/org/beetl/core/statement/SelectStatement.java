@@ -31,76 +31,77 @@ import org.beetl.core.Context;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.misc.ALU;
 
-/** same with switch-case
- * @author xiandafu
+/**
+ * same with switch-case
  *
+ * @author xiandafu
  */
 public class SelectStatement extends Statement {
 
-	public Expression value;
-	public Expression[] conditions;
-	public BlockStatement[] blocks;
-	public BlockStatement defaultBlock;
+    public Expression value;
+    public Expression[] conditions;
+    public BlockStatement[] blocks;
+    public BlockStatement defaultBlock;
 
-	public SelectStatement(Expression value, Expression[] conditions, BlockStatement[] blocks,
-			BlockStatement defaultBlock, GrammarToken token) {
-		super(token);
-		this.value = value;
-		this.conditions = conditions;
-		this.blocks = blocks;
-		this.defaultBlock = defaultBlock;
-	}
+    public SelectStatement(Expression value, Expression[] conditions, BlockStatement[] blocks,
+                           BlockStatement defaultBlock, GrammarToken token) {
+        super(token);
+        this.value = value;
+        this.conditions = conditions;
+        this.blocks = blocks;
+        this.defaultBlock = defaultBlock;
+    }
 
-	@Override
-	public void execute(Context ctx) {
-		Object base = null;
-		if (value != null) {
-			base = value.evaluate(ctx);
-			if (base == null) {
-				BeetlException ex = new BeetlException(BeetlException.NULL);
-				ex.pushToken(value.token);
-				throw ex;
-			}
+    @Override
+    public void execute(Context ctx) {
+        Object base = null;
+        if (value != null) {
+            base = value.evaluate(ctx);
+            if (base == null) {
+                BeetlException ex = new BeetlException(BeetlException.NULL);
+                ex.pushToken(value.token);
+                throw ex;
+            }
 
-		}
+        }
 
-		boolean isMatch = false;
-		for (int i = 0; i < conditions.length; i++) {
-			Expression exp = conditions[i];
-			Object condValue = exp.evaluate(ctx);
+        boolean isMatch = false;
+        for (int i = 0; i < conditions.length; i++) {
+            Expression exp = conditions[i];
+            Object condValue = exp.evaluate(ctx);
 
-			if (value == null) {
-				if (condValue instanceof Boolean) {
-					isMatch = (Boolean) condValue;
-				} else {
-					BeetlException be = new BeetlException(BeetlException.BOOLEAN_EXPECTED_ERROR);
-					be.pushToken(exp.token);
-					throw be;
-				}
-			} else {
-				if (ALU.equals(base, condValue)) {
-					isMatch = true;
-				}
-			}
+            if (value == null) {
+                if (condValue instanceof Boolean) {
+                    isMatch = (Boolean) condValue;
+                } else {
+                    BeetlException be = new BeetlException(BeetlException.BOOLEAN_EXPECTED_ERROR);
+                    be.pushToken(exp.token);
+                    throw be;
+                }
+            } else {
+                if (ALU.equals(base, condValue)) {
+                    isMatch = true;
+                }
+            }
 
-			if (isMatch) {
+            if (isMatch) {
 
-				BlockStatement block = this.blocks[i];
-				if (block != null) {
-					block.execute(ctx);
-				}
+                BlockStatement block = this.blocks[i];
+                if (block != null) {
+                    block.execute(ctx);
+                }
 
-				break;
+                break;
 
-			}
+            }
 
-		}
+        }
 
-		if (!isMatch && defaultBlock != null) {
-			defaultBlock.execute(ctx);
-		}
+        if (!isMatch && defaultBlock != null) {
+            defaultBlock.execute(ctx);
+        }
 
-	}
+    }
 
 
 }

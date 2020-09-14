@@ -34,58 +34,49 @@ import org.beetl.core.statement.Statement;
 
 /**
  * {@link GeneralVarTagBinding} 的html标签封装，带变量绑定的html标签调用的标签
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public class HTMLTagVarBindingWrapper extends Tag 
-{
+public class HTMLTagVarBindingWrapper extends Tag {
 
-	GeneralVarTagBinding tag = null;
+    GeneralVarTagBinding tag = null;
 
-	@Override
-	public void render()
-	{
-		tag.render();
+    @Override
+    public void render() {
+        tag.render();
 
-	}
+    }
 
 
-	public void mapName2Index(LinkedHashMap<String, Integer> map)
-	{
-		
-		tag.mapName2Index(map);
-	}
+    public void mapName2Index(LinkedHashMap<String, Integer> map) {
 
-	public void init(Context ctx, Object[] args, Statement st)
-	{
-		super.init(ctx, args, st);
-		if (args.length == 0 || args.length > 3)
-		{
-			throw new RuntimeException("参数错误，期望child,Map .....");
-		}
-		String child = (String) args[0];
-		// 已经注册的Tag
-		TagFactory tagFactory = null;
-		String functionTagName = child.replace(':', '.');
-		tagFactory = this.gt.getTagFactory(functionTagName);
-		if (tagFactory == null)
-		{
-			throw new RuntimeException("标签初始化错误，未找到指定的标签实现类" + functionTagName);
-		}
-		Tag temp = tagFactory.createTag();
-		if (temp == null)
-		{
-			throw new RuntimeException("找不到注册的Tag");
+        tag.mapName2Index(map);
+    }
 
-		}
-		else if (!(temp instanceof GeneralVarTagBinding))
-		{
-			throw new RuntimeException(tag.getClass() + " 必须是TagVarBinding的实现类");
-		}
+    public void init(Context ctx, Object[] args, Statement st) {
+        super.init(ctx, args, st);
+        if (args.length == 0 || args.length > 3) {
+            throw new RuntimeException("参数错误，期望child,Map .....");
+        }
+        String child = (String) args[0];
+        // 已经注册的Tag
+        TagFactory tagFactory = null;
+        String functionTagName = child.replace(':', '.');
+        tagFactory = this.gt.getTagFactory(functionTagName);
+        if (tagFactory == null) {
+            throw new RuntimeException("标签初始化错误，未找到指定的标签实现类" + functionTagName);
+        }
+        Tag temp = tagFactory.createTag();
+        if (temp == null) {
+            throw new RuntimeException("找不到注册的Tag");
 
-		this.tag = ((GeneralVarTagBinding)temp);
-		tag.init(ctx, args, st);
+        } else if (!(temp instanceof GeneralVarTagBinding)) {
+            throw new RuntimeException(tag.getClass() + " 必须是TagVarBinding的实现类");
+        }
 
-	}
+        this.tag = ((GeneralVarTagBinding) temp);
+        tag.init(ctx, args, st);
+
+    }
 
 }

@@ -45,78 +45,63 @@ import org.beetl.core.tag.Tag;
  * 如果指定了refresh，则删除key值对应的模板内容，重新解析运行模板。
  * <p>
  * key值是必须的，timeout，和refresh可选。
+ *
  * @author xiandafu
  * @since 2.0
- *
  */
-public class CacheTag extends Tag
-{
-	public static CacheManager cacheManager = new SimpleCacheManager();
+public class CacheTag extends Tag {
+    public static CacheManager cacheManager = new SimpleCacheManager();
 
-	@Override
-	public void render()
-	{
+    @Override
+    public void render() {
 
-		try
-		{
-			String key = null;
-			long refreshPeriod = 0;
-			BodyContent cahcedObject = null;
-			key = (String) this.args[0];
-			if (this.args.length == 3)
-			{
-				boolean refreshNow = ((Boolean) this.args[2]).booleanValue();
-				if (refreshNow)
-				{
-					cahcedObject = super.getBodyContent();
-					cacheManager.setObject(key, cahcedObject, refreshPeriod);
-					cahcedObject.fill(bw);
-					return;
+        try {
+            String key = null;
+            long refreshPeriod = 0;
+            BodyContent cahcedObject = null;
+            key = (String) this.args[0];
+            if (this.args.length == 3) {
+                boolean refreshNow = ((Boolean) this.args[2]).booleanValue();
+                if (refreshNow) {
+                    cahcedObject = super.getBodyContent();
+                    cacheManager.setObject(key, cahcedObject, refreshPeriod);
+                    cahcedObject.fill(bw);
+                    return;
 
-				}
-			}
+                }
+            }
 
-			if (this.args.length >= 2)
-			{
+            if (this.args.length >= 2) {
 
-				refreshPeriod = ((Number) this.args[1]).longValue();
+                refreshPeriod = ((Number) this.args[1]).longValue();
 
-			}
-			else
-			{
-				//默认1小时刷新一次
-				refreshPeriod = 60 * 60;
-			}
+            } else {
+                //默认1小时刷新一次
+                refreshPeriod = 60 * 60;
+            }
 
-			if (refreshPeriod < 0)
-			{
-				cahcedObject = super.getBodyContent();
-				cacheManager.setObject(key, cahcedObject, refreshPeriod);
-				cahcedObject.fill(bw);
+            if (refreshPeriod < 0) {
+                cahcedObject = super.getBodyContent();
+                cacheManager.setObject(key, cahcedObject, refreshPeriod);
+                cahcedObject.fill(bw);
 
-			}
-			else
-			{
-				cahcedObject = (BodyContent) cacheManager.getObject(key);
-				if (cahcedObject == null)
-				{
-					cahcedObject = super.getBodyContent();
-					cacheManager.setObject(key, cahcedObject, refreshPeriod);
-				}
-				cahcedObject.fill(this.bw);
+            } else {
+                cahcedObject = (BodyContent) cacheManager.getObject(key);
+                if (cahcedObject == null) {
+                    cahcedObject = super.getBodyContent();
+                    cacheManager.setObject(key, cahcedObject, refreshPeriod);
+                }
+                cahcedObject.fill(this.bw);
 
-			}
+            }
 
-			return;
-		}
-		catch (IOException ex)
-		{
-			if (!ctx.gt.getConf().isIgnoreClientIOError())
-			{
-				throw new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR, "IO Error", ex);
-			}
+            return;
+        } catch (IOException ex) {
+            if (!ctx.gt.getConf().isIgnoreClientIOError()) {
+                throw new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR, "IO Error", ex);
+            }
 
-		}
+        }
 
-	}
+    }
 }

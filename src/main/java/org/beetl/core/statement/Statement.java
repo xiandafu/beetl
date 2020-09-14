@@ -31,18 +31,16 @@ import org.beetl.core.Context;
 
 /**
  * 执行语句
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public abstract class Statement extends ASTNode
-{
+public abstract class Statement extends ASTNode {
 
-	public Statement(GrammarToken token)
-	{
-		super(token);
+    public Statement(GrammarToken token) {
+        super(token);
 
-	}
+    }
 
-	public abstract void execute(Context ctx);
+    public abstract void execute(Context ctx);
 
 }

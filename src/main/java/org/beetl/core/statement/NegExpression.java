@@ -30,24 +30,25 @@ package org.beetl.core.statement;
 import org.beetl.core.Context;
 import org.beetl.core.misc.ALU;
 
-/** -exp
- * @author xiandafu
+/**
+ * -exp
  *
+ * @author xiandafu
  */
 public class NegExpression extends Expression {
 
-	public Expression exp;
+    public Expression exp;
 
-	public NegExpression(Expression exp, GrammarToken token) {
-		super(token);
-		this.exp = exp;
+    public NegExpression(Expression exp, GrammarToken token) {
+        super(token);
+        this.exp = exp;
 
-	}
+    }
 
-	public final Object evaluate(Context ctx) {
-		return ALU.negative(exp.evaluate(ctx), exp);
+    public final Object evaluate(Context ctx) {
+        return ALU.negative(exp.evaluate(ctx), exp);
 
-	}
+    }
 
 
 }

@@ -30,88 +30,89 @@ package org.beetl.core.statement;
 import org.beetl.core.Context;
 import org.beetl.core.exception.BeetlException;
 
-/**while(exp)  whileBody
- * @author xiandafu
+/**
+ * while(exp)  whileBody
  *
+ * @author xiandafu
  */
 public class WhileStatement extends Statement implements IGoto {
 
-	public Expression exp;
-	public Statement whileBody;
-	public boolean hasGoto = false;
+    public Expression exp;
+    public Statement whileBody;
+    public boolean hasGoto = false;
 
-	public WhileStatement(Expression exp, Statement whileBody, GrammarToken token) {
-		super(token);
-		this.exp = exp;
-		this.whileBody = whileBody;
-		if (this.whileBody instanceof BlockStatement) {
-			this.hasGoto = ((BlockStatement) whileBody).hasGoto;
-		}
-	}
+    public WhileStatement(Expression exp, Statement whileBody, GrammarToken token) {
+        super(token);
+        this.exp = exp;
+        this.whileBody = whileBody;
+        if (this.whileBody instanceof BlockStatement) {
+            this.hasGoto = ((BlockStatement) whileBody).hasGoto;
+        }
+    }
 
-	@Override
-	public void execute(Context ctx) {
-		if (this.hasGoto) {
-			while (true) {
-				Object result = exp.evaluate(ctx);
-				if (result instanceof Boolean) {
-					if ((Boolean) result) {
-						whileBody.execute(ctx);
-						switch (ctx.gotoFlag) {
-							case IGoto.NORMAL:
-								break;
-							case IGoto.CONTINUE:
-								ctx.gotoFlag = IGoto.NORMAL;
-								continue;
-							case IGoto.RETURN:
-								return;
-							case IGoto.BREAK:
-								ctx.gotoFlag = IGoto.NORMAL;
-								return;
-						}
-					} else {
-						break;
-					}
+    @Override
+    public void execute(Context ctx) {
+        if (this.hasGoto) {
+            while (true) {
+                Object result = exp.evaluate(ctx);
+                if (result instanceof Boolean) {
+                    if ((Boolean) result) {
+                        whileBody.execute(ctx);
+                        switch (ctx.gotoFlag) {
+                            case IGoto.NORMAL:
+                                break;
+                            case IGoto.CONTINUE:
+                                ctx.gotoFlag = IGoto.NORMAL;
+                                continue;
+                            case IGoto.RETURN:
+                                return;
+                            case IGoto.BREAK:
+                                ctx.gotoFlag = IGoto.NORMAL;
+                                return;
+                        }
+                    } else {
+                        break;
+                    }
 
-				} else {
-					BeetlException be = new BeetlException(BeetlException.BOOLEAN_EXPECTED_ERROR);
-					be.pushToken(exp.token);
-					throw be;
-				}
+                } else {
+                    BeetlException be = new BeetlException(BeetlException.BOOLEAN_EXPECTED_ERROR);
+                    be.pushToken(exp.token);
+                    throw be;
+                }
 
-			}
-		} else {
+            }
+        } else {
 
-			while (true) {
-				Object result = exp.evaluate(ctx);
-				if (result instanceof Boolean) {
-					if ((Boolean) result) {
-						whileBody.execute(ctx);
+            while (true) {
+                Object result = exp.evaluate(ctx);
+                if (result instanceof Boolean) {
+                    if ((Boolean) result) {
+                        whileBody.execute(ctx);
 
-					} else {
-						break;
-					}
+                    } else {
+                        break;
+                    }
 
-				} else {
-					BeetlException be = new BeetlException(BeetlException.BOOLEAN_EXPECTED_ERROR);
-					be.pushToken(exp.token);
-					throw be;
-				}
-			}
+                } else {
+                    BeetlException be = new BeetlException(BeetlException.BOOLEAN_EXPECTED_ERROR);
+                    be.pushToken(exp.token);
+                    throw be;
+                }
+            }
 
-		}
-	}
+        }
+    }
 
 
-	@Override
-	public boolean hasGoto() {
-		return this.hasGoto;
-	}
+    @Override
+    public boolean hasGoto() {
+        return this.hasGoto;
+    }
 
-	@Override
-	public void setGoto(boolean occour) {
-		this.hasGoto = occour;
+    @Override
+    public void setGoto(boolean occour) {
+        this.hasGoto = occour;
 
-	}
+    }
 
 }

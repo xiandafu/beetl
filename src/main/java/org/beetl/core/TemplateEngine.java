@@ -33,21 +33,19 @@ import java.util.Map;
 import org.beetl.core.statement.Program;
 
 /**
- *  模板引擎
- * @author xiandafu
+ * 模板引擎
  *
+ * @author xiandafu
  */
-public interface TemplateEngine
-{
-	/**
-	 * @param resource 模板id
-	 * @param input 模板转化成脚本后的内容
-	 * @param textMap 静态文本
-	 * @param cr 模板换行符
-	 * @param gt  模板组
-	 * @return
-	 */
-	public Program createProgram(Resource resource, Reader input, Map<Integer, String> textMap, String cr,
-			GroupTemplate gt);
+public interface TemplateEngine {
+    /**
+     * @param resource 模板id
+     * @param input    模板转化成脚本后的内容
+     * @param textMap  静态文本
+     * @param cr       模板换行符
+     * @param gt       模板组
+     */
+    public Program createProgram(Resource resource, Reader input, Map<Integer, String> textMap, String cr,
+                                 GroupTemplate gt);
 
 }

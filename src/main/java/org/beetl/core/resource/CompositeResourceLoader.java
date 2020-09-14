@@ -39,199 +39,168 @@ import org.beetl.core.Resource;
 import org.beetl.core.ResourceLoader;
 import org.beetl.core.exception.BeetlException;
 
-/**   
+/**
  * 复合加载器，依据对应的匹配器调用响应的加载器
- * @author 李飞 (lifei@wellbole.com 
- * 
+ *
+ * @author 李飞 (lifei@wellbole.com
  **/
-public class CompositeResourceLoader implements ResourceLoader<String>
-{
+public class CompositeResourceLoader implements ResourceLoader<String> {
 
-	/**
-	 * 匹配器列表
-	 */
-	private List<Matcher> matchers = new ArrayList<Matcher>();
+    /**
+     * 匹配器列表
+     */
+    private List<Matcher> matchers = new ArrayList<Matcher>();
 
-	/**
-	 * 匹配器-加载器映射表
-	 */
-	private Map<Matcher, ResourceLoader> matcherResourceLoaderMap = new HashMap<Matcher, ResourceLoader>();
+    /**
+     * 匹配器-加载器映射表
+     */
+    private Map<Matcher, ResourceLoader> matcherResourceLoaderMap = new HashMap<Matcher, ResourceLoader>();
 
-	/**
-	 * 是否自动检查文件是否变动
-	 */
-	private boolean autoCheck = false;
+    /**
+     * 是否自动检查文件是否变动
+     */
+    private boolean autoCheck = false;
 
-	/**
-	 * 添加一个资源加载器
-	 * @param matcher 匹配器
-	 * @param resourceLoader 匹配时对应的资源加载器
-	 */
-	public void addResourceLoader(Matcher matcher, ResourceLoader resourceLoader)
-	{
-		//检查是否存在该匹配器
-		if (this.matcherResourceLoaderMap.containsKey(matcher))
-		{
-			//已经添加了。
-			return;
-		}
-		this.matcherResourceLoaderMap.put(matcher, resourceLoader);
-		this.matchers.add(matcher);
-	}
+    /**
+     * 添加一个资源加载器
+     *
+     * @param matcher        匹配器
+     * @param resourceLoader 匹配时对应的资源加载器
+     */
+    public void addResourceLoader(Matcher matcher, ResourceLoader resourceLoader) {
+        //检查是否存在该匹配器
+        if (this.matcherResourceLoaderMap.containsKey(matcher)) {
+            //已经添加了。
+            return;
+        }
+        this.matcherResourceLoaderMap.put(matcher, resourceLoader);
+        this.matchers.add(matcher);
+    }
 
-	/** 一次性设置资源加载器,方便配置使用
-	 * @param map
-	 */
-	public void setResourceLoaderMap(Map<Matcher, ResourceLoader> map)
-	{
-		this.matcherResourceLoaderMap = map;
-	}
+    /**
+     * 一次性设置资源加载器,方便配置使用
+     */
+    public void setResourceLoaderMap(Map<Matcher, ResourceLoader> map) {
+        this.matcherResourceLoaderMap = map;
+    }
 
-	@Override
-	public void close()
-	{
-		Iterator<ResourceLoader> it = matcherResourceLoaderMap.values().iterator();
-		ResourceLoader rl = null;
-		while (it.hasNext())
-		{
-			rl = it.next();
-			rl.close();
-		}
-	}
+    @Override
+    public void close() {
+        Iterator<ResourceLoader> it = matcherResourceLoaderMap.values().iterator();
+        ResourceLoader rl = null;
+        while (it.hasNext()) {
+            rl = it.next();
+            rl.close();
+        }
+    }
 
-	@Override
-	public boolean exist(String key)
-	{
-		ResourceLoaderKeyEntry rlke = this.match(key);
-		if (rlke == null)
-			return false;
-		return rlke.getResourceLoader().exist(rlke.getNewKey());
-	}
+    @Override
+    public boolean exist(String key) {
+        ResourceLoaderKeyEntry rlke = this.match(key);
+        if (rlke == null)
+            return false;
+        return rlke.getResourceLoader().exist(rlke.getNewKey());
+    }
 
-	@Override
-	public Resource getResource(String key)
-	{
-		ResourceLoaderKeyEntry rlke = this.match(key);
-		if (rlke == null)
-		{
-			return new UnReachableResource(key, this);
-		}
-		return rlke.getResourceLoader().getResource(rlke.getNewKey());
-	}
+    @Override
+    public Resource getResource(String key) {
+        ResourceLoaderKeyEntry rlke = this.match(key);
+        if (rlke == null) {
+            return new UnReachableResource(key, this);
+        }
+        return rlke.getResourceLoader().getResource(rlke.getNewKey());
+    }
 
-	@Override
-	public void init(GroupTemplate gt)
-	{
-		//逐个初始化
-		for (ResourceLoader rl : this.matcherResourceLoaderMap.values())
-		{
-			rl.init(gt);
-		}
-		Map<String, String> resourceMap = gt.getConf().getResourceMap();
-		this.autoCheck = Boolean.parseBoolean(resourceMap.get("autoCheck"));
-	}
+    @Override
+    public void init(GroupTemplate gt) {
+        //逐个初始化
+        for (ResourceLoader rl : this.matcherResourceLoaderMap.values()) {
+            rl.init(gt);
+        }
+        Map<String, String> resourceMap = gt.getConf().getResourceMap();
+        this.autoCheck = Boolean.parseBoolean(resourceMap.get("autoCheck"));
+    }
 
-	@Override
-	public boolean isModified(Resource key)
-	{
-		if (this.autoCheck)
-		{
-			return key.isModified();
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean isModified(Resource key) {
+        if (this.autoCheck) {
+            return key.isModified();
+        } else {
+            return false;
+        }
+    }
 
-	/**
-	 * @Description: 遍历匹配器列表进行 匹配操作  
-	 * @param key 
-	 * @return 匹配到了返回一个加载器新key实体。否则报异常（说明代码写的有问题）
-	 */
-	private ResourceLoaderKeyEntry match(String key)
-	{
-		for (Matcher matcher : this.matchers)
-		{
-			//匹配了
-			String newKey = matcher.match(key);
-			if (newKey != null)
-			{
-				//返回对应的资源加载器
-				return new ResourceLoaderKeyEntry(newKey, this.matcherResourceLoaderMap.get(matcher));
-			}
-		}
-		return null;
-	}
+    /**
+     * @return 匹配到了返回一个加载器新key实体。否则报异常（说明代码写的有问题）
+     */
+    private ResourceLoaderKeyEntry match(String key) {
+        for (Matcher matcher : this.matchers) {
+            //匹配了
+            String newKey = matcher.match(key);
+            if (newKey != null) {
+                //返回对应的资源加载器
+                return new ResourceLoaderKeyEntry(newKey, this.matcherResourceLoaderMap.get(matcher));
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * @Description: 内部类，用来返回  ResourceLoader 和 key对
-	 */
-	private final static class ResourceLoaderKeyEntry
-	{
-		private final String newKey;
-		private final ResourceLoader resourceLoader;
+    /**
+     *
+     */
+    private final static class ResourceLoaderKeyEntry {
+        private final String newKey;
+        private final ResourceLoader resourceLoader;
 
-		public ResourceLoaderKeyEntry(String newKey, ResourceLoader resourceLoader)
-		{
-			this.newKey = newKey;
-			this.resourceLoader = resourceLoader;
-		}
+        public ResourceLoaderKeyEntry(String newKey, ResourceLoader resourceLoader) {
+            this.newKey = newKey;
+            this.resourceLoader = resourceLoader;
+        }
 
-		public final String getNewKey()
-		{
-			return newKey;
-		}
+        public final String getNewKey() {
+            return newKey;
+        }
 
-		public final ResourceLoader getResourceLoader()
-		{
-			return resourceLoader;
-		}
-	}
+        public final ResourceLoader getResourceLoader() {
+            return resourceLoader;
+        }
+    }
 
-	private final static class UnReachableResource extends Resource
-	{
+    private final static class UnReachableResource extends Resource {
 
-		UnReachableResource(String key, ResourceLoader loader)
-		{
-			super(key, loader);
-		}
+        UnReachableResource(String key, ResourceLoader loader) {
+            super(key, loader);
+        }
 
-		@Override
-		public Reader openReader()
-		{
-			BeetlException be = new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR, "复合资源加载器未匹配路径:" + this.id);
-			be.pushResource(this);
-			throw be;
-		}
+        @Override
+        public Reader openReader() {
+            BeetlException be = new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR, "复合资源加载器未匹配路径:" + this.id);
+            be.pushResource(this);
+            throw be;
+        }
 
-		@Override
-		public boolean isModified()
-		{
+        @Override
+        public boolean isModified() {
 
-			return true;
-		}
-	}
+            return true;
+        }
+    }
 
-	@Override
-	public String getResourceId(Resource resource, String id)
-	{
-		if (resource == null)
-			return id;
-		//判断如果是同一前缀，则需要考虑相对路径
-		ResourceLoaderKeyEntry rlke = this.match(id);
-		if (resource.getResourceLoader() == rlke.getResourceLoader())
-		{
-			return (String)resource.getResourceLoader().getResourceId(resource, id);
-		}
-		else
-		{
-			return id;
-		}
-	}
+    @Override
+    public String getResourceId(Resource resource, String id) {
+        if (resource == null)
+            return id;
+        //判断如果是同一前缀，则需要考虑相对路径
+        ResourceLoaderKeyEntry rlke = this.match(id);
+        if (resource.getResourceLoader() == rlke.getResourceLoader()) {
+            return (String) resource.getResourceLoader().getResourceId(resource, id);
+        } else {
+            return id;
+        }
+    }
 
-	@Override
-	public String getInfo() {
-		return "CompositeResourceLoader "+this.matcherResourceLoaderMap;
-	}
+    @Override
+    public String getInfo() {
+        return "CompositeResourceLoader " + this.matcherResourceLoaderMap;
+    }
 }

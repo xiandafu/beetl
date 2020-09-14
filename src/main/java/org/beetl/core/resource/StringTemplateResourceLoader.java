@@ -33,63 +33,56 @@ import org.beetl.core.ResourceLoader;
 
 /**
  * 字符串模板加载器
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public class StringTemplateResourceLoader implements ResourceLoader<String>
-{
+public class StringTemplateResourceLoader implements ResourceLoader<String> {
 
-	public StringTemplateResourceLoader()
-	{
+    public StringTemplateResourceLoader() {
 
-	}
+    }
 
-	/** 返回一个template作为模板内容的模板
-	 */
-	@Override
-	public Resource getResource(String template)
-	{
-		return new StringTemplateResource(template, this);
+    /**
+     * 返回一个template作为模板内容的模板
+     */
+    @Override
+    public Resource getResource(String template) {
+        return new StringTemplateResource(template, this);
 
-	}
+    }
 
-	@Override
-	public void close()
-	{
-		// TODO Auto-generated method stub
+    @Override
+    public void close() {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
-	@Override
-	public boolean isModified(Resource key)
-	{
-		return false;
-	}
+    @Override
+    public boolean isModified(Resource key) {
+        return false;
+    }
 
-	@Override
-	public void init(GroupTemplate gt)
-	{
-		// TODO Auto-generated method stub
+    @Override
+    public void init(GroupTemplate gt) {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
-	@Override
-	public boolean exist(String key)
-	{
-		// TODO Auto-generated method stub
-		return true;
-	}
+    @Override
+    public boolean exist(String key) {
+        // TODO Auto-generated method stub
+        return true;
+    }
 
-	@Override
-	public String getResourceId(Resource resource, String id)
-	{
-		return id;
-	}
+    @Override
+    public String getResourceId(Resource resource, String id) {
+        return id;
+    }
 
-	@Override
-	public String getInfo() {
-		// TODO Auto-generated method stub
-		return "StringTemplateResourceLoader ";
-	}
+    @Override
+    public String getInfo() {
+        // TODO Auto-generated method stub
+        return "StringTemplateResourceLoader ";
+    }
 
 }

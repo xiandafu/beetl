@@ -33,27 +33,22 @@ import org.beetl.core.Format;
 
 /*格式化Number类型，pattern参考DecimalFormat,如
  * ${0.345,numberFormat="##.#%"}
- * 
+ *
  * @author xiandafu
  *
  */
-public class NumberFormat implements Format
-{
+public class NumberFormat implements Format {
 
-	public String format(Object data, String pattern)
-	{
-		DecimalFormat df = null;
-		if (pattern == null)
-		{
-			df = new DecimalFormat();
-		}
-		else
-		{
-			df = new DecimalFormat(pattern);
-		}
+    public String format(Object data, String pattern) {
+        DecimalFormat df = null;
+        if (pattern == null) {
+            df = new DecimalFormat();
+        } else {
+            df = new DecimalFormat(pattern);
+        }
 
-		return df.format(data);
+        return df.format(data);
 
-	}
+    }
 
 }

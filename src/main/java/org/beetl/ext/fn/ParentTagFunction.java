@@ -6,11 +6,11 @@ import org.beetl.core.tag.Tag;
 
 public class ParentTagFunction implements Function {
 
-	@Override
-	public Tag call(Object[] paras, Context ctx) {
+    @Override
+    public Tag call(Object[] paras, Context ctx) {
 
-		Tag current = ctx.getCurrentTag();
-		return current != null ? current.getParent() : null;
-	}
+        Tag current = ctx.getCurrentTag();
+        return current != null ? current.getParent() : null;
+    }
 
 }

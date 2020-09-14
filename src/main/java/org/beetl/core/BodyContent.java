@@ -31,20 +31,18 @@ import java.io.IOException;
 
 /**
  * 对于模板变量或者标签等将输出暂存的地方
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public interface BodyContent
-{
-	/** 模板或者标签的内容
-	 * @return
-	 */
-	public String getBody();
+public interface BodyContent {
+    /**
+     * 模板或者标签的内容
+     */
+    public String getBody();
 
-	/** 将内容输出，
-	 * @param bw
-	 * @throws IOException
-	 */
-	public void fill(ByteWriter bw) throws IOException;
+    /**
+     * 将内容输出，
+     */
+    public void fill(ByteWriter bw) throws IOException;
 
 }

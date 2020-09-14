@@ -2,9 +2,8 @@ package org.beetl.core.text;
 
 /**
  * 支持俩个占位符号
- * 
- * @author Administrator
  *
+ * @author Administrator
  */
 public class Delimeter {
     Source source;
@@ -33,7 +32,7 @@ public class Delimeter {
             if (match) {
                 isMatchFirstGroup = false;
             }
-        }else{
+        } else {
             isMatchFirstGroup = true;
         }
         return match;

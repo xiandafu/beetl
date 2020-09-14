@@ -31,88 +31,72 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
-/** 代表模板资源，如文件，数据库Clob字段，后者加密模板等等
- * @author xiandafu
+/**
+ * 代表模板资源，如文件，数据库Clob字段，后者加密模板等等
  *
+ * @author xiandafu
  */
-public abstract class Resource<T>
-{
+public abstract class Resource<T> {
 
-	protected ResourceLoader resourceLoader = null;
-	protected T id = null;
+    protected ResourceLoader resourceLoader = null;
+    protected T id = null;
 
-	public Resource(T id, ResourceLoader loader)
-	{
-		this.id = id;
-		this.resourceLoader = loader;
-	}
+    public Resource(T id, ResourceLoader loader) {
+        this.id = id;
+        this.resourceLoader = loader;
+    }
 
-	/**
-	 * 打开一个新的Reader
-	 * 
-	 * @return
-	 */
-	public abstract Reader openReader();
+    /**
+     * 打开一个新的Reader
+     */
+    public abstract Reader openReader();
 
-	/**
-	 * 检测资源是否改变
-	 * 
-	 * @return
-	 */
-	public abstract boolean isModified();
+    /**
+     * 检测资源是否改变
+     */
+    public abstract boolean isModified();
 
-	/**
-	 * 得到Resource对应的ResourceLoader
-	 * 
-	 * @return
-	 */
-	public ResourceLoader getResourceLoader()
-	{
-		return this.resourceLoader;
-	}
+    /**
+     * 得到Resource对应的ResourceLoader
+     */
+    public ResourceLoader getResourceLoader() {
+        return this.resourceLoader;
+    }
 
-	public void setResourceLoader(ResourceLoader resourceLoader)
-	{
-		this.resourceLoader = resourceLoader;
-	}
+    public void setResourceLoader(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
 
-	public T getId()
-	{
-		return this.id;
-	}
+    public T getId() {
+        return this.id;
+    }
 
-	/**
-	 * 得到Resource指定行数的内容，用于调试，报错等显示原有模板信息,如果获取不了 返回NUll
-	 * 
-	 * @param start
-	 * @param end
-	 * @return
-	 */
-	public String getContent(int start, int end) throws IOException
-	{
-		// bug, 混合回车符号也许定位不到准确行数？
-		String lineSeparator = System.getProperty("line.separator");
-		Reader br = openReader();
-		BufferedReader reader = new BufferedReader(br);
-		String line = null;
-		StringBuilder sb = new StringBuilder();
-		int index = 0;
-		while((line=reader.readLine())!=null){
-			index++;
-			if(index>=start&&index<=end){
-				sb.append(line).append(lineSeparator);
-				if(index==end){
-					break;
-				}
-			}
-		}
-		return sb.toString();
+    /**
+     * 得到Resource指定行数的内容，用于调试，报错等显示原有模板信息,如果获取不了 返回NUll
+     */
+    public String getContent(int start, int end) throws IOException {
+        // bug, 混合回车符号也许定位不到准确行数？
+        String lineSeparator = System.getProperty("line.separator");
+        Reader br = openReader();
+        BufferedReader reader = new BufferedReader(br);
+        String line = null;
+        StringBuilder sb = new StringBuilder();
+        int index = 0;
+        while ((line = reader.readLine()) != null) {
+            index++;
+            if (index >= start && index <= end) {
+                sb.append(line).append(lineSeparator);
+                if (index == end) {
+                    break;
+                }
+            }
+        }
+        return sb.toString();
 
-	
 
-	}
-	
-	public String toString() {
-		return this.id.toString();
-	}
+    }
+
+    public String toString() {
+        return this.id.toString();
+    }
 }

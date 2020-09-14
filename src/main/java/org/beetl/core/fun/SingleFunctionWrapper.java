@@ -35,88 +35,65 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * 对单个native方法的封装
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public class SingleFunctionWrapper extends FunctionWrapper
-{
-	Method m;
+public class SingleFunctionWrapper extends FunctionWrapper {
+    Method m;
 
-	public SingleFunctionWrapper(String funName, Class cls, Object target, Method m)
-	{
-		super(funName);
-		this.target = target;
-		this.cls = cls;
-		this.m = m;
-		this.requiredContext = this.checkContextRequried(m.getParameterTypes());
+    public SingleFunctionWrapper(String funName, Class cls, Object target, Method m) {
+        super(funName);
+        this.target = target;
+        this.cls = cls;
+        this.m = m;
+        this.requiredContext = this.checkContextRequried(m.getParameterTypes());
 
-	}
+    }
 
-	@Override
-	public Object call(Object[] paras, Context ctx)
-	{
-		try
-		{
-			if (!this.requiredContext)
-			{
-				if (target != null)
-				{
-					return ObjectUtil.invokeObject(this.target, m.getName(), paras);
+    @Override
+    public Object call(Object[] paras, Context ctx) {
+        try {
+            if (!this.requiredContext) {
+                if (target != null) {
+                    return ObjectUtil.invokeObject(this.target, m.getName(), paras);
 
-				}
-				else
-				{
-					return ObjectUtil.invokeStatic(this.cls, m.getName(), paras);
-				}
+                } else {
+                    return ObjectUtil.invokeStatic(this.cls, m.getName(), paras);
+                }
 
-			}
-			else
-			{
+            } else {
 
-				Object[] newParas = getContextParas(paras, ctx);
-				if (target != null)
-				{
-					return ObjectUtil.invokeObject(this.target, m.getName(), newParas);
+                Object[] newParas = getContextParas(paras, ctx);
+                if (target != null) {
+                    return ObjectUtil.invokeObject(this.target, m.getName(), newParas);
 
-				}
-				else
-				{
-					return ObjectUtil.invokeStatic(this.cls, m.getName(), newParas);
-				}
+                } else {
+                    return ObjectUtil.invokeStatic(this.cls, m.getName(), newParas);
+                }
 
-			}
+            }
 
-		}
-		catch (InvocationTargetException ex)
-		{
-			Throwable t = ex.getTargetException();
-			if (t instanceof BeetlException)
-			{
-				throw (BeetlException) t;
-			}
-			else
-			{
-				BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 "
-						+ this.functionName, t);
-				throw be;
-			}
-		}
-		catch (BeetlException ex)
-		{
-			throw ex;
-		}
-		catch (Exception ex)
-		{
-			BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 " + this.functionName,
-					ex);
-			throw be;
-		}
+        } catch (InvocationTargetException ex) {
+            Throwable t = ex.getTargetException();
+            if (t instanceof BeetlException) {
+                throw (BeetlException) t;
+            } else {
+                BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 "
+                        + this.functionName, t);
+                throw be;
+            }
+        } catch (BeetlException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 " + this.functionName,
+                    ex);
+            throw be;
+        }
 
-	}
+    }
 
-	public Class getReturnType()
-	{
-		return m.getReturnType();
-	}
+    public Class getReturnType() {
+        return m.getReturnType();
+    }
 
 }

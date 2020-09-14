@@ -34,62 +34,62 @@ import org.beetl.core.om.AABuilder;
 
 /**
  * var xxx.cc = exp;
- * @author xiandafu
  *
+ * @author xiandafu
  */
 public class VarRefAssignStatement extends VarAssignStatement {
 
-	protected int varIndex;
-	public Expression exp;
-	public VarRef varRef;
-	protected VarAttribute lastVarAttribute = null;
+    protected int varIndex;
+    public Expression exp;
+    public VarRef varRef;
+    protected VarAttribute lastVarAttribute = null;
 
-	public VarRefAssignStatement(Expression exp, VarRef varRef) {
-		super(exp, exp.token);
-		this.exp = exp;
-		this.varRef = varRef;
-		lastVarAttribute = varRef.attributes[varRef.attributes.length - 1];
-	}
+    public VarRefAssignStatement(Expression exp, VarRef varRef) {
+        super(exp, exp.token);
+        this.exp = exp;
+        this.varRef = varRef;
+        lastVarAttribute = varRef.attributes[varRef.attributes.length - 1];
+    }
 
-	public void execute(Context ctx) {
-		Object value = exp.evaluate(ctx);
-		Object obj = varRef.evaluateUntilLast(ctx);
-		Object key = null;
-		if (lastVarAttribute instanceof VarSquareAttribute) {
-			key = (((VarSquareAttribute) lastVarAttribute).exp).evaluate(ctx);
+    public void execute(Context ctx) {
+        Object value = exp.evaluate(ctx);
+        Object obj = varRef.evaluateUntilLast(ctx);
+        Object key = null;
+        if (lastVarAttribute instanceof VarSquareAttribute) {
+            key = (((VarSquareAttribute) lastVarAttribute).exp).evaluate(ctx);
 
-		} else {
-			key = lastVarAttribute.name;
-		}
+        } else {
+            key = lastVarAttribute.name;
+        }
 
-		if(obj==null){
-			BeetlException bx = new BeetlException(BeetlException.NULL);
-			bx.pushToken(varRef.token);
-			throw bx;
-		}
-		try {
-			AttributeAccess aa= AABuilder.buildFiledAccessor(obj.getClass());
-			aa.setValue(obj,key,value);
+        if (obj == null) {
+            BeetlException bx = new BeetlException(BeetlException.NULL);
+            bx.pushToken(varRef.token);
+            throw bx;
+        }
+        try {
+            AttributeAccess aa = AABuilder.buildFiledAccessor(obj.getClass());
+            aa.setValue(obj, key, value);
 
-		} catch (ClassCastException ex) {
-			BeetlException bx = new BeetlException(BeetlException.ATTRIBUTE_INVALID, ex);
-			bx.pushToken(lastVarAttribute.token);
-			throw bx;
-		} catch (BeetlException be) {
-			be.pushToken(lastVarAttribute.token);
-			throw be;
-		}
-
-
-	}
+        } catch (ClassCastException ex) {
+            BeetlException bx = new BeetlException(BeetlException.ATTRIBUTE_INVALID, ex);
+            bx.pushToken(lastVarAttribute.token);
+            throw bx;
+        } catch (BeetlException be) {
+            be.pushToken(lastVarAttribute.token);
+            throw be;
+        }
 
 
-	public int getVarIndex() {
-		return varIndex;
-	}
+    }
 
-	public void setVarIndex(int varIndex) {
-		this.varIndex = varIndex;
-	}
+
+    public int getVarIndex() {
+        return varIndex;
+    }
+
+    public void setVarIndex(int varIndex) {
+        this.varIndex = varIndex;
+    }
 
 }

@@ -11,49 +11,40 @@ import org.springframework.context.ApplicationContextAware;
  *
  * @author Chen Rui
  */
-public class SpringBeanTagFactory implements TagFactory, ApplicationContextAware
-{
-	/* ----- ----- ----- ----- 属性 ----- ----- ----- ----- */
-	/**
-	 * 目标Bean名
-	 */
-	private String name = null;
-	/**
-	 * Spring 应用程序上下文
-	 */
-	private ApplicationContext applicationContext = null;
+public class SpringBeanTagFactory implements TagFactory, ApplicationContextAware {
+    /* ----- ----- ----- ----- 属性 ----- ----- ----- ----- */
+    /**
+     * 目标Bean名
+     */
+    private String name = null;
+    /**
+     * Spring 应用程序上下文
+     */
+    private ApplicationContext applicationContext = null;
 
-	/**
-	 * 目标Bean名
-	 *
-	 * @param name
-	 */
-	@Required
-	public void setName(String name)
-	{
-		this.name = name;
-	}
+    /**
+     * 目标Bean名
+     */
+    @Required
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/**
-	 * Spring 应用程序上下文
-	 *
-	 * @param applicationContext
-	 */
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext)
-	{
-		this.applicationContext = applicationContext;
-	}
+    /**
+     * Spring 应用程序上下文
+     */
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
-	/* ----- ----- ----- ----- 其他方法 ----- ----- ----- ----- */
-	/**
-	 * 返回上下文中对应Tag bean对象
-	 *
-	 * @return
-	 */
-	@Override
-	public Tag createTag()
-	{
-		return applicationContext.getBean(name, Tag.class);
-	}
+    /* ----- ----- ----- ----- 其他方法 ----- ----- ----- ----- */
+
+    /**
+     * 返回上下文中对应Tag bean对象
+     */
+    @Override
+    public Tag createTag() {
+        return applicationContext.getBean(name, Tag.class);
+    }
 }

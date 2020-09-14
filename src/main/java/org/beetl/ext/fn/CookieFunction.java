@@ -39,30 +39,28 @@ import org.beetl.ext.web.WebVariable;
  * var allArray = cookie()；
  * var cookie= cookie("userName");
  * </pre>
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public class CookieFunction implements Function
-{
+public class CookieFunction implements Function {
 
-	public Object call(Object[] paras, Context ctx)
-	{
-		
-		 HttpServletRequest request = (HttpServletRequest)ctx.getGlobal(WebVariable.REQUEST);
-		 Cookie[] cookies = request.getCookies();
-		 if(paras.length==0){
-			 return cookies;
-		 }else{
-			 String name = (String)paras[0];
-			 for(Cookie cookie:cookies){
-				 if(cookie.getName().equals(name)){
-					 return cookie;
-				 }
-			 }
-			 return null;
-			 
-		 }
+    public Object call(Object[] paras, Context ctx) {
 
-	}
+        HttpServletRequest request = (HttpServletRequest) ctx.getGlobal(WebVariable.REQUEST);
+        Cookie[] cookies = request.getCookies();
+        if (paras.length == 0) {
+            return cookies;
+        } else {
+            String name = (String) paras[0];
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(name)) {
+                    return cookie;
+                }
+            }
+            return null;
+
+        }
+
+    }
 
 }

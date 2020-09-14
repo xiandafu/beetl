@@ -35,60 +35,49 @@ import org.beetl.core.Function;
 
 /**
  * @author chengql
- * 
  */
-public class ParseLong implements Function
-{
+public class ParseLong implements Function {
 
-	@Override
-	public Object call(Object[] paras, Context ctx)
-	{
-		Object o = paras[0];
-		String str = "";
-		if (o == null)
-			throw new NullPointerException("Error:parseLong(null)");
-		long result;
-		if (o instanceof Number)
-		{
-			long n = ((Number) o).longValue();
-			str = String.valueOf(n);
-		}
-		else
-		{
-			str = o.toString();
-		}
-		if (str.indexOf(".") != -1)
-		{
-			str = str.split("\\.")[0];
-		}
-		Pattern pattern = Pattern.compile("-?[0-9]*");
-		Matcher isNum = pattern.matcher(str);
-		if (o == null || o.equals("") || !isNum.matches())
-		{
-			throw new RuntimeException("无法正确转换至long格式");
-		}
-		try
-		{
-			result = Long.parseLong(str);
-		}
-		catch (NumberFormatException e)
-		{
-			throw new RuntimeException("超出long范围");
-		}
-		return result;
-	}
+    @Override
+    public Object call(Object[] paras, Context ctx) {
+        Object o = paras[0];
+        String str = "";
+        if (o == null)
+            throw new NullPointerException("Error:parseLong(null)");
+        long result;
+        if (o instanceof Number) {
+            long n = ((Number) o).longValue();
+            str = String.valueOf(n);
+        } else {
+            str = o.toString();
+        }
+        if (str.indexOf(".") != -1) {
+            str = str.split("\\.")[0];
+        }
+        Pattern pattern = Pattern.compile("-?[0-9]*");
+        Matcher isNum = pattern.matcher(str);
+        if (o == null || o.equals("") || !isNum.matches()) {
+            throw new RuntimeException("无法正确转换至long格式");
+        }
+        try {
+            result = Long.parseLong(str);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("超出long范围");
+        }
+        return result;
+    }
 
-	// public static void main(String[] args)
-	// {
-	// ParseInt pInt = new ParseInt();
-	// Context ctx = new Context();
-	// System.out.println(pInt.call(new Object[]
-	// { -0.23232 }, ctx));
-	// System.out.println(pInt.call(new Object[]
-	// { 2332.23213 }, ctx));
-	// System.out.println(pInt.call(new Object[]
-	// { "-1.023" }, ctx));
-	// System.out.println(pInt.call(new Object[]
-	// { "abcd" }, ctx));
-	// }
+    // public static void main(String[] args)
+    // {
+    // ParseInt pInt = new ParseInt();
+    // Context ctx = new Context();
+    // System.out.println(pInt.call(new Object[]
+    // { -0.23232 }, ctx));
+    // System.out.println(pInt.call(new Object[]
+    // { 2332.23213 }, ctx));
+    // System.out.println(pInt.call(new Object[]
+    // { "-1.023" }, ctx));
+    // System.out.println(pInt.call(new Object[]
+    // { "abcd" }, ctx));
+    // }
 }

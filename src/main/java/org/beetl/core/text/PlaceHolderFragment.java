@@ -4,13 +4,13 @@ public class PlaceHolderFragment extends BeetlFragment {
 
     public PlaceHolderFragment(Source source) {
         super(source);
-		script.append("<<");
+        script.append("<<");
         this.setEndLine();
     }
 
     @Override
     public StringBuilder getScript() {
-       
+
         return script;
     }
 
@@ -24,12 +24,12 @@ public class PlaceHolderFragment extends BeetlFragment {
         }
 
         while (!source.isEof()) {
-        	if(source.isPlaceHolderEnd(script)){
-				script.append(">>");
-				break;
-			}else{
-				script.append(source.consumeAndGet());
-			}
+            if (source.isPlaceHolderEnd(script)) {
+                script.append(">>");
+                break;
+            } else {
+                script.append(source.consumeAndGet());
+            }
         }
 
         if (source.isEof()) {
@@ -38,8 +38,6 @@ public class PlaceHolderFragment extends BeetlFragment {
 
         return super.findNext();
     }
-    
-   
 
 
 }

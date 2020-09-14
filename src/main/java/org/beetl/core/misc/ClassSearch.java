@@ -33,76 +33,62 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.beetl.core.GroupTemplate;
 
-/** 在classloader下仅仅根据类名加载类，会尝试用系统内置的以及配置好的包名作为类的包名
- * @author xiandafu
+/**
+ * 在classloader下仅仅根据类名加载类，会尝试用系统内置的以及配置好的包名作为类的包名
  *
+ * @author xiandafu
  */
-public class ClassSearch
-{
-	Set<String> pkgList;
-	Map<String, Class> map = new ConcurrentHashMap<String, Class>();
-	GroupTemplate gt;
+public class ClassSearch {
+    Set<String> pkgList;
+    Map<String, Class> map = new ConcurrentHashMap<String, Class>();
+    GroupTemplate gt;
 
-	/**默认的搜索列表
-	 * @param pkgList
-	 */
-	public ClassSearch(Set<String> pkgList,GroupTemplate gt)
-	{
-		this.pkgList = pkgList;
-		this.gt = gt ;
+    /**
+     * 默认的搜索列表
+     */
+    public ClassSearch(Set<String> pkgList, GroupTemplate gt) {
+        this.pkgList = pkgList;
+        this.gt = gt;
 
-	}
+    }
 
-	/** 根据类名得到指定类，如果类名是带包名，则直接用当前classloader加载，如果仅仅类名
-	 * 则尝试用内置的或者配置的包名作为包名尝试加载
-	 * @param name
-	 * @return 不成功，返回null
-	 */
-	public Class getClassByName(String name)
-	{
+    /**
+     * 根据类名得到指定类，如果类名是带包名，则直接用当前classloader加载，如果仅仅类名
+     * 则尝试用内置的或者配置的包名作为包名尝试加载
+     *
+     * @return 不成功，返回null
+     */
+    public Class getClassByName(String name) {
 
-		if (name.indexOf(".") != -1)
-		{
-			try
-			{
-				return Class.forName(name,true,gt.getClassLoader());
-			}
-			catch (ClassNotFoundException e)
-			{
-				return null;
-			}
+        if (name.indexOf(".") != -1) {
+            try {
+                return Class.forName(name, true, gt.getClassLoader());
+            } catch (ClassNotFoundException e) {
+                return null;
+            }
 
-		}
-		else
-		{
-			Class cls = map.get(name);
-			if (cls == null)
-			{
-				for (String pkg : pkgList)
-				{
-					try
-					{
-						String clsName = pkg.concat(name);
-						cls = Class.forName(clsName,true,gt.getClassLoader());
-						map.put(name, cls);
-						return cls;
+        } else {
+            Class cls = map.get(name);
+            if (cls == null) {
+                for (String pkg : pkgList) {
+                    try {
+                        String clsName = pkg.concat(name);
+                        cls = Class.forName(clsName, true, gt.getClassLoader());
+                        map.put(name, cls);
+                        return cls;
 
-					}
-					catch (Exception ex)
-					{
-						// continue;
-					}
-				}
-				return null;
-			}
-			else
-			{
-				return cls;
-			}
+                    } catch (Exception ex) {
+                        // continue;
+                    }
+                }
+                return null;
+            } else {
+                return cls;
+            }
 
-		}
+        }
 
-	}
-	
-	
+    }
+
+
 }

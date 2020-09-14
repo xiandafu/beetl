@@ -8,31 +8,26 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 import org.beetl.core.io.NoLockStringWriter;
 
-public class BeetlServletResponseWrapper extends HttpServletResponseWrapper
-{
-	NoLockStringWriter cw = null;
-	PrintWriter writer = null;
+public class BeetlServletResponseWrapper extends HttpServletResponseWrapper {
+    NoLockStringWriter cw = null;
+    PrintWriter writer = null;
 
-	public BeetlServletResponseWrapper(HttpServletResponse rsp)
-	{
-		super(rsp);
-	}
+    public BeetlServletResponseWrapper(HttpServletResponse rsp) {
+        super(rsp);
+    }
 
-	public java.io.PrintWriter getWriter()
-	{
-		if (writer == null)
-		{
-			cw = new NoLockStringWriter();
-			writer = new PrintWriter(cw);
-		}
+    public java.io.PrintWriter getWriter() {
+        if (writer == null) {
+            cw = new NoLockStringWriter();
+            writer = new PrintWriter(cw);
+        }
 
-		return writer;
-	}
+        return writer;
+    }
 
-	public Writer getRealWriter()
-	{
+    public Writer getRealWriter() {
 
-		return cw;
-	}
+        return cw;
+    }
 
 }

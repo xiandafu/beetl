@@ -32,37 +32,37 @@ import org.beetl.core.misc.ALU;
 
 /**
  * if()else{}
- * @author xiandafu
  *
+ * @author xiandafu
  */
 public class IfStatement extends Statement {
 
-	public Expression condtion;
-	public Statement ifStatement;
-	public Statement elseStatement;
+    public Expression condtion;
+    public Statement ifStatement;
+    public Statement elseStatement;
 
-	public IfStatement(Expression condtion, Statement ifStatement, Statement elseStatement, GrammarToken token) {
-		super(token);
-		this.condtion = condtion;
-		this.ifStatement = ifStatement;
-		this.elseStatement = elseStatement;
-		// TODO Auto-generated constructor stub
-	}
+    public IfStatement(Expression condtion, Statement ifStatement, Statement elseStatement, GrammarToken token) {
+        super(token);
+        this.condtion = condtion;
+        this.ifStatement = ifStatement;
+        this.elseStatement = elseStatement;
+        // TODO Auto-generated constructor stub
+    }
 
-	@Override
-	public void execute(Context ctx) {
-		// TODO Auto-generated method stub
-		Object value = condtion.evaluate(ctx);
+    @Override
+    public void execute(Context ctx) {
+        // TODO Auto-generated method stub
+        Object value = condtion.evaluate(ctx);
 
-		if (ALU.isTrue(value, this)) {
-			ifStatement.execute(ctx);
-		} else {
-			if (elseStatement != null) {
-				elseStatement.execute(ctx);
-			}
-		}
+        if (ALU.isTrue(value, this)) {
+            ifStatement.execute(ctx);
+        } else {
+            if (elseStatement != null) {
+                elseStatement.execute(ctx);
+            }
+        }
 
-	}
+    }
 
 
 }

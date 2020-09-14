@@ -34,152 +34,151 @@ import org.beetl.core.om.AABuilder;
 
 /**
  * user.name
- * @author xiandafu
  *
+ * @author xiandafu
  */
 public class VarRef extends Expression implements IVarIndex {
 
-	public VarAttribute[] attributes;
-	public Expression safe;
-	public int varIndex;
-	public boolean hasSafe;
-	public GrammarToken firstToken = null;
+    public VarAttribute[] attributes;
+    public Expression safe;
+    public int varIndex;
+    public boolean hasSafe;
+    public GrammarToken firstToken = null;
 
-	public VarRef(VarAttribute[] attributes, boolean hasSafe, Expression safe, GrammarToken token) {
-		this(attributes, hasSafe, safe, token, token);
+    public VarRef(VarAttribute[] attributes, boolean hasSafe, Expression safe, GrammarToken token) {
+        this(attributes, hasSafe, safe, token, token);
 
-	}
+    }
 
-	public VarRef(VarAttribute[] attributes, boolean hasSafe, Expression safe, GrammarToken token,
-			GrammarToken firstToken) {
-		super(token);
+    public VarRef(VarAttribute[] attributes, boolean hasSafe, Expression safe, GrammarToken token,
+                  GrammarToken firstToken) {
+        super(token);
 
-		this.attributes = attributes;
-		this.safe = safe;
-		this.hasSafe = hasSafe;
-		this.firstToken = firstToken;
+        this.attributes = attributes;
+        this.safe = safe;
+        this.hasSafe = hasSafe;
+        this.firstToken = firstToken;
 
-	}
+    }
 
-	@Override
-	public Object evaluate(Context ctx) {
+    @Override
+    public Object evaluate(Context ctx) {
 
-		Result ret = this.getValue(ctx);
-		if (ret.safe) {
-			return ret.value;
-		}
+        Result ret = this.getValue(ctx);
+        if (ret.safe) {
+            return ret.value;
+        }
 
-		Object value = ret.value;
+        Object value = ret.value;
 
-		// 属性
-		if (attributes.length == 0) {
-			return value;
-		}
+        // 属性
+        if (attributes.length == 0) {
+            return value;
+        }
 
 
+        for (int i = 0; i < attributes.length; i++) {
 
-		for (int i = 0; i < attributes.length; i++) {
+            VarAttribute attr = attributes[i];
+            if (value == null) {
+                if (hasSafe || ctx.safeOutput) {
+                    return safe == null ? null : safe.evaluate(ctx);
+                } else {
+                    BeetlException be = new BeetlException(BeetlException.NULL, "空指针");
+                    if (i == 0) {
+                        be.pushToken(this.firstToken);
+                    } else {
+                        be.pushToken(attributes[i - 1].token);
+                    }
 
-			VarAttribute attr = attributes[i];
-			if (value == null) {
-				if (hasSafe||ctx.safeOutput) {
-					return safe == null ? null : safe.evaluate(ctx);
-				} else {
-					BeetlException be = new BeetlException(BeetlException.NULL, "空指针");
-					if (i == 0) {
-						be.pushToken(this.firstToken);
-					} else {
-						be.pushToken(attributes[i - 1].token);
-					}
+                    throw be;
+                }
 
-					throw be;
-				}
+            }
 
-			}
+            try {
+                value = attr.evaluate(ctx, value);
+            } catch (BeetlException ex) {
+                ex.pushToken(attr.token);
+                throw ex;
 
-			try {
-				value = attr.evaluate(ctx, value);
-			} catch (BeetlException ex) {
-				ex.pushToken(attr.token);
-				throw ex;
+            } catch (RuntimeException ex) {
+                BeetlException be = new BeetlException(BeetlException.ATTRIBUTE_INVALID, "属性访问出错", ex);
+                be.pushToken(attr.token);
+                throw be;
+            }
 
-			} catch (RuntimeException ex) {
-				BeetlException be = new BeetlException(BeetlException.ATTRIBUTE_INVALID, "属性访问出错", ex);
-				be.pushToken(attr.token);
-				throw be;
-			}
+        }
 
-		}
+        if (value == null && (hasSafe || ctx.safeOutput)) {
+            return safe == null ? null : safe.evaluate(ctx);
+        } else {
+            return value;
+        }
 
-		if (value == null && (hasSafe||ctx.safeOutput)) {
-			return safe == null ? null : safe.evaluate(ctx);
-		} else {
-			return value;
-		}
+    }
 
-	}
+    protected class Result {
+        public Object value;
+        public boolean safe = false;
 
-	protected class Result {
-		public Object value;
-		public boolean safe = false;
+        public Result(Object value, boolean safe) {
+            this.value = value;
+            this.safe = safe;
+        }
 
-		public Result(Object value, boolean safe) {
-			this.value = value;
-			this.safe = safe;
-		}
+        public Result(Object value) {
+            this(value, false);
+        }
 
-		public Result(Object value) {
-			this(value, false);
-		}
+    }
 
-	}
+    protected Result getValue(Context ctx) {
 
-	protected Result getValue(Context ctx) {
+        Object value = ctx.vars[varIndex];
+        if (value == Context.NOT_EXIST_OBJECT) {
 
-		Object value = ctx.vars[varIndex];
-		if (value == Context.NOT_EXIST_OBJECT) {
+            if (ctx.globalVar != null && ctx.globalVar.containsKey("_root")) {
+                // 如果有一个根对象
+                Object root = ctx.getGlobal("_root");
+                String attr = firstToken.text;
+                if (root == null) {
+                    if (hasSafe || ctx.safeOutput) {
+                        return new Result(safe == null ? null : safe.evaluate(ctx), true);
+                    } else {
+                        BeetlException be = new BeetlException(BeetlException.NULL,
+                                "_root为空指针，无" + this.firstToken.text + "值");
+                        be.pushToken(this.firstToken);
+                        throw be;
+                    }
 
-			if (ctx.globalVar != null && ctx.globalVar.containsKey("_root")) {
-				// 如果有一个根对象
-				Object root = ctx.getGlobal("_root");
-				String attr = firstToken.text;
-				if (root == null) {
-					if (hasSafe||ctx.safeOutput) {
-						return new Result(safe == null ? null : safe.evaluate(ctx), true);
-					} else {
-						BeetlException be = new BeetlException(BeetlException.NULL,
-								"_root为空指针，无" + this.firstToken.text + "值");
-						be.pushToken(this.firstToken);
-						throw be;
-					}
+                }
 
-				}
-				
-				AttributeAccess aa = AABuilder.buildFiledAccessor(root.getClass());
-				try {
-					value = aa.value(root, attr);
-				}catch(RuntimeException e) {
-					BeetlException ex = new BeetlException(BeetlException.ATTRIBUTE_INVALID,
-							"访问 _root " + root.getClass() + "."+attr+" 属性访问错误");
-					ex.pushToken(this.firstToken);
-					throw ex;
-				}
-				
-				ctx.vars[varIndex] = value;
+                AttributeAccess aa = AABuilder.buildFiledAccessor(root.getClass());
+                try {
+                    value = aa.value(root, attr);
+                } catch (RuntimeException e) {
+                    BeetlException ex = new BeetlException(BeetlException.ATTRIBUTE_INVALID,
+                            "访问 _root " + root.getClass() + "." + attr + " 属性访问错误");
+                    ex.pushToken(this.firstToken);
+                    throw ex;
+                }
 
-			} else if (hasSafe||ctx.safeOutput) {
-				return new Result(safe == null ? null : safe.evaluate(ctx), true);
-			} else {
-				BeetlException ex = new BeetlException(BeetlException.VAR_NOT_DEFINED);
-				ex.pushToken(this.firstToken);
-				throw ex;
-			}
-		} else if (value == null && (hasSafe||ctx.safeOutput)) {
-			return new Result(safe == null ? null : safe.evaluate(ctx), true);
-		}
+                ctx.vars[varIndex] = value;
 
-		return new Result(value);
-	}
+            } else if (hasSafe || ctx.safeOutput) {
+                return new Result(safe == null ? null : safe.evaluate(ctx), true);
+            } else {
+                BeetlException ex = new BeetlException(BeetlException.VAR_NOT_DEFINED);
+                ex.pushToken(this.firstToken);
+                throw ex;
+            }
+        } else if (value == null && (hasSafe || ctx.safeOutput)) {
+            return new Result(safe == null ? null : safe.evaluate(ctx), true);
+        }
+
+        return new Result(value);
+    }
 
 //	private boolean hasAttr(Object o, String attr) {
 //
@@ -200,68 +199,67 @@ public class VarRef extends Expression implements IVarIndex {
 //		}
 //	}
 
-	/** 计算所有表达式，知道最后一值，用于a.b[xx].c = 1  赋值，只计算到a.b[xx]
-	 * @param ctx
-	 * @return
-	 */
-	public Object evaluateUntilLast(Context ctx) {
+    /**
+     * 计算所有表达式，知道最后一值，用于a.b[xx].c = 1  赋值，只计算到a.b[xx]
+     */
+    public Object evaluateUntilLast(Context ctx) {
 
-		if (attributes.length == 0) {
-			// 不可能发生，除非beetl写错了，先放在着
-			throw new RuntimeException();
-		}
-		Result ret = this.getValue(ctx);
-		Object value = ret.value;
-		if (value == null) {
-			BeetlException ex = new BeetlException(BeetlException.NULL);
-			ex.pushToken(this.firstToken);
-			throw ex;
-		}
+        if (attributes.length == 0) {
+            // 不可能发生，除非beetl写错了，先放在着
+            throw new RuntimeException();
+        }
+        Result ret = this.getValue(ctx);
+        Object value = ret.value;
+        if (value == null) {
+            BeetlException ex = new BeetlException(BeetlException.NULL);
+            ex.pushToken(this.firstToken);
+            throw ex;
+        }
 
 
-		for (int i = 0; i < attributes.length - 1; i++) {
+        for (int i = 0; i < attributes.length - 1; i++) {
 
-			VarAttribute attr = attributes[i];
-			if (value == null) {
+            VarAttribute attr = attributes[i];
+            if (value == null) {
 
-				BeetlException be = new BeetlException(BeetlException.NULL, "空指针");
-				if (i == 0) {
-					be.pushToken(this.firstToken);
-				} else {
-					be.pushToken(attributes[i - 1].token);
-				}
+                BeetlException be = new BeetlException(BeetlException.NULL, "空指针");
+                if (i == 0) {
+                    be.pushToken(this.firstToken);
+                } else {
+                    be.pushToken(attributes[i - 1].token);
+                }
 
-				throw be;
+                throw be;
 
-			}
+            }
 
-			try {
-				value = attr.evaluate(ctx, value);
-			} catch (BeetlException ex) {
-				ex.pushToken(attr.token);
-				throw ex;
+            try {
+                value = attr.evaluate(ctx, value);
+            } catch (BeetlException ex) {
+                ex.pushToken(attr.token);
+                throw ex;
 
-			} catch (RuntimeException ex) {
-				BeetlException be = new BeetlException(BeetlException.ATTRIBUTE_INVALID, "属性访问出错", ex);
-				be.pushToken(attr.token);
-				throw be;
-			}
+            } catch (RuntimeException ex) {
+                BeetlException be = new BeetlException(BeetlException.ATTRIBUTE_INVALID, "属性访问出错", ex);
+                be.pushToken(attr.token);
+                throw be;
+            }
 
-		}
+        }
 
-		return value;
-	}
+        return value;
+    }
 
-	@Override
-	public void setVarIndex(int index) {
-		this.varIndex = index;
+    @Override
+    public void setVarIndex(int index) {
+        this.varIndex = index;
 
-	}
+    }
 
-	@Override
-	public int getVarIndex() {
-		return this.varIndex;
-	}
+    @Override
+    public int getVarIndex() {
+        return this.varIndex;
+    }
 
 
 }

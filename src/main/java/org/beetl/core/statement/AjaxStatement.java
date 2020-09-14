@@ -29,42 +29,43 @@ package org.beetl.core.statement;
 
 import org.beetl.core.Context;
 
-/** #ajax id:{...}
- * @author xiandafu
+/**
+ * #ajax id:{...}
  *
+ * @author xiandafu
  */
 public class AjaxStatement extends Statement {
 
-	public BlockStatement block;
-	// ajax 片段是否默认被渲染出来
-	boolean defaultRender = true;
-	String ajaxId = null;
-	ProgramMetaData localProgramMetaData = null;
+    public BlockStatement block;
+    // ajax 片段是否默认被渲染出来
+    boolean defaultRender = true;
+    String ajaxId = null;
+    ProgramMetaData localProgramMetaData = null;
 
 
-	public AjaxStatement(BlockStatement block, GrammarToken token, boolean defaultRender) {
-		super(token);
-		this.block = block;
-		this.defaultRender = defaultRender;
-		this.ajaxId = token.text;
+    public AjaxStatement(BlockStatement block, GrammarToken token, boolean defaultRender) {
+        super(token);
+        this.block = block;
+        this.defaultRender = defaultRender;
+        this.ajaxId = token.text;
 
-	}
+    }
 
-	@Override
-	public void execute(Context ctx) {
-		if (ctx.template.ajaxId == null && (!defaultRender)) {
-			// 渲染整个模板情况下，设置成不渲染
-			return;
-		}
-		block.execute(ctx);
+    @Override
+    public void execute(Context ctx) {
+        if (ctx.template.ajaxId == null && (!defaultRender)) {
+            // 渲染整个模板情况下，设置成不渲染
+            return;
+        }
+        block.execute(ctx);
 
-	}
+    }
 
-	public ProgramMetaData getLocalProgramMetaData() {
-		return localProgramMetaData;
-	}
+    public ProgramMetaData getLocalProgramMetaData() {
+        return localProgramMetaData;
+    }
 
-	public void setLocalProgramMetaData(ProgramMetaData localProgramMetaData) {
-		this.localProgramMetaData = localProgramMetaData;
-	}
+    public void setLocalProgramMetaData(ProgramMetaData localProgramMetaData) {
+        this.localProgramMetaData = localProgramMetaData;
+    }
 }

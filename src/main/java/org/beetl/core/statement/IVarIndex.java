@@ -29,12 +29,11 @@ package org.beetl.core.statement;
 
 /**
  * 变量在context中的索引
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public interface IVarIndex
-{
-	public void setVarIndex(int index);
+public interface IVarIndex {
+    public void setVarIndex(int index);
 
-	public int getVarIndex();
+    public int getVarIndex();
 }

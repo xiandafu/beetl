@@ -31,19 +31,18 @@ import java.util.function.Function;
 
 /**
  * Cache标准接口,每个方法都必须线程安全
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public interface Cache
-{
-	public Object get(Object key);
+public interface Cache {
+    public Object get(Object key);
 
-	public Object get(Object key, Function function);
+    public Object get(Object key, Function function);
 
-	public void remove(Object key);
+    public void remove(Object key);
 
-	public void set(Object key, Object value);
+    public void set(Object key, Object value);
 
-	public void clearAll();
+    public void clearAll();
 
 }

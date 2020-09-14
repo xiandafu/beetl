@@ -33,55 +33,46 @@ import org.beetl.core.Resource;
 
 /**
  * 脚本运行程序
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public class Program
-{
-	// 模板的所有脚本语句
-	public ProgramMetaData metaData = null;
-	public Resource res = null;
-	public GroupTemplate gt = null;
+public class Program {
+    // 模板的所有脚本语句
+    public ProgramMetaData metaData = null;
+    public Resource res = null;
+    public GroupTemplate gt = null;
 
 
-	public Program()
-	{
+    public Program() {
 
-	}
+    }
 
-	public void execute(Context ctx)
-	{
+    public void execute(Context ctx) {
 
-		if (metaData.hasGoto)
-		{
-			runWitchGoCheck(metaData.statements,ctx);
-		}
-		else
-		{
-			run(metaData.statements,ctx);
-		}
+        if (metaData.hasGoto) {
+            runWitchGoCheck(metaData.statements, ctx);
+        } else {
+            run(metaData.statements, ctx);
+        }
 
-	}
+    }
 
-	protected  final void  run( Statement[] statements,Context ctx ){
-		int len = statements.length;
-		for(int i=0;i<len;i++){
-			statements[i].execute(ctx);
-		}
-	}
+    protected final void run(Statement[] statements, Context ctx) {
+        int len = statements.length;
+        for (int i = 0; i < len; i++) {
+            statements[i].execute(ctx);
+        }
+    }
 
-	protected  final  void  runWitchGoCheck( Statement[] statements,Context ctx ){
-		int len = statements.length;
-		for(int i=0;i<len;i++){
-			statements[i].execute(ctx);
-			if (ctx.gotoFlag == IGoto.RETURN)
-			{
-				return;
-			}
-		}
-	}
-
-
+    protected final void runWitchGoCheck(Statement[] statements, Context ctx) {
+        int len = statements.length;
+        for (int i = 0; i < len; i++) {
+            statements[i].execute(ctx);
+            if (ctx.gotoFlag == IGoto.RETURN) {
+                return;
+            }
+        }
+    }
 
 
 }

@@ -32,27 +32,27 @@ import org.beetl.core.Context;
 
 /**
  * var a = { ...}
- * @author xiandafu
  *
+ * @author xiandafu
  */
 public class ContentBodyExpression extends Expression {
 
-	public BlockStatement block;
+    public BlockStatement block;
 
-	public ContentBodyExpression(BlockStatement block, GrammarToken token) {
-		super(token);
-		this.block = block;
-	}
+    public ContentBodyExpression(BlockStatement block, GrammarToken token) {
+        super(token);
+        this.block = block;
+    }
 
-	public Object evaluate(Context ctx) {
-		ByteWriter real = ctx.byteWriter;
-		ByteWriter temp = real.getTempWriter(real);
-		ctx.byteWriter = temp;
-		block.execute(ctx);
-		ctx.byteWriter = real;
-		return temp.getTempConent();
+    public Object evaluate(Context ctx) {
+        ByteWriter real = ctx.byteWriter;
+        ByteWriter temp = real.getTempWriter(real);
+        ctx.byteWriter = temp;
+        block.execute(ctx);
+        ctx.byteWriter = real;
+        return temp.getTempConent();
 
-	}
+    }
 
 
 }

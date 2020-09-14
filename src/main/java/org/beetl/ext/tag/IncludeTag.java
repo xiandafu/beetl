@@ -37,32 +37,32 @@ import org.beetl.core.tag.Tag;
 
 public class IncludeTag extends Tag {
 
-	@Override
-	public void render() {
-		Object resourceId = getRelResourceId();
+    @Override
+    public void render() {
+        Object resourceId = getRelResourceId();
 
-		Template t = gt.getTemplate(resourceId,ctx);
-		// 快速复制父模板的变量
-		t.binding(this.ctx.globalVar);
-		if (this.args.length == 2) {
-			@SuppressWarnings("unchecked")
-			Map<String, Object> map = (Map<String, Object>) this.args[1];
-			for (Entry<String, Object> entry : map.entrySet()) {
-				Object value = entry.getValue();
-				t.binding(entry.getKey(), value);
-			}
-		}
+        Template t = gt.getTemplate(resourceId, ctx);
+        // 快速复制父模板的变量
+        t.binding(this.ctx.globalVar);
+        if (this.args.length == 2) {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> map = (Map<String, Object>) this.args[1];
+            for (Entry<String, Object> entry : map.entrySet()) {
+                Object value = entry.getValue();
+                t.binding(entry.getKey(), value);
+            }
+        }
 
-		ByteWriter bw = ctx.byteWriter;
-		t.renderTo(bw);
+        ByteWriter bw = ctx.byteWriter;
+        t.renderTo(bw);
 
-	}
+    }
 
-	protected Object getRelResourceId() {
+    protected Object getRelResourceId() {
 
-		Resource sibling = ctx.getResource();
-		// 不要使用resource的loder，因为有可能是
-		return gt.getResourceLoader().getResourceId(sibling, (String) this.args[0]);
+        Resource sibling = ctx.getResource();
+        // 不要使用resource的loder，因为有可能是
+        return gt.getResourceLoader().getResourceId(sibling, (String) this.args[0]);
 
-	}
+    }
 }

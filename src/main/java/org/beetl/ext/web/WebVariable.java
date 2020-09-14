@@ -31,55 +31,48 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/** 全局变量，模板可以通过servlet来访问
- * @author xiandafu
+/**
+ * 全局变量，模板可以通过servlet来访问
  *
+ * @author xiandafu
  */
-public class WebVariable
-{
-	HttpServletRequest request;
-	HttpServletResponse response;
-	HttpSession session;
-	public  final static String SERVLET ="servlet";
-	public  final static String REQUEST ="request";
-	public  final static String SESSION ="session";
-	public WebVariable()
-	{
+public class WebVariable {
+    HttpServletRequest request;
+    HttpServletResponse response;
+    HttpSession session;
+    public final static String SERVLET = "servlet";
+    public final static String REQUEST = "request";
+    public final static String SESSION = "session";
 
-	}
+    public WebVariable() {
 
-	public HttpServletRequest getRequest()
-	{
-		return request;
-	}
+    }
 
-	public void setRequest(HttpServletRequest request)
-	{
-		this.request = request;
-	}
+    public HttpServletRequest getRequest() {
+        return request;
+    }
 
-	public HttpServletResponse getResponse()
-	{
-		return response;
-	}
+    public void setRequest(HttpServletRequest request) {
+        this.request = request;
+    }
 
-	public void setResponse(HttpServletResponse response)
-	{
-		this.response = response;
-	}
+    public HttpServletResponse getResponse() {
+        return response;
+    }
 
-	public HttpSession getSession()
-	{
-		if (session == null)
-		{
-			session = request.getSession(true);
-		}
-		return session;
-	}
+    public void setResponse(HttpServletResponse response) {
+        this.response = response;
+    }
 
-	public void setSession(HttpSession session)
-	{
-		this.session = session;
-	}
+    public HttpSession getSession() {
+        if (session == null) {
+            session = request.getSession(true);
+        }
+        return session;
+    }
+
+    public void setSession(HttpSession session) {
+        this.session = session;
+    }
 
 }

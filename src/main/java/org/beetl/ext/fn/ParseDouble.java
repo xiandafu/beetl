@@ -31,31 +31,30 @@ import org.beetl.core.Context;
 import org.beetl.core.Function;
 
 /**
- * 
  * @author 张健川 dlut.zjc@gmail.com ,xiandafu
  */
 public class ParseDouble implements Function {
 
-	@Override
-	public Object call(Object[] paras, Context ctx) {
-		Object o = paras[0];
-		if (o == null) throw new NullPointerException("Error:parseDouble(null)");
-		String str = "";
-		double result;
-		if (o instanceof Number) {
-			Double n = ((Number) o).doubleValue();
-			return n;
-		} else {
-			str = o.toString();
-		}
-		try {
-			result = Double.parseDouble(str);
-		} catch (NumberFormatException e) {
-			throw new RuntimeException("不能转化" + str, e);
-		}
+    @Override
+    public Object call(Object[] paras, Context ctx) {
+        Object o = paras[0];
+        if (o == null) throw new NullPointerException("Error:parseDouble(null)");
+        String str = "";
+        double result;
+        if (o instanceof Number) {
+            Double n = ((Number) o).doubleValue();
+            return n;
+        } else {
+            str = o.toString();
+        }
+        try {
+            result = Double.parseDouble(str);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("不能转化" + str, e);
+        }
 
-		return result;
-	}
+        return result;
+    }
 
 
 }

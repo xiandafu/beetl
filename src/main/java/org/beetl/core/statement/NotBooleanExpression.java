@@ -32,23 +32,23 @@ import org.beetl.core.misc.ALU;
 
 /**
  * !exp
- * @author xiandafu
  *
+ * @author xiandafu
  */
 public class NotBooleanExpression extends Expression {
 
-	public Expression exp;
+    public Expression exp;
 
-	public NotBooleanExpression(Expression exp, GrammarToken token) {
-		super(token);
-		this.exp = exp;
+    public NotBooleanExpression(Expression exp, GrammarToken token) {
+        super(token);
+        this.exp = exp;
 
-	}
+    }
 
-	public final Object evaluate(Context ctx) {
-		return !ALU.isTrue(exp.evaluate(ctx), exp);
+    public final Object evaluate(Context ctx) {
+        return !ALU.isTrue(exp.evaluate(ctx), exp);
 
-	}
+    }
 
 
 }

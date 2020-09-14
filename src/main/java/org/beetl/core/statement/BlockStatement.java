@@ -30,49 +30,49 @@ package org.beetl.core.statement;
 import org.beetl.core.Context;
 
 /**
- *  { statement1;statement2 }
- * @author xiandafu
+ * { statement1;statement2 }
  *
+ * @author xiandafu
  */
 public class BlockStatement extends Statement implements IGoto {
 
-	public Statement[] nodes = null;
-	boolean hasGoto = false;
+    public Statement[] nodes = null;
+    boolean hasGoto = false;
 
-	public BlockStatement(Statement[] nodes, GrammarToken token) {
-		super(token);
-		this.nodes = nodes;
-	}
+    public BlockStatement(Statement[] nodes, GrammarToken token) {
+        super(token);
+        this.nodes = nodes;
+    }
 
-	public void execute(Context ctx) {
-		if (this.hasGoto) {
-			for (Statement node : nodes) {
-				node.execute(ctx);
-				if (ctx.gotoFlag != 0) {
-					return;
-				}
+    public void execute(Context ctx) {
+        if (this.hasGoto) {
+            for (Statement node : nodes) {
+                node.execute(ctx);
+                if (ctx.gotoFlag != 0) {
+                    return;
+                }
 
-			}
-		} else {
-			for (Statement node : nodes) {
-				node.execute(ctx);
-			}
-		}
+            }
+        } else {
+            for (Statement node : nodes) {
+                node.execute(ctx);
+            }
+        }
 
-		return;
-	}
+        return;
+    }
 
-	@Override
-	public boolean hasGoto() {
-		// TODO Auto-generated method stub
-		return hasGoto;
-	}
+    @Override
+    public boolean hasGoto() {
+        // TODO Auto-generated method stub
+        return hasGoto;
+    }
 
-	@Override
-	public void setGoto(boolean occour) {
-		this.hasGoto = occour;
+    @Override
+    public void setGoto(boolean occour) {
+        this.hasGoto = occour;
 
-	}
+    }
 
 
 }

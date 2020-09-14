@@ -38,29 +38,28 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * ${includeStatic(file)}
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public class PrintFile implements Function
-{
+public class PrintFile implements Function {
 
-	public String call(Object[] paras, Context ctx) {
-		String path = (String)paras[0];
-		
-		Resource resource = ctx.gt.getResourceLoader().getResource(path);
-		Reader reader = resource.openReader();
-		char[] buff = new char[100]; 
-		int rc = 0; 
-		try {
-			while ((rc = reader.read(buff)) !=-1) { 
-				ctx.byteWriter.write(buff, rc);
-			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} 
-		
-		return "";
+    public String call(Object[] paras, Context ctx) {
+        String path = (String) paras[0];
 
-	}
+        Resource resource = ctx.gt.getResourceLoader().getResource(path);
+        Reader reader = resource.openReader();
+        char[] buff = new char[100];
+        int rc = 0;
+        try {
+            while ((rc = reader.read(buff)) != -1) {
+                ctx.byteWriter.write(buff, rc);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return "";
+
+    }
 
 }

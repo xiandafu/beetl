@@ -35,30 +35,24 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * &lt;% print("hello") %&gt;
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public class Print implements Function
-{
+public class Print implements Function {
 
-	public String call(Object[] paras, Context ctx)
-	{
-		Object o = paras[0];
+    public String call(Object[] paras, Context ctx) {
+        Object o = paras[0];
 
-		if (o != null)
-		{
-			try
-			{
-				ctx.byteWriter.writeString(o.toString());
-			}
-			catch (IOException e)
-			{
-				BeetlException be = new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR);
-				throw be;
-			}
-		}
-		return "";
+        if (o != null) {
+            try {
+                ctx.byteWriter.writeString(o.toString());
+            } catch (IOException e) {
+                BeetlException be = new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR);
+                throw be;
+            }
+        }
+        return "";
 
-	}
+    }
 
 }

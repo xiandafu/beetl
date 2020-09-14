@@ -37,52 +37,52 @@ import org.beetl.core.exception.BeetlException;
 import org.beetl.core.tag.Tag;
 
 /**
- *  一个html标签方式的tag,同includeTag
- *  
- *  <#html:include file=""  arg1="" arg2=""/>
- * @author xiandafu
+ * 一个html标签方式的tag,同includeTag
  *
+ * <#html:include file=""  arg1="" arg2=""/>
+ *
+ * @author xiandafu
  */
 public class IncludeResourceHtmlTag extends Tag {
 
-	@Override
-	public void render() {
-		Object resourceId = getRelResourceId();
+    @Override
+    public void render() {
+        Object resourceId = getRelResourceId();
 
-		Template t = gt.getTemplate(resourceId, this.ctx);
-		// 快速复制父模板的变量
-		t.binding(this.ctx.globalVar);
+        Template t = gt.getTemplate(resourceId, this.ctx);
+        // 快速复制父模板的变量
+        t.binding(this.ctx.globalVar);
 
-		@SuppressWarnings("unchecked")
-		Map<String, Object> attrs = ((Map<String, Object>) this.args[1]);
-		for (Entry<String, Object> entry : attrs.entrySet()) {
-			String attrName = entry.getKey();
-			if (attrName.equals("file")) {
-				// 子模板不设置file属性
-				continue;
-			}
-			Object value = entry.getValue();
-			t.binding(attrName, value);
+        @SuppressWarnings("unchecked")
+        Map<String, Object> attrs = ((Map<String, Object>) this.args[1]);
+        for (Entry<String, Object> entry : attrs.entrySet()) {
+            String attrName = entry.getKey();
+            if (attrName.equals("file")) {
+                // 子模板不设置file属性
+                continue;
+            }
+            Object value = entry.getValue();
+            t.binding(attrName, value);
 
-		}
+        }
 
-		ByteWriter bw = ctx.byteWriter;
-		t.renderTo(bw);
+        ByteWriter bw = ctx.byteWriter;
+        t.renderTo(bw);
 
-	}
+    }
 
-	protected Object getRelResourceId() {
-		Resource sibling = ctx.getResource();
-		return gt.getResourceLoader().getResourceId(sibling, this.getTargetResource());
-	}
+    protected Object getRelResourceId() {
+        Resource sibling = ctx.getResource();
+        return gt.getResourceLoader().getResourceId(sibling, this.getTargetResource());
+    }
 
 
-	protected String getTargetResource() {
-		@SuppressWarnings("unchecked")
-		String targetResourceId = (String) ((Map<String, Object>) this.args[1]).get("file");
-		if (targetResourceId == null || targetResourceId.trim().length() == 0) {
-			throw new BeetlException(BeetlException.ERROR, "缺少 file属性 ");
-		}
-		return targetResourceId;
-	}
+    protected String getTargetResource() {
+        @SuppressWarnings("unchecked")
+        String targetResourceId = (String) ((Map<String, Object>) this.args[1]).get("file");
+        if (targetResourceId == null || targetResourceId.trim().length() == 0) {
+            throw new BeetlException(BeetlException.ERROR, "缺少 file属性 ");
+        }
+        return targetResourceId;
+    }
 }

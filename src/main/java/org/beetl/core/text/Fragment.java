@@ -19,11 +19,10 @@ public abstract class Fragment {
     public abstract Fragment consumeAndReturnNext();
 
 
-
     protected Fragment findNext() {
-    	if(source.isEof()) {
-    		return null;
-    	}
+        if (source.isEof()) {
+            return null;
+        }
         if (source.isScriptStart()) {
             this.setEndLine();
             return new ScriptBlockFragment(source);
@@ -36,11 +35,10 @@ public abstract class Fragment {
         } else if (source.isHtmlTagEnd()) {
             this.setEndLine();
             return new HtmlTagEndFragment(source);
-        }else if(source.isCrStart()){
+        } else if (source.isCrStart()) {
             CRFragment crFragment = new CRFragment(source);
             return crFragment;
-        }
-        else {
+        } else {
             this.setEndLine();
             return new TextFragment(source);
         }

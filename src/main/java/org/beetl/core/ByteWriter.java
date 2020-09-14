@@ -54,117 +54,104 @@ package org.beetl.core;
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 import java.io.IOException;
 
 import org.beetl.core.io.FloatingIOWriter;
 import org.beetl.core.io.IntIOWriter;
 import org.beetl.core.io.LongIOWriter;
 
-/** 混合了字节和字符的Writer
- * @author xiandafu
+/**
+ * 混合了字节和字符的Writer
  *
+ * @author xiandafu
  */
-public abstract class ByteWriter
-{
+public abstract class ByteWriter {
 
-	protected ContextBuffer localBuffer = null;
-	protected Context ctx = null;
-	protected ByteWriter parent;
+    protected ContextBuffer localBuffer = null;
+    protected Context ctx = null;
+    protected ByteWriter parent;
 
-	public ByteWriter(Context ctx)
-	{
-		this.ctx = ctx;
-		this.localBuffer = ctx.localBuffer;
-	}
+    public ByteWriter(Context ctx) {
+        this.ctx = ctx;
+        this.localBuffer = ctx.localBuffer;
+    }
 
-	public abstract void write(char[] cbuf) throws IOException;
+    public abstract void write(char[] cbuf) throws IOException;
 
-	public abstract void write(char[] cbuf, int len) throws IOException;
+    public abstract void write(char[] cbuf, int len) throws IOException;
 
-	public abstract void writeString(String str) throws IOException;
+    public abstract void writeString(String str) throws IOException;
 
-	/**
-	 * @param chars
-	 * @param len
-	 * @throws IOException
-	 */
-	public abstract void writeNumberChars(char[] chars, int len) throws IOException;
+    /**
+     *
+     */
+    public abstract void writeNumberChars(char[] chars, int len) throws IOException;
 
-	public abstract void write(byte[] bs) throws IOException;
+    public abstract void write(byte[] bs) throws IOException;
 
-	public abstract void write(byte[] bs, int count) throws IOException;
+    public abstract void write(byte[] bs, int count) throws IOException;
 
-	//	public abstract void write(BodyContent bc) throws IOException;
+    //	public abstract void write(BodyContent bc) throws IOException;
 
-	public abstract ByteWriter getTempWriter(ByteWriter parent);
+    public abstract ByteWriter getTempWriter(ByteWriter parent);
 
-	public abstract BodyContent getTempConent();
+    public abstract BodyContent getTempConent();
 
-	/**
-	 * 将内容填充到bw里
-	 * @param bw
-	 */
-	public abstract void fill(ByteWriter bw) throws IOException;
+    /**
+     * 将内容填充到bw里
+     */
+    public abstract void fill(ByteWriter bw) throws IOException;
 
-	public abstract void flush() throws IOException;
+    public abstract void flush() throws IOException;
 
-	public void write(BodyContent bodyContent) throws IOException
-	{
-		bodyContent.fill(this);
-	}
+    public void write(BodyContent bodyContent) throws IOException {
+        bodyContent.fill(this);
+    }
 
-	public void writeDouble(Double d) throws IOException
-	{
-		FloatingIOWriter fd = new FloatingIOWriter(d);
-		fd.write(this, localBuffer.getCharBuffer());
-	}
+    public void writeDouble(Double d) throws IOException {
+        FloatingIOWriter fd = new FloatingIOWriter(d);
+        fd.write(this, localBuffer.getCharBuffer());
+    }
 
-	public void writeFloat(Float d) throws IOException
-	{
-		FloatingIOWriter fd = new FloatingIOWriter(d);
-		fd.write(this, localBuffer.getCharBuffer());
-	}
+    public void writeFloat(Float d) throws IOException {
+        FloatingIOWriter fd = new FloatingIOWriter(d);
+        fd.write(this, localBuffer.getCharBuffer());
+    }
 
-	public void writeInteger(Integer i) throws IOException
-	{
+    public void writeInteger(Integer i) throws IOException {
 
-		IntIOWriter.writeInteger(this, i);
+        IntIOWriter.writeInteger(this, i);
 
-	}
+    }
 
-	public void writeShort(Short i) throws IOException
-	{
+    public void writeShort(Short i) throws IOException {
 
-		IntIOWriter.writeShort(this, i);
+        IntIOWriter.writeShort(this, i);
 
-	}
+    }
 
-	public void writeLong(Long i) throws IOException
-	{
+    public void writeLong(Long i) throws IOException {
 
-		LongIOWriter.writeLong(this, i);
-	}
+        LongIOWriter.writeLong(this, i);
+    }
 
-	public void writeObject(Object o) throws IOException
-	{
-		if (o != null)
-		{
+    public void writeObject(Object o) throws IOException {
+        if (o != null) {
 
-			this.writeString(o.toString());
+            this.writeString(o.toString());
 
-		}
+        }
 
-	}
+    }
 
-	public ContextBuffer getLocalBuffer()
-	{
-		return localBuffer;
-	}
+    public ContextBuffer getLocalBuffer() {
+        return localBuffer;
+    }
 
-	public ByteWriter getParent() {
-		return parent;
-	}
-	
-	
+    public ByteWriter getParent() {
+        return parent;
+    }
+
 
 }

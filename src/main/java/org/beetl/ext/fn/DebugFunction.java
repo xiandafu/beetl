@@ -37,57 +37,47 @@ import org.beetl.core.Function;
  * </pre>
  * 该方法输出该方法的行数，以及对象的toString返回的字符串:
  * <pre>
- * System.out.println(paras[0].toString());	
+ * System.out.println(paras[0].toString());
  * </pre>
  * 可以调用DebugFunction.enable = false ,来禁止输出
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public class DebugFunction implements Function
-{
+public class DebugFunction implements Function {
 
-	public static boolean enable = true;
+    public static boolean enable = true;
 
-	public Object call(Object[] paras, Context ctx)
-	{
-		if (!enable)
-			return "";
-		String[] expStrs = (String[]) paras[paras.length - 2];
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < paras.length - 2; i++)
-		{
-			Object o = paras[i];
-			if (expStrs[i] != null)
-			{
-				//对于debug常量，不需要，参考AntlrProgramBuilder.parseFunExp
-				sb.append(expStrs[i]).append("=");
-			}
+    public Object call(Object[] paras, Context ctx) {
+        if (!enable)
+            return "";
+        String[] expStrs = (String[]) paras[paras.length - 2];
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < paras.length - 2; i++) {
+            Object o = paras[i];
+            if (expStrs[i] != null) {
+                //对于debug常量，不需要，参考AntlrProgramBuilder.parseFunExp
+                sb.append(expStrs[i]).append("=");
+            }
 
-			if (o != null)
-			{
-				if (o instanceof CharSequence)
-				{
-					sb.append("\"").append(o.toString()).append("\"");
-				}
-				else
-				{
-					sb.append(o.toString());
-				}
+            if (o != null) {
+                if (o instanceof CharSequence) {
+                    sb.append("\"").append(o.toString()).append("\"");
+                } else {
+                    sb.append(o.toString());
+                }
 
-			}
-			else
-			{
-				sb.append("null");
-			}
-			sb.append(",");
-		}
+            } else {
+                sb.append("null");
+            }
+            sb.append(",");
+        }
 
-		String line = paras[paras.length - 1].toString();
-		Object resourceId = ctx.getResourceId();
-		sb.append(" [在").append(line).append("行@").append(resourceId).append("]");
+        String line = paras[paras.length - 1].toString();
+        Object resourceId = ctx.getResourceId();
+        sb.append(" [在").append(line).append("行@").append(resourceId).append("]");
 
-		System.out.println(sb);
+        System.out.println(sb);
 
-		return "";
-	}
+        return "";
+    }
 }

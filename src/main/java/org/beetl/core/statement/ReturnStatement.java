@@ -30,29 +30,29 @@ package org.beetl.core.statement;
 import org.beetl.core.Context;
 
 /**
- * return 
- * @author xiandafu
+ * return
  *
+ * @author xiandafu
  */
 public class ReturnStatement extends Statement {
 
-	public Expression exp = null;
+    public Expression exp = null;
 
-	public ReturnStatement(Expression exp, GrammarToken token) {
-		super(token);
-		this.exp = exp;
-	}
+    public ReturnStatement(Expression exp, GrammarToken token) {
+        super(token);
+        this.exp = exp;
+    }
 
-	@Override
-	public void execute(Context ctx) {
-		ctx.gotoFlag = IGoto.RETURN;
-		if (this.exp != null) {
-			Object value = exp.evaluate(ctx);
-			// 最后一个存放返回值
-			ctx.vars[ctx.vars.length - 1] = value;
-		}
+    @Override
+    public void execute(Context ctx) {
+        ctx.gotoFlag = IGoto.RETURN;
+        if (this.exp != null) {
+            Object value = exp.evaluate(ctx);
+            // 最后一个存放返回值
+            ctx.vars[ctx.vars.length - 1] = value;
+        }
 
-	}
+    }
 
 
 }

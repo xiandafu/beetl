@@ -67,11 +67,10 @@ import org.beetl.core.om.ObjectMethodMatchConf;
  */
 public class ObjectUtil {
     //	TODO3.0 改成SoftReference，控制内存大小
-    public final  static Map<Class, Map<String, MethodInvoker>> methodInvokerCache = new ConcurrentHashMap<Class, Map<String, MethodInvoker>>();
+    public final static Map<Class, Map<String, MethodInvoker>> methodInvokerCache = new ConcurrentHashMap<Class, Map<String, MethodInvoker>>();
 
     public static Map<Class, ObjectInfo> cachedClassInfoMap = new ConcurrentHashMap<Class, ObjectInfo>();
     public static Object[] EMPTY_OBJECT_ARRAY = new Object[0];
-
 
 
     protected static PropertyDescriptor[] propertyDescriptors(Class<?> c) throws IntrospectionException {
@@ -91,22 +90,19 @@ public class ObjectUtil {
         return null;
     }
 
-	protected static PropertyDescriptor findIsMethod(PropertyDescriptor[] pd, String methodName) {
-		for (PropertyDescriptor p : pd) {
-			if (p.getReadMethod().getName().equals(methodName)) {
-				return p;
-			}
-		}
-		return null;
-	}
+    protected static PropertyDescriptor findIsMethod(PropertyDescriptor[] pd, String methodName) {
+        for (PropertyDescriptor p : pd) {
+            if (p.getReadMethod().getName().equals(methodName)) {
+                return p;
+            }
+        }
+        return null;
+    }
 
     /**
      * 得到一个可供调用get属性的invoker,invoker用于封装对对象的属性读取
      *
-     * @param c
-     * @param name
-     * @return
-	 * @see https://gitee.com/xiandafu/beetl/issues/I11WQV ，关于2.0兼容的一个bug修复
+     * @see https://gitee.com/xiandafu/beetl/issues/I11WQV ，关于2.0兼容的一个bug修复
      */
     public static MethodInvoker getInvokder(Class c, String name) {
 
@@ -120,9 +116,9 @@ public class ObjectUtil {
         }
 
         PropertyDescriptor property = null;
-		PropertyDescriptor[] pd = null;
+        PropertyDescriptor[] pd = null;
         try {
-        	pd = propertyDescriptors(c);
+            pd = propertyDescriptors(c);
             property = find(pd, name);
         } catch (IntrospectionException e) {
             throw new BeetlException(BeetlException.ERROR, "获取类属性错", e);
@@ -133,19 +129,19 @@ public class ObjectUtil {
             return invoker;
         }
 
-		/**
-		 * 检测2.0兼容，就是isXXX对应的PropertyDescriptor，本来应该只能按照xxx访问，但2.0错误支持了
-		 * isXxx来访问此属性，3.0继续支持
-		 *
-		 */
+        /**
+         * 检测2.0兼容，就是isXXX对应的PropertyDescriptor，本来应该只能按照xxx访问，但2.0错误支持了
+         * isXxx来访问此属性，3.0继续支持
+         *
+         */
 
-		if(name.startsWith("is")){
-			property = findIsMethod(pd, name);
-		}
-		if (property != null) {
-			invoker = new PojoMethodInvoker(property);
-			return invoker;
-		}
+        if (name.startsWith("is")) {
+            property = findIsMethod(pd, name);
+        }
+        if (property != null) {
+            invoker = new PojoMethodInvoker(property);
+            return invoker;
+        }
 
 
         // General Get
@@ -161,10 +157,10 @@ public class ObjectUtil {
             }
         }
 
-        if(invoker==null){
+        if (invoker == null) {
 
 
-            return null ;
+            return null;
         }
 
         if (map == null) {
@@ -180,14 +176,12 @@ public class ObjectUtil {
     }
 
 
-
     /**
      * 获取对象的某个方法，如果无此方法，则仅仅返回null
      *
      * @param c          对象
      * @param methodName 方法名
      * @param paras      参数列表
-     * @return
      */
     protected static Method getGetMethod(Class c, String methodName, Class... paras) {
 
@@ -207,8 +201,7 @@ public class ObjectUtil {
     /**
      * 看给定的参数是否匹配给定方法的参数
      *
-     * @param method
-     * @param paras  输入的参数
+     * @param paras 输入的参数
      * @return 如果不为null，则匹配，其包含了匹配信息
      */
     public static ObjectMethodMatchConf match(Method method, Class[] paras) {
@@ -352,10 +345,6 @@ public class ObjectUtil {
      * @param o          对象实例
      * @param methodName 方法名
      * @param paras      方法参数
-     * @return
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
      */
     private static Object invoke(Class target, Object o, String methodName, Object[] paras)
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -377,14 +366,6 @@ public class ObjectUtil {
 
     /**
      * 调用类的静态方法，只知道方法名和参数，beetl将自动匹配到能调用的方法
-     *
-     * @param target
-     * @param methodName
-     * @param paras
-     * @return
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
      */
     public static Object invokeStatic(Class target, String methodName, Object[] paras) throws IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
@@ -417,11 +398,6 @@ public class ObjectUtil {
     /**
      * 找到某个类的某个方法，方法名是methodName,参数是parameterType。该方法
      * 试图考虑到带有原始类型或者wrap类型的参数
-     *
-     * @param target
-     * @param methodName
-     * @param parameterType
-     * @return
      */
     public static ObjectMethodMatchConf findMethod(Class target, String methodName, Class[] parameterType) {
 
@@ -450,7 +426,6 @@ public class ObjectUtil {
     /**
      * 针对Class.forName的一个简单封装，根据类名获得类
      *
-     * @param clsName
      * @return 如果未加载成功，则抛出Runtime异常
      */
     public static Class getClassByName(String clsName, ClassLoader loader) {
@@ -464,7 +439,6 @@ public class ObjectUtil {
     /**
      * 针对Class.forName(clsname).newInstance()的一个简单封装
      *
-     * @param clsName
      * @return 如果未能创建实例，则抛出runtime异常
      */
     public static Object instance(String clsName, ClassLoader loader) {
@@ -481,9 +455,6 @@ public class ObjectUtil {
 
     /**
      * 实例化一个类，如果不成功，返回null
-     *
-     * @param clsName
-     * @return
      */
     public static Object tryInstance(String clsName, ClassLoader loader) {
         try {
@@ -495,9 +466,6 @@ public class ObjectUtil {
 
     /**
      * 获取一个ObjectInfo
-     *
-     * @param c
-     * @return
      */
     public static ObjectInfo getObjectInfo(Class c) {
         ObjectInfo info = cachedClassInfoMap.get(c);
@@ -515,8 +483,6 @@ public class ObjectUtil {
      * 已知属性名，得出get方法，如属性名是name,get方法是getName
      * 遵循javabean规范
      *
-     * @param attrName
-     * @return
      * @deprecated 并不遵循java规范
      */
     public static String getGetMethod(String attrName) {
@@ -529,8 +495,6 @@ public class ObjectUtil {
      * 已知属性名，得出set方法，如属性名是name,get方法是setName
      * 遵循javabean规范
      *
-     * @param attrName
-     * @return
      * @deprecated 并不遵循java规范
      */
     public static String getSetMethod(String attrName) {
@@ -543,8 +507,6 @@ public class ObjectUtil {
      * 已知属性名，得出is方法，如属性名是boy,is方法是isBoy
      * 遵循javabean规范
      *
-     * @param attrName
-     * @return
      * @deprecated 并不遵循java规范
      */
     public static String getIsMethod(String attrName) {
@@ -553,24 +515,20 @@ public class ObjectUtil {
         return mbuffer.toString();
     }
 
-	/**
-	 *
-	 * @return
-	 */
-	public static ClassLoader getClassLoader(){
-    	ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-    	if(classLoader==null){
-			classLoader = ObjectUtil.class.getClassLoader();
-		}
-    	return  classLoader;
-	}
+    /**
+     *
+     */
+    public static ClassLoader getClassLoader() {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        if (classLoader == null) {
+            classLoader = ObjectUtil.class.getClassLoader();
+        }
+        return classLoader;
+    }
 
 
     /**
      * 判断对象是否有此变量，从方法用于友好提示，属性无法访问的时候，是否是没有getter方法
-     * @param c
-     * @param name
-     * @return
      */
     public static boolean hasPrivateAttribute(Class c, String name) {
         try {

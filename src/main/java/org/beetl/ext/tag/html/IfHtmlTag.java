@@ -37,30 +37,29 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- *  一个html标签方式的tag,同includeTag
- *  <pre>
+ * 一个html标签方式的tag,同includeTag
+ * <pre>
  *     <html:if test="">
  *  </pre>
  *
  * @author xiandafu
- *
  */
 public class IfHtmlTag extends Tag {
 
-	@Override
-	public void render() {
-		if(!containHtmlAttribute("test")){
-			throw new IllegalArgumentException("缺少 test属性");
-		}
-		Object value = this.getHtmlAttribute("test");
-		if(!(value instanceof  Boolean)){
-			throw new IllegalArgumentException("期望test表达式运算结果是boolean类型");
-		}
-		if((Boolean)value){
-			this.doBodyRender();
-		}
+    @Override
+    public void render() {
+        if (!containHtmlAttribute("test")) {
+            throw new IllegalArgumentException("缺少 test属性");
+        }
+        Object value = this.getHtmlAttribute("test");
+        if (!(value instanceof Boolean)) {
+            throw new IllegalArgumentException("期望test表达式运算结果是boolean类型");
+        }
+        if ((Boolean) value) {
+            this.doBodyRender();
+        }
 
-	}
+    }
 
 
 }

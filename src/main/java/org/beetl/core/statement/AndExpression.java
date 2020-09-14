@@ -32,26 +32,26 @@ import org.beetl.core.misc.ALU;
 
 /**
  * exp1+exp2
- * @author xiandafu
  *
+ * @author xiandafu
  */
 public class AndExpression extends Expression {
 
-	public Expression exp1, exp2;
+    public Expression exp1, exp2;
 
-	public AndExpression(Expression exp1, Expression exp2, GrammarToken token) {
-		super(token);
-		this.exp1 = exp1;
-		this.exp2 = exp2;
-	}
+    public AndExpression(Expression exp1, Expression exp2, GrammarToken token) {
+        super(token);
+        this.exp1 = exp1;
+        this.exp2 = exp2;
+    }
 
-	public  Object evaluate(Context ctx) {
-		if (ALU.isTrue(exp1.evaluate(ctx), exp1)) {
-			return ALU.isTrue(exp2.evaluate(ctx), exp2);
-		} else {
-			return Boolean.FALSE;
-		}
-	}
+    public Object evaluate(Context ctx) {
+        if (ALU.isTrue(exp1.evaluate(ctx), exp1)) {
+            return ALU.isTrue(exp2.evaluate(ctx), exp2);
+        } else {
+            return Boolean.FALSE;
+        }
+    }
 
 
 }

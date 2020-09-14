@@ -35,56 +35,56 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * 语法错的时候处理错误
- * @author xiandafu
  *
+ * @author xiandafu
  */
 
 public class ErrorGrammarProgram extends Program {
-	BeetlException exception = null;
+    BeetlException exception = null;
 
-	public ErrorGrammarProgram(Resource res, GroupTemplate gt, String cr) {
-		super();
-		this.res = res;
-		this.gt = gt;
-		this.metaData = new ProgramMetaData() {
-			public void initContext(Context ctx) {
-				// do nothing;
-			}
+    public ErrorGrammarProgram(Resource res, GroupTemplate gt, String cr) {
+        super();
+        this.res = res;
+        this.gt = gt;
+        this.metaData = new ProgramMetaData() {
+            public void initContext(Context ctx) {
+                // do nothing;
+            }
 
-			protected void putGlobaToArray(Context ctx) {
-				// do nothing;
-			}
+            protected void putGlobaToArray(Context ctx) {
+                // do nothing;
+            }
 
-			public AjaxStatement getAjax(String anchor) {
-				// 创建一个临时的ajax片段语句
-				return new AjaxStatement(null, GrammarToken.createToken(anchor, 0), true) {
-					public void execute(Context ctx) {
-						ErrorGrammarProgram.this.execute(ctx);
+            public AjaxStatement getAjax(String anchor) {
+                // 创建一个临时的ajax片段语句
+                return new AjaxStatement(null, GrammarToken.createToken(anchor, 0), true) {
+                    public void execute(Context ctx) {
+                        ErrorGrammarProgram.this.execute(ctx);
 
-					}
-				};
-			}
-		};
-		this.metaData.lineSeparator = cr;
-	}
+                    }
+                };
+            }
+        };
+        this.metaData.lineSeparator = cr;
+    }
 
-	public void execute(Context ctx) {
-		ErrorHandler errorHandler = this.gt.getErrorHandler();
-		if (errorHandler == null) throw exception;
-		// Writer w = BeetlUtil.getWriterByByteWriter(ctx.byteWriter);
-		// errorHandler.processExcption(exception, w);
-		throw exception;
-	}
+    public void execute(Context ctx) {
+        ErrorHandler errorHandler = this.gt.getErrorHandler();
+        if (errorHandler == null) throw exception;
+        // Writer w = BeetlUtil.getWriterByByteWriter(ctx.byteWriter);
+        // errorHandler.processExcption(exception, w);
+        throw exception;
+    }
 
-	public BeetlException getException() {
-		return exception;
-	}
+    public BeetlException getException() {
+        return exception;
+    }
 
-	public void setException(BeetlException exception) {
-		this.exception = exception;
-		this.exception.gt = this.gt;
-		// this.exception.pushResource(this.id);
-		this.exception.cr = this.metaData.lineSeparator;
-	}
+    public void setException(BeetlException exception) {
+        this.exception = exception;
+        this.exception.gt = this.gt;
+        // this.exception.pushResource(this.id);
+        this.exception.cr = this.metaData.lineSeparator;
+    }
 
 }

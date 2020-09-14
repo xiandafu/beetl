@@ -31,17 +31,15 @@ import org.beetl.core.statement.GrammarToken;
 
 /**
  * Native方法调用异常
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public class NativeNotAllowedException extends BeetlException
-{
+public class NativeNotAllowedException extends BeetlException {
 
-	public NativeNotAllowedException(GrammarToken token)
-	{
-		super(BeetlException.NATIVE_NOT_ALLOWED);
-		this.token = token;
-		// TODO Auto-generated constructor stub
-	}
+    public NativeNotAllowedException(GrammarToken token) {
+        super(BeetlException.NATIVE_NOT_ALLOWED);
+        this.token = token;
+        // TODO Auto-generated constructor stub
+    }
 
 }

@@ -1,10 +1,10 @@
 package org.beetl.core.tag;
 
-/** 标签函数工厂类
- * @author xiandafu
+/**
+ * 标签函数工厂类
  *
+ * @author xiandafu
  */
-public interface TagFactory
-{
-	public Tag createTag();
+public interface TagFactory {
+    public Tag createTag();
 }

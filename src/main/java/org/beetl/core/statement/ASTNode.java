@@ -29,15 +29,15 @@ package org.beetl.core.statement;
 
 /**
  * 节点基类
- * @author xiandafu
  *
+ * @author xiandafu
  */
 public abstract class ASTNode implements java.io.Serializable {
-	public GrammarToken token;
+    public GrammarToken token;
 
-	public ASTNode(GrammarToken token) {
-		this.token = token;
-	}
+    public ASTNode(GrammarToken token) {
+        this.token = token;
+    }
 
 
 }

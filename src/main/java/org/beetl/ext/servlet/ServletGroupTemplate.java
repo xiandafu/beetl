@@ -11,55 +11,47 @@ import org.beetl.ext.web.WebRender;
 /**
  * 在Serlvet中调用
  * <pre>
- * 
+ *
  * ServletGroupTemplate.instance().render("/xxxpage",request,response);
  * </pre>
- * 
- * GroupTemplate 通过配置文件配置，也可以在Linstner中调用ServletGroupTemplate.instance()，并手工调用
- * @author xiandafu
  *
+ * GroupTemplate 通过配置文件配置，也可以在Linstner中调用ServletGroupTemplate.instance()，并手工调用
+ *
+ * @author xiandafu
  */
-public class ServletGroupTemplate
-{
-	static ServletGroupTemplate sgt = new ServletGroupTemplate();
-	GroupTemplate groupTemplate = null;
+public class ServletGroupTemplate {
+    static ServletGroupTemplate sgt = new ServletGroupTemplate();
+    GroupTemplate groupTemplate = null;
 
-	private ServletGroupTemplate()
-	{
+    private ServletGroupTemplate() {
 
-		try
-		{
-			Configuration cfg = Configuration.defaultConfiguration();
-			WebAppResourceLoader resourceLoader = new WebAppResourceLoader();
-			groupTemplate = new GroupTemplate(resourceLoader, cfg);
-		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
-			throw new RuntimeException("加载GroupTemplate失败", ex);
+        try {
+            Configuration cfg = Configuration.defaultConfiguration();
+            WebAppResourceLoader resourceLoader = new WebAppResourceLoader();
+            groupTemplate = new GroupTemplate(resourceLoader, cfg);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException("加载GroupTemplate失败", ex);
 
-		}
+        }
 
-	}
+    }
 
-	/** 获取GroupTemplate
-	 * @return
-	 */
-	public static ServletGroupTemplate instance()
-	{
-		return sgt;
-	}
+    /**
+     * 获取GroupTemplate
+     */
+    public static ServletGroupTemplate instance() {
+        return sgt;
+    }
 
-	public void render(String child, HttpServletRequest request, HttpServletResponse response)
-	{
-		WebRender render = new WebRender(groupTemplate);
-		render.render(child, request, response);
+    public void render(String child, HttpServletRequest request, HttpServletResponse response) {
+        WebRender render = new WebRender(groupTemplate);
+        render.render(child, request, response);
 
-	}
+    }
 
-	public GroupTemplate getGroupTemplate()
-	{
-		return groupTemplate;
-	}
+    public GroupTemplate getGroupTemplate() {
+        return groupTemplate;
+    }
 
 }

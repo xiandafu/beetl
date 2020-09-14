@@ -36,150 +36,129 @@ import org.beetl.core.ResourceLoader;
 import org.beetl.core.fun.FileFunctionWrapper;
 import org.beetl.core.misc.BeetlUtil;
 
-/** 文件模板加载器
- * @author xiandafu
+/**
+ * 文件模板加载器
  *
+ * @author xiandafu
  */
-public class FileResourceLoader implements ResourceLoader<String>
-{
+public class FileResourceLoader implements ResourceLoader<String> {
 
-	String root = null;
-	String charset = "UTF-8";
-	boolean autoCheck = false;
-	String functionRoot = "funtion";
-	String functionSuffix = "fn";
-	GroupTemplate gt = null;
+    String root = null;
+    String charset = "UTF-8";
+    boolean autoCheck = false;
+    String functionRoot = "funtion";
+    String functionSuffix = "fn";
+    GroupTemplate gt = null;
 
-	public FileResourceLoader()
-	{
-		this.root = System.getProperty("user.dir");
-	}
+    public FileResourceLoader() {
+        this.root = System.getProperty("user.dir");
+    }
 
-	public FileResourceLoader(String root)
-	{
-		this.root = root;
-	}
+    public FileResourceLoader(String root) {
+        this.root = root;
+    }
 
-	public FileResourceLoader(String root, String charset)
-	{
-		this.root = root;
-		this.charset = charset;
-	}
+    public FileResourceLoader(String root, String charset) {
+        this.root = root;
+        this.charset = charset;
+    }
 
-	@Override
-	public Resource getResource(String key)
-	{
-		File file = new File(root, key);
-		Resource resource = new FileResource(file, key, this);
-		resource.setResourceLoader(this);
-		return resource;
+    @Override
+    public Resource getResource(String key) {
+        File file = new File(root, key);
+        Resource resource = new FileResource(file, key, this);
+        resource.setResourceLoader(this);
+        return resource;
 
-	}
+    }
 
-	@Override
-	public void close()
-	{
-		// TODO Auto-generated method stub
+    @Override
+    public void close() {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
-	@Override
-	public boolean isModified(Resource key)
-	{
-		if (this.autoCheck)
-		{
-			return key.isModified();
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean isModified(Resource key) {
+        if (this.autoCheck) {
+            return key.isModified();
+        } else {
+            return false;
+        }
+    }
 
-	public boolean isAutoCheck()
-	{
-		return autoCheck;
-	}
+    public boolean isAutoCheck() {
+        return autoCheck;
+    }
 
-	public void setAutoCheck(boolean autoCheck)
-	{
-		this.autoCheck = autoCheck;
-	}
+    public void setAutoCheck(boolean autoCheck) {
+        this.autoCheck = autoCheck;
+    }
 
-	public String getRoot()
-	{
-		return root;
-	}
+    public String getRoot() {
+        return root;
+    }
 
-	public void setRoot(String root)
-	{
-		this.root = root;
-	}
+    public void setRoot(String root) {
+        this.root = root;
+    }
 
-	public String getCharset()
-	{
-		return charset;
-	}
+    public String getCharset() {
+        return charset;
+    }
 
-	public void setCharset(String charset)
-	{
-		this.charset = charset;
-	}
+    public void setCharset(String charset) {
+        this.charset = charset;
+    }
 
-	@Override
-	public void init(GroupTemplate gt)
-	{
-		Map<String, String> resourceMap = gt.getConf().getResourceMap();
-		if (resourceMap.get("root") != null)
-		{
+    @Override
+    public void init(GroupTemplate gt) {
+        Map<String, String> resourceMap = gt.getConf().getResourceMap();
+        if (resourceMap.get("root") != null) {
 
-			String temp = resourceMap.get("root");
-			File test = new File(root, temp);
+            String temp = resourceMap.get("root");
+            File test = new File(root, temp);
 
-			this.root = test.toString();
-		}
+            this.root = test.toString();
+        }
 
-		if (this.charset == null)
-		{
-			this.charset = resourceMap.get("charset");
+        if (this.charset == null) {
+            this.charset = resourceMap.get("charset");
 
-		}
-		this.functionSuffix = resourceMap.get("functionSuffix");
-		this.autoCheck = Boolean.parseBoolean(resourceMap.get("autoCheck"));
-		this.functionRoot = resourceMap.get("functionRoot");
-		File root = new File(this.root, this.functionRoot);
-		this.gt = gt;
-		if (root.exists())
-		{
-			String ns = "";
-			String path = "/".concat(this.functionRoot).concat("/");
-			BeetlUtil.autoFileFunctionRegister(gt, root, ns, path, this.functionSuffix);
-			
-		}
+        }
+        this.functionSuffix = resourceMap.get("functionSuffix");
+        this.autoCheck = Boolean.parseBoolean(resourceMap.get("autoCheck"));
+        this.functionRoot = resourceMap.get("functionRoot");
+        File root = new File(this.root, this.functionRoot);
+        this.gt = gt;
+        if (root.exists()) {
+            String ns = "";
+            String path = "/".concat(this.functionRoot).concat("/");
+            BeetlUtil.autoFileFunctionRegister(gt, root, ns, path, this.functionSuffix);
 
-	}
+        }
 
-	
-	@Override
-	public boolean exist(String key)
-	{
-		// TODO Auto-generated method stub
-		return new File(root, key).exists();
-	}
+    }
 
-	@Override
-	public String getResourceId(Resource resource, String id)
-	{
-		if (resource == null)
-			return id;
-		else
-			return BeetlUtil.getRelPath(resource.getId().toString(), id);
-	}
 
-	@Override
-	public String getInfo() {
-		// TODO Auto-generated method stub
-		return "FileResourceLoader,Root="+this.root;
-	}
+    @Override
+    public boolean exist(String key) {
+        // TODO Auto-generated method stub
+        return new File(root, key).exists();
+    }
+
+    @Override
+    public String getResourceId(Resource resource, String id) {
+        if (resource == null)
+            return id;
+        else
+            return BeetlUtil.getRelPath(resource.getId().toString(), id);
+    }
+
+    @Override
+    public String getInfo() {
+        // TODO Auto-generated method stub
+        return "FileResourceLoader,Root=" + this.root;
+    }
 
 }

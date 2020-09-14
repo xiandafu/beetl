@@ -33,26 +33,23 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 封装了Parameter，模板可以通过parameter来访问
+ *
  * @author xiandafu
  * @since 2.2.7
- *
  */
-public class ParameterWrapper
-{
-	HttpServletRequest request = null;
+public class ParameterWrapper {
+    HttpServletRequest request = null;
 
-	public ParameterWrapper(HttpServletRequest request)
-	{
-		this.request = request;
-	}
+    public ParameterWrapper(HttpServletRequest request) {
+        this.request = request;
+    }
 
-	public Object get(String key)
-	{
-		return request.getParameter(key);
-			
-	}
-	
-	public Map getMap(){
-		return request.getParameterMap();
-	}
+    public Object get(String key) {
+        return request.getParameter(key);
+
+    }
+
+    public Map getMap() {
+        return request.getParameterMap();
+    }
 }

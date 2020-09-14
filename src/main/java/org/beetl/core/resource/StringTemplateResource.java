@@ -33,27 +33,23 @@ import java.io.StringReader;
 import org.beetl.core.Resource;
 import org.beetl.core.ResourceLoader;
 
-public class StringTemplateResource extends Resource<String>
-{
+public class StringTemplateResource extends Resource<String> {
 
-	public StringTemplateResource(String template, ResourceLoader resourceLoader)
-	{
-		super(template, resourceLoader);
+    public StringTemplateResource(String template, ResourceLoader resourceLoader) {
+        super(template, resourceLoader);
 
-	}
+    }
 
-	@Override
-	public Reader openReader()
-	{
+    @Override
+    public Reader openReader() {
 
-		return new StringReader(this.id);
-	}
+        return new StringReader(this.id);
+    }
 
-	@Override
-	public boolean isModified()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean isModified() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
 }

@@ -30,57 +30,57 @@ package org.beetl.core.statement;
 import org.beetl.core.Context;
 import org.beetl.core.exception.BeetlException;
 
-/**try{
+/**
+ * try{
  * }catch(error){
  * }
- * 
- * @author xiandafu
  *
+ * @author xiandafu
  */
 public class TryCatchStatement extends Statement {
 
-	BlockStatement tryPart;
-	BlockStatement catchPart;
-	VarDefineNode error;
+    BlockStatement tryPart;
+    BlockStatement catchPart;
+    VarDefineNode error;
 
-	public TryCatchStatement(BlockStatement tryPart, BlockStatement catchPart, VarDefineNode error,
-			GrammarToken token) {
-		super(token);
-		this.tryPart = tryPart;
-		this.catchPart = catchPart;
-		this.error = error;
-	}
+    public TryCatchStatement(BlockStatement tryPart, BlockStatement catchPart, VarDefineNode error,
+                             GrammarToken token) {
+        super(token);
+        this.tryPart = tryPart;
+        this.catchPart = catchPart;
+        this.error = error;
+    }
 
-	@Override
-	public void execute(Context ctx) {
-		try {
-			tryPart.execute(ctx);
+    @Override
+    public void execute(Context ctx) {
+        try {
+            tryPart.execute(ctx);
 
-		} catch (Exception ex) {
-			if (catchPart != null) {
-				if (error != null) {
-					if (ex instanceof BeetlException) {
-						ctx.vars[error.varIndex] = ex;
-					} else {
-						ctx.vars[error.varIndex] = new BeetlException(BeetlException.ERROR, ex.getMessage(), ex);
-					}
+        } catch (Exception ex) {
+            if (catchPart != null) {
+                if (error != null) {
+                    if (ex instanceof BeetlException) {
+                        ctx.vars[error.varIndex] = ex;
+                    } else {
+                        ctx.vars[error.varIndex] = new BeetlException(BeetlException.ERROR, ex.getMessage(), ex);
+                    }
 
-				}
-				catchPart.execute(ctx);
+                }
+                catchPart.execute(ctx);
 
-			} else {
+            } else {
 
-				if (ex instanceof BeetlException) {
-					throw (BeetlException) ex;
-				} else {
-					BeetlException be = new BeetlException(BeetlException.ERROR, ex.getMessage(), ex);
-					be.pushToken(tryPart.token);
-					throw be;
-				}
-			}
-		}
+                if (ex instanceof BeetlException) {
+                    throw (BeetlException) ex;
+                } else {
+                    BeetlException be = new BeetlException(BeetlException.ERROR, ex.getMessage(), ex);
+                    be.pushToken(tryPart.token);
+                    throw be;
+                }
+            }
+        }
 
-	}
+    }
 
 
 }

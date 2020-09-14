@@ -43,101 +43,88 @@ import org.springframework.web.servlet.view.AbstractTemplateView;
 
 /**
  * @author Chen Rui
- *
  */
-public class BeetlSpringView extends AbstractTemplateView
-{
+public class BeetlSpringView extends AbstractTemplateView {
 
-	/* ----- ----- ----- ----- 属性 ----- ----- ----- ----- */
-	/**
-	 * 视图使用的Beetl GroupTemplate，由ViewResolver注入，如果不设置，取上下文中唯一的GroupTemplate对象
-	 */
-	protected GroupTemplate groupTemplate = null;
+    /* ----- ----- ----- ----- 属性 ----- ----- ----- ----- */
+    /**
+     * 视图使用的Beetl GroupTemplate，由ViewResolver注入，如果不设置，取上下文中唯一的GroupTemplate对象
+     */
+    protected GroupTemplate groupTemplate = null;
 
-	/**
-	 * 视图使用的Beetl GroupTemplate，由ViewResolver注入，如果不设置，取上下文中唯一的GroupTemplate对象
-	 *
-	 * @param groupTemplate
-	 *            视图使用的Beetl GroupTemplate，由ViewResolver注入，如果不设置，取上下文中唯一的GroupTemplate对象
-	 */
-	public void setGroupTemplate(GroupTemplate groupTemplate)
-	{
-		this.groupTemplate = groupTemplate;
-	}
-	
-	
+    /**
+     * 视图使用的Beetl GroupTemplate，由ViewResolver注入，如果不设置，取上下文中唯一的GroupTemplate对象
+     *
+     * @param groupTemplate 视图使用的Beetl GroupTemplate，由ViewResolver注入，如果不设置，取上下文中唯一的GroupTemplate对象
+     */
+    public void setGroupTemplate(GroupTemplate groupTemplate) {
+        this.groupTemplate = groupTemplate;
+    }
 
-	public GroupTemplate getGroupTemplate() {
-		return groupTemplate;
-	}
+
+    public GroupTemplate getGroupTemplate() {
+        return groupTemplate;
+    }
 
 
 
-	/* ----- ----- ----- ----- 构造函数 ----- ----- ----- ----- */
-	/**
-	 * 缺省构造函数
-	 */
-	public BeetlSpringView()
-	{
-	}
+    /* ----- ----- ----- ----- 构造函数 ----- ----- ----- ----- */
 
-	/* ----- ----- ----- ----- 实现方法 ----- ----- ----- ----- */
-	/**
-	 * 渲染指定视图
-	 *
-	 * @param model
-	 * @param request
-	 * @param response
-	 * @throws NoSuchBeanDefinitionException
-	 *             如果未设置GroupTemplate，且Spring上下文中也没有唯一的GroupTemplate bean
-	 * @throws NoUniqueBeanDefinitionException
-	 *             如果未设置GroupTemplate，且Spring上下文中有多个GroupTemplate bean
-	 */
-	@Override
-	protected void renderMergedTemplateModel(Map<String, Object> model, HttpServletRequest request,
-			HttpServletResponse response) throws NoSuchBeanDefinitionException, NoUniqueBeanDefinitionException
-	{
-		// 如果未指定groupTemplate，取上下文中唯一的GroupTemplate对象
-		if (groupTemplate == null)
-		{
-			groupTemplate = getApplicationContext().getBean(GroupTemplate.class);
-		}
+    /**
+     * 缺省构造函数
+     */
+    public BeetlSpringView() {
+    }
 
-		// 渲染方法
-		WebRender render = new WebRender(groupTemplate) {
-			@Override
-			protected void modifyTemplate(Template template, String key, HttpServletRequest request,
-					HttpServletResponse response, Object... args)
-			{
-				Map<?, ?> model = (Map<?, ?>) args[0];
+    /* ----- ----- ----- ----- 实现方法 ----- ----- ----- ----- */
 
-				for (Entry<?, ?> entry : model.entrySet())
-				{
-					String name = (String) entry.getKey();
-					Object value = entry.getValue();
-					template.binding(name, value);
-				}
-			}
-		};
-		String path = getUrl();
-		render.render(path, request, response, model);
-	}
-	
-	@Override
-	public boolean checkResource(Locale locale) throws Exception {
+    /**
+     * 渲染指定视图
+     *
+     * @throws NoSuchBeanDefinitionException   如果未设置GroupTemplate，且Spring上下文中也没有唯一的GroupTemplate bean
+     * @throws NoUniqueBeanDefinitionException 如果未设置GroupTemplate，且Spring上下文中有多个GroupTemplate bean
+     */
+    @Override
+    protected void renderMergedTemplateModel(Map<String, Object> model, HttpServletRequest request,
+                                             HttpServletResponse response) throws NoSuchBeanDefinitionException, NoUniqueBeanDefinitionException {
+        // 如果未指定groupTemplate，取上下文中唯一的GroupTemplate对象
+        if (groupTemplate == null) {
+            groupTemplate = getApplicationContext().getBean(GroupTemplate.class);
+        }
+
+        // 渲染方法
+        WebRender render = new WebRender(groupTemplate) {
+            @Override
+            protected void modifyTemplate(Template template, String key, HttpServletRequest request,
+                                          HttpServletResponse response, Object... args) {
+                Map<?, ?> model = (Map<?, ?>) args[0];
+
+                for (Entry<?, ?> entry : model.entrySet()) {
+                    String name = (String) entry.getKey();
+                    Object value = entry.getValue();
+                    template.binding(name, value);
+                }
+            }
+        };
+        String path = getUrl();
+        render.render(path, request, response, model);
+    }
+
+    @Override
+    public boolean checkResource(Locale locale) throws Exception {
 //	    BeetlGroupUtilConfiguration config = getApplicationContext().getBean(BeetlGroupUtilConfiguration.class);
-	    String url = getUrl();
-	    //去掉ajax 部分。
-	    if (url.contains("#")) {
-			String[] split = url.split("#");
-			if (split.length > 2) {
-				throw new Exception("视图名称有误：" + url);
-			}
-			return groupTemplate.getResourceLoader().exist(split[0]);
-		}else{
-			return groupTemplate.getResourceLoader().exist(url);
-		}
-		
-	}
-	
+        String url = getUrl();
+        //去掉ajax 部分。
+        if (url.contains("#")) {
+            String[] split = url.split("#");
+            if (split.length > 2) {
+                throw new Exception("视图名称有误：" + url);
+            }
+            return groupTemplate.getResourceLoader().exist(split[0]);
+        } else {
+            return groupTemplate.getResourceLoader().exist(url);
+        }
+
+    }
+
 }

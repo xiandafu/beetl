@@ -27,19 +27,18 @@
  */
 package org.beetl.core.resource;
 
-/**  
+/**
  * 匹配一切的匹配器，始终返回true  ,通常用于默认的匹配，放在最后
- * @author 李飞 (lifei@wellbole.com)   
+ *
+ * @author 李飞 (lifei@wellbole.com)
  */
-public class AllowAllMatcher implements Matcher
-{
-	@Override
-	public String match(String key)
-	{
-		return key;
-	}
-	
-	public String toString(){
-		return "All Matcher";
-	}
+public class AllowAllMatcher implements Matcher {
+    @Override
+    public String match(String key) {
+        return key;
+    }
+
+    public String toString() {
+        return "All Matcher";
+    }
 }

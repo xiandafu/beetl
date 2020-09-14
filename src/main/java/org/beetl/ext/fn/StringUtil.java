@@ -33,169 +33,154 @@ import java.util.Arrays;
 import java.util.Date;
 
 /**
- *  操作字符串的简便方法，如：<p>
- *  ${strutil.startWith("hello",'he')}
- * @author xiandafu,方志文
+ * 操作字符串的简便方法，如：<p>
+ * ${strutil.startWith("hello",'he')}
  *
+ * @author xiandafu, 方志文
  */
-public class StringUtil
-{
-	public String trim(String str)
-	{
-		if (str == null)
-			throw new NullPointerException("Error:trim(null)");
-		return str.trim();
-	}
+public class StringUtil {
+    public String trim(String str) {
+        if (str == null)
+            throw new NullPointerException("Error:trim(null)");
+        return str.trim();
+    }
 
-	public boolean startWith(String str, String key)
-	{
-		if (str == null)
-			throw new NullPointerException("Error:startWith(null)");
-		return str.startsWith(key);
-	}
+    public boolean startWith(String str, String key) {
+        if (str == null)
+            throw new NullPointerException("Error:startWith(null)");
+        return str.startsWith(key);
+    }
 
-	public boolean endWith(String str, String key)
-	{
-		if (str == null)
-			throw new NullPointerException("Error:endWith(null)");
-		return str.endsWith(key);
-	}
+    public boolean endWith(String str, String key) {
+        if (str == null)
+            throw new NullPointerException("Error:endWith(null)");
+        return str.endsWith(key);
+    }
 
-	public int length(String str)
-	{
-		if (str == null)
-			throw new NullPointerException("Error:length(null)");
-		return str.length();
-	}
+    public int length(String str) {
+        if (str == null)
+            throw new NullPointerException("Error:length(null)");
+        return str.length();
+    }
 
-	public String subStringTo(String str, int start, int end)
-	{
-		if (str == null)
-			throw new NullPointerException("Error:subStringTo(null)");
-		return str.substring(start, end);
-	}
+    public String subStringTo(String str, int start, int end) {
+        if (str == null)
+            throw new NullPointerException("Error:subStringTo(null)");
+        return str.substring(start, end);
+    }
 
-	public String subString(String str, int start)
-	{
-		if (str == null)
-			throw new NullPointerException("Error:subString(null)");
-		return str.substring(start);
-	}
+    public String subString(String str, int start) {
+        if (str == null)
+            throw new NullPointerException("Error:subString(null)");
+        return str.substring(start);
+    }
 
-	public String[] split(String str, String key)
-	{
-		if (str == null)
-			throw new NullPointerException("Error: split(null)");
-		return str.split(key);
-	}
+    public String[] split(String str, String key) {
+        if (str == null)
+            throw new NullPointerException("Error: split(null)");
+        return str.split(key);
+    }
 
-	public String join(String[] arr, String separator) {
+    public String join(String[] arr, String separator) {
 
-		if (arr == null) {
-			return null;
-		}
+        if (arr == null) {
+            return null;
+        }
 
-		if (separator == null) {
-			separator = "";
-		}
+        if (separator == null) {
+            separator = "";
+        }
 
-		StringBuilder buf = new StringBuilder();
-		for (int i = 0; i < arr.length; i++) {
-			if (i > 0) {
-				buf.append(separator);
-			}
-			if (arr[i] != null) {
-				buf.append(arr[i]);
-			}
-		}
-		return buf.toString();
-	}
+        StringBuilder buf = new StringBuilder();
+        for (int i = 0; i < arr.length; i++) {
+            if (i > 0) {
+                buf.append(separator);
+            }
+            if (arr[i] != null) {
+                buf.append(arr[i]);
+            }
+        }
+        return buf.toString();
+    }
 
-	public boolean contain(String str, String key)
-	{
-		if (str == null)
-			throw new NullPointerException("Error: contain(null)");
-		return str.indexOf(key) != -1;
-	}
+    public boolean contain(String str, String key) {
+        if (str == null)
+            throw new NullPointerException("Error: contain(null)");
+        return str.indexOf(key) != -1;
+    }
 
-	public String toUpperCase(String str)
-	{
-		if (str == null)
-			throw new NullPointerException("Error:toUpperCase(null)");
-		return str.toUpperCase();
-	}
+    public String toUpperCase(String str) {
+        if (str == null)
+            throw new NullPointerException("Error:toUpperCase(null)");
+        return str.toUpperCase();
+    }
 
-	public String toLowerCase(String str)
-	{
-		if (str == null)
-			throw new NullPointerException("Error:toLowerCase(null)");
-		return str.toLowerCase();
-	}
+    public String toLowerCase(String str) {
+        if (str == null)
+            throw new NullPointerException("Error:toLowerCase(null)");
+        return str.toLowerCase();
+    }
 
-	public String replace(String str, String oldValue, String newValue)
-	{
-		if (str == null)
-			throw new NullPointerException("Error:replace(null)");
-		return str.replace(oldValue, newValue);
-	}
+    public String replace(String str, String oldValue, String newValue) {
+        if (str == null)
+            throw new NullPointerException("Error:replace(null)");
+        return str.replace(oldValue, newValue);
+    }
 
-	public String format(String str, Object[] args)
-	{
-		if (str == null)
-			throw new NullPointerException("Error:format(null)");
-		String result = MessageFormat.format(str, args);
-		return result;
-	}
+    public String format(String str, Object[] args) {
+        if (str == null)
+            throw new NullPointerException("Error:format(null)");
+        String result = MessageFormat.format(str, args);
+        return result;
+    }
 
-	public String formatDate(Date o, String args)
-	{
-		if (o == null)
-			throw new NullPointerException("Error:formatDate(null)");
-		SimpleDateFormat sd = new SimpleDateFormat(args);
-		return sd.format(o);
-	}
+    public String formatDate(Date o, String args) {
+        if (o == null)
+            throw new NullPointerException("Error:formatDate(null)");
+        SimpleDateFormat sd = new SimpleDateFormat(args);
+        return sd.format(o);
+    }
 
-	public int index(String str, String search)
-	{
-		if (str == null)
-			throw new NullPointerException("Error:index(null)");
-		return str.indexOf(search);
-	}
+    public int index(String str, String search) {
+        if (str == null)
+            throw new NullPointerException("Error:index(null)");
+        return str.indexOf(search);
+    }
 
-	public int lastIndex(String str, String search)
-	{
-		if (str == null)
-			throw new NullPointerException("Error:lastIndex(null)");
-		return str.lastIndexOf(search);
-	}
+    public int lastIndex(String str, String search) {
+        if (str == null)
+            throw new NullPointerException("Error:lastIndex(null)");
+        return str.lastIndexOf(search);
+    }
 
-	/**
-	 * 完成字符串扩展到固定长度
-	 * @param str 需要扩展的字符串
-	 * @param length 长度
-	 * @param fill 填充字符
-	 * @param fillFront 是否前填充，否则后填充
-	 * @param truncation 如果过长是否需是要截断
-	 * @return
-	 */
-	public static String extendString(String str,int length,char fill,boolean fillFront,boolean truncation){
-		if(str == null)return null;
-		if(length < 0) throw  new IllegalArgumentException("length must bigger than 0.");
-		if(str.length() > length) return truncation?str.substring(str.length()-length):str;
-		char[] cs = new char[length-str.length()];
-		Arrays.fill(cs,fill);
-		return fillFront?new String(cs)+str:str+new String(cs);
-	}
+    /**
+     * 完成字符串扩展到固定长度
+     *
+     * @param str        需要扩展的字符串
+     * @param length     长度
+     * @param fill       填充字符
+     * @param fillFront  是否前填充，否则后填充
+     * @param truncation 如果过长是否需是要截断
+     */
+    public static String extendString(String str, int length, char fill, boolean fillFront, boolean truncation) {
+        if (str == null) return null;
+        if (length < 0) throw new IllegalArgumentException("length must bigger than 0.");
+        if (str.length() > length) return truncation ? str.substring(str.length() - length) : str;
+        char[] cs = new char[length - str.length()];
+        Arrays.fill(cs, fill);
+        return fillFront ? new String(cs) + str : str + new String(cs);
+    }
 
-	/**
-	 * 把数字扩展到固定长度.
-	 * 不足的在前面填充0
-	 * @param value 数字值
-	 * @param length 长度
-	 * @return 对应的长度的字串
-	 */
-	public static String extendString(int value,int length){
-		return extendString(String.valueOf(value),length,'0',true,true);
-	}
+    /**
+     * 把数字扩展到固定长度.
+     * 不足的在前面填充0
+     *
+     * @param value  数字值
+     * @param length 长度
+     * @return 对应的长度的字串
+     */
+    public static String extendString(int value, int length) {
+        return extendString(String.valueOf(value), length, '0', true, true);
+    }
 
 }

@@ -33,36 +33,29 @@ import org.beetl.core.Function;
 /**
  * 如果表达式为false，则抛出异常，不再解析
  * ${assert(1==1)}
- * @author xiandafu
  *
+ * @author xiandafu
  */
-public class AssertFunction implements Function
-{
+public class AssertFunction implements Function {
 
-	public static boolean ASSERT = true;
+    public static boolean ASSERT = true;
 
-	public String call(Object[] paras, Context ctx)
-	{
+    public String call(Object[] paras, Context ctx) {
 
-		if (ASSERT)
-		{
-			boolean result = (Boolean) paras[0];
-			String msg = null;
-			if (paras.length > 1)
-			{
-				msg = (String) paras[1];
-			}
-			if (!result)
-			{
-				throw new RuntimeException(msg == null ? "断言异常" : msg);
-			}
-			return "";
-		}
-		else
-		{
-			return "";
-		}
+        if (ASSERT) {
+            boolean result = (Boolean) paras[0];
+            String msg = null;
+            if (paras.length > 1) {
+                msg = (String) paras[1];
+            }
+            if (!result) {
+                throw new RuntimeException(msg == null ? "断言异常" : msg);
+            }
+            return "";
+        } else {
+            return "";
+        }
 
-	}
+    }
 
 }

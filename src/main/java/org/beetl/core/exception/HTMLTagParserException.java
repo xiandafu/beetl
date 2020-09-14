@@ -29,23 +29,19 @@ package org.beetl.core.exception;
 
 /**
  * html解析异常
- * 
+ *
  * @author xiandafu
- * 
  */
-public class HTMLTagParserException extends BeetlException
-{
+public class HTMLTagParserException extends BeetlException {
 
-	public int line = 0;
+    public int line = 0;
 
-	public HTMLTagParserException(String message)
-	{
-		super(BeetlException.PARSER_HTML_TAG_ERROR, message);
+    public HTMLTagParserException(String message) {
+        super(BeetlException.PARSER_HTML_TAG_ERROR, message);
 
-	}
+    }
 
-	public String getHtmlTagErrorMsg()
-	{
-		return super.getMessage();
-	}
+    public String getHtmlTagErrorMsg() {
+        return super.getMessage();
+    }
 }
