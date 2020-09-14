@@ -35,7 +35,7 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * 语法错的时候处理错误
- * @author joelli
+ * @author xiandafu
  *
  */
 

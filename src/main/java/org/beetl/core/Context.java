@@ -34,7 +34,7 @@ import org.beetl.core.tag.Tag;
 
 /**
  * 模板渲染的Context
- * @author joelli
+ * @author xiandafu
  *
  */
 public class Context {

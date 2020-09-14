@@ -42,7 +42,7 @@ import org.beetl.core.misc.BeetlUtil;
  * 如果不指定模板字符集，则采用配置文件的resource.charset 配置
  * 
  * 注意，采用加载方式是classloader.getClass().getResource() 而不是classloader，如果需要采用classloader，请参考源代码
- * @author joelli
+ * @author xiandafu
  * 
  * 
  */

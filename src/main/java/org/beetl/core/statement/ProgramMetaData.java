@@ -36,7 +36,7 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * 脚本的描述
- * @author joelli
+ * @author xiandafu
  *
  */
 public class ProgramMetaData implements java.io.Serializable {

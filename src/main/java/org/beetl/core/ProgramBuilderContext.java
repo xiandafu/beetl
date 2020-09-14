@@ -44,7 +44,7 @@ import org.beetl.core.statement.IGoto;
 import org.beetl.core.statement.IVarIndex;
 
 /** 结合AntlrProgramBuilder 将模板生成Program，该类负责记录变量定义的位置和出现的位置
- * @author joelli
+ * @author xiandafu
  *
  */
 public class ProgramBuilderContext

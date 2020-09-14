@@ -33,7 +33,7 @@ import org.beetl.core.tag.TagFactory;
 
 /**
  * Tag工场类
- * @author joelli
+ * @author xiandafu
  *
  */
 public class DefaultTagFactory implements TagFactory

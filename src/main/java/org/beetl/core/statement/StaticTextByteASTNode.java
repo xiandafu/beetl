@@ -34,7 +34,7 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * 模板的静态部分
- * @author joelli
+ * @author xiandafu
  *
  */
 public final class StaticTextByteASTNode extends Statement {

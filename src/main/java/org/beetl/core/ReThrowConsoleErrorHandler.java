@@ -32,7 +32,7 @@ import java.io.Writer;
 import org.beetl.core.exception.BeetlException;
 
 /** 向控制台输出错误，并抛出异常，这样render方法必须扑捉此异常做一定处理
- * @author joelli
+ * @author xiandafu
  *
  */
 public class ReThrowConsoleErrorHandler extends ConsoleErrorHandler

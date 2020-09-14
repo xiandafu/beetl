@@ -40,7 +40,7 @@ import org.beetl.core.tag.TagFactory;
  * ......
  * }
  * </pre>
- * @author joelli
+ * @author xiandafu
  *
  */
 public class TagStatement extends Statement {

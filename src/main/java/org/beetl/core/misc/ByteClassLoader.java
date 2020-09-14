@@ -29,7 +29,7 @@ package org.beetl.core.misc;
 
 /**
  * 类加载器，通过字节装载类。用于属性访问类的加载
- * @author joelli
+ * @author xiandafu
  *
  */
 public class ByteClassLoader extends ClassLoader {

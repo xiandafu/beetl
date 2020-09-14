@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 
 /**
  * 传入对象，获取对象对应的属性值 {@link PojoMethodInvoker}
- * @author joelli
+ * @author xiandafu
  *
  */
 public interface MethodInvoker

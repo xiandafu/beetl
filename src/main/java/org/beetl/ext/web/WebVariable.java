@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /** 全局变量，模板可以通过servlet来访问
- * @author joelli
+ * @author xiandafu
  *
  */
 public class WebVariable

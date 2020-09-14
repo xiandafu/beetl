@@ -42,7 +42,7 @@ import org.beetl.core.Function;
  * </pre>
  * <p>
  * time对象是java.util.Date对象  
- * @author joelli
+ * @author xiandafu
  *
  */
 public class DateFunction implements Function

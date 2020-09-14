@@ -34,7 +34,7 @@ import org.beetl.core.exception.BeetlException;
  * }catch(error){
  * }
  * 
- * @author joelli
+ * @author xiandafu
  *
  */
 public class TryCatchStatement extends Statement {

@@ -31,7 +31,7 @@ import org.beetl.core.statement.GrammarToken;
 
 /**
  * Native方法调用异常
- * @author joelli
+ * @author xiandafu
  *
  */
 public class NativeNotAllowedException extends BeetlException

@@ -4,7 +4,7 @@ import org.beetl.core.Context;
 
 /**
  * var c 
- * @author joelli
+ * @author xiandafu
  *
  */
 public class VarDefineNode extends Expression implements IVarIndex {

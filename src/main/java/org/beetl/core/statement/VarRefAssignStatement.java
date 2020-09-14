@@ -34,7 +34,7 @@ import org.beetl.core.om.AABuilder;
 
 /**
  * var xxx.cc = exp;
- * @author joelli
+ * @author xiandafu
  *
  */
 public class VarRefAssignStatement extends VarAssignStatement {

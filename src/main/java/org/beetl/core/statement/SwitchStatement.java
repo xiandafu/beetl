@@ -35,7 +35,7 @@ import org.beetl.core.misc.ALU;
 
 /**
  * 类似go语言的switch
- * @author joelli
+ * @author xiandafu
  *
  */
 public class SwitchStatement extends Statement {

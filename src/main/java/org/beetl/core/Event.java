@@ -29,7 +29,7 @@ package org.beetl.core;
 
 /**
  * 模板内部的一些事件
- * @author joelli
+ * @author xiandafu
  *
  */
 public class Event

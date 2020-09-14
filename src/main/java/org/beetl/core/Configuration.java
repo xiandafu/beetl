@@ -44,7 +44,7 @@ import org.beetl.core.text.ScriptDelimeter;
 /**
  * 模板配置，核心文件之一
  * 
- * @author joelli
+ * @author xiandafu
  * 
  */
 public class Configuration {

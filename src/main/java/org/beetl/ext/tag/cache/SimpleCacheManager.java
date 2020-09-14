@@ -34,7 +34,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * 简单实现
- * @author jeolli
+ * @author xiandafu
  *
  */
 public class SimpleCacheManager implements CacheManager

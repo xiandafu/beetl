@@ -29,7 +29,7 @@ package org.beetl.core.misc;
 
 /**
  * int 转 Integer装箱方法的优化,取消了{@link Integer#intValue()}原有正负数判断
- * @author joelli
+ * @author xiandafu
  *
  */
 public class NumberUtil

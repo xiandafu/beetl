@@ -36,7 +36,7 @@ import org.beetl.core.statement.GrammarToken;
 
 /**
  * Beetl异常基类，此异常包含了错误码，错误符号，所属的模板文件，以及错误详情，错误栈
- * @author joelli
+ * @author xiandafu
  *
  */
 public class BeetlException extends RuntimeException {

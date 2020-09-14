@@ -32,7 +32,7 @@ import org.beetl.core.misc.ALU;
 
 /**
  * a+b,a-b,a*b,a/b,a%b
- * @author joelli
+ * @author xiandafu
  *
  */
 public class ArthExpression extends Expression {

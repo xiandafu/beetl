@@ -4,7 +4,7 @@ import org.beetl.core.Context;
 
 /**
  * 表达式语句，如fun();
- * @author joelli
+ * @author xiandafu
  *
  */
 public class StatementExpression extends Statement {

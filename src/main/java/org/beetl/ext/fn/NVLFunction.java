@@ -34,7 +34,7 @@ import org.beetl.core.Function;
  * 函数nvl，如果对象为null，则返回第二个参数，否则，返回自己
  *${nvl(user,"不存在"}
  * 
- * @author joelli
+ * @author xiandafu
  *
  */
 public class NVLFunction implements Function

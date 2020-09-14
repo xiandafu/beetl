@@ -33,7 +33,7 @@ import java.util.List;
 import org.beetl.core.exception.BeetlException;
 
 /**访问List的封装类,attr是整形或者BigDecimal
- * @author joelli
+ * @author xiandafu
  *
  */
 public class ListAA extends AttributeAccess

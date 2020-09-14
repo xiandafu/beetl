@@ -31,7 +31,7 @@ import org.beetl.core.Context;
 
 /**
  * var a=1,b=2 ....;
- * @author joelli
+ * @author xiandafu
  *
  */
 public class VarAssignStatementSeq extends Statement {

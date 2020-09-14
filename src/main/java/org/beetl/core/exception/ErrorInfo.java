@@ -36,7 +36,7 @@ import org.beetl.core.statement.GrammarToken;
 
 /**
  * 将BeetlException表达成ErrorInfo
- * @author joelli
+ * @author xiandafu
  *
  */
 public class ErrorInfo

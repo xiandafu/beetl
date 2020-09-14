@@ -2157,7 +2157,7 @@ import org.beetl.core.exception.BeetlException;
 /**
  *  通常web渲染的类，将request变量赋值给模板，同时赋值的还有session,request,ctxPath
  *  其他框架可以继承此类做更多的定制
- * @author joelli
+ * @author xiandafu
  *
  */
 public class WebRender{

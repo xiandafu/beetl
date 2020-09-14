@@ -29,7 +29,7 @@ package org.beetl.core.statement;
 
 /**
  * 变量在context中的索引
- * @author joelli
+ * @author xiandafu
  *
  */
 public interface IVarIndex

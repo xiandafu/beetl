@@ -31,7 +31,7 @@ import org.beetl.core.Context;
 
 /**
  * var xxx = exp;
- * @author joelli
+ * @author xiandafu
  *
  */
 public class VarAssignStatement extends Statement implements IVarIndex {

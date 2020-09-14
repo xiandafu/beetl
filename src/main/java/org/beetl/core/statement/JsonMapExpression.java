@@ -35,7 +35,7 @@ import org.beetl.core.Context;
 
 /**
  * {a:1,b:2}
- * @author joelli
+ * @author xiandafu
  *
  */
 public class JsonMapExpression extends Expression {

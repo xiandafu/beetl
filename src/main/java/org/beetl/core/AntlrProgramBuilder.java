@@ -188,7 +188,7 @@ import org.beetl.core.statement.nat.NativeNode;
 import org.beetl.core.tag.TagFactory;
 
 /**通过antlr来生成Program
- * @author joelli
+ * @author xiandafu
  *
  */
 public class AntlrProgramBuilder {

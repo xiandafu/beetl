@@ -35,7 +35,7 @@ import org.beetl.core.om.AABuilder;
 /**
  * a.[]
  * 
- * @author joelli
+ * @author xiandafu
  * 
  */
 public class VarSquareAttribute extends VarAttribute {

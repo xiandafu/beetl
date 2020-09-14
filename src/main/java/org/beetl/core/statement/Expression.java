@@ -30,7 +30,7 @@ package org.beetl.core.statement;
 import org.beetl.core.Context;
 
 /** 表达式基类
- * @author joelli
+ * @author xiandafu
  *
  */
 public abstract class Expression extends ASTNode

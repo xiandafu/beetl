@@ -34,7 +34,7 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * Beetl允许注册模板文件为一个方法
- * @author joelli
+ * @author xiandafu
  *
  */
 public class FileFunctionWrapper implements Function {

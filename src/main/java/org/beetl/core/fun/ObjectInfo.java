@@ -36,7 +36,7 @@ import java.util.Map;
 
 /**
  * 指定类包含的所有方法，并且按照方法名归类
- * @author joelli
+ * @author xiandafu
  *
  */
 public class ObjectInfo

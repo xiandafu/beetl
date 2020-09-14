@@ -38,7 +38,7 @@ import org.beetl.core.statement.ExpressionRuntime.ExpressionRuntimeObject;
  *${decode(a,1,"a=1",2,"a=2","不知道了")}
  * 如果a是1，这decode输出"a=1",如果a是2，则输出"a==2",
  * 如果是其他值，则输出"不知道了"
- * @author jeolli
+ * @author xiandafu
  *
  */
 public class DecodeFunction implements Function

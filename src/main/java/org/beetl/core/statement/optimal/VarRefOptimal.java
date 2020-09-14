@@ -36,7 +36,7 @@ import org.beetl.core.statement.*;
 
 /**
  * user.name
- * @author joelli
+ * @author xiandafu
  *
  */
 public class VarRefOptimal extends VarRef  {

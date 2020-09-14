@@ -42,7 +42,7 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  *  
- * @author joelli
+ * @author xiandafu
  *
  */
 public class ClasspathResource extends Resource<String>

@@ -8,7 +8,7 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * 传入对象，获取对象对应的属性值,或者调用{@link #set(Object, Object)} 设置对象值
- * @author joelli
+ * @author xiandafu
  *
  */
 public class PojoMethodInvoker implements MethodInvoker

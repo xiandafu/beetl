@@ -33,7 +33,7 @@ import java.util.function.Function;
 
 /**
  * 本地的一个实现，采用ConcurrentHashMap
- * @author joelli
+ * @author xiandafu
  *
  */
 public class LocalCache implements Cache

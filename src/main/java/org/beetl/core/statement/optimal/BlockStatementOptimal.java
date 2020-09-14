@@ -35,7 +35,7 @@ import org.beetl.core.statement.Statement;
 
 /**
  *  { statement1;statement2 }
- * @author joelli
+ * @author xiandafu
  *
  */
 public class BlockStatementOptimal extends BlockStatement  {

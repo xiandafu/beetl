@@ -31,7 +31,7 @@ package org.beetl.ext.tag.cache;
  *  cache标签的接口，默认使用SimpleCacheManager，用户可以实现自定义的CacheManager
  *  并调用CacheTag.cacheManager = yourCacheManager来实现
  *    
- * @author joelli
+ * @author xiandafu
  *
  */
 public interface CacheManager

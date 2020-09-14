@@ -29,7 +29,7 @@ package org.beetl.core.statement;
 
 /**
  *  流程控制
- * @author joelli
+ * @author xiandafu
  *
  */
 public interface IGoto

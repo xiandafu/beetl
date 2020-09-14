@@ -6,7 +6,7 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * list.~size
- * @author joelli
+ * @author xiandafu
  *
  */
 public class VarVirtualAttribute extends VarAttribute {

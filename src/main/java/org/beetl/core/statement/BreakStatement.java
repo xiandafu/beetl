@@ -32,7 +32,7 @@ import org.beetl.core.Context;
 
 /**
  * break;
- * @author joelli
+ * @author xiandafu
  *
  */
 public class BreakStatement extends Statement {

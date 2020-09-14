@@ -33,7 +33,7 @@ import org.beetl.core.exception.BeetlException;
 /**
  * 
  * for(var a=0;a &lt;10;i++){}elsefor{}
- * @author joelli
+ * @author xiandafu
  *
  */
 public class GeneralForStatement extends Statement implements IGoto {

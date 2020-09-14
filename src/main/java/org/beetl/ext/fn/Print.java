@@ -35,7 +35,7 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * &lt;% print("hello") %&gt;
- * @author jeolli
+ * @author xiandafu
  *
  */
 public class Print implements Function

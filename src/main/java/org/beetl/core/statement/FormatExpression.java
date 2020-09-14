@@ -33,7 +33,7 @@ import org.beetl.core.Format;
 import org.beetl.core.exception.BeetlException;
 
 /** ${date,dateFormat='yyyy-mm-dd'}
- * @author joelli
+ * @author xiandafu
  *
  */
 public class FormatExpression extends Expression {

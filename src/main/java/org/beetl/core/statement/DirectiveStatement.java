@@ -32,7 +32,7 @@ import java.util.Set;
 import org.beetl.core.Context;
 
 /** directive safe_output_open
- * @author joelli
+ * @author xiandafu
  *
  */
 @Deprecated

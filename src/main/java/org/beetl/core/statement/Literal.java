@@ -30,7 +30,7 @@ package org.beetl.core.statement;
 import org.beetl.core.Context;
 
 /** String ,Number ,Boolean 
- * @author joelli
+ * @author xiandafu
  *
  */
 public class Literal extends Expression implements Comparable {

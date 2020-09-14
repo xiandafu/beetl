@@ -33,7 +33,7 @@ import org.beetl.core.exception.BeetlException;
 import org.beetl.core.misc.PrimitiveArrayUtil;
 
 /**访问数组的封装类,attr需要任何能转成int的数值类型
- * @author joelli
+ * @author xiandafu
  *
  */
 public class ArrayAA extends AttributeAccess

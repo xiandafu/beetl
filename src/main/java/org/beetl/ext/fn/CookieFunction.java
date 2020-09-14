@@ -39,7 +39,7 @@ import org.beetl.ext.web.WebVariable;
  * var allArray = cookie()；
  * var cookie= cookie("userName");
  * </pre>
- * @author jeolli
+ * @author xiandafu
  *
  */
 public class CookieFunction implements Function

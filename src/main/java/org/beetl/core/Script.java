@@ -41,7 +41,7 @@ import org.beetl.core.statement.ErrorGrammarProgram;
 import org.beetl.core.statement.Program;
 
 /** 模板类
- * @author joelli
+ * @author xiandafu
  *
  */
 public class  Script<T> {

@@ -32,7 +32,7 @@ import java.util.*;
 /**
  * 用于解析htmltag，转化成宏调用
  *
- * @author joelli
+ * @author xiandafu
  * @create 2013-6-12
  */
 class HTMLTagParser

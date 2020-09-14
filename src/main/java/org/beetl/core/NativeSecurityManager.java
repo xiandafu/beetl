@@ -29,7 +29,7 @@ package org.beetl.core;
 
 /**
  * 判断是否允许调用本地方法
- * @author joelli
+ * @author xiandafu
  *
  */
 public interface NativeSecurityManager

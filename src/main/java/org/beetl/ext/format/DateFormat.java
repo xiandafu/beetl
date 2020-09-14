@@ -37,7 +37,7 @@ import org.beetl.core.Format;
 /**
  * 日期格式化函数，如
  * ${date,dateFormat='yyyy-Mm-dd'}，如果没有patten，则使用local 
- * @author joelli
+ * @author xiandafu
  *
  */
 public class DateFormat implements Format

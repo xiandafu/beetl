@@ -61,7 +61,7 @@ import org.beetl.core.io.IntIOWriter;
 import org.beetl.core.io.LongIOWriter;
 
 /** 混合了字节和字符的Writer
- * @author joelli
+ * @author xiandafu
  *
  */
 public abstract class ByteWriter

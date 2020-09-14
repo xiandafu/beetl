@@ -33,7 +33,7 @@ import org.beetl.core.Resource;
 
 /**
  * 脚本运行程序
- * @author joelli
+ * @author xiandafu
  *
  */
 public class Program

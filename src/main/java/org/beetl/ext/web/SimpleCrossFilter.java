@@ -46,7 +46,7 @@ import org.beetl.core.GroupTemplate;
 import org.beetl.ext.simulate.WebSimulate;
 
 /** 用于直接访问模板页面，此fitler会根据只要要访问的模板页面，运行同样同路径下的var文件，获取模板需要的全局变量，然后渲染模板
- * @author joelli
+ * @author xiandafu
  * @since 2.1.0
  *
  */

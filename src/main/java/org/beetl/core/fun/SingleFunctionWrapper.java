@@ -35,7 +35,7 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * 对单个native方法的封装
- * @author joelli
+ * @author xiandafu
  *
  */
 public class SingleFunctionWrapper extends FunctionWrapper

@@ -31,7 +31,7 @@ import org.beetl.core.Context;
 import org.beetl.core.misc.ALU;
 
 /** ++i 或者 i++ 或者--i 或者i--
- * @author joelli
+ * @author xiandafu
  *
  */
 public class IncDecExpression extends Expression implements IVarIndex {

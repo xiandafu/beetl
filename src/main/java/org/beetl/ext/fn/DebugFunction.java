@@ -40,7 +40,7 @@ import org.beetl.core.Function;
  * System.out.println(paras[0].toString());	
  * </pre>
  * 可以调用DebugFunction.enable = false ,来禁止输出
- * @author joelli
+ * @author xiandafu
  *
  */
 public class DebugFunction implements Function

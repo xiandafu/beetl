@@ -34,7 +34,7 @@ import org.beetl.core.om.AABuilder;
 
 /**
  * user.name
- * @author joelli
+ * @author xiandafu
  *
  */
 public class VarRef extends Expression implements IVarIndex {

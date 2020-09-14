@@ -29,7 +29,7 @@ package org.beetl.core.exception;
 
 /**
  * 语法解析异常
- * @author joelli
+ * @author xiandafu
  *
  */
 public class BeetlParserException extends BeetlException

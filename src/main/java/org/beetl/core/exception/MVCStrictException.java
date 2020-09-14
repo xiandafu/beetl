@@ -31,7 +31,7 @@ import org.beetl.core.statement.GrammarToken;
 
 /**
  * 严格MVC限制异常
- * @author joelli
+ * @author xiandafu
  *
  */
 public class MVCStrictException extends BeetlException

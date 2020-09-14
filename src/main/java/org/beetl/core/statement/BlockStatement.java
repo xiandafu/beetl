@@ -31,7 +31,7 @@ import org.beetl.core.Context;
 
 /**
  *  { statement1;statement2 }
- * @author joelli
+ * @author xiandafu
  *
  */
 public class BlockStatement extends Statement implements IGoto {

@@ -29,7 +29,7 @@ package org.beetl.core.statement;
 
 /**
  * 节点基类
- * @author joelli
+ * @author xiandafu
  *
  */
 public abstract class ASTNode implements java.io.Serializable {

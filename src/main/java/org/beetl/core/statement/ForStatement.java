@@ -36,7 +36,7 @@ import org.beetl.core.exception.BeetlException;
 import org.beetl.core.exception.BeetlParserException;
 
 /** for(user:list){}elsefor{}
- * @author joelli
+ * @author xiandafu
  *
  */
 public final class ForStatement extends Statement implements IGoto {

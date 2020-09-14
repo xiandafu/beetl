@@ -46,7 +46,7 @@ import org.beetl.core.statement.GrammarToken;
 
 /**
  * antlr 语法解析错的处理策略。对所有语法错误，都抛出以阻止继续解析
- * @author joelli
+ * @author xiandafu
  *
  */
 public class BeetlAntlrErrorStrategy extends DefaultErrorStrategy

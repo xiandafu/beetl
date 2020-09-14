@@ -33,7 +33,7 @@ import javax.servlet.http.HttpSession;
 /**
  * 封装了Session，模板可以通过session来访问,如果会话不存在，返回值为null，
  * 可以通过hasSession()来判断是否存在会话
- * @author joelli
+ * @author xiandafu
  * @since 1.1
  *
  */

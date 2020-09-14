@@ -33,7 +33,7 @@ import java.util.List;
 import org.beetl.core.Context;
 
 /** var a = [1,2,3]
- * @author joelli
+ * @author xiandafu
  *
  */
 public class JsonArrayExpression extends Expression {

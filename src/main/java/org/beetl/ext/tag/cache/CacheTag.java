@@ -45,7 +45,7 @@ import org.beetl.core.tag.Tag;
  * 如果指定了refresh，则删除key值对应的模板内容，重新解析运行模板。
  * <p>
  * key值是必须的，timeout，和refresh可选。
- * @author jeolli
+ * @author xiandafu
  * @since 2.0
  *
  */

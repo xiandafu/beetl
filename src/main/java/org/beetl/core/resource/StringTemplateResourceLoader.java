@@ -33,7 +33,7 @@ import org.beetl.core.ResourceLoader;
 
 /**
  * 字符串模板加载器
- * @author joelli
+ * @author xiandafu
  *
  */
 public class StringTemplateResourceLoader implements ResourceLoader<String>

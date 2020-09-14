@@ -34,7 +34,7 @@ import org.beetl.core.exception.BeetlException;
  * 三元表达式
  * 
  * condtion?a:b
- * @author joelli
+ * @author xiandafu
  *
  */
 public class TernaryExpression extends Expression {

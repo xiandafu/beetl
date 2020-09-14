@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 
 /**
  * 格式验证，确保输出文本不会有多余空格，空行
- * @author joelli
+ * @author xiandafu
  *
  */
 public class SingleDLTest extends BasicTestCase

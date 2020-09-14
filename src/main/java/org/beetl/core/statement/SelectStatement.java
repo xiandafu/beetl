@@ -32,7 +32,7 @@ import org.beetl.core.exception.BeetlException;
 import org.beetl.core.misc.ALU;
 
 /** same with switch-case
- * @author joelli
+ * @author xiandafu
  *
  */
 public class SelectStatement extends Statement {

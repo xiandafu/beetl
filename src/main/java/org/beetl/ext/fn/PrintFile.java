@@ -38,7 +38,7 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * ${includeStatic(file)}
- * @author jeolli
+ * @author xiandafu
  *
  */
 public class PrintFile implements Function

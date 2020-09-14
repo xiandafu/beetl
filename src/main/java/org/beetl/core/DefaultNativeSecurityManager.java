@@ -30,7 +30,7 @@ package org.beetl.core;
 /**
  * 默认的本地调用安全管理器，黑名单方式，不允许调用java.lang.Runtime和Process
  * 
- * @author joelli
+ * @author xiandafu
  *
  */
 public class DefaultNativeSecurityManager implements NativeSecurityManager {

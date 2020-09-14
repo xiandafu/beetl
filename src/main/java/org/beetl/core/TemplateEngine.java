@@ -34,7 +34,7 @@ import org.beetl.core.statement.Program;
 
 /**
  *  模板引擎
- * @author joelli
+ * @author xiandafu
  *
  */
 public interface TemplateEngine

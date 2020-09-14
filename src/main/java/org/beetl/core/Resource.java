@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.io.Reader;
 
 /** 代表模板资源，如文件，数据库Clob字段，后者加密模板等等
- * @author joelli
+ * @author xiandafu
  *
  */
 public abstract class Resource<T>

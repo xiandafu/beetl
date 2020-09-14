@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 封装了Parameter，模板可以通过parameter来访问
- * @author joelli
+ * @author xiandafu
  * @since 2.2.7
  *
  */

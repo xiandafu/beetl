@@ -31,7 +31,7 @@ import org.beetl.core.Context;
 import org.beetl.core.exception.BeetlException;
 
 /**while(exp)  whileBody
- * @author joelli
+ * @author xiandafu
  *
  */
 public class WhileStatement extends Statement implements IGoto {

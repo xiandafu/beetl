@@ -29,7 +29,7 @@ package org.beetl.core.om;
 
 /**
  * 封装了一个获取对象的属性的值的方法
- * @author joelli
+ * @author xiandafu
  *
  */
 public abstract class AttributeAccess implements java.io.Serializable

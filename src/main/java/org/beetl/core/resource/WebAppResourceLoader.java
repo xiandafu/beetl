@@ -35,7 +35,7 @@ import org.beetl.core.misc.BeetlUtil;
 /**
  * Web应用加载器
  * 
- * @author joelli
+ * @author xiandafu
  * 
  * 
  */

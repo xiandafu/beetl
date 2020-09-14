@@ -36,7 +36,7 @@ import org.beetl.core.exception.BeetlException;
 import org.beetl.core.exception.ErrorInfo;
 
 /** 向控制台输出错误，并不抛出异常
- * @author joelli
+ * @author xiandafu
  *
  */
 public class ConsoleErrorHandler implements ErrorHandler

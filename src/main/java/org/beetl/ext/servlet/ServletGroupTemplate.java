@@ -16,7 +16,7 @@ import org.beetl.ext.web.WebRender;
  * </pre>
  * 
  * GroupTemplate 通过配置文件配置，也可以在Linstner中调用ServletGroupTemplate.instance()，并手工调用
- * @author joelli
+ * @author xiandafu
  *
  */
 public class ServletGroupTemplate

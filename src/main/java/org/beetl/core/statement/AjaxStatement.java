@@ -30,7 +30,7 @@ package org.beetl.core.statement;
 import org.beetl.core.Context;
 
 /** #ajax id:{...}
- * @author joelli
+ * @author xiandafu
  *
  */
 public class AjaxStatement extends Statement {

@@ -33,7 +33,7 @@ import org.beetl.core.om.AttributeAccess;
 import org.beetl.core.om.AABuilder;
 
 /** user.name
- * @author joelli
+ * @author xiandafu
  *
  */
 public class VarAttribute extends Expression {

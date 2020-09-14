@@ -34,7 +34,7 @@ import org.beetl.core.Function;
 
 /**
  * &lt;% hasSession() % &gt;
- * @author jeolli
+ * @author xiandafu
  *
  */
 public class HasWebSession implements Function

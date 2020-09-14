@@ -38,7 +38,7 @@ import org.beetl.core.misc.PrimitiveArrayUtil;
 
 /**
  * 用于遍历
- * @author joelli
+ * @author xiandafu
  *
  */
 public  class GeneralLoopStatus implements  ILoopStatus

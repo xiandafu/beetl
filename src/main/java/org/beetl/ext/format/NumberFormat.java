@@ -34,7 +34,7 @@ import org.beetl.core.Format;
 /*格式化Number类型，pattern参考DecimalFormat,如
  * ${0.345,numberFormat="##.#%"}
  * 
- * @author jeolli
+ * @author xiandafu
  *
  */
 public class NumberFormat implements Format

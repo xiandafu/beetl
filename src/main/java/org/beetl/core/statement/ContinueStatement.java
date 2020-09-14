@@ -31,7 +31,7 @@ import org.beetl.core.Context;
 
 /**
  * continue;
- * @author joelli
+ * @author xiandafu
  *
  */
 public class ContinueStatement extends Statement {

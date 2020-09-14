@@ -31,7 +31,7 @@ import org.beetl.core.Context;
 import org.beetl.core.misc.ALU;
 
 /** -exp
- * @author joelli
+ * @author xiandafu
  *
  */
 public class NegExpression extends Expression {

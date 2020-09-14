@@ -38,7 +38,7 @@ import org.beetl.core.fun.FileFunctionWrapper;
 
 /**
  * call();
- * @author joelli
+ * @author xiandafu
  *
  */
 public class FunctionExpression extends Expression {

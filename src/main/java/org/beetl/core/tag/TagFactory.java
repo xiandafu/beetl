@@ -1,7 +1,7 @@
 package org.beetl.core.tag;
 
 /** 标签函数工厂类
- * @author joelli
+ * @author xiandafu
  *
  */
 public interface TagFactory

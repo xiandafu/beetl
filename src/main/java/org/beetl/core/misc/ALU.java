@@ -36,7 +36,7 @@ import org.beetl.core.statement.GrammarToken;
 /**
  * 用于算数表达式，对于加法，允许null值，但其他则不允许，将抛出异常
  * 参考了webit
- * @author joelli
+ * @author xiandafu
  *
  */
 public class ALU

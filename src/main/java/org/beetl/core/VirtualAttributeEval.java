@@ -30,7 +30,7 @@ package org.beetl.core;
 /**
  * 虚拟属性,
  * 
- * @author joelli
+ * @author xiandafu
  * 
  */
 public interface VirtualAttributeEval extends VirtualClassAttribute

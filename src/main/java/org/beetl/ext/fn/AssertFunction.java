@@ -33,7 +33,7 @@ import org.beetl.core.Function;
 /**
  * 如果表达式为false，则抛出异常，不再解析
  * ${assert(1==1)}
- * @author joelli
+ * @author xiandafu
  *
  */
 public class AssertFunction implements Function

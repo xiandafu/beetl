@@ -37,7 +37,7 @@ import org.beetl.core.fun.FileFunctionWrapper;
 import org.beetl.core.misc.BeetlUtil;
 
 /** 文件模板加载器
- * @author joelli
+ * @author xiandafu
  *
  */
 public class FileResourceLoader implements ResourceLoader<String>

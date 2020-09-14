@@ -7,7 +7,7 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * ${exp,format=""}
- * @author joelli
+ * @author xiandafu
  *
  */
 public  class PlaceholderST extends Statement {

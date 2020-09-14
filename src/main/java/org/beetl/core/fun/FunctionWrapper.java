@@ -38,7 +38,7 @@ import org.beetl.core.Function;
 
 /**
  * 将native方法包装成Function
- * @author joelli
+ * @author xiandafu
  *
  */
 public abstract class FunctionWrapper implements Function

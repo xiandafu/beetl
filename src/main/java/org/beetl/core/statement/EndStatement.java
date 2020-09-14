@@ -31,7 +31,7 @@ import org.beetl.core.Context;
 
 /**
  *  ; ; 多余分号
- * @author joelli
+ * @author xiandafu
  *
  */
 public class EndStatement extends Statement {

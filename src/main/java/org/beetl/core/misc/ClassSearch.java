@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.beetl.core.GroupTemplate;
 
 /** 在classloader下仅仅根据类名加载类，会尝试用系统内置的以及配置好的包名作为类的包名
- * @author jeolli
+ * @author xiandafu
  *
  */
 public class ClassSearch

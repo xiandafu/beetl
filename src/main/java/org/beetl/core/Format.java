@@ -54,7 +54,7 @@ package org.beetl.core;
  * }
  * </pre>
  * 
- * @author joelli
+ * @author xiandafu
  * 
  */
 public interface Format

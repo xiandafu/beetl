@@ -34,7 +34,7 @@ import org.beetl.core.exception.BeetlException;
 /**
  * 当模板语法错或者运行错的时候，GroupTemplate默认将使用DefaultErrorHandler来处理错误
  * 
- * @author joelli
+ * @author xiandafu
  * @since 2.0
  *
  */

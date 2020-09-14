@@ -32,7 +32,7 @@ import org.beetl.core.fun.ObjectUtil;
 /**
  * 存储Program的缓存，默认是采用{@link LocalCache},可以通过设置
  * {@link Cache} 属性来设置新的缓存对象
- * @author joelli
+ * @author xiandafu
  *
  */
 public class ProgramCacheFactory

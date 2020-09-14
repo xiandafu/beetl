@@ -37,7 +37,7 @@ import org.beetl.core.om.ObjectSetterUtil;
 
 /**
  * call(xxx.cc = exp); 返回是exp
- * @author joelli
+ * @author xiandafu
  *
  */
 public class VarRefAssignExpress extends Expression implements IVarIndex {

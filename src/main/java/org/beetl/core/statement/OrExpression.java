@@ -5,7 +5,7 @@ import org.beetl.core.misc.ALU;
 
 /**
  * exp1 or exp2
- * @author joelli
+ * @author xiandafu
  *
  */
 public class OrExpression extends Expression {

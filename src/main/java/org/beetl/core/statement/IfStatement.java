@@ -32,7 +32,7 @@ import org.beetl.core.misc.ALU;
 
 /**
  * if()else{}
- * @author joelli
+ * @author xiandafu
  *
  */
 public class IfStatement extends Statement {

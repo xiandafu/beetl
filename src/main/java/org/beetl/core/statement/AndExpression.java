@@ -32,7 +32,7 @@ import org.beetl.core.misc.ALU;
 
 /**
  * exp1+exp2
- * @author joelli
+ * @author xiandafu
  *
  */
 public class AndExpression extends Expression {

@@ -30,7 +30,7 @@ package org.beetl.core.exception;
 /**
  * html解析异常
  * 
- * @author joelli
+ * @author xiandafu
  * 
  */
 public class HTMLTagParserException extends BeetlException

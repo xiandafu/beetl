@@ -31,7 +31,7 @@ package org.beetl.core;
  * ResourceLoader 负责根据GroupTemplate提供的Key,来获取Resource，这些Resource可以是文件，
  * 字符串，加密的文本，以及数据库Blob字段等
  * 
- * @author joelli
+ * @author xiandafu
  * 
  * 
  */

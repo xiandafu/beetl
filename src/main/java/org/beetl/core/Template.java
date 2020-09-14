@@ -41,7 +41,7 @@ import org.beetl.core.misc.BeetlUtil;
 import org.beetl.core.statement.*;
 
 /** 模板类,不能被重用，如果需要一个可重用的Template，使用{@link TemplateProxy}
- * @author joelli
+ * @author xiandafu
  *
  */
 public class Template {

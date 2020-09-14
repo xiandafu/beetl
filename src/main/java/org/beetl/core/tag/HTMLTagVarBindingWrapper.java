@@ -34,7 +34,7 @@ import org.beetl.core.statement.Statement;
 
 /**
  * {@link GeneralVarTagBinding} 的html标签封装，带变量绑定的html标签调用的标签
- * @author joelli
+ * @author xiandafu
  *
  */
 public class HTMLTagVarBindingWrapper extends Tag 

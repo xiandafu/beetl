@@ -3,7 +3,7 @@ package org.beetl.core;
 /**
  * 一个缓存的字节和字符数组，用于减少beetl渲染各个过程中渲染字符数组
  * 
- * @author joelli
+ * @author xiandafu
  *
  */
 public class ContextBuffer {

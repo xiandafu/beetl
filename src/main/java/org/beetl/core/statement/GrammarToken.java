@@ -28,7 +28,7 @@
 package org.beetl.core.statement;
 
 /** 语法节点，包含所在行数，以及内容
- * @author joelli
+ * @author xiandafu
  *
  */
 public class GrammarToken implements Cloneable, java.io.Serializable

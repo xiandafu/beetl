@@ -58,7 +58,7 @@ import org.springframework.web.context.ServletContextAware;
  * beetl 在spring mvc 中的配置
  * <p></p>
  * 用户继承此类，并实现 initOther方法,以注册自己的函数，标签等
- * @author javamonkey , Chen Rui
+ * @author xiandafu , Chen Rui
  *
  */
 public class BeetlGroupUtilConfiguration extends AbstractGroupTemplateConfig implements ServletContextAware

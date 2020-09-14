@@ -46,7 +46,7 @@ import org.beetl.core.misc.PrimitiveArrayUtil;
  * </ul>
  * 参数可以一个到多个,如<p>
  * ${empty("list")}
- * @author joelli
+ * @author xiandafu
  *
  */
 public class IsNotEmptyExpressionFunction implements Function

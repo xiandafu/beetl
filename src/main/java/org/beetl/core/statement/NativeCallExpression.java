@@ -20,7 +20,7 @@ import org.beetl.core.statement.nat.NativeNode;
 /**
  * Java方法直接调用
  * xxx.abc().ef.ttt();
- *@author joelli
+ *@author xiandafu
  */
 public class NativeCallExpression extends Expression {
 

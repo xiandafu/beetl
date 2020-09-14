@@ -32,7 +32,7 @@ import org.beetl.core.Context;
 
 /**
  * var a = { ...}
- * @author joelli
+ * @author xiandafu
  *
  */
 public class ContentBodyExpression extends Expression {

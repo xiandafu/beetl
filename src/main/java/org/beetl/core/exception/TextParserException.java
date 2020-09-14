@@ -30,7 +30,7 @@ package org.beetl.core.exception;
 /**
  * 将文本转为模板语言解析过程中的异常
  * 
- * @author joelli
+ * @author xiandafu
  * 
  */
 public class TextParserException extends BeetlException

@@ -49,7 +49,7 @@ package org.beetl.core;
  * hello,this is ${str.upcase(user.name)}
  * </pre>
  * 
- * @author jeolli
+ * @author xiandafu
  * @since 1.1
  *
  * 

@@ -31,7 +31,7 @@ import java.io.IOException;
 
 /**
  * 对于模板变量或者标签等将输出暂存的地方
- * @author joelli
+ * @author xiandafu
  *
  */
 public interface BodyContent

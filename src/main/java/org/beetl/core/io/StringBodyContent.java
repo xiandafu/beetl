@@ -34,7 +34,7 @@ import org.beetl.core.ByteWriter;
 
 /**
  * 模板变量对应的类型，其内容是字符
- * @author joelli
+ * @author xiandafu
  *
  */
 public class StringBodyContent implements BodyContent

@@ -31,7 +31,7 @@ import org.beetl.core.Context;
 
 /**
  * 执行语句
- * @author joelli
+ * @author xiandafu
  *
  */
 public abstract class Statement extends ASTNode

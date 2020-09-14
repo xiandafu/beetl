@@ -31,7 +31,7 @@ import java.util.function.Function;
 
 /**
  * Cache标准接口,每个方法都必须线程安全
- * @author joelli
+ * @author xiandafu
  *
  */
 public interface Cache

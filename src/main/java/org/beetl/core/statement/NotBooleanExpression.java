@@ -32,7 +32,7 @@ import org.beetl.core.misc.ALU;
 
 /**
  * !exp
- * @author joelli
+ * @author xiandafu
  *
  */
 public class NotBooleanExpression extends Expression {
