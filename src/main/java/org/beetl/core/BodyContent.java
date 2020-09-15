@@ -38,11 +38,11 @@ public interface BodyContent {
     /**
      * 模板或者标签的内容
      */
-    public String getBody();
+    String getBody();
 
     /**
      * 将内容输出，
      */
-    public void fill(ByteWriter bw) throws IOException;
+    void fill(ByteWriter bw) throws IOException;
 
 }

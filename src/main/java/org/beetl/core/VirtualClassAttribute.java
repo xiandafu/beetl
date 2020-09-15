@@ -35,6 +35,6 @@ package org.beetl.core;
  * @since 2.0
  */
 public interface VirtualClassAttribute {
-    public Object eval(Object o, String attributeName, Context ctx);
+    Object eval(Object o, String attributeName, Context ctx);
 
 }

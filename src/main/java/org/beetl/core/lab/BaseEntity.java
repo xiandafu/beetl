@@ -1,7 +1,7 @@
 package org.beetl.core.lab;
 
 public interface BaseEntity {
-    public default int getPage() {
+    default int getPage() {
         return 1;
     }
 }

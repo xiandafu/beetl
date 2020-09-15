@@ -37,31 +37,31 @@ public interface CacheManager {
     /**
      * 获取key值对应的对象
      */
-    public Object getObject(String key);
+    Object getObject(String key);
 
     /**
      * @param period 多少秒后过期
      */
-    public void setObject(String key, Object value, long period);
+    void setObject(String key, Object value, long period);
 
     /**
      * 查看key值对应的对象是否存在
      */
-    public boolean isDisable(String key);
+    boolean isDisable(String key);
 
     /**
      * 清除cache
      */
-    public void clearAll();
+    void clearAll();
 
     /**
      * 删除key对应的对象
      */
-    public void clearAll(String key);
+    void clearAll(String key);
 
     /**
      * 删除keys对应的所有缓存对象
      */
-    public void clearAll(String... keys);
+    void clearAll(String... keys);
 
 }

@@ -34,5 +34,5 @@ package org.beetl.core;
  */
 public interface VirtualAttributeEval extends VirtualClassAttribute {
 
-    public boolean isSupport(Class c, String attributeName);
+    boolean isSupport(Class c, String attributeName);
 }

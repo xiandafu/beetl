@@ -6,5 +6,5 @@ package org.beetl.core.tag;
  * @author xiandafu
  */
 public interface TagFactory {
-    public Tag createTag();
+    Tag createTag();
 }

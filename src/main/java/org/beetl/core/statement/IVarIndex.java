@@ -33,7 +33,7 @@ package org.beetl.core.statement;
  * @author xiandafu
  */
 public interface IVarIndex {
-    public void setVarIndex(int index);
+    void setVarIndex(int index);
 
-    public int getVarIndex();
+    int getVarIndex();
 }

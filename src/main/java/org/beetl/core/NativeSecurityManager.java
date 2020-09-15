@@ -39,5 +39,5 @@ public interface NativeSecurityManager {
      * @param target     调用的类实例
      * @param method     调用类的方法名
      */
-    public boolean permit(Object resourceId, Class c, Object target, String method);
+    boolean permit(Object resourceId, Class c, Object target, String method);
 }

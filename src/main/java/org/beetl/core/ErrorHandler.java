@@ -43,6 +43,6 @@ public interface ErrorHandler {
     /**
      * 处理错误，错误输出到os流
      */
-    public void processExcption(BeetlException beeExceptionos, Writer writer);
+    void processExcption(BeetlException beeExceptionos, Writer writer);
 
 }

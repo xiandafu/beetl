@@ -62,6 +62,6 @@ public interface Format {
      * @param data    格式化对象
      * @param pattern ，模式，格式换函数需要考虑到pattern为null的情况
      */
-    public Object format(Object data, String pattern);
+    Object format(Object data, String pattern);
 
 }

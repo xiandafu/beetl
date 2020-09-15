@@ -45,7 +45,7 @@ public interface TemplateEngine {
      * @param cr       模板换行符
      * @param gt       模板组
      */
-    public Program createProgram(Resource resource, Reader input, Map<Integer, String> textMap, String cr,
+    Program createProgram(Resource resource, Reader input, Map<Integer, String> textMap, String cr,
                                  GroupTemplate gt);
 
 }

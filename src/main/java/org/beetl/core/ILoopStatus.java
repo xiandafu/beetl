@@ -1,26 +1,26 @@
 package org.beetl.core;
 
 public interface ILoopStatus {
-    public boolean hasNext();
+    boolean hasNext();
 
-    public Object next();
+    Object next();
 
-    public int getIndex();
+    int getIndex();
 
-    public int getDataIndex();
+    int getDataIndex();
 
-    public boolean isFirst();
+    boolean isFirst();
 
-    public boolean isLast();
+    boolean isLast();
 
-    public boolean isEven();
+    boolean isEven();
 
-    public boolean isOdd();
+    boolean isOdd();
 
-    public boolean hasSize();
+    boolean hasSize();
 
-    public int getSize();
+    int getSize();
 
-    public boolean hasData();
+    boolean hasData();
 
 }
