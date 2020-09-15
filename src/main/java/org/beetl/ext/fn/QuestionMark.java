@@ -13,20 +13,10 @@ import org.beetl.core.Function;
 public class QuestionMark implements Function {
 
     public Object call(Object[] paras, Context ctx) {
-
         if (paras.length != 3) {
             throw new RuntimeException("请输入问号表达式格式： qmark(a==\"a\",\"yes\",\"no\")");
-        } else {
-            if (paras.length == 3) {
-                if ((Boolean) paras[0]) {
-                    return paras[1];
-                } else {
-                    return paras[2];
-                }
-            }
-
-            throw new RuntimeException("Parse split Error,Args Object,Object,Object ");
         }
+        return (Boolean) paras[0] ? paras[1] : paras[2];
     }
 
 }

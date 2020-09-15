@@ -58,16 +58,14 @@ public class Program {
     }
 
     protected final void run(Statement[] statements, Context ctx) {
-        int len = statements.length;
-        for (int i = 0; i < len; i++) {
-            statements[i].execute(ctx);
+        for (Statement statement : statements) {
+            statement.execute(ctx);
         }
     }
 
     protected final void runWitchGoCheck(Statement[] statements, Context ctx) {
-        int len = statements.length;
-        for (int i = 0; i < len; i++) {
-            statements[i].execute(ctx);
+        for (Statement statement : statements) {
+            statement.execute(ctx);
             if (ctx.gotoFlag == IGoto.RETURN) {
                 return;
             }

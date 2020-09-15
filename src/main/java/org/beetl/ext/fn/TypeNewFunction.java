@@ -15,18 +15,14 @@ public class TypeNewFunction implements Function {
     public Object call(Object[] paras, Context ctx) {
         String clsName = (String) paras[0];
         Class cls = ctx.gt.getClassSearch().getClassByName(clsName);
-        if (cls != null) {
-            try {
-                return cls.newInstance();
-            } catch (Exception ex) {
-                throw new RuntimeException("创建类实例失败:" + cls + ",error:" + ex.getMessage(), ex);
-            }
-
-        } else {
+        if (cls == null) {
             throw new RuntimeException("不能加载类：" + clsName + " classloader:" + ctx.gt.getClassLoader());
         }
-
-
+        try {
+            return cls.newInstance();
+        } catch (Exception ex) {
+            throw new RuntimeException("创建类实例失败:" + cls + ",error:" + ex.getMessage(), ex);
+        }
     }
 
 }

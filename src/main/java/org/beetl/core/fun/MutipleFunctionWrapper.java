@@ -132,29 +132,19 @@ public class MutipleFunctionWrapper extends FunctionWrapper {
             }
 
         } catch (IllegalArgumentException e) {
-
-            BeetlException ex = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "参数不匹配 " + this.functionName,
-                    e);
-            throw ex;
+            throw new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "参数不匹配 " + this.functionName, e);
         } catch (IllegalAccessException e) {
-            BeetlException ex = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "非法访问方法 " + this.functionName,
-                    e);
-            throw ex;
-
+            throw new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "非法访问方法 " + this.functionName, e);
         } catch (InvocationTargetException e) {
             Throwable t = e.getTargetException();
             if (t instanceof BeetlException) {
                 throw (BeetlException) t;
             } else {
-                BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 "
-                        + this.functionName, t);
-                throw be;
+                throw new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 " + this.functionName, t);
             }
-
         }
-        BeetlException ex = new BeetlException(BeetlException.NATIVE_CALL_INVALID, "找不到方法 " + this.functionName + BeetlUtil.getParameterDescription(parameterType));
-        throw ex;
-
+        throw new BeetlException(BeetlException.NATIVE_CALL_INVALID,
+                "找不到方法 " + this.functionName + BeetlUtil.getParameterDescription(parameterType));
     }
 
     public Class getReturnType(Class[] parameterType) {

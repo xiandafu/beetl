@@ -80,9 +80,9 @@ public abstract class GeneralVarTagBinding extends Tag {
         }
 
         Iterator<Integer> it = name2Index.values().iterator();
-        for (int i = 0; i < array.length; i++) {
+        for (Object o : array) {
             int index = it.next();
-            ctx.vars[index] = array[i];
+            ctx.vars[index] = o;
         }
     }
 

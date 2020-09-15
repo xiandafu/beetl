@@ -353,8 +353,7 @@ public class ALU {
                 case SHORT:
                     return -((Number) o1).shortValue();
                 case HS:
-                    BigDecimal bd = (BigDecimal) o1;
-                    return bd;
+                    return (BigDecimal) o1;
 
                 default:
                     throw new RuntimeException("value not a number");

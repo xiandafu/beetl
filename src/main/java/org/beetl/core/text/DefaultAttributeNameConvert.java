@@ -12,24 +12,20 @@ public class DefaultAttributeNameConvert implements AttributeNameConvert {
         char[] cs = orginal.toCharArray();
         StringBuilder sb = new StringBuilder(cs.length);
         boolean upper = false;
-        for (int i = 0; i < cs.length; i++) {
+        for (char c : cs) {
             if (upper) {
-                if (cs[i] == '-') {
+                if (c == '-') {
                     continue;
                 }
-                sb.append(Character.toUpperCase(cs[i]));
+                sb.append(Character.toUpperCase(c));
                 upper = false;
-
-
             } else {
-                if (cs[i] == '-') {
+                if (c == '-') {
                     upper = true;
                 } else {
-                    sb.append(cs[i]);
+                    sb.append(c);
                 }
             }
-
-
         }
         return sb.toString();
     }

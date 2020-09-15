@@ -139,8 +139,7 @@ public class FunctionExpression extends Expression {
         String functionSuffix = resourceMap.get("functionSuffix");
         String functionRoot = resourceMap.get("functionRoot");
         String path = name.replace(".", "/");
-        Resource resource = gt.getResourceLoader().getResource(functionRoot + "/" + path + "." + functionSuffix);
-        return resource;
+        return gt.getResourceLoader().getResource(functionRoot + "/" + path + "." + functionSuffix);
 
     }
 

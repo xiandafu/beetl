@@ -73,37 +73,19 @@ public class EmptyExpressionFunction implements Function {
     }
 
     protected boolean isEmpty(Object result) {
-        if (result == null)
+        if (result == null) {
             return true;
-
+        }
         if (result instanceof String) {
-            if (((String) result).length() != 0) {
-                return false;
-            } else {
-                return true;
-            }
-
+            return ((String) result).length() == 0;
         } else if (result instanceof Collection) {
-            if (((Collection) result).size() != 0) {
-                return false;
-            } else {
-                return true;
-            }
+            return ((Collection) result).size() == 0;
         } else if (result instanceof Map) {
-            if (((Map) result).size() != 0) {
-                return false;
-            } else {
-                return true;
-            }
+            return ((Map) result).size() == 0;
         } else if (result.getClass().isArray()) {
-
-            Class ct = result.getClass().getComponentType();
-            if (ct.isPrimitive()) {
-                return PrimitiveArrayUtil.getSize(result) == 0;
-            } else {
-                return ((Object[]) result).length == 0;
-            }
-
+            return result.getClass().getComponentType().isPrimitive()
+                    ? PrimitiveArrayUtil.getSize(result) == 0
+                    : ((Object[]) result).length == 0;
         } else {
             return false;
         }

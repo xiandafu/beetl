@@ -46,13 +46,11 @@ public class ListAA extends AttributeAccess {
                 || attr instanceof BigDecimal) {
             int index = ((Number) attr).intValue();
             if (index < 0) {
-                BeetlException ex = new BeetlException(BeetlException.ARRAY_INDEX_ERROR, "索引必须大于或者等于");
-                throw ex;
+                throw new BeetlException(BeetlException.ARRAY_INDEX_ERROR, "索引必须大于或者等于");
             }
             return ((List) o).get(index);
         } else {
-            BeetlException ex = new BeetlException(BeetlException.ARRAY_INDEX_ERROR, "期望是整形或者是BigDecimal类型");
-            throw ex;
+            throw new BeetlException(BeetlException.ARRAY_INDEX_ERROR, "期望是整形或者是BigDecimal类型");
         }
 
     }

@@ -25,9 +25,7 @@ public class FastRuntimeEngine extends DefaultTemplateEngine {
     @Override
     public Program createProgram(Resource rs, Reader reader, Map<Integer, String> textMap, String cr,
                                  GroupTemplate gt) {
-
-        Program program = super.createProgram(rs, reader, textMap, cr, gt);
-        return program;
+        return super.createProgram(rs, reader, textMap, cr, gt);
     }
 
 
@@ -56,25 +54,14 @@ public class FastRuntimeEngine extends DefaultTemplateEngine {
         public VarRef createVarRef(VarAttribute[] attributes, boolean hasSafe, Expression safe, GrammarToken token,
                                    GrammarToken firstToken) {
             check("VarRefOptimal");
-            if (attributes.length == 1 && !hasSafe) {
-                VarRef express = new VarRefOptimal(attributes[0], token, firstToken);
-                return express;
-            } else {
-                VarRef express = new VarRef(attributes, hasSafe, safe, firstToken);
-                return express;
-            }
-
-
+            return (attributes.length == 1 && !hasSafe)
+                    ? new VarRefOptimal(attributes[0], token, firstToken)
+                    : new VarRef(attributes, hasSafe, safe, firstToken);
         }
 
         @Override
         public BlockStatement createBlock(Statement[] nodes, GrammarToken token) {
-            if (nodes.length == 1) {
-                return new BlockStatementOptimal(nodes, token);
-            }
-            BlockStatement block = new BlockStatement(nodes, token);
-            return block;
-
+            return (nodes.length == 1) ? new BlockStatementOptimal(nodes, token) : new BlockStatement(nodes, token);
         }
 
     }

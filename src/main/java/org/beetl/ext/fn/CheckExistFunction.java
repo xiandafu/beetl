@@ -42,19 +42,17 @@ public class CheckExistFunction implements Function {
     @Override
     public Boolean call(Object[] paras, Context ctx) {
 
-        if (ctx.globalVar == null) return false;
-        String key = null;
+        if (ctx.globalVar == null) {
+            return false;
+        }
+        String key;
         for (Object o : paras) {
             key = (String) o;
-
-            if (ctx.globalVar.containsKey(key)) {
-                continue;
-            } else {
+            if (!ctx.globalVar.containsKey(key)) {
                 return false;
             }
         }
         return true;
-
     }
 
 }

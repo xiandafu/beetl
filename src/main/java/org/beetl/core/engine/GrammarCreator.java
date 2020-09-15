@@ -89,20 +89,16 @@ public class GrammarCreator {
 
     public VarAssignStatement createVarAssign(Expression exp, GrammarToken token) {
         check("VarAssign");
-        VarAssignStatement assign = new VarAssignStatement(exp, token);
-        return assign;
+        return new VarAssignStatement(exp, token);
     }
 
     public VarRefAssignStatement createVarRefAssign(Expression exp, VarRef varRef) {
         check("VarRefAssign");
-        VarRefAssignStatement assign = new VarRefAssignStatement(exp, varRef);
-        return assign;
+        return new VarRefAssignStatement(exp, varRef);
     }
 
     public BlockStatement createBlock(Statement[] nodes, GrammarToken token) {
-        BlockStatement block = new BlockStatement(nodes, token);
-        return block;
-
+        return new BlockStatement(nodes, token);
     }
 
     public PlaceholderST createTextOutputSt(Expression exp, FormatExpression format) {
@@ -139,15 +135,12 @@ public class GrammarCreator {
     public GeneralForStatement createFor(VarAssignStatementSeq varAssignSeq, Expression[] expInit, Expression condtion,
                                          Expression[] expUpdate, Statement forPart, Statement elseforPart, GrammarToken token) {
         check("For");
-        GeneralForStatement forStat = new GeneralForStatement(varAssignSeq, expInit, condtion, expUpdate, forPart,
-                elseforPart, token);
-        return forStat;
+        return new GeneralForStatement(varAssignSeq, expInit, condtion, expUpdate, forPart, elseforPart, token);
     }
 
     public WhileStatement createWhile(Expression exp, Statement whileBody, GrammarToken token) {
         check("While");
-        WhileStatement whileStat = new WhileStatement(exp, whileBody, token);
-        return whileStat;
+        return new WhileStatement(exp, whileBody, token);
     }
 
     public StaticTextASTNode createStaticText(int textIndex, GrammarToken token) {
@@ -171,42 +164,36 @@ public class GrammarCreator {
     public TryCatchStatement createTry(BlockStatement tryPart, BlockStatement catchPart, VarDefineNode error,
                                        GrammarToken token) {
         check("Try");
-        TryCatchStatement statement = new TryCatchStatement(tryPart, catchPart, error, token);
-        return statement;
+        return new TryCatchStatement(tryPart, catchPart, error, token);
     }
 
     public TagStatement createTag(String tagName, Expression[] expList, Statement block, GrammarToken token) {
         check("Tag");
-        TagStatement tag = new TagStatement(tagName, expList, block, token);
-        return tag;
+        return new TagStatement(tagName, expList, block, token);
     }
 
     public TagVarBindingStatement createVarTag(String tagName, Expression[] expList, Statement block,
                                                VarDefineNode[] varDefine, GrammarToken token) {
         check("VarTag");
-        TagVarBindingStatement tag = new TagVarBindingStatement(tagName, expList, block, varDefine, token);
-        return tag;
+        return new TagVarBindingStatement(tagName, expList, block, varDefine, token);
     }
 
 
     public SwitchStatement createSwitch(Expression value, LinkedHashMap<Expression, BlockStatement> map,
                                         BlockStatement defaultBlock, GrammarToken token) {
         check("Switch");
-        SwitchStatement switchStat = new SwitchStatement(value, map, defaultBlock, token);
-        return switchStat;
+        return new SwitchStatement(value, map, defaultBlock, token);
     }
 
     public SelectStatement createSelect(Expression value, Expression[] conditions, BlockStatement[] blocks,
                                         BlockStatement defaultBlock, GrammarToken token) {
         check("Select");
-        SelectStatement select = new SelectStatement(value, conditions, blocks, defaultBlock, token);
-        return select;
+        return new SelectStatement(value, conditions, blocks, defaultBlock, token);
     }
 
     public AjaxStatement createAjax(BlockStatement block, GrammarToken token, boolean defaultRender) {
         check("Ajax");
-        AjaxStatement ajaxStat = new AjaxStatement(block, token, defaultRender);
-        return ajaxStat;
+        return new AjaxStatement(block, token, defaultRender);
     }
 
 
@@ -215,13 +202,11 @@ public class GrammarCreator {
     public FunctionExpression createFunction(String name, Expression[] exps, VarAttribute[] vas, boolean hasSafe,
                                              Expression safeExp, GrammarToken token) {
         check("Function");
-        FunctionExpression fe = new FunctionExpression(name, exps, vas, hasSafe, safeExp, token);
-        return fe;
+        return new FunctionExpression(name, exps, vas, hasSafe, safeExp, token);
     }
 
     public Literal createLiteral(Object value, GrammarToken token) {
-        Literal literal = new Literal(value, token);
-        return literal;
+        return new Literal(value, token);
     }
 
     public CompareExpression createCompare(Expression a, Expression b, short mode, GrammarToken token) {
@@ -252,75 +237,63 @@ public class GrammarCreator {
     public FunctionExpression createFunctionExp(String name, Expression[] exps, VarAttribute[] vas, boolean hasSafe,
                                                 Expression safeExp, GrammarToken token) {
         check("FunctionExp");
-        FunctionExpression fe = new FunctionExpression(name, exps, vas, hasSafe, safeExp, token);
-        return fe;
+        return new FunctionExpression(name, exps, vas, hasSafe, safeExp, token);
     }
 
     public NativeCallExpression createClassNativeCall(ClassNode clsNode, NativeNode[] chain, GrammarToken token) {
         check("ClassNativeCall");
-        NativeCallExpression fe = new NativeCallExpression(clsNode, chain, token);
-        return fe;
+        return new NativeCallExpression(clsNode, chain, token);
     }
 
     public NativeCallExpression createInstanceNativeCall(InstanceNode insNode, NativeNode[] chain, GrammarToken token) {
         check("InstanceNativeCall");
-        NativeCallExpression fe = new NativeCallExpression(insNode, chain, token);
-        return fe;
+        return new NativeCallExpression(insNode, chain, token);
     }
 
     public AndExpression createAnd(Expression exp1, Expression exp2, GrammarToken token) {
         check("And");
-        AndExpression andExp = new AndExpression(exp1, exp2, token);
-        return andExp;
+        return new AndExpression(exp1, exp2, token);
     }
 
     public OrExpression createOr(Expression exp1, Expression exp2, GrammarToken token) {
         check("Or");
-        OrExpression andExp = new OrExpression(exp1, exp2, token);
-        return andExp;
+        return new OrExpression(exp1, exp2, token);
     }
 
     public NotBooleanExpression createNot(Expression exp, GrammarToken token) {
         check("Not");
-        NotBooleanExpression notExp = new NotBooleanExpression(exp, token);
-        return notExp;
+        return new NotBooleanExpression(exp, token);
     }
 
     public NegExpression createNeg(Expression exp, GrammarToken token) {
         check("Neg");
-        NegExpression negExp = new NegExpression(exp, token);
-        return negExp;
+        return new NegExpression(exp, token);
     }
 
     public IncDecExpression createIncDec(boolean isInc, boolean returnOrginal, GrammarToken token) {
         check("IncDec");
-        IncDecExpression exp = new IncDecExpression(isInc, returnOrginal, token);
-        return exp;
+        return new IncDecExpression(isInc, returnOrginal, token);
     }
 
     public VarRef createVarRef(VarAttribute[] attributes, boolean hasSafe, Expression safe, GrammarToken token,
                                GrammarToken firstToken) {
         check("VarRefOptimal");
-        VarRef express = new VarRef(attributes, hasSafe, safe, firstToken);
-        return express;
+        return new VarRef(attributes, hasSafe, safe, firstToken);
     }
 
     public VarRefAssignExpress createVarRefAssignExp(Expression exp, VarRef varRef) {
         check("VarRefAssignExp");
-        VarRefAssignExpress express = new VarRefAssignExpress(exp, varRef);
-        return express;
+        return new VarRefAssignExpress(exp, varRef);
     }
 
     public ContentBodyExpression createTemplateContent(BlockStatement block, GrammarToken token) {
         check("TemplateContent");
-        ContentBodyExpression express = new ContentBodyExpression(block, token);
-        return express;
+        return new ContentBodyExpression(block, token);
     }
 
     public FormatExpression createFormat(String name, String pattern, GrammarToken token) {
         check("Format");
-        FormatExpression f = new FormatExpression(name, pattern, token);
-        return f;
+        return new FormatExpression(name, pattern, token);
     }
 
     protected void check(String ast) {

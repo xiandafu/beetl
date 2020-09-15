@@ -56,8 +56,7 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
 
         @Override
         public WhileStatement createWhile(Expression exp, Statement whileBody, GrammarToken token) {
-            WhileStatement whileStat = new RestrictWhileStatement(exp, whileBody, token);
-            return whileStat;
+            return new RestrictWhileStatement(exp, whileBody, token);
         }
     }
 

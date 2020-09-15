@@ -49,23 +49,16 @@ public class TruncFunction implements Function {
         if (paras.length != 1) {
             pos = ((Number) paras[1]).intValue();
         }
-
-        if (pos == 0)
+        if (pos == 0) {
             return n.longValue();
-        else {
-
-            if (n instanceof BigDecimal) {
-                BigDecimal c = ((BigDecimal) n).setScale(pos, RoundingMode.UP);
-                return c;
-            } else {
-                //todo:还原成输入类型
-                BigDecimal c = new BigDecimal(n.doubleValue());
-                return ((BigDecimal) c).setScale(pos, RoundingMode.UP).doubleValue();
-
-            }
-
         }
-
+        if (n instanceof BigDecimal) {
+            return ((BigDecimal) n).setScale(pos, RoundingMode.UP);
+        } else {
+            //todo:还原成输入类型
+            BigDecimal c = new BigDecimal(n.doubleValue());
+            return c.setScale(pos, RoundingMode.UP).doubleValue();
+        }
     }
 
 

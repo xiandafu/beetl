@@ -359,9 +359,7 @@ public class ObjectUtil {
         if (mf == null) {
             throw new BeetlParserException(BeetlParserException.NATIVE_CALL_INVALID, "根据参数未找到匹配的方法" + methodName + BeetlUtil.getParameterDescription(parameterType));
         }
-        Object result = invoke(o, mf, paras);
-        return result;
-
+        return invoke(o, mf, paras);
     }
 
     /**
@@ -444,11 +442,7 @@ public class ObjectUtil {
     public static Object instance(String clsName, ClassLoader loader) {
         try {
             return Class.forName(clsName, true, loader).newInstance();
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

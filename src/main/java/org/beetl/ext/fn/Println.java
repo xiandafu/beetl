@@ -57,8 +57,7 @@ public class Println implements Function {
             }
 
         } catch (IOException e) {
-            BeetlException be = new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR);
-            throw be;
+            throw new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR);
         }
         return "";
 

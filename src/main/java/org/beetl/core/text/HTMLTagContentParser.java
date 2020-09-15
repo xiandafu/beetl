@@ -139,24 +139,11 @@ class HTMLTagContentParser {
     }
 
     public boolean match(char c) {
-        if (cs[index] == c) {
-
-            return true;
-        } else {
-            return false;
-        }
+        return cs[index] == c;
     }
 
     protected boolean matchCR() {
-
-        if (index < cs.length) {
-            if (cs[index] == '\r' || cs[index] == '\n') {
-                return true;
-            }
-
-        }
-        return false;
-
+        return index < cs.length && (cs[index] == '\r' || cs[index] == '\n');
     }
 
     public boolean match(char[] expected) {
@@ -166,10 +153,7 @@ class HTMLTagContentParser {
                 return false;
             i++;
         }
-        if (i == expected.length)
-            return true;
-        else
-            return false;
+        return i == expected.length;
     }
 
     protected void findAttrs() {
@@ -183,7 +167,6 @@ class HTMLTagContentParser {
 
         }
         t_recover();
-        ;
     }
 
     protected void findAttr() {
@@ -425,8 +408,7 @@ class HTMLTagContentParser {
     }
 
     protected String subString() {
-        String str = new String(cs, ts, te - ts);
-        return str;
+        return new String(cs, ts, te - ts);
     }
 
     protected void findOneChar(char c) {
@@ -449,8 +431,6 @@ class HTMLTagContentParser {
         }
         status = -1;
         this.t_recover();
-        return;
-
     }
 
     public void parserEnd() {
@@ -468,11 +448,7 @@ class HTMLTagContentParser {
      * 判断是否是id joelli
      */
     private boolean isID(char c) {
-        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || c == '-' | c == '$') {
-            return true;
-        } else {
-            return false;
-        }
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || c == '-' | c == '$';
     }
 
     private boolean isDigit(char c) {

@@ -80,11 +80,7 @@ public class FileResourceLoader implements ResourceLoader<String> {
 
     @Override
     public boolean isModified(Resource key) {
-        if (this.autoCheck) {
-            return key.isModified();
-        } else {
-            return false;
-        }
+        return autoCheck && key.isModified();
     }
 
     public boolean isAutoCheck() {
@@ -149,10 +145,7 @@ public class FileResourceLoader implements ResourceLoader<String> {
 
     @Override
     public String getResourceId(Resource resource, String id) {
-        if (resource == null)
-            return id;
-        else
-            return BeetlUtil.getRelPath(resource.getId().toString(), id);
+        return resource == null ? id : BeetlUtil.getRelPath(resource.getId().toString(), id);
     }
 
     @Override

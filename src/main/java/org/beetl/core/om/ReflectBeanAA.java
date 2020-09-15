@@ -26,13 +26,11 @@ public class ReflectBeanAA extends AttributeAccess {
         String key = (String) name;
         MethodInvoker mi = ObjectUtil.getInvokder(c, key);
         if (mi == null) {
-            BeetlException ex = null;
             if (ObjectUtil.hasPrivateAttribute(c, key)) {
-                ex = new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND_PRIVATE, key);
+                throw new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND_PRIVATE, key);
             } else {
-                ex = new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND, key);
+                throw new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND, key);
             }
-            throw ex;
         }
         return mi.get(o);
     }

@@ -101,7 +101,6 @@ public class Transformator {
         this.placeholderEnd = placeholderEnd;
         this.startStatement = startStatement;
         this.endStatement = endStatement;
-
     }
 
     public String getPlaceholderStart() {
@@ -134,7 +133,6 @@ public class Transformator {
 
     public void setEndStatement(String endStatement) {
         this.endStatement = endStatement;
-
     }
 
     public void enableHtmlTagSupport(String tagStart, String tagEnd, String htmlTagBindingAttribute) {
@@ -145,7 +143,6 @@ public class Transformator {
     }
 
     public Reader transform(Reader orginal) throws IOException, HTMLTagParserException {
-
         StringBuilder temp = new StringBuilder();
         int bufSzie = 1024;
         cs = new char[bufSzie];
@@ -153,7 +150,6 @@ public class Transformator {
 
         while ((len = orginal.read(cs)) != -1) {
             temp.append(cs, 0, len);
-
         }
 
         cs = temp.toString().toCharArray();
@@ -173,7 +169,6 @@ public class Transformator {
             ex.line = totalLineCount + 1;
             this.clear();
             throw ex;
-
         }
 
         orginal.close();
@@ -260,13 +255,7 @@ public class Transformator {
             HTMLTagParser html = new HTMLTagParser(cs, index, htmlTagBindingAttribute, true);
 
             html.parser();
-            if (html.hasVarBinding) {
-                script.append("htmltagvar");
-
-            } else {
-                script.append("htmltag");
-
-            }
+            script.append(html.hasVarBinding ? "htmltagvar" : "htmltag");
             tagName = html.getTagName();
             script.append("('").append(tagName).append("',");
 
@@ -282,8 +271,8 @@ public class Transformator {
                 if (html.crKey.contains(key)) {
                     script.append(this.lineSeparator);
                 }
-//				script.append(key).append(":");
-                script.append("\"" + key + "\"").append(":"); // ThinkGem 2017-4-4  增加双引号，支持特殊符号的属性名
+                // ThinkGem 2017-4-4  增加双引号，支持特殊符号的属性名
+                script.append("\"").append(key).append("\"").append(":");
                 String attrValue = this.parseAttr(quat.get(key), value);
                 script.append(attrValue);
 
@@ -301,13 +290,8 @@ public class Transformator {
                     script.append(",{}");
                 }
                 if (html.varBidingStr.trim().length() == 0) {
-                    String defaultVarName = null;
                     int index = tagName.lastIndexOf(":");
-                    if (index == -1) {
-                        defaultVarName = tagName;
-                    } else {
-                        defaultVarName = tagName.substring(index + 1);
-                    }
+                    String defaultVarName = index == -1 ? tagName : tagName.substring(index + 1);
                     script.append(",").append("'").append(defaultVarName).append("'");
                 } else {
                     script.append(",").append("'").append(html.varBidingStr).append("'");
@@ -571,9 +555,7 @@ public class Transformator {
                         reforamtStatmentLine();
                         lineStatus.reset();
                         sb.append(lineSeparator);
-                        continue;
                     } else {
-
                         // createTextNode(temp.append(lineSeparator));
                         // // 总是需要回车换行
                         // sb.append(this.lineSeparator);
@@ -582,7 +564,6 @@ public class Transformator {
                         lineCount++;
                         lineStatus.reset();
                         temp.append(this.lineSeparator);
-                        continue;
                     }
 
                 } else {
@@ -601,8 +582,6 @@ public class Transformator {
         }
         if (temp.length() != 0) createTextNode(temp);
         status = 4;
-        return;
-
     }
 
     private void reforamtStatmentLine() {
@@ -735,15 +714,7 @@ public class Transformator {
     }
 
     private void checkAppendCR() {
-        if (this.endStatement == null) {
-            this.appendCR = true;
-        } else if (this.endStatement.indexOf("\n") != -1) {
-            this.appendCR = true;
-        } else if (this.endStatement.indexOf("\r") != -1) {
-            this.appendCR = true;
-        } else {
-            this.appendCR = false;
-        }
+        appendCR = endStatement == null || endStatement.contains("\n") || endStatement.contains("\r");
     }
 
     public String parseAttr(char q, String attr) {
@@ -760,7 +731,6 @@ public class Transformator {
                 if (attr.charAt(end - 1) == '\\') {
                     // 非占位结束符号
                     holdStart = end + 1;
-                    continue;
                 } else {
                     break;
                 }
@@ -820,7 +790,6 @@ public class Transformator {
 
     public void clear() {
         this.cs = null;
-
         this.sb = null;
     }
 
@@ -863,22 +832,15 @@ class LineStatus {
 
     /* 本行是否只有文本 */
     public boolean onlyText() {
-        if (holderCount == 0 && this.statementCount == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return holderCount == 0 && this.statementCount == 0;
     }
 
     public void addTextCount() {
-
         this.textCount++;
     }
 
     public void addHolderCount() {
-
         this.holderCount++;
-
     }
 
     // 表示改行有statment
@@ -908,13 +870,11 @@ class LineStatus {
     }
 
     public void reset() {
-
         textCount = 0;
         statementCount = 0;
         holderCount = 0;
         startTextIndexList.clear();
         endTextIndexList.clear();
-
     }
 
 }

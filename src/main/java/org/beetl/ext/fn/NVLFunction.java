@@ -42,11 +42,6 @@ public class NVLFunction implements Function {
         if (paras.length != 2) {
             throw new RuntimeException("参数错误，期望Object,Object");
         }
-        if (paras[0] == null) {
-            return paras[1];
-        } else {
-            return paras[0];
-        }
-
+        return paras[0] == null ? paras[1] : paras[0];
     }
 }

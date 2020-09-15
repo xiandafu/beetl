@@ -19,11 +19,7 @@ public class BeetlServletRequestWrapper extends HttpServletRequestWrapper {
     @Override
     public String getParameter(String name) {
         String[] array = (String[]) paras.get(name);
-        if (array != null) {
-            return array[0];
-        } else {
-            return null;
-        }
+        return array == null ? null : array[0];
     }
 
     @Override

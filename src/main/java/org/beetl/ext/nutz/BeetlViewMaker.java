@@ -47,8 +47,9 @@ public class BeetlViewMaker implements ViewMaker {
         String webroot = null;
         if (Mvcs.getServletContext() != null) {
             webroot = Mvcs.getServletContext().getRealPath("/");
-            if (!Strings.isBlank(webroot))
+            if (!Strings.isBlank(webroot)) {
                 BeetlUtil.setWebroot(webroot);
+            }
         }
 
         init();

@@ -64,17 +64,7 @@ public class TernaryExpression extends Expression {
             throw be;
         }
         boolean cond = (Boolean) value;
-
-        if (cond) {
-            return a.evaluate(ctx);
-        } else {
-            if (b != null) {
-                return b.evaluate(ctx);
-            } else {
-                return null;
-            }
-        }
-
+        return cond ? a.evaluate(ctx) : (b != null ? b.evaluate(ctx) : null);
     }
 
 

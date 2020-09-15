@@ -51,11 +51,8 @@ public class AssertFunction implements Function {
             if (!result) {
                 throw new RuntimeException(msg == null ? "断言异常" : msg);
             }
-            return "";
-        } else {
-            return "";
         }
-
+        return "";
     }
 
 }

@@ -42,8 +42,7 @@ public class ParseDouble implements Function {
         String str = "";
         double result;
         if (o instanceof Number) {
-            Double n = ((Number) o).doubleValue();
-            return n;
+            return ((Number) o).doubleValue();
         } else {
             str = o.toString();
         }

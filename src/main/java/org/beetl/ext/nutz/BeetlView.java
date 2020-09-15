@@ -21,10 +21,12 @@ public class BeetlView extends AbstractPathView {
         if (child == null) {
             child = Mvcs.getActionContext().getPath();
         }
-        if (obj != null && req.getAttribute("obj") == null)
+        if (obj != null && req.getAttribute("obj") == null) {
             req.setAttribute("obj", obj);
-        if (resp.getContentType() == null)
+        }
+        if (resp.getContentType() == null) {
             resp.setContentType("text/html");
+        }
         render.render(child, req, new LazyResponseWrapper(resp));
     }
 }

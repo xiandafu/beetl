@@ -70,14 +70,9 @@ public class StartsWithMatcher implements Matcher {
 
     @Override
     public String match(String key) {
-        if (key.startsWith(prefix)) {
-            if (this.withPrefix) {
-                return key;
-            } else {
-                return key.substring(prefixLen);
-            }
-        }
-        return null;
+        return !key.startsWith(prefix)
+                ? null
+                : (withPrefix ? key : key.substring(prefixLen));
     }
 
     public final boolean isWithPrefix() {
@@ -109,11 +104,8 @@ public class StartsWithMatcher implements Matcher {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (obj == this) {
             return true;
-        }
-        if (obj == null) {
-            return false;
         }
         if (!(obj instanceof StartsWithMatcher)) {
             return false;
@@ -126,13 +118,7 @@ public class StartsWithMatcher implements Matcher {
         } else if (!prefix.equals(other.prefix)) {
             return false;
         }
-        if (prefixLen != other.prefixLen) {
-            return false;
-        }
-        if (withPrefix != other.withPrefix) {
-            return false;
-        }
-        return true;
+        return prefixLen == other.prefixLen && withPrefix == other.withPrefix;
     }
 
 

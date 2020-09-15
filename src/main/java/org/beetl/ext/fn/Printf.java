@@ -42,10 +42,7 @@ public class Printf implements Function {
     public String call(Object[] paras, Context ctx) {
         String template = (String) paras[0];
         Object[] args = new Object[paras.length - 1];
-        for (int i = 0; i < args.length; i++) {
-            args[i] = paras[i + 1];
-
-        }
+        System.arraycopy(paras, 1, args, 0, args.length);
         StringBuilder sb = new StringBuilder();
         Formatter f = new Formatter(sb);
         f.format(template, args);
@@ -53,8 +50,7 @@ public class Printf implements Function {
         try {
             ctx.byteWriter.writeString(sb.toString());
         } catch (IOException e) {
-            BeetlException be = new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR);
-            throw be;
+            throw new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR);
         }
 
         return "";

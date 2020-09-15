@@ -270,14 +270,10 @@ public class AntlrProgramBuilder {
         }
 
         if (node instanceof VarStContext) {
-            VarAssignStatementSeq varSeq = parseVarSt((VarStContext) node);
-
-            return varSeq;
-
+            return parseVarSt((VarStContext) node);
         } else if (node instanceof BlockStContext) {
             BlockStContext bc = (BlockStContext) node;
-            Statement block = parseBlock(bc.block().statement(), node);
-            return block;
+            return parseBlock(bc.block().statement(), node);
         } else if (node instanceof TextOutputStContext) {
             return this.parseTextOutputSt((TextOutputStContext) node);
         } else if (node instanceof ReturnStContext) {
@@ -314,24 +310,18 @@ public class AntlrProgramBuilder {
             String str = cst.DecimalLiteral().getSymbol().getText();
             int position = Integer.parseInt(str);
             if (!this.gt.getConf().directByteOutput) {
-                StaticTextASTNode textNode = gc.createStaticText(position, null);
-                return textNode;
+                return gc.createStaticText(position, null);
             } else {
-                StaticTextByteASTNode textNode = gc.createStaticByteText(position, null);
-                return textNode;
+                return gc.createStaticByteText(position, null);
             }
 
         } else if (node instanceof IfStContext) {
             return parseIf((IfStContext) node);
         } else if (node instanceof StatmentExpStContext) {
-
             StatementExpressionContext sec = ((StatmentExpStContext) node).statementExpression();
-            Expression expression = this.parseExpress(sec.expression());
-            StatementExpression se = new StatementExpression(expression, null);
-            return se;
+            return new StatementExpression(this.parseExpress(sec.expression()), null);
         } else if (node instanceof DirectiveStContext) {
             return parseDirectiveStatement((DirectiveStContext) node);
-
         } else if (node instanceof CommentTagStContext) {
             //兼容2.x版本
             return null;
@@ -395,14 +385,9 @@ public class AntlrProgramBuilder {
             List<StatementContext> defaultCtxList = ctx.g_defaultStatment().statement();
             defaultStatement = this.parseBlock(defaultCtxList, ctx);
         }
-
-
-        SelectStatement select = gc.createSelect(base, condtionList.toArray(new Expression[0]),
+        return gc.createSelect(base, condtionList.toArray(new Expression[0]),
                 blockList.toArray(new BlockStatement[0]), defaultStatement,
                 this.getBTToken(selectCtx.Select().getSymbol()));
-
-
-        return select;
     }
 
     protected AjaxStatement parseAjax(AjaxStContext ajaxCtx) {
@@ -488,12 +473,7 @@ public class AntlrProgramBuilder {
             }
 
         }
-
-
-        SwitchStatement switchStat = gc.createSwitch(exp, condtionsStatementsMap, defaultBlock,
-                this.getBTToken(sctx.getStart()));
-
-        return switchStat;
+        return gc.createSwitch(exp, condtionsStatementsMap, defaultBlock, this.getBTToken(sctx.getStart()));
     }
 
     /**

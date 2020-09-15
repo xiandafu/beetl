@@ -46,11 +46,7 @@ public class AndExpression extends Expression {
     }
 
     public Object evaluate(Context ctx) {
-        if (ALU.isTrue(exp1.evaluate(ctx), exp1)) {
-            return ALU.isTrue(exp2.evaluate(ctx), exp2);
-        } else {
-            return Boolean.FALSE;
-        }
+        return ALU.isTrue(exp1.evaluate(ctx), exp1) ? ALU.isTrue(exp2.evaluate(ctx), exp2) : Boolean.FALSE;
     }
 
 

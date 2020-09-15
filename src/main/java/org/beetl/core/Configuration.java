@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -333,9 +334,7 @@ public class Configuration {
             this.htmlTagBindingAttribute = value;
         } else if (key.equalsIgnoreCase(IMPORT_PACKAGE)) {
             String[] strs = value.split(";");
-            for (String pkg : strs) {
-                this.pkgList.add(pkg);
-            }
+            this.pkgList.addAll(Arrays.asList(strs));
         } else if (key.equalsIgnoreCase(ENGINE)) {
             this.engine = value;
         } else if (key.equalsIgnoreCase(NATIVE_SECUARTY_MANAGER)) {
@@ -366,9 +365,7 @@ public class Configuration {
                 addVirtual(key, value);
             } else if (key.startsWith("general_virtual.") || key.startsWith("GENERAL_VIRTUAL.")) {
                 String[] allCls = value.split(";");
-                for (String cls : allCls) {
-                    this.generalVirtualAttributeSet.add(cls);
-                }
+                this.generalVirtualAttributeSet.addAll(Arrays.asList(allCls));
             } else if (key.startsWith("tag.") || key.startsWith("TAG.")) {
                 addTag(key, value);
             } else if (key.startsWith("tagf.") || key.startsWith("TAGF.")) {
@@ -446,17 +443,11 @@ public class Configuration {
 
     private String getExtName(String key) {
         int index = key.indexOf(".");
-        String name = key.substring(index + 1);
-        return name;
+        return key.substring(index + 1);
     }
 
     private boolean isBoolean(String value, boolean defaultValue) {
-
-        if (isNotEmpty(value)) {
-            return Boolean.parseBoolean(value);
-        } else {
-            return defaultValue;
-        }
+        return isNotEmpty(value) ? Boolean.parseBoolean(value) : defaultValue;
     }
 
     public boolean isNotEmpty(String str) {

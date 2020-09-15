@@ -83,9 +83,7 @@ public class BeetlKit {
      * @return 模板渲染结果
      */
     public static String testTemplate(String template, String initValue) throws BeetlException {
-        Map map = execute(initValue);
-        String result = render(template, map);
-        return result;
+        return render(template, execute(initValue));
     }
 
     public static void main(String[] args) throws BeetlException {

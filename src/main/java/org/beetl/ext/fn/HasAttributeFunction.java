@@ -30,9 +30,7 @@ public class HasAttributeFunction implements Function {
             String key = (String) paras[i];
             //TODO3.0,  通过反射获取
             MethodInvoker invoke = ObjectUtil.getInvokder(type, key);
-            if (invoke == null) {
-                return false;
-            } else if (invoke instanceof GeneralGetMethodInvoker) {
+            if (invoke == null || invoke instanceof GeneralGetMethodInvoker) {
                 return false;
             }
         }

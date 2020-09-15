@@ -36,8 +36,7 @@ public abstract class Fragment {
             this.setEndLine();
             return new HtmlTagEndFragment(source);
         } else if (source.isCrStart()) {
-            CRFragment crFragment = new CRFragment(source);
-            return crFragment;
+            return new CRFragment(source);
         } else {
             this.setEndLine();
             return new TextFragment(source);

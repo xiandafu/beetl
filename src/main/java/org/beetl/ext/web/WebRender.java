@@ -166,8 +166,7 @@ public class WebRender {
     protected WebRenderExt getWebRenderExt(String clsName) {
         //有效率问题，没有必要每次都初始化一个类
         try {
-            WebRenderExt render = (WebRenderExt) gt.getClassLoader().loadClass(clsName).newInstance();
-            return render;
+            return (WebRenderExt) gt.getClassLoader().loadClass(clsName).newInstance();
         } catch (Exception ex) {
             throw new RuntimeException("加载WebRenderExt错误，检查配置项WEBAPP_EXT:" + ex.getMessage(), ex);
         }

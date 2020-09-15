@@ -189,11 +189,7 @@ public class Template {
                 } catch (IOException e1) {
                     // 输出到客户端
                 }
-
-            } else {
-                // do nothing ,just ignore
-            }
-
+            }  // do nothing ,just ignore
         } finally {
             if (isRoot) {
                 this.ctx.destory();
@@ -230,9 +226,10 @@ public class Template {
      * 为模板绑定多个变量，map的key，value对应了变量名称和变量值。key必须符合javascript命名规范
      */
     public void binding(Map map) {
-        Map<String, Object> values = map;
-        if (values == null) return;
-        for (Entry<String, Object> entry : values.entrySet()) {
+        if ((Map<String, Object>) map == null) {
+            return;
+        }
+        for (Entry<String, Object> entry : ((Map<String, Object>) map).entrySet()) {
             this.binding(entry.getKey(), entry.getValue());
         }
 

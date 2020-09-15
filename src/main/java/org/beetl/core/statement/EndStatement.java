@@ -41,9 +41,5 @@ public class EndStatement extends Statement {
     }
 
     public final void execute(Context ctx) {
-
-        return;
     }
-
-
 }

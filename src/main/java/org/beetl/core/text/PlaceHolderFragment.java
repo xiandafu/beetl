@@ -17,11 +17,7 @@ public class PlaceHolderFragment extends BeetlFragment {
     @Override
     public Fragment consumeAndReturnNext() {
         // 不同占位符，返回不同的标识，beetl支持俩种占位符，能表达不同语义
-        if (source.pd.isMatchFirstGroup) {
-            script = new StringBuilder("<<");
-        } else {
-            script = new StringBuilder("<#");
-        }
+        script = new StringBuilder(source.pd.isMatchFirstGroup ? "<<" : "<#");
 
         while (!source.isEof()) {
             if (source.isPlaceHolderEnd(script)) {
@@ -32,11 +28,7 @@ public class PlaceHolderFragment extends BeetlFragment {
             }
         }
 
-        if (source.isEof()) {
-            return null;
-        }
-
-        return super.findNext();
+        return source.isEof() ? null : super.findNext();
     }
 
 

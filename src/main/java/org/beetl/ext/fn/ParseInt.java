@@ -43,20 +43,21 @@ public class ParseInt implements Function {
         Object o = paras[0];
         String str = "";
         int result;
-        if (o == null)
+        if (o == null) {
             throw new NullPointerException("Error:parseInt(null)");
+        }
         if (o instanceof Number) {
             long n = ((Number) o).longValue();
             str = String.valueOf(n);
         } else {
             str = o.toString();
         }
-        if (str.indexOf(".") != -1) {
+        if (str.contains(".")) {
             str = str.split("\\.")[0];
         }
         Pattern pattern = Pattern.compile("-?[0-9]*");
         Matcher isNum = pattern.matcher(str);
-        if (o == null || o.equals("") || !isNum.matches()) {
+        if (o.equals("") || !isNum.matches()) {
             throw new RuntimeException("无法正确转换至int格式");
         }
         try {

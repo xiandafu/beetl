@@ -17,11 +17,8 @@ public class RegxFunctionUtil {
      * @param regex 正则表达式
      */
     public boolean match(String str, String regex) {
-        if (str == null || regex == null)
-            return false;
-        if (regex.trim().isEmpty())
-            return true;
-        return Pattern.compile(regex.trim()).matcher(str).find();
+        return (str != null && regex != null)
+                && (regex.trim().isEmpty() || Pattern.compile(regex.trim()).matcher(str).find());
     }
 
     /**
@@ -33,11 +30,15 @@ public class RegxFunctionUtil {
      * @return 进行正则表达式替换
      */
     public String replace(String str, String regex, String replace) {
-        if (str == null)
+        if (str == null) {
             return "";
-        if (regex == null)
+        }
+        if (regex == null) {
             return str;
-        if (replace == null) replace = "";
+        }
+        if (replace == null) {
+            replace = "";
+        }
         return str.replaceAll(regex, replace);
     }
 
@@ -48,13 +49,11 @@ public class RegxFunctionUtil {
      * @param regex 正则表达式
      */
     public String find(String str, String regex) {
-        if (str == null || regex == null)
+        if (str == null || regex == null) {
             return "";
+        }
         Matcher m = Pattern.compile(regex).matcher(str);
-        if (m.find()) {
-            return m.group();
-        } else
-            return "";
+        return m.find() ? m.group() : "";
     }
 
     /**
@@ -66,8 +65,9 @@ public class RegxFunctionUtil {
      */
     public List<String> findList(String str, String regex) {
         ArrayList<String> ret = new ArrayList<String>();
-        if (str == null || regex == null)
+        if (str == null || regex == null) {
             return ret;
+        }
         Matcher m = Pattern.compile(regex).matcher(str);
         while (m.find()) {
             ret.add(m.group());
@@ -83,8 +83,9 @@ public class RegxFunctionUtil {
      * @return 切分后的字符串
      */
     public List<String> split(String str, String regex) {
-        if (str == null || regex == null)
+        if (str == null || regex == null) {
             return new ArrayList<String>();
+        }
         return Arrays.asList(str.split(regex));
     }
 
@@ -97,8 +98,9 @@ public class RegxFunctionUtil {
      * @return 切分后的字符串
      */
     public List<String> splitLimit(String str, String regex, int limit) {
-        if (str == null || regex == null)
+        if (str == null || regex == null) {
             return new ArrayList<String>();
+        }
         return Arrays.asList(str.split(regex, limit));
     }
 

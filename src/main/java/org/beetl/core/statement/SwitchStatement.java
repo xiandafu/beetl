@@ -82,14 +82,9 @@ public class SwitchStatement extends Statement {
                             ctx.gotoFlag = IGoto.NORMAL;
                             return;
                     }
-                } else {
-                    // 匹配下一个Block
-                    continue;
                 }
-            } else {
-                continue;
+                // 匹配下一个Block
             }
-
         }
 
         if (!isMatch && defaultBlock != null) {

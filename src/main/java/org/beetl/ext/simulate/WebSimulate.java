@@ -84,7 +84,6 @@ public class WebSimulate extends BaseSimulate {
                 this.output(str, rsp);
 
             }
-            return;
 
         } else {
             //如果是beetl ajax请求
@@ -93,23 +92,17 @@ public class WebSimulate extends BaseSimulate {
                 ajaxFlag = (String) data.get("ajax");
             }
 
-            Iterator it = commonData.keySet().iterator();
-            while (it.hasNext()) {
-                String key = (String) it.next();
+            for (Object o : commonData.keySet()) {
+                String key = (String) o;
                 Object value = commonData.get(key);
                 setValue(key, value, req);
             }
-            String renderPath = null;
-            if (commonData.containsKey("view")) {
-                renderPath = (String) commonData.get("view");
-            } else {
-                renderPath = getRenderPath(req);
-            }
-
+            StringBuilder readerPath = new StringBuilder();
+            readerPath.append(commonData.containsKey("view") ? (String) commonData.get("view") : getRenderPath(req));
             if (ajaxFlag != null) {
-                renderPath = renderPath + "#" + ajaxFlag;
+                readerPath.append("#").append(ajaxFlag);
             }
-            render.render(renderPath, req, rsp);
+            render.render(readerPath.toString(), req, rsp);
         }
 
 
@@ -134,16 +127,14 @@ public class WebSimulate extends BaseSimulate {
             }
         }
 
-        Iterator it = commonData.keySet().iterator();
-        while (it.hasNext()) {
-            String key = (String) it.next();
+        for (Object o : commonData.keySet()) {
+            String key = (String) o;
             Object value = commonData.get(key);
             setValue(key, value, req);
         }
         String path = this.getRenderPath(req);
         WebRender render = new WebRender(gt);
         render.render(path, req, rsp, null);
-        return;
     }
 
 

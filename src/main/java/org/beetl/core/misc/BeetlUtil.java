@@ -144,12 +144,7 @@ public class BeetlUtil {
             }
 
         }
-        if (root <= 0) {
-            return false;
-        } else {
-            return true;
-        }
-
+        return root > 0;
     }
 
     /**
@@ -247,9 +242,7 @@ public class BeetlUtil {
             }
 
             return root;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (URISyntaxException e) {
+        } catch (IOException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
 

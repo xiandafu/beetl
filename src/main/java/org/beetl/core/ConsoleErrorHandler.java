@@ -92,10 +92,10 @@ public class ConsoleErrorHandler implements ErrorHandler {
             if (content != null) {
                 String[] strs = content.split(ex.cr);
                 int lineNumber = range[0];
-                for (int i = 0; i < strs.length; i++) {
+                for (String str : strs) {
                     print(writer, "" + lineNumber);
                     print(writer, "|");
-                    println(writer, strs[i]);
+                    println(writer, str);
                     lineNumber++;
                 }
 

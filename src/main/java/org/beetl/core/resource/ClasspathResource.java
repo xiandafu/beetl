@@ -93,10 +93,9 @@ public class ClasspathResource extends Resource<String> {
             lastModified = file.lastModified();
         }
 
-        Reader br;
         try {
-            br = new BufferedReader(new InputStreamReader(is, ((ClasspathResourceLoader) this.resourceLoader).charset));
-            return br;
+            InputStreamReader isr = new InputStreamReader(is, ((ClasspathResourceLoader) this.resourceLoader).charset);
+            return new BufferedReader(isr);
         } catch (UnsupportedEncodingException e) {
             return null;
         }
@@ -104,11 +103,7 @@ public class ClasspathResource extends Resource<String> {
 
     @Override
     public boolean isModified() {
-        if (file != null) {
-            return file.lastModified() != this.lastModified;
-        } else {
-            return false;
-        }
+        return (file != null) && (file.lastModified() != lastModified);
     }
 
     @Override

@@ -56,12 +56,12 @@ public class CacheTag extends Tag {
     public void render() {
 
         try {
-            String key = null;
+            String key;
             long refreshPeriod = 0;
-            BodyContent cahcedObject = null;
+            BodyContent cahcedObject;
             key = (String) this.args[0];
             if (this.args.length == 3) {
-                boolean refreshNow = ((Boolean) this.args[2]).booleanValue();
+                boolean refreshNow = (Boolean) this.args[2];
                 if (refreshNow) {
                     cahcedObject = super.getBodyContent();
                     cacheManager.setObject(key, cahcedObject, refreshPeriod);
@@ -72,9 +72,7 @@ public class CacheTag extends Tag {
             }
 
             if (this.args.length >= 2) {
-
                 refreshPeriod = ((Number) this.args[1]).longValue();
-
             } else {
                 //默认1小时刷新一次
                 refreshPeriod = 60 * 60;
@@ -94,13 +92,10 @@ public class CacheTag extends Tag {
                 cahcedObject.fill(this.bw);
 
             }
-
-            return;
         } catch (IOException ex) {
             if (!ctx.gt.getConf().isIgnoreClientIOError()) {
                 throw new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR, "IO Error", ex);
             }
-
         }
 
     }

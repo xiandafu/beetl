@@ -30,17 +30,13 @@ public class CRFragment extends Fragment {
             if (source.isPlaceHolderStart()) {
                 return new PlaceHolderFragment(source);
             } else if (source.isScriptStart()) {
-                ScriptBlockFragment scriptFragement = new ScriptBlockFragment(source);
-                return scriptFragement;
+                return new ScriptBlockFragment(source);
             } else if (source.isHtmlTagStart()) {
-                HtmlTagStartFragment htmlTagStart = new HtmlTagStartFragment(source);
-                return htmlTagStart;
+                return new HtmlTagStartFragment(source);
             } else if (source.isHtmlTagEnd()) {
-                HtmlTagEndFragment htmlTagEndFragment = new HtmlTagEndFragment(source);
-                return htmlTagEndFragment;
+                return new HtmlTagEndFragment(source);
             } else if (source.isCrStart()) {
-                CRFragment crFragment = new CRFragment(source);
-                return crFragment;
+                return new CRFragment(source);
             } else {
                 return new TextFragment(source);
             }

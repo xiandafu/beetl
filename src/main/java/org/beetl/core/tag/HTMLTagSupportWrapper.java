@@ -52,9 +52,7 @@ public class HTMLTagSupportWrapper extends Tag {
 
     protected String getHtmlTagResourceId(String child) {
         String path = child.replace(':', '/');
-        StringBuilder sb = new StringBuilder("/");
-        sb.append(this.tagRoot).append("/").append(path).append(".").append(this.tagSuffix);
-        return sb.toString();
+        return "/" + this.tagRoot + "/" + path + "." + this.tagSuffix;
     }
 
 
@@ -69,12 +67,7 @@ public class HTMLTagSupportWrapper extends Tag {
 
 
     public Map getAttrs() {
-        if (this.args.length == 1) {
-            return Collections.emptyMap();
-        } else {
-            return (Map) this.args[1];
-        }
-
+        return args.length == 1 ? Collections.emptyMap() : (Map) args[1];
     }
 
 

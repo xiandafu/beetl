@@ -120,22 +120,11 @@ class HTMLTagParser {
     }
 
     public boolean match(char c) {
-        if (cs[index] == c) {
-
-            return true;
-        } else {
-            return false;
-        }
+        return cs[index] == c;
     }
 
     protected boolean matchCR() {
-
-        if (index < cs.length) {
-            if (cs[index] == '\r' || cs[index] == '\n')
-                return true;
-        }
-        return false;
-
+        return index < cs.length && (cs[index] == '\r' || cs[index] == '\n');
     }
 
     public boolean match(char[] expected) {
@@ -145,10 +134,7 @@ class HTMLTagParser {
                 return false;
             i++;
         }
-        if (i == expected.length)
-            return true;
-        else
-            return false;
+        return i == expected.length;
     }
 
     protected void findAttrs() {
@@ -162,7 +148,6 @@ class HTMLTagParser {
 
         }
         t_recover();
-        ;
     }
 
     protected void findAttr() {
@@ -191,9 +176,9 @@ class HTMLTagParser {
             }
             this.quatMap.put(lastKey, isSingleQuat ? '\'' : '\"');
             this.expMap.put(lastKey, value);
-            if (findCR)
+            if (findCR) {
                 this.crKey.add(lastKey);
-
+            }
         } else {
             throw new RuntimeException("没有找到属性");
         }
@@ -207,27 +192,22 @@ class HTMLTagParser {
         char[] cs = attr.toCharArray();
         StringBuilder sb = new StringBuilder(cs.length);
         boolean upper = false;
-        for (int i = 0; i < cs.length; i++) {
+        for (char c : cs) {
             if (upper) {
-                if (cs[i] == '-') {
+                if (c == '-') {
                     continue;
                 }
-                sb.append(Character.toUpperCase(cs[i]));
+                sb.append(Character.toUpperCase(c));
                 upper = false;
-
-
             } else {
-                if (cs[i] == '-') {
+                if (c == '-') {
                     upper = true;
                 } else {
-                    sb.append(cs[i]);
+                    sb.append(c);
                 }
             }
-
-
         }
-        String varName = sb.toString();
-        return varName;
+        return sb.toString();
     }
 
 
@@ -280,13 +260,9 @@ class HTMLTagParser {
 
         } else {
             char illegal = cs[index];
-            if (illegal == '\r' || illegal == '\n') {
-                throw new RuntimeException("标签未正确结束:" + this.tagName + ",碰到换行符号");
-
-            } else {
-                throw new RuntimeException("标签未正确结束:" + this.tagName + ",碰到非法符号'" + cs[index] + "'");
-
-            }
+            throw new RuntimeException((illegal == '\r' || illegal == '\n')
+                    ? "标签未正确结束:" + this.tagName + ",碰到换行符号"
+                    : "标签未正确结束:" + this.tagName + ",碰到非法符号'" + cs[index] + "'");
         }
     }
 
@@ -331,7 +307,6 @@ class HTMLTagParser {
 
                 if (isID(c) || isDigit(c)) {
                     i++;
-                    continue;
                 } else {
                     break;
                 }
@@ -356,7 +331,6 @@ class HTMLTagParser {
 
             if (c == ' ' || c == '\t') {
                 i++;
-                continue;
             } else if (c == '\n' || c == '\r') {
                 i++;
                 findCR = true;
@@ -379,7 +353,6 @@ class HTMLTagParser {
 
             if (c == ' ' || c == '\t' || c == '\n' || c == '\r') {
                 i++;
-                continue;
             } else {
                 break;
             }
@@ -425,8 +398,7 @@ class HTMLTagParser {
     }
 
     protected String subString() {
-        String str = new String(cs, ts, te - ts);
-        return str;
+        return new String(cs, ts, te - ts);
     }
 
     protected void findOneChar(char c) {
@@ -449,7 +421,6 @@ class HTMLTagParser {
         }
         status = -1;
         this.t_recover();
-        return;
 
     }
 
@@ -468,11 +439,7 @@ class HTMLTagParser {
      * 判断是否是id joelli
      */
     private boolean isID(char c) {
-        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' | c == '-') {
-            return true;
-        } else {
-            return false;
-        }
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' | c == '-';
     }
 
     public String getHtmlColMapAsString() {

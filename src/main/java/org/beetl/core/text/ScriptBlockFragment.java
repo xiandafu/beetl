@@ -19,11 +19,7 @@ public class ScriptBlockFragment extends ScriptFragment {
             script.append(source.consumeAndGet());
         }
         this.setEndLine();
-        if (source.isEof()) {
-            return null;
-        }
-        return this.findNext();
-
+        return source.isEof() ? null : this.findNext();
     }
 
     public void appendCr() {

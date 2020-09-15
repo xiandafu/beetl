@@ -46,14 +46,11 @@ public class DefaultTagFactory implements TagFactory {
     @Override
     public Tag createTag() {
         try {
-            Tag tag = (Tag) tagCls.newInstance();
-            return tag;
+            return (Tag) tagCls.newInstance();
         } catch (InstantiationException e) {
-            BeetlException bex = new BeetlException(BeetlException.TAG_INSTANCE_ERROR, "实例化 " + tagCls + " 出错");
-            throw bex;
+            throw new BeetlException(BeetlException.TAG_INSTANCE_ERROR, "实例化 " + tagCls + " 出错");
         } catch (IllegalAccessException e) {
-            BeetlException bex = new BeetlException(BeetlException.TAG_INSTANCE_ERROR, "不能实例化 " + tagCls);
-            throw bex;
+            throw new BeetlException(BeetlException.TAG_INSTANCE_ERROR, "不能实例化 " + tagCls);
         }
     }
 }

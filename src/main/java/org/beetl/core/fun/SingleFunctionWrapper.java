@@ -78,16 +78,12 @@ public class SingleFunctionWrapper extends FunctionWrapper {
             if (t instanceof BeetlException) {
                 throw (BeetlException) t;
             } else {
-                BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 "
-                        + this.functionName, t);
-                throw be;
+                throw new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 " + this.functionName, t);
             }
         } catch (BeetlException ex) {
             throw ex;
         } catch (Exception ex) {
-            BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 " + this.functionName,
-                    ex);
-            throw be;
+            throw new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 " + this.functionName, ex);
         }
 
     }

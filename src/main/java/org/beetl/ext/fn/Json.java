@@ -14,13 +14,8 @@ public class Json implements Function {
 
     @Override
     public String call(Object[] paras, Context ctx) {
-        Object o = paras[0];
-        if (o == null) {
-            return "";
-        }
-        String msg = JsonFactory.get().render(o);
-        return msg;
-
+        Object object = paras[0];
+        return object == null ? "" : JsonFactory.get().render(object);
     }
 
 

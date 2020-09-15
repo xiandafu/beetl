@@ -100,8 +100,7 @@ public class Script<T> {
     }
 
     public Object getVar(String varName) {
-        Map ret = getResult();
-        return ret.get(varName);
+        return getResult().get(varName);
     }
 
     public T getReturnValue() {

@@ -60,7 +60,6 @@ public class DecodeFunction implements Function {
                         break;
                     } else {
                         i = i + 2;
-                        continue;
                     }
                 }
             }
@@ -81,13 +80,9 @@ public class DecodeFunction implements Function {
     }
 
     private Object unwrap(Object b, Context ctx) {
-        if (b instanceof ExpressionRuntime.ExpressionRuntimeObject) {
-            ExpressionRuntimeObject eo = (ExpressionRuntimeObject) b;
-            Object realValue = eo.get(ctx);
-            return realValue;
-        } else {
-            return b;
-        }
+        return b instanceof ExpressionRuntime.ExpressionRuntimeObject
+                ? ((ExpressionRuntimeObject) b).get(ctx)
+                : b;
     }
 
 }

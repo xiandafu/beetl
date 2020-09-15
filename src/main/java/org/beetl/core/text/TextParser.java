@@ -77,14 +77,7 @@ public class TextParser {
         }
 
         String cr = source.findCr();
-
-        if (cr != null) {
-            this.textCr = cr;
-        } else {
-            this.textCr = systemCrStr;
-        }
-
-
+        this.textCr = cr != null ? cr : systemCrStr;
     }
 
     protected void scan1(Reader orginal) throws IOException {
@@ -144,7 +137,6 @@ public class TextParser {
         Configuration.DelimeterHolder sd = new Configuration.DelimeterHolder("@".toCharArray(), null, "<%".toCharArray(), "%>".toCharArray());
 
         Configuration.HtmlTagHolder htmlConfig = new Configuration.HtmlTagHolder();
-        ;
         String text = "{d},{{n}}";
 
         StringReader str = new StringReader(text);

@@ -168,9 +168,8 @@ public class ArrayUtil {
 
     public static void main(String[] args) {
         ArrayUtil util = new ArrayUtil();
-        List list = Arrays.asList(new String[]
-                {"a", "b", "c", "d"});
-        Object[] o = (Object[]) util.range(list.toArray(), 0, 2);
+        List list = Arrays.asList("a", "b", "c", "d");
+        Object[] o = util.range(list.toArray(), 0, 2);
         int a = 1;
     }
 }

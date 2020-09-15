@@ -286,16 +286,14 @@ public class GroupTemplate {
      * 获得脚本
      */
     public Script getScript(Object key) {
-        Script t = loadScriptTemplate(key, this.resourceLoader);
-        return t;
+        return loadScriptTemplate(key, this.resourceLoader);
     }
 
     /**
      * 获得脚本
      */
     public Script getScript(Object key, ResourceLoader loader) {
-        Script t = loadScriptTemplate(key, loader);
-        return t;
+        return loadScriptTemplate(key, loader);
     }
 
 
@@ -346,13 +344,11 @@ public class GroupTemplate {
     }
 
     public BeetlException validateScript(Object key, ResourceLoader loader) {
-        Script t = loadScriptTemplate(key, loader);
-        return t.validate();
+        return loadScriptTemplate(key, loader).validate();
     }
 
     public BeetlException validateScript(Object key) {
-        Script t = loadScriptTemplate(key, this.resourceLoader);
-        return t.validate();
+        return loadScriptTemplate(key, this.resourceLoader).validate();
     }
 
     private Map getSrirptTopScopeVars(Template t) {
@@ -378,12 +374,7 @@ public class GroupTemplate {
 
 
     private Script loadScriptTemplate(Object key, ResourceLoader loader) {
-        Program program = (Program) this.programCache.get(key, k -> {
-            Resource resource = loader.getResource(key);
-            Program prog = this.loadScript(resource);
-            return prog;
-
-        });
+        Program program = (Program) this.programCache.get(key, k -> this.loadScript(loader.getResource(key)));
 
         if (resourceLoader.isModified(program.res)) {
             Resource resource = loader.getResource(key);
@@ -456,11 +447,7 @@ public class GroupTemplate {
     }
 
     private Template getTemplateByLoader(Object key, ResourceLoader loader, ContextBuffer buffers) {
-        Program program = (Program) this.programCache.get(key, k -> {
-            Resource resource = loader.getResource(key);
-            Program loadProgram = this.loadTemplate(resource);
-            return loadProgram;
-        });
+        Program program = (Program) this.programCache.get(key, k -> this.loadTemplate(loader.getResource(key)));
 
         if (resourceLoader.isModified(program.res)) {
             Resource resource = loader.getResource(key);
@@ -468,12 +455,13 @@ public class GroupTemplate {
             this.programCache.set(key, program);
         }
 
-        return buffers == null ? new Template(this, program, this.conf) : new Template(this, program, this.conf, buffers);
+        return buffers == null
+                ? new Template(this, program, this.conf)
+                : new Template(this, program, this.conf, buffers);
     }
 
     public Program getProgram(String key) {
-        Program program = (Program) this.programCache.get(key);
-        return program;
+        return (Program) this.programCache.get(key);
     }
 
     /**
@@ -499,27 +487,21 @@ public class GroupTemplate {
             text.doParse(reader);
 
             Reader scriptReader = new StringReader(text.getScript().toString());
-            Program program = engine.createProgram(res, scriptReader, text.getTextVars(), text.getTextCr(), this);
-            return program;
+            return engine.createProgram(res, scriptReader, text.getTextVars(), text.getTextCr(), this);
 
         } catch (HTMLTagParserException e) {
-            ErrorGrammarProgram ep = new ErrorGrammarProgram(res, this,
-                    text.systemCrStr);
+            ErrorGrammarProgram ep = new ErrorGrammarProgram(res, this, text.systemCrStr);
             ep.setException(e);
             e.pushResource(res);
             return ep;
         } catch (IOException e) {
-            ErrorGrammarProgram ep = new ErrorGrammarProgram(res, this,
-                    String.valueOf(text.cr1));
+            ErrorGrammarProgram ep = new ErrorGrammarProgram(res, this, String.valueOf(text.cr1));
             BeetlException ex = new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR);
             ex.pushResource(res);
-
             ep.setException(ex);
-
             return ep;
         } catch (BeetlException ex) {
-            ErrorGrammarProgram ep = new ErrorGrammarProgram(res, this,
-                    text.systemCrStr);
+            ErrorGrammarProgram ep = new ErrorGrammarProgram(res, this, text.systemCrStr);
             ex.pushResource(res);
             ep.setException(ex);
             return ep;
@@ -531,10 +513,8 @@ public class GroupTemplate {
 
         try {
             Reader scriptReader = res.openReader();
-            Program program = engine.createProgram(res, scriptReader, Collections.EMPTY_MAP,
+            return engine.createProgram(res, scriptReader, Collections.EMPTY_MAP,
                     System.getProperty("line.separator"), this);
-            return program;
-
         } catch (BeetlException ex) {
             ErrorGrammarProgram ep = new ErrorGrammarProgram(res, this, System.getProperty("line.separator"));
             ex.pushResource(res);
@@ -699,8 +679,7 @@ public class GroupTemplate {
     }
 
     public Function getFunction(String name) {
-        Function fn = fnMap.get(name);
-        return fn;
+        return fnMap.get(name);
     }
 
     public Format getFormat(String name) {
@@ -826,12 +805,8 @@ public class GroupTemplate {
         }
 
         public boolean isSupport(Class c, String attributeName) {
-            if ((Map.class.isAssignableFrom(c) || Collection.class.isAssignableFrom(c) || c.isArray())
-                    && attributeName.equals("size")) {
-                return true;
-            } else {
-                return false;
-            }
+            return (Map.class.isAssignableFrom(c) || Collection.class.isAssignableFrom(c) || c.isArray())
+                    && attributeName.equals("size");
         }
     }
 

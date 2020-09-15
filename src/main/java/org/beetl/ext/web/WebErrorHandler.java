@@ -53,7 +53,7 @@ public class WebErrorHandler extends ConsoleErrorHandler {
     @Override
     public void processExcption(BeetlException e, Writer writer) {
         //判断是不是开发者模式,如果不是调用父类方法(默认输出控制台)
-        if (!Boolean.valueOf(e.gt.getConf().getProperty("RESOURCE.autoCheck"))) {
+        if (!Boolean.parseBoolean(e.gt.getConf().getProperty("RESOURCE.autoCheck"))) {
             super.processExcption(e, writer);
         }
         ErrorInfo error = new ErrorInfo(e);
@@ -99,8 +99,8 @@ public class WebErrorHandler extends ConsoleErrorHandler {
         if (content != null) {
             String[] strs = content.split(e.cr);
             int lineNumber = range[0];
-            for (int i = 0; i < strs.length; i++) {
-                msg.append("" + lineNumber).append("|").append(strs[i].trim()).append("\n");
+            for (String str : strs) {
+                msg.append(lineNumber).append("|").append(str.trim()).append("\n");
                 lineNumber++;
             }
         }
@@ -109,7 +109,7 @@ public class WebErrorHandler extends ConsoleErrorHandler {
             msg.append("  ========================").append("\n");
             msg.append("  调用栈:").append("\n");
             for (int i = 0; i < error.getResourceCallStack().size(); i++) {
-                msg.append("  " + error.getResourceCallStack().get(i) + " 行：")
+                msg.append("  ").append(error.getResourceCallStack().get(i)).append(" 行：")
                         .append(error.getTokenCallStack().get(i).line).append("\n");
             }
             Throwable t = error.getCause();

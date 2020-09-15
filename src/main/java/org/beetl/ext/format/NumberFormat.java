@@ -40,15 +40,8 @@ import org.beetl.core.Format;
 public class NumberFormat implements Format {
 
     public String format(Object data, String pattern) {
-        DecimalFormat df = null;
-        if (pattern == null) {
-            df = new DecimalFormat();
-        } else {
-            df = new DecimalFormat(pattern);
-        }
-
+        DecimalFormat df = pattern == null ? new DecimalFormat() : new DecimalFormat(pattern);
         return df.format(data);
-
     }
 
 }

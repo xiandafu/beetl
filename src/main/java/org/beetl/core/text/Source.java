@@ -96,64 +96,48 @@ public class Source {
     }
 
     public boolean hasEscape() {
-        if (p > 0) {
-            if (cs[p - 1] == '\\') {
-                if (p > 1) {
-
-                    if (cs[p - 2] != '\\') {
-                        // 删除最后一个\ \@
-                        removeTextEscape();
-                        return true;
-                    } else {
-                        //删除一个 \\@
-                        removeTextEscape();
-                        return false;
-                    }
-                } else {
-                    // 删除最后一个\ \@
-                    removeTextEscape();
-                    return true;
-                }
-
-            } else {
-                return false;
-            }
-
-        } else {
+        if (p <= 0) {
             return false;
         }
+        if (cs[p - 1] != '\\') {
+            return false;
+        }
+        if (p <= 1) {
+            // 删除最后一个\ \@
+            removeTextEscape();
+            return true;
+        }
+        if (cs[p - 2] == '\\') {
+            //删除一个 \\@
+            removeTextEscape();
+            return false;
+        }
+        // 删除最后一个\ \@
+        removeTextEscape();
+        return true;
     }
-
 
     public boolean hasScriptEscape() {
-        if (p > 0) {
-            if (cs[p - 1] == '\\') {
-                if (p > 1) {
-
-                    if (cs[p - 2] != '\\') {
-                        // 删除最后一个\ \@
-                        removeScriptEscape();
-                        return true;
-                    } else {
-                        //删除一个 \\@
-                        removeScriptEscape();
-                        return false;
-                    }
-                } else {
-                    // 删除最后一个\ \@
-                    removeScriptEscape();
-                    return true;
-                }
-
-            } else {
-                return false;
-            }
-
-        } else {
+        if (p <= 0) {
             return false;
         }
+        if (cs[p - 1] != '\\') {
+            return false;
+        }
+        if (p <= 1) {
+            // 删除最后一个\ \@
+            removeScriptEscape();
+            return true;
+        }
+        if (cs[p - 2] == '\\') {
+            //删除一个 \\@
+            removeScriptEscape();
+            return false;
+        }
+        // 删除最后一个\ \@
+        removeScriptEscape();
+        return true;
     }
-
 
     public void removeScriptEscape() {
         beetlFragment.removeEscape();
@@ -168,8 +152,8 @@ public class Source {
 
     public boolean isMatch(char[] str) {
         int cur = p;
-        for (int i = 0; i < str.length; i++) {
-            if (cur < size && cs[cur] == str[i]) {
+        for (char c : str) {
+            if (cur < size && cs[cur] == c) {
                 cur++;
             } else {
                 return false;

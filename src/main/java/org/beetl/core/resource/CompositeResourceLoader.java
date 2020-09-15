@@ -123,11 +123,7 @@ public class CompositeResourceLoader implements ResourceLoader<String> {
 
     @Override
     public boolean isModified(Resource key) {
-        if (this.autoCheck) {
-            return key.isModified();
-        } else {
-            return false;
-        }
+        return autoCheck && key.isModified();
     }
 
     /**
@@ -192,11 +188,9 @@ public class CompositeResourceLoader implements ResourceLoader<String> {
             return id;
         //判断如果是同一前缀，则需要考虑相对路径
         ResourceLoaderKeyEntry rlke = this.match(id);
-        if (resource.getResourceLoader() == rlke.getResourceLoader()) {
-            return (String) resource.getResourceLoader().getResourceId(resource, id);
-        } else {
-            return id;
-        }
+        return (resource.getResourceLoader() == rlke.getResourceLoader())
+                ? (String) resource.getResourceLoader().getResourceId(resource, id)
+                : id;
     }
 
     @Override

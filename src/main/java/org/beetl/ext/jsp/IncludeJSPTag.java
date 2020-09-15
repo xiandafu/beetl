@@ -78,24 +78,15 @@ public class IncludeJSPTag extends Tag {
     }
 
     protected String getPrefix(File root) {
-
         ResourceLoader rs = ctx.gt.getResourceLoader();
-        String loaderRoot = null;
-        if (rs instanceof FileResourceLoader) {
-            loaderRoot = ((FileResourceLoader) rs).getRoot();
-        } else {
+        if(!(rs instanceof FileResourceLoader)) {
             return "";
         }
-
+        String loaderRoot = ((FileResourceLoader) rs).getRoot();
         File loaderFileRoot = new File(loaderRoot);
-
-        if (loaderFileRoot.equals(root)) {
-            return "";
-        } else {
-            int len = root.getAbsolutePath().length();
-            return loaderFileRoot.getAbsolutePath().substring(len);
-
-        }
+        return loaderFileRoot.equals(root)
+                ? ""
+                : loaderFileRoot.getAbsolutePath().substring(root.getAbsolutePath().length());
     }
 
 }

@@ -58,8 +58,6 @@ public class BlockStatement extends Statement implements IGoto {
                 node.execute(ctx);
             }
         }
-
-        return;
     }
 
     @Override

@@ -85,11 +85,7 @@ public class NativeCallExpression extends Expression {
                     BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "无此属性", e);
                     be.pushToken(GrammarToken.createToken(attr, token.line));
                     throw be;
-                } catch (IllegalArgumentException e) {
-                    BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "访问属性出错", e);
-                    be.pushToken(GrammarToken.createToken(attr, token.line));
-                    throw be;
-                } catch (IllegalAccessException e) {
+                } catch (IllegalArgumentException | IllegalAccessException e) {
                     BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "访问属性出错", e);
                     be.pushToken(GrammarToken.createToken(attr, token.line));
                     throw be;

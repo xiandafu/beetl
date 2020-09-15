@@ -312,9 +312,8 @@ class VarDescrption {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("").append(attrList).append("\n");
+        sb.append(attrList).append("\n");
         sb.append("where:");
-        ;
         for (ASTNode w : where) {
             sb.append("索引：").append(((IVarIndex) w).getVarIndex()).append(",").append(w.token.line).append("行");
             sb.append(";");

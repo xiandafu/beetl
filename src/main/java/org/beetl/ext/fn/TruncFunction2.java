@@ -73,20 +73,14 @@ public class TruncFunction2 implements Function {
 
         if (pos == null) {
             return str.substring(0, index);
-        } else {
-            int p = pos.intValue();
-            if (p == 0) {
-                throw new IllegalArgumentException("参数不能为0");
-            }
-            //小数位
-            int dig = str.length() - index - 1;
-            if (dig >= p) {
-                return str.substring(0, index + p + 1);
-            } else {
-                return str;
-            }
-
         }
+        int p = pos.intValue();
+        if (p == 0) {
+            throw new IllegalArgumentException("参数不能为0");
+        }
+        //小数位
+        int dig = str.length() - index - 1;
+        return dig >= p ? str.substring(0, index + p + 1) : str;
 
     }
 

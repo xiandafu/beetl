@@ -23,10 +23,7 @@ public class SourceFragement {
             //跨行的script
             trimSpace();
             moveNext(fr);
-            return;
         }
-
-
     }
 
     /**
@@ -34,14 +31,8 @@ public class SourceFragement {
      */
     protected void moveNext(Fragment fr) {
         startLineIndex = list.size();
-        if (fr instanceof CRFragment) {
-            startLine = fr.endLine + 1;
-        } else {
-            startLine = fr.endLine;
-        }
-
+        startLine = fr instanceof CRFragment ? fr.endLine + 1 : fr.endLine;
     }
-
 
     /**
      *

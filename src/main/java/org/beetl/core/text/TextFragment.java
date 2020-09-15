@@ -32,7 +32,7 @@ public class TextFragment extends Fragment {
             return script;
         }
         Integer varName = source.getParser().getRandomeTextVarName();
-        script.append("<$" + varName + ">>");
+        script.append("<$").append(varName).append(">>");
         for (int i = 0; i < crCount; i++) {
             script.append(TextParser.cr1);
         }
@@ -52,20 +52,15 @@ public class TextFragment extends Fragment {
                 return new PlaceHolderFragment(source);
             } else if (source.isScriptStart()) {
                 this.setEndLine();
-                ScriptBlockFragment scriptFragement = new ScriptBlockFragment(source);
-                return scriptFragement;
+                return new ScriptBlockFragment(source);
             } else if (source.isHtmlTagStart()) {
                 this.setEndLine();
-                HtmlTagStartFragment htmlTagStart = new HtmlTagStartFragment(source);
-                return htmlTagStart;
-
+                return new HtmlTagStartFragment(source);
             } else if (source.isHtmlTagEnd()) {
                 this.setEndLine();
-                HtmlTagEndFragment htmlTagEndFragment = new HtmlTagEndFragment(source);
-                return htmlTagEndFragment;
+                return new HtmlTagEndFragment(source);
             } else if (source.isCrStart()) {
-                CRFragment crFragment = new CRFragment(source);
-                return crFragment;
+                return new CRFragment(source);
             } else {
                 char c = source.consumeAndGet();
                 text.append(c);

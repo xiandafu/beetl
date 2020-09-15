@@ -60,10 +60,10 @@ public class DefaultNativeSecurityManager implements NativeSecurityManager {
         }
 
         if (pkgName.startsWith("java.lang")) {
-            if (className.equals("Runtime") || className.equals("Process") || className.equals("ProcessBuilder")
-                    || className.equals("System")) {
-                return false;
-            }
+            return !className.equals("Runtime")
+                    && !className.equals("Process")
+                    && !className.equals("ProcessBuilder")
+                    && !className.equals("System");
         }
 
         return true;

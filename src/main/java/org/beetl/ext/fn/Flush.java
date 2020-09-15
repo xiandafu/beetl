@@ -14,8 +14,7 @@ public class Flush implements Function {
             ctx.byteWriter.flush();
             return null;
         } catch (IOException e) {
-            BeetlException be = new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR, e.getMessage(), e);
-            throw be;
+            throw new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR, e.getMessage(), e);
         }
     }
 

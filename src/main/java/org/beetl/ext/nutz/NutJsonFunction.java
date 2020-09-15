@@ -19,7 +19,7 @@ public class NutJsonFunction implements Function {
                 return Json.toJson(paras[0], JsonFormat.compact());
             case 2:
                 Object t = paras[1];
-                if (t != null && t instanceof String) {
+                if (t instanceof String) {
                     if ("full".equals(t)) {
                         return Json.toJson(paras[0], JsonFormat.full());
                     }

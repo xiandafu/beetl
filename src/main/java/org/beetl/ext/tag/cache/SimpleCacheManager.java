@@ -93,15 +93,7 @@ public class SimpleCacheManager implements CacheManager {
         lock.readLock().lock();
         try {
             CachedEntry entry = map.get(key);
-            if (entry != null && entry.sr.get() != null) {
-                if (entry.disableTime < System.currentTimeMillis()) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
+            return (entry == null || entry.sr.get() == null) || entry.disableTime < System.currentTimeMillis();
         } finally {
             lock.readLock().unlock();
         }

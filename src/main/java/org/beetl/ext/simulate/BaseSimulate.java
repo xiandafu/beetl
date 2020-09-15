@@ -44,11 +44,7 @@ public class BaseSimulate {
      */
     protected String getCommonValueFile(HttpServletRequest hq, HttpServletResponse response) {
         String common = base + "/common.var";
-        if (gt.getResourceLoader().exist(common)) {
-            return common;
-        } else {
-            return null;
-        }
+        return gt.getResourceLoader().exist(common) ? common : null;
     }
 
     protected void output(String result, HttpServletResponse response) {
@@ -64,9 +60,8 @@ public class BaseSimulate {
         if (key.equals("session")) {
             HttpSession session = hq.getSession();
             Map map = (Map) value;
-            Iterator it = map.keySet().iterator();
-            while (it.hasNext()) {
-                String sessionKey = (String) it.next();
+            for (Object o : map.keySet()) {
+                String sessionKey = (String) o;
                 Object sessionValue = map.get(sessionKey);
                 session.setAttribute(sessionKey, sessionValue);
             }

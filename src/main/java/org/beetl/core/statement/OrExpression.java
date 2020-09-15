@@ -19,11 +19,7 @@ public class OrExpression extends Expression {
     }
 
     public Object evaluate(Context ctx) {
-        if (ALU.isTrue(exp1.evaluate(ctx), exp1)) {
-            return Boolean.TRUE;
-        } else {
-            return ALU.isTrue(exp2.evaluate(ctx), exp2);
-        }
+        return ALU.isTrue(exp1.evaluate(ctx), exp1) ? Boolean.TRUE : ALU.isTrue(exp2.evaluate(ctx), exp2);
     }
 
 

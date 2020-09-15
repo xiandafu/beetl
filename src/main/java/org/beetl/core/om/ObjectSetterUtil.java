@@ -37,19 +37,17 @@ public class ObjectSetterUtil {
             }
 
         } else {
-
+            String keyStr = (String) key;
             Class c = o.getClass();
-            MethodInvoker invoker = ObjectUtil.getInvokder(c, (String) key);
+            MethodInvoker invoker = ObjectUtil.getInvokder(c, keyStr);
             if (invoker != null) {
                 invoker.set(o, value);
             } else {
-                BeetlException ex = null;
-                if (ObjectUtil.hasPrivateAttribute(c, (String) key)) {
-                    ex = new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND_PRIVATE, (String) key);
+                if (ObjectUtil.hasPrivateAttribute(c, keyStr)) {
+                    throw new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND_PRIVATE, keyStr);
                 } else {
-                    ex = new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND, (String) key);
+                    throw new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND, keyStr);
                 }
-                throw ex;
             }
 
         }
