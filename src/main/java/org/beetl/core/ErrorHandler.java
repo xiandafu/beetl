@@ -39,10 +39,12 @@ import org.beetl.core.exception.BeetlException;
  */
 public interface ErrorHandler {
 
-
     /**
      * 处理错误，错误输出到os流
+     *
+     * @param beeException 异常信息
+     * @param writer        异常信息通过 {@param writer} 输出
      */
-    void processExcption(BeetlException beeExceptionos, Writer writer);
+    void processExcption(BeetlException beeException, Writer writer);
 
 }

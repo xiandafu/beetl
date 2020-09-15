@@ -39,13 +39,16 @@ import org.beetl.core.statement.Program;
  */
 public interface TemplateEngine {
     /**
+     * 创建脚本运行程序，目前存在 默认/快速/在线 三种脚本运行程序
+     *
      * @param resource 模板id
      * @param input    模板转化成脚本后的内容
      * @param textMap  静态文本
      * @param cr       模板换行符
      * @param gt       模板组
+     * @return 脚本运行程序
      */
     Program createProgram(Resource resource, Reader input, Map<Integer, String> textMap, String cr,
-                                 GroupTemplate gt);
+                          GroupTemplate gt);
 
 }

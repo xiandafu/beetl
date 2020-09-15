@@ -30,19 +30,46 @@ package org.beetl.core.cache;
 import java.util.function.Function;
 
 /**
- * Cache标准接口,每个方法都必须线程安全
+ * 缓存的标准接口，每个方法都必须线程安全
  *
  * @author xiandafu
  */
 public interface Cache {
+    /**
+     * 通过 {@param key} 从缓存中获取对应的 value
+     *
+     * @param key 键，有可能为 null
+     * @return 返回缓存中 {@param key} 所对应的 value，有可能为 null
+     */
     Object get(Object key);
 
+    /**
+     * 通过 {@param key} 从缓存中获取对应的 value；
+     * 如果获取的value为null，则将 {@param function#apply} 方法的返回值作为newValue，添加到缓存中，并返回
+     *
+     * @param key      键，有可能为 null
+     * @param function 函数，在通过key获取value为null时，将执行 {@param function#apply} 方法
+     * @return 如果获取的value为null，则将 {@param function#apply} 方法的返回值作为newValue，添加到缓存中，并返回
+     */
     Object get(Object key, Function function);
 
+    /**
+     * 移除缓存中 {@param key} 所对应的 value
+     *
+     * @param key 键，有可能为null
+     */
     void remove(Object key);
 
+    /**
+     * 设置缓存中的键值对，如果key已存在，则更新value
+     *
+     * @param key   键
+     * @param value 新值
+     */
     void set(Object key, Object value);
 
+    /**
+     * 清理缓存
+     */
     void clearAll();
-
 }

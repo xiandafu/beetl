@@ -30,19 +30,21 @@ package org.beetl.core;
 import java.io.IOException;
 
 /**
- * 对于模板变量或者标签等将输出暂存的地方
+ * 模板变量或者标签的暂存区
  *
  * @author xiandafu
  */
 public interface BodyContent {
     /**
-     * 模板或者标签的内容
+     * 获取模板或者标签的内容
+     *
+     * @return 模板或标签的内容
      */
     String getBody();
 
     /**
-     * 将内容输出，
+     * 通过 {@param out} 写出暂存的内容
      */
-    void fill(ByteWriter bw) throws IOException;
+    void fill(ByteWriter out) throws IOException;
 
 }

@@ -34,10 +34,10 @@ package org.beetl.core.resource;
  */
 public interface Matcher {
     /**
-     * 检查key是否匹配（满足）某种规则
+     * 检查key是否匹配(满足)某种规则
      *
      * @param key view路径
-     * @return 匹配该规则，则返回一个新的key，否则返回null
+     * @return 如果匹配该规则，则返回一个新的 key ，否则返回 null
      */
     String match(String key);
 }
