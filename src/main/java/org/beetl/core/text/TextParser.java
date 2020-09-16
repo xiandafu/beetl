@@ -28,7 +28,6 @@ public class TextParser {
     // 操作系统回车换行符号
     public final static String systemCrStr = System.getProperty("line.separator");
 
-
     SourceFragement sourceFragement = new SourceFragement();
     HtmlTagConfig htmlTagConfig = null;
     //文本里的回车
@@ -106,9 +105,7 @@ public class TextParser {
             }
         }
 
-
     }
-
 
     public StringBuilder getScript() {
         return script;
@@ -125,7 +122,6 @@ public class TextParser {
     public void setTextVars(Map<Integer, String> textVars) {
         this.textVars = textVars;
     }
-
 
     public String getTextCr() {
         return textCr;

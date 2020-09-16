@@ -69,7 +69,6 @@ public class GroupTemplate {
             ? Thread.currentThread().getContextClassLoader()
             : GroupTemplate.class.getClassLoader();
 
-
     AABuilder attributeAccessFactory = new AABuilder();
     ResourceLoader resourceLoader = null;
     Configuration conf = null;
@@ -96,7 +95,6 @@ public class GroupTemplate {
 
     // 用于解析html tag得属性，转化为符合js变量名字
     AttributeNameConvert htmlTagAttrNameConvert = null;
-
 
     /**
      * 使用默认的配置和默认的模板资源加载器{@link ClasspathResourceLoader}，
@@ -182,7 +180,6 @@ public class GroupTemplate {
         }
 
         htmlTagAttrNameConvert = (AttributeNameConvert) ObjectUtil.instance(conf.htmlTagAttributeConvert, classLoader);
-
 
     }
 
@@ -281,7 +278,6 @@ public class GroupTemplate {
 
     }
 
-
     /**
      * 获得脚本
      */
@@ -295,7 +291,6 @@ public class GroupTemplate {
     public Script getScript(Object key, ResourceLoader loader) {
         return loadScriptTemplate(key, loader);
     }
-
 
     /**
      * 执行某个脚本，参数是paras，返回的是顶级变量
@@ -313,7 +308,6 @@ public class GroupTemplate {
     public Map runScript(Object key, Map<String, Object> paras, Writer w) throws BeetlException {
         return this.runScript(key, paras, w, this.resourceLoader);
     }
-
 
     /**
      * 执行某个脚本，参数是paras，返回的是顶级变量
@@ -372,7 +366,6 @@ public class GroupTemplate {
         return result;
     }
 
-
     private Script loadScriptTemplate(Object key, ResourceLoader loader) {
         Program program = (Program) this.programCache.get(key, k -> this.loadScript(loader.getResource(key)));
 
@@ -409,7 +402,6 @@ public class GroupTemplate {
         return template;
     }
 
-
     public Template getTemplate(Object key, Context parent) {
         Template template = this.getTemplateByLoader(key, this.resourceLoader, parent.localBuffer);
         template.isRoot = false;
@@ -424,7 +416,6 @@ public class GroupTemplate {
 
         return getTemplateByLoader(key, this.resourceLoader, null);
     }
-
 
     /**
      * 获取模板的ajax片段，
@@ -625,7 +616,6 @@ public class GroupTemplate {
                 this.registerFunction(fw.functionName, fw);
             }
         }
-
 
     }
 

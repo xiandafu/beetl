@@ -68,11 +68,9 @@ public class GrammarCreator {
         return disable;
     }
 
-
     public void setDisable(HashSet<String> disable) {
         this.disable = disable;
     }
-
 
     /**
      * 参考BeetlLexer.g4
@@ -80,7 +78,6 @@ public class GrammarCreator {
     public void disable(String grammar) {
         disable.add(grammar);
     }
-
 
     public VarAssignStatementSeq createVarAssignSeq(VarAssignStatement[] assings) {
         check("VarAssignSeq");
@@ -178,7 +175,6 @@ public class GrammarCreator {
         return new TagVarBindingStatement(tagName, expList, block, varDefine, token);
     }
 
-
     public SwitchStatement createSwitch(Expression value, LinkedHashMap<Expression, BlockStatement> map,
                                         BlockStatement defaultBlock, GrammarToken token) {
         check("Switch");
@@ -195,7 +191,6 @@ public class GrammarCreator {
         check("Ajax");
         return new AjaxStatement(block, token, defaultRender);
     }
-
 
     /* Express */
 
@@ -302,6 +297,5 @@ public class GrammarCreator {
             throw new BeetlException(BeetlException.GRAMMAR_NOT_ALLOWED, "语法 " + ast + "不允许");
         }
     }
-
 
 }

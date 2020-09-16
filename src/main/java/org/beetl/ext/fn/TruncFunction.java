@@ -61,5 +61,4 @@ public class TruncFunction implements Function {
         }
     }
 
-
 }

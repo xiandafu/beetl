@@ -56,7 +56,6 @@ public class Script<T> {
     protected BeetlException ex = null;
     private boolean done = false;
 
-
     protected Script(GroupTemplate gt, Program program, Configuration cf) {
         this.program = program;
         this.cf = cf;
@@ -81,7 +80,6 @@ public class Script<T> {
             this.errorInfo = new ErrorInfo(ex);
         }
         done = true;
-
 
     }
 
@@ -145,7 +143,6 @@ public class Script<T> {
 
     }
 
-
     public void renderTo(ByteWriter byteWriter) {
 
         try {
@@ -169,9 +166,7 @@ public class Script<T> {
 
         }
 
-
     }
-
 
     /**
      * 为模板绑定一个变量，infer是true
@@ -213,6 +208,5 @@ public class Script<T> {
         ErrorGrammarProgram error = (ErrorGrammarProgram) program;
         return error.getException();
     }
-
 
 }

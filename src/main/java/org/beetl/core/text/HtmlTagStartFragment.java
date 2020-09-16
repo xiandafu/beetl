@@ -68,7 +68,6 @@ public class HtmlTagStartFragment extends ScriptFragment {
                 script.setLength(script.length() - 1);
             }
 
-
             if (html.hasVarBinding || html.hasExportBinding || html.hasRootExportBinding) {
                 if (map.size() == 0) {
                     // 保持三个参数，第一个为标签函数名，第二个为属性，第三个为申明的变量
@@ -197,6 +196,5 @@ public class HtmlTagStartFragment extends ScriptFragment {
         appendCr = true;
 
     }
-
 
 }

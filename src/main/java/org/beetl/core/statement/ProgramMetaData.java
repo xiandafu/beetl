@@ -78,7 +78,6 @@ public class ProgramMetaData implements java.io.Serializable {
      */
     public Map<String, String[]> globalVarAttr = new HashMap<String, String[]>();
 
-
     public Map<String, AjaxStatement> ajaxs = null;
 
     // 是否存在tagFunction,且嵌套
@@ -131,7 +130,6 @@ public class ProgramMetaData implements java.io.Serializable {
             }
         }
     }
-
 
     /**
      * 获取模板顶级临时变量的在变量素组里的索引

@@ -65,5 +65,4 @@ public class HtmlTagEndFragment extends ScriptFragment {
 
     }
 
-
 }

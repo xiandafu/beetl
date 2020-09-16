@@ -59,7 +59,6 @@ public class TruncFunction2 implements Function {
             throw new UnsupportedOperationException("truncate :" + obj.getClass().getName());
         }
 
-
     }
 
     protected String truncateNumber(Number data, Number pos) {

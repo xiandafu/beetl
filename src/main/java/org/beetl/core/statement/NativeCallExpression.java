@@ -180,7 +180,6 @@ public class NativeCallExpression extends Expression {
         return targetObj;
     }
 
-
     private void checkNull(Object o, NativeNode node) {
         if (o == null) {
 

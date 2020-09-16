@@ -40,7 +40,6 @@ import org.beetl.core.statement.Statement;
  */
 public class BlockStatementOptimal extends BlockStatement {
 
-
     public BlockStatementOptimal(Statement[] nodes, GrammarToken token) {
         super(nodes, token);
     }
@@ -49,6 +48,5 @@ public class BlockStatementOptimal extends BlockStatement {
         nodes[0].execute(ctx);
 
     }
-
 
 }

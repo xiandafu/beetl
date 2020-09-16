@@ -76,7 +76,6 @@ public abstract class SimpleCrossFilter implements Filter {
 
     }
 
-
     /**
      * 返回一个GroupTemlate
      */

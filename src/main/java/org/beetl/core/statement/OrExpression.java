@@ -22,5 +22,4 @@ public class OrExpression extends Expression {
         return ALU.isTrue(exp1.evaluate(ctx), exp1) ? Boolean.TRUE : ALU.isTrue(exp2.evaluate(ctx), exp2);
     }
 
-
 }

@@ -76,7 +76,6 @@ public class IncludeResourceHtmlTag extends Tag {
         return gt.getResourceLoader().getResourceId(sibling, this.getTargetResource());
     }
 
-
     protected String getTargetResource() {
         @SuppressWarnings("unchecked")
         String targetResourceId = (String) ((Map<String, Object>) this.args[1]).get("file");

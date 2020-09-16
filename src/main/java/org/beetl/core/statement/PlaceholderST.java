@@ -73,7 +73,6 @@ public class PlaceholderST extends Statement {
 
     }
 
-
     public static interface Output {
         public void write(Context ctx, Object value) throws IOException;
     }
@@ -81,6 +80,5 @@ public class PlaceholderST extends Statement {
     public FormatExpression getFormat() {
         return format;
     }
-
 
 }

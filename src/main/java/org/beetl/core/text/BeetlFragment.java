@@ -12,7 +12,6 @@ public abstract class BeetlFragment extends Fragment {
         source.beetlFragment = this;
     }
 
-
     public void removeEscape() {
         script.setLength(script.length() - 1);
     }

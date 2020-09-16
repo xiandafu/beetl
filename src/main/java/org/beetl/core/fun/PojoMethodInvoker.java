@@ -59,7 +59,6 @@ public class PojoMethodInvoker implements MethodInvoker {
     @Override
     public void set(Object ins, Object value) {
 
-
         try {
             pd.getWriteMethod().invoke(ins, value);
         } catch (IllegalAccessException e) {
@@ -74,6 +73,5 @@ public class PojoMethodInvoker implements MethodInvoker {
             throw new BeetlException(BeetlException.ATTRIBUTE_INVALID, "属性访问异常 " + pd, e.getTargetException());
         }
     }
-
 
 }

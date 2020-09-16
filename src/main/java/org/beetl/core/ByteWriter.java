@@ -28,7 +28,7 @@
 package org.beetl.core;
 
 /*
- 
+
  Copyright (c) 2011-2013  闲大赋 (李家智)
  All rights reserved.
 
@@ -152,6 +152,5 @@ public abstract class ByteWriter {
     public ByteWriter getParent() {
         return parent;
     }
-
 
 }

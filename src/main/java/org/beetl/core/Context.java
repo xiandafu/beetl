@@ -74,7 +74,6 @@ public class Context {
     public Map<String, Object> globalVar = new HashMap<String, Object>();
     ;
 
-
     /**
      * 输出模式
      */
@@ -113,7 +112,6 @@ public class Context {
      */
     public ContextBuffer localBuffer = null;
 
-
     /**
      * 判断全局变量是否存在
      */
@@ -132,7 +130,6 @@ public class Context {
     public void set(String key, Object value) {
         globalVar.put(key, value);
     }
-
 
     /**
      * 得到全局变量

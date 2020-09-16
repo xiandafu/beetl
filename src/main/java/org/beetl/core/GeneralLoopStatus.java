@@ -48,7 +48,6 @@ public class GeneralLoopStatus implements ILoopStatus {
     int index = 0;
     boolean hasData = false;
 
-
     public static ILoopStatus getIteratorStatus(Object o) {
         if (o instanceof Collection) {
             return new GeneralLoopStatus((Collection) o);
@@ -68,7 +67,6 @@ public class GeneralLoopStatus implements ILoopStatus {
 
         }
     }
-
 
     public GeneralLoopStatus(Enumeration e) {
         List list = Collections.list(e);

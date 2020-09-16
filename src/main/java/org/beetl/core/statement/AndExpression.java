@@ -49,5 +49,4 @@ public class AndExpression extends Expression {
         return ALU.isTrue(exp1.evaluate(ctx), exp1) ? ALU.isTrue(exp2.evaluate(ctx), exp2) : Boolean.FALSE;
     }
 
-
 }

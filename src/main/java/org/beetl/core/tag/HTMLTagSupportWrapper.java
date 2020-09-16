@@ -55,7 +55,6 @@ public class HTMLTagSupportWrapper extends Tag {
         return "/" + this.tagRoot + "/" + path + "." + this.tagSuffix;
     }
 
-
     protected void callTag(TagFactory tagFactory) {
 
         Tag tag = tagFactory.createTag();
@@ -65,11 +64,9 @@ public class HTMLTagSupportWrapper extends Tag {
 
     }
 
-
     public Map getAttrs() {
         return args.length == 1 ? Collections.emptyMap() : (Map) args[1];
     }
-
 
     protected void callHtmlTag(String path) {
         Template t = null;

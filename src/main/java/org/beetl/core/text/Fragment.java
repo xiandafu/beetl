@@ -7,7 +7,6 @@ public abstract class Fragment {
     protected int endLine;
     private FragmentStatus status = FragmentStatus.normal;
 
-
     public Fragment(Source source) {
         this.source = source;
         this.setStartLine();
@@ -15,9 +14,7 @@ public abstract class Fragment {
 
     public abstract StringBuilder getScript();
 
-
     public abstract Fragment consumeAndReturnNext();
-
 
     protected Fragment findNext() {
         if (source.isEof()) {
@@ -47,7 +44,6 @@ public abstract class Fragment {
         this.startLine = source.curLine;
     }
 
-
     protected void setEndLine() {
         this.endLine = source.curLine;
     }
@@ -64,6 +60,5 @@ public abstract class Fragment {
     public String toString() {
         return this.getClass().getSimpleName() + " from " + this.startLine + " to " + this.endLine;
     }
-
 
 }

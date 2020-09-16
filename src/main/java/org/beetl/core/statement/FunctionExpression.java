@@ -133,7 +133,6 @@ public class FunctionExpression extends Expression {
 
     }
 
-
     private Resource getResource(GroupTemplate gt, String name) {
         Map<String, String> resourceMap = gt.getConf().getResourceMap();
         String functionSuffix = resourceMap.get("functionSuffix");

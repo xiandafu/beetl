@@ -31,5 +31,4 @@ public class PlaceHolderFragment extends BeetlFragment {
         return source.isEof() ? null : super.findNext();
     }
 
-
 }

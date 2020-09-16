@@ -21,7 +21,6 @@ public class CRFragment extends Fragment {
         return script;
     }
 
-
     @Override
     public Fragment consumeAndReturnNext() {
         //回车算上一行内容
@@ -43,6 +42,5 @@ public class CRFragment extends Fragment {
         }
         return null;
     }
-
 
 }

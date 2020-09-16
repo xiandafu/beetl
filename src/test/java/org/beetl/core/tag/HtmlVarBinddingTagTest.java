@@ -19,7 +19,6 @@ public class HtmlVarBinddingTagTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/tag/binding/tagbinding_expected.html"), str);
 
-	
 	}
 
 	@Test
@@ -33,7 +32,6 @@ public class HtmlVarBinddingTagTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/tag/binding/tagloopbinding_expected.html"), str);
 
-	
 	}
 
 	@Test
@@ -47,7 +45,6 @@ public class HtmlVarBinddingTagTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/tag/binding/tagseqbinding_expected.html"), str);
 
-		
 	}
 
 	@Test
@@ -61,9 +58,8 @@ public class HtmlVarBinddingTagTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/tag/binding/tagAttr_expected.html"), str);
 
-	
 	}
-	
+
 	@Test
 	public void testBindingExport() throws Exception
 	{
@@ -75,7 +71,6 @@ public class HtmlVarBinddingTagTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/tag/binding/tagAttrExport_expected.html"), str);
 
-	
 	}
 
 }

@@ -2,7 +2,6 @@ package org.beetl.core.text;
 
 public class ScriptBlockFragment extends ScriptFragment {
 
-
     public ScriptBlockFragment(Source source) {
         super(source);
         this.source = source;
@@ -26,6 +25,5 @@ public class ScriptBlockFragment extends ScriptFragment {
         script.append(TextParser.cr1);
 
     }
-
 
 }

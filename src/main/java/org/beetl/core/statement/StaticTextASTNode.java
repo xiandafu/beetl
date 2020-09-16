@@ -60,5 +60,4 @@ public final class StaticTextASTNode extends Statement {
 
     }
 
-
 }

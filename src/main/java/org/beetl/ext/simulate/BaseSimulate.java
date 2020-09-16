@@ -38,7 +38,6 @@ public class BaseSimulate {
 
     }
 
-
     /**
      * 得出公用的脚本文件，默认是在在webroot目录下的/values/common.var
      */
@@ -70,7 +69,6 @@ public class BaseSimulate {
             hq.setAttribute(key, value);
         }
     }
-
 
     protected Map getScriptParas(HttpServletRequest request, HttpServletResponse response) {
         Map map = new HashMap();

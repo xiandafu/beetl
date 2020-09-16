@@ -56,7 +56,6 @@ public class Configuration {
     /** 模板占位结束符号 */
     String placeholderEnd = "}";
 
-
     String placeholderStart2 = null;
     /** 模板占位结束符号 */
     String placeholderEnd2 = null;
@@ -65,7 +64,6 @@ public class Configuration {
     String statementStart = "<%";
     /** 控制语句结束符号 */
     String statementEnd = "%>";
-
 
     /** 控制语句起始符号 */
     String statementStart2 = null;
@@ -108,7 +106,6 @@ public class Configuration {
      */
     String htmlTagBindingAttribute = "var";
 
-
     String htmlTagAttributeConvert = "org.beetl.core.text.DefaultAttributeNameConvert";
 
     /**
@@ -121,12 +118,10 @@ public class Configuration {
      */
     String webAppExt = null;
 
-
     // html方法和html标签是否使用特殊的定界符，如模板使用简介的@和回车,html 标签和html tag使用<%%>
     boolean hasFunctionLimiter = false;
     String functionLimiterStart = null;
     String functionLimiterEnd = null;
-
 
     // 关于引擎的设置
 
@@ -156,7 +151,6 @@ public class Configuration {
      * 模板是否整体使用安全输出功能，如果是，则不存在的值返回空，而不是报错
      */
     boolean safeOutput = false;
-
 
     public static String DELIMITER_PLACEHOLDER_START = "DELIMITER_PLACEHOLDER_START";
     public static String DELIMITER_PLACEHOLDER_END = "DELIMITER_PLACEHOLDER_END";
@@ -194,24 +188,20 @@ public class Configuration {
     DelimeterHolder sd = null;
     HtmlTagHolder tagConf = null;
 
-
     ClassLoader classLoader = Thread.currentThread().getContextClassLoader() != null
             ? Thread.currentThread().getContextClassLoader()
             : Configuration.class.getClassLoader();
-
 
     public Configuration() throws IOException {
         initDefault();
 
     }
 
-
     public Configuration(Properties ps) throws IOException {
         initDefault();
         parseProperties(ps);
 
     }
-
 
     public void build() {
         buildDelimeter();
@@ -235,7 +225,6 @@ public class Configuration {
         }
     }
 
-
     public void add(File path) throws IOException {
         Properties ps = new Properties();
         ps.load(new FileReader(path));
@@ -257,7 +246,6 @@ public class Configuration {
             String value = (String) entry.getValue();
             setValue(key, value == null ? null : value.trim());
         }
-
 
     }
 
@@ -496,7 +484,6 @@ public class Configuration {
         this.statementEnd = statementEnd;
     }
 
-
     public String getPlaceholderStart2() {
         return placeholderStart2;
     }
@@ -529,7 +516,6 @@ public class Configuration {
         this.statementEnd2 = statementEnd2;
     }
 
-
     public String getHtmlTagFlag() {
         return htmlTagFlag;
     }
@@ -538,16 +524,13 @@ public class Configuration {
         this.htmlTagFlag = htmlTagFlag;
     }
 
-
     public DelimeterHolder getPlaceHolderDelimeter() {
         return pd;
     }
 
-
     public DelimeterHolder getScriptDelimeter() {
         return sd;
     }
-
 
     public HtmlTagHolder getTagConf() {
         return tagConf;
@@ -556,7 +539,6 @@ public class Configuration {
     public void setTagConf(HtmlTagHolder tagConf) {
         this.tagConf = tagConf;
     }
-
 
     public boolean isHtmlTagSupport() {
         return isHtmlTagSupport;
@@ -653,7 +635,6 @@ public class Configuration {
     public void setNativeSecurity(String nativeSecurity) {
         this.nativeSecurity = nativeSecurity;
     }
-
 
     public String getWebAppExt() {
         return webAppExt;
@@ -803,7 +784,6 @@ public class Configuration {
                     statementEnd != null ? statementEnd.toCharArray() : null);
         }
 
-
         tagConf = new HtmlTagHolder(getHtmlTagStart(), getHtmlTagEnd(), getHtmlTagBindingAttribute(), this.isHtmlTagSupport);
 
     }
@@ -837,7 +817,6 @@ public class Configuration {
         public boolean isSupport() {
             return support;
         }
-
 
         public HtmlTagConfig create() {
             return new HtmlTagConfig(htmlTagStart, htmlTagEnd, htmlTagBindingAttribute);

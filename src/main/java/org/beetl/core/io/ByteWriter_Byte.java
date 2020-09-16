@@ -28,7 +28,7 @@
 package org.beetl.core.io;
 
 /*
- 
+
  Copyright (c) 2011-2013  闲大赋 (李家智)
  All rights reserved.
 

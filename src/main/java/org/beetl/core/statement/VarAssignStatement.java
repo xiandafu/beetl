@@ -57,5 +57,4 @@ public class VarAssignStatement extends Statement implements IVarIndex {
         this.varIndex = varIndex;
     }
 
-
 }

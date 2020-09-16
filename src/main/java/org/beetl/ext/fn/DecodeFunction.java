@@ -69,13 +69,11 @@ public class DecodeFunction implements Function {
         }
         return unwrap(ret, ctx);
 
-
     }
 
     private boolean same(Object a, Object b, Context ctx) {
         Object real = unwrap(b, ctx);
         return ALU.equals(a, real);
-
 
     }
 

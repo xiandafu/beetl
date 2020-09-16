@@ -19,8 +19,6 @@ public class IncludeTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/tag/include_expected.html"), str);
 
-	
-
 	}
 
 	@Test

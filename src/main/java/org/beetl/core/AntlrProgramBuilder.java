@@ -211,7 +211,6 @@ public class AntlrProgramBuilder {
 
     GrammarCreator gc;
 
-
     public AntlrProgramBuilder(GroupTemplate gt, GrammarCreator gc) {
         this.gt = gt;
         this.gc = gc;
@@ -249,7 +248,6 @@ public class AntlrProgramBuilder {
         return data;
 
     }
-
 
     private ProgramMetaData buildAjaxBlock(ProgramBuilderContext pbCtx, BlockStatement templateBlock) {
         ProgramMetaData local = new ProgramMetaData();
@@ -406,7 +404,6 @@ public class AntlrProgramBuilder {
                 throw be;
             }
 
-
         }
 
         BlockContext blockCtx = ajaxCtx.block();
@@ -430,7 +427,6 @@ public class AntlrProgramBuilder {
         return ajaxStat;
     }
 
-
     protected void reParseAjax(AjaxStatement ajaxStat, BlockContext blockCtx) {
         ProgramBuilderContext templateCtx = this.pbCtx;
         //在来一次，将Ajax作为一个单独模板解析
@@ -440,7 +436,6 @@ public class AntlrProgramBuilder {
         ProgramMetaData localMetaData = this.buildAjaxBlock(pbCtx, templateBlock);
         this.pbCtx = templateCtx;
         ajaxStat.setLocalProgramMetaData(localMetaData);
-
 
     }
 
@@ -502,7 +497,6 @@ public class AntlrProgramBuilder {
 
         }
         return vas;
-
 
     }
 
@@ -584,7 +578,6 @@ public class AntlrProgramBuilder {
                 VarRef ref = this.parseVarRefInLeftExpression(varRefCtx);
                 vas = gc.createVarRefAssign(exp, ref);
             }
-
 
             return vas;
         } else if (amc instanceof AssignIdContext) {
@@ -701,7 +694,6 @@ public class AntlrProgramBuilder {
                 }
             }
 
-
             TagFactory tf = this.gt.getTagFactory(id);
             if (tf == null) {
                 BeetlException ex = new BeetlException(BeetlException.TAG_NOT_FOUND);
@@ -720,7 +712,6 @@ public class AntlrProgramBuilder {
                 ex.pushToken(this.getBTToken(id, fc.functionNs().getStart().getLine()));
                 throw ex;
             }
-
 
             TagStatement tag = gc.createTag(id, expList, block,
                     this.getBTToken(id, fc.functionNs().getStart().getLine()));
@@ -754,7 +745,6 @@ public class AntlrProgramBuilder {
                 this.getBTToken(tryStCtx.Try().getSymbol()));
         return statement;
     }
-
 
     /**
      * 1.x，2.x 定义全局安全输出办法，这里兼容，新方法是可以使用配置
@@ -973,7 +963,6 @@ public class AntlrProgramBuilder {
             //
             // pbCtx.addVarAndPostion(sizeVar);
 
-
             Statement forPart = this.parseStatment(forContext);
             // elsefor
             Statement elseForPart = null;
@@ -991,7 +980,6 @@ public class AntlrProgramBuilder {
             if (pbCtx.isSafeOutput) {
                 hasSafe = true;
             }
-
 
             ForStatement forStatement = gc.createForIn(forVar, exp, hasSafe, forPart, elseForPart, forVar.token);
 
@@ -1043,7 +1031,6 @@ public class AntlrProgramBuilder {
 
             GeneralForStatement forStat = gc.createFor(varInitSeq, initExp, condtion, updateExp, forPart, elseForPart,
                     this.getBTToken(str, forTypeCtx.start.getLine()));
-
 
             pbCtx.exitBlock();
             return forStat;
@@ -1113,7 +1100,6 @@ public class AntlrProgramBuilder {
                 // 如果是临时变量定义
                 this.registerNewVar(vas);
             }
-
 
         }
 
@@ -1193,7 +1179,6 @@ public class AntlrProgramBuilder {
 
         } else if (ctx instanceof AssignGeneralInExpContext) {
 
-
             AssignGeneralInExpContext agc = (AssignGeneralInExpContext) ctx;
             VarRefAssignExpress vas = this.parseAssingInExp(agc);
             return vas;
@@ -1204,7 +1189,6 @@ public class AntlrProgramBuilder {
             throw new UnsupportedOperationException();
         }
     }
-
 
     protected IncDecExpression parseIncDecOneContext(IncDecOneContext ctx) {
         IncDecExpression exp = null;
@@ -1519,7 +1503,6 @@ public class AntlrProgramBuilder {
                 this.getBTToken(varRef.getText(), varRef.Identifier().getSymbol().getLine()),
                 this.getBTToken(varRef.Identifier().getSymbol()));
 
-
         pbCtx.setVarPosition(varRef.Identifier().getText(), var);
         return var;
     }
@@ -1556,7 +1539,6 @@ public class AntlrProgramBuilder {
             throw new BeetlException(BeetlException.ERROR, "语法错,赋值表达式不能使用安全输出");
 
         }
-
 
         List<VarAttributeContext> list = varRef.varAttribute();
         VarAttribute[] vas = this.parseVarAttribute(list);

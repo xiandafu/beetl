@@ -57,7 +57,6 @@ public class IncDecExpression extends Expression implements IVarIndex {
         return returnOrginal ? c : newValue;
     }
 
-
     @Override
     public void setVarIndex(int index) {
         this.index = index;

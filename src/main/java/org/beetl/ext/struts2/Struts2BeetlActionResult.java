@@ -27,7 +27,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.beetl.ext.struts2;
 
-
 import java.io.IOException;
 import java.util.Map;
 

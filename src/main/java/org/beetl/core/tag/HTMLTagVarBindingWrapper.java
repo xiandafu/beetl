@@ -47,7 +47,6 @@ public class HTMLTagVarBindingWrapper extends Tag {
 
     }
 
-
     public void mapName2Index(LinkedHashMap<String, Integer> map) {
 
         tag.mapName2Index(map);

@@ -50,5 +50,4 @@ public class NegExpression extends Expression {
 
     }
 
-
 }

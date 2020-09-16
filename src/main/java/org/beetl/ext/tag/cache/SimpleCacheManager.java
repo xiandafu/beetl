@@ -39,7 +39,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class SimpleCacheManager implements CacheManager {
 
-
     protected ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     protected Map<String, CachedEntry> map = new HashMap<String, CachedEntry>();
 

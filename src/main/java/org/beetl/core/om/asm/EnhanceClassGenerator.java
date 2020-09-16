@@ -7,7 +7,6 @@ import org.beetl.ow2.asm.Label;
 import org.beetl.ow2.asm.MethodVisitor;
 import org.beetl.ow2.asm.Opcodes;
 
-
 /**
  * 通过ASM生成{@link org.beetl.core.om.AttributeAccess}的子类，
  * 假设类名称User，则为生成的类为：User$AttributeAccess

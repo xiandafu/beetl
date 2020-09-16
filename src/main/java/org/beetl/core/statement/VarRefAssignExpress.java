@@ -34,7 +34,6 @@ import org.beetl.core.om.AABuilder;
 import org.beetl.core.om.AttributeAccess;
 import org.beetl.core.om.ObjectSetterUtil;
 
-
 /**
  * call(xxx.cc = exp); 返回是exp
  *
@@ -100,7 +99,6 @@ public class VarRefAssignExpress extends Expression implements IVarIndex {
 //		return value;
 
     }
-
 
     @Override
     public void setVarIndex(int index) {

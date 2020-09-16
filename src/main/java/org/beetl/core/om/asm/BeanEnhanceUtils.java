@@ -37,7 +37,6 @@ final class BeanEnhanceUtils {
         ignoreSet.add("getClass");// 避免获取到java.lang.Object.getClass()方法
     }
 
-
     /**
      * 注意，使用propertyDescriptor获取的属性，与字段名称可能不一致
      */

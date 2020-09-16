@@ -44,7 +44,6 @@ public class VarRefOptimal extends VarRef {
     public VarAttribute attribute;
     public int varIndex;
 
-
     public VarRefOptimal(VarAttribute attribute, GrammarToken token,
                          GrammarToken firstToken) {
         super(null, false, null, token, firstToken);
@@ -65,7 +64,6 @@ public class VarRefOptimal extends VarRef {
             throw be;
         }
 
-
         try {
             value = attribute.evaluate(ctx, value);
         } catch (BeetlException ex) {
@@ -84,12 +82,9 @@ public class VarRefOptimal extends VarRef {
             throw be;
         }
 
-
         return value;
 
-
     }
-
 
     private Object getRefValue(Context ctx) {
 
@@ -123,7 +118,6 @@ public class VarRefOptimal extends VarRef {
             return value;
         }
 
-
     }
 
     @Override
@@ -136,6 +130,5 @@ public class VarRefOptimal extends VarRef {
     public int getVarIndex() {
         return this.varIndex;
     }
-
 
 }

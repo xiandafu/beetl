@@ -73,7 +73,6 @@ public class Template {
         }
     }
 
-
     /**
      * 获取模板输出的文本，结果是一个String
      */
@@ -255,6 +254,5 @@ public class Template {
         ErrorGrammarProgram error = (ErrorGrammarProgram) program;
         return error.getException();
     }
-
 
 }

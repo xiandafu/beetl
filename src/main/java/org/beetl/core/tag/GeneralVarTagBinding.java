@@ -66,7 +66,6 @@ public abstract class GeneralVarTagBinding extends Tag {
      */
     private LinkedHashMap<String, Integer> name2Index = null;
 
-
     public void mapName2Index(LinkedHashMap<String, Integer> map) {
         name2Index = map;
     }
@@ -85,7 +84,6 @@ public abstract class GeneralVarTagBinding extends Tag {
             ctx.vars[index] = o;
         }
     }
-
 
     public Object getAttributeValue(String attrName) {
         Map map = (Map) this.args[1];

@@ -28,5 +28,4 @@ class FieldDescription {
         this.readMethodDesc = readMethodDesc;
     }
 
-
 }

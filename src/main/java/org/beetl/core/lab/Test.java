@@ -1,6 +1,5 @@
 package org.beetl.core.lab;
 
-
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
@@ -17,10 +16,8 @@ import java.util.List;
 public class Test {
     public static void main(String[] args) throws Exception {
 
-
         ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("lab/");
         Configuration cfg = Configuration.defaultConfiguration();
-
 
         GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
 
@@ -33,8 +30,6 @@ public class Test {
             System.out.println(i + " " + t.render());
         }
 
-
     }
-
 
 }

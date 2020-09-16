@@ -16,7 +16,6 @@ public class AjaxTest extends BasicTestCase {
         String expected = this.getFileContent("/ajax/ajax_expected.html");
         AssertJUnit.assertEquals(expected, str);
 
-
     }
 
     @Test
@@ -29,8 +28,6 @@ public class AjaxTest extends BasicTestCase {
         String expected = this.getFileContent("/ajax/ajax_expected1.html");
         AssertJUnit.assertEquals(expected, str);
 
-
     }
-
 
 }

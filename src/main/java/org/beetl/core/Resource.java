@@ -93,7 +93,6 @@ public abstract class Resource<T> {
         }
         return sb.toString();
 
-
     }
 
     public String toString() {

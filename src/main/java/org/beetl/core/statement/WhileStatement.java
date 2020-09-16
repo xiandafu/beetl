@@ -103,7 +103,6 @@ public class WhileStatement extends Statement implements IGoto {
         }
     }
 
-
     @Override
     public boolean hasGoto() {
         return this.hasGoto;

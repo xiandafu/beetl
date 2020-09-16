@@ -24,7 +24,6 @@ public class BigNumberTest extends BasicTestCase {
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/exp/bignumber/number_add_expected.html"), str);
 
-
 	}
 
 	@Test
@@ -34,7 +33,6 @@ public class BigNumberTest extends BasicTestCase {
 		String str = t.render();
 		String expected = getFileContent("/exp/bignumber/number_minus_expected.html");
 		AssertJUnit.assertEquals(expected, str);
-
 
 	}
 
@@ -56,7 +54,6 @@ public class BigNumberTest extends BasicTestCase {
 
 		AssertJUnit.assertEquals(this.getFileContent("/exp/bignumber/number_div_expected.html"), str);
 
-
 	}
 
 	@Test
@@ -66,7 +63,6 @@ public class BigNumberTest extends BasicTestCase {
 		String str = t.render();
 
 		AssertJUnit.assertEquals(this.getFileContent("/exp/bignumber/number_mul_expected.html"), str);
-
 
 	}
 

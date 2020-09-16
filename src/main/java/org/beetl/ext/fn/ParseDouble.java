@@ -55,5 +55,4 @@ public class ParseDouble implements Function {
         return result;
     }
 
-
 }

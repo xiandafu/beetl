@@ -55,7 +55,6 @@ public class DefaultAAFactory {
     protected ReflectBeanAA reflectBeanAA = ReflectBeanAA.instance;
     protected Map<Class, AttributeAccess> classAttrs = new ConcurrentHashMap<Class, AttributeAccess>();
 
-
     public DefaultAAFactory() {
         classAttrs.put(HashMap.class, mapAA);
         classAttrs.put(ConcurrentHashMap.class, mapAA);
@@ -91,7 +90,6 @@ public class DefaultAAFactory {
             classAttrs.putIfAbsent(c, mapEntryAA);
             return mapEntryAA;
         }
-
 
         aa = registerClass(c);
         return aa;

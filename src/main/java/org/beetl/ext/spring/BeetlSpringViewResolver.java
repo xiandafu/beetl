@@ -85,7 +85,6 @@ public class BeetlSpringViewResolver extends AbstractTemplateViewResolver implem
         setViewClass(BeetlSpringView.class);
     }
 
-
     /**
      * 初始化检查GroupTemplate<br>
      * 实现InitializingBean，在Bean IOC注入结束后自动调用
@@ -170,6 +169,5 @@ public class BeetlSpringViewResolver extends AbstractTemplateViewResolver implem
         logger.warn("Beetl不建议使用使用spring前缀，会导致include,layout找不到对应的模板，请使用beetl的配置RESOURCE.ROOT来配置模板根目录");
         super.setPrefix(prefix);
     }
-
 
 }

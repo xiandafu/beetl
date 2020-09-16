@@ -72,7 +72,6 @@ public class ObjectUtil {
     public static Map<Class, ObjectInfo> cachedClassInfoMap = new ConcurrentHashMap<Class, ObjectInfo>();
     public static Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 
-
     protected static PropertyDescriptor[] propertyDescriptors(Class<?> c) throws IntrospectionException {
 
         BeanInfo beanInfo = null;
@@ -143,7 +142,6 @@ public class ObjectUtil {
             return invoker;
         }
 
-
         // General Get
         Method method = getGetMethod(c, "get", new Class[]
                 {Object.class});
@@ -159,7 +157,6 @@ public class ObjectUtil {
 
         if (invoker == null) {
 
-
             return null;
         }
 
@@ -174,7 +171,6 @@ public class ObjectUtil {
         return invoker;
 
     }
-
 
     /**
      * 获取对象的某个方法，如果无此方法，则仅仅返回null
@@ -519,7 +515,6 @@ public class ObjectUtil {
         }
         return classLoader;
     }
-
 
     /**
      * 判断对象是否有此变量，从方法用于友好提示，属性无法访问的时候，是否是没有getter方法

@@ -10,9 +10,7 @@ import org.beetl.core.fun.ObjectUtil;
  * @author xiandafu
  */
 
-
 public class ReflectBeanAA extends AttributeAccess {
-
 
     public static ReflectBeanAA instance = new ReflectBeanAA();
 

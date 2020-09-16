@@ -42,9 +42,7 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
         return grammar;
     }
 
-
     static class OnlineGrammarCreator extends GrammarCreator {
-
 
         @Override
         public GeneralForStatement createFor(VarAssignStatementSeq varAssignSeq, Expression[] expInit,
@@ -119,9 +117,7 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
 
         }
 
-
     }
-
 
     static class RestrictWhileStatement extends WhileStatement {
         public RestrictWhileStatement(Expression exp, Statement whileBody, GrammarToken token) {
@@ -160,8 +156,6 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
 
         }
 
-
     }
-
 
 }

@@ -17,7 +17,6 @@ import org.beetl.ext.web.WebVariable;
 
 public class IncludeJSPTag extends Tag {
 
-
     public void render() {
 
         File root = new File(BeetlUtil.getWebRoot());

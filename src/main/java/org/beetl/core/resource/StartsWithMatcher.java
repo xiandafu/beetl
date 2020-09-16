@@ -27,7 +27,6 @@
  */
 package org.beetl.core.resource;
 
-
 /**
  * 检查key以给定的字符串开头的匹配器
  *
@@ -120,7 +119,6 @@ public class StartsWithMatcher implements Matcher {
         }
         return prefixLen == other.prefixLen && withPrefix == other.withPrefix;
     }
-
 
     @Override
     public String toString() {

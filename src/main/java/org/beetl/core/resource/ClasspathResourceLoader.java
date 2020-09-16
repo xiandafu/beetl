@@ -54,7 +54,6 @@ public class ClasspathResourceLoader implements ResourceLoader<String> {
     String functionSuffix = "fn";
     ClassLoader classLoader = null;
 
-
     /**
      * 使用加载beetl.jar的classloader，以及默认root为根目录
      */
@@ -62,7 +61,6 @@ public class ClasspathResourceLoader implements ResourceLoader<String> {
         //保留，用于通过配置构造一个ResouceLoader
         classLoader = this.getClass().getClassLoader();
         this.root = "";
-
 
     }
 
@@ -73,7 +71,6 @@ public class ClasspathResourceLoader implements ResourceLoader<String> {
 
         this.classLoader = classLoader;
         this.root = "";
-
 
     }
 
@@ -105,7 +102,6 @@ public class ClasspathResourceLoader implements ResourceLoader<String> {
 
         this();
         this.root = this.checkRoot(root);
-
 
     }
 
@@ -173,9 +169,7 @@ public class ClasspathResourceLoader implements ResourceLoader<String> {
         this.autoCheck = Boolean.parseBoolean(resourceMap.get("autoCheck"));
         this.functionRoot = resourceMap.get("functionRoot");
 
-
     }
-
 
     @Override
     public boolean exist(String key) {
@@ -186,7 +180,6 @@ public class ClasspathResourceLoader implements ResourceLoader<String> {
             url = this.classLoader.getClass().getResource(path);
         }
         return url != null;
-
 
     }
 
@@ -241,6 +234,5 @@ public class ClasspathResourceLoader implements ResourceLoader<String> {
             return path + "/" + child;
         }
     }
-
 
 }

@@ -173,5 +173,4 @@ public class UtilsFunctionPackage {
         return JavaScriptUtils.javaScriptEscape(input);
     }
 
-
 }

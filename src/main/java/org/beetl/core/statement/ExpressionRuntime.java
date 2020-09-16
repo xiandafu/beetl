@@ -16,7 +16,6 @@ public class ExpressionRuntime extends Expression {
         return new ExpressionRuntimeObject(this);
     }
 
-
     public static class ExpressionRuntimeObject {
         ExpressionRuntime runtime;
 

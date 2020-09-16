@@ -84,7 +84,6 @@ public class FormatExpression extends Expression {
 
     }
 
-
     public String getName() {
         return name;
     }
@@ -100,6 +99,5 @@ public class FormatExpression extends Expression {
     public void setPattern(String pattern) {
         this.pattern = pattern;
     }
-
 
 }

@@ -90,7 +90,6 @@ public class Source {
         return isSupportHtmlTag;
     }
 
-
     protected void addLine() {
         this.curLine++;
     }
@@ -149,7 +148,6 @@ public class Source {
 
     }
 
-
     public boolean isMatch(char[] str) {
         int cur = p;
         for (char c : str) {
@@ -190,7 +188,6 @@ public class Source {
 
         return 0;
 
-
     }
 
     public char consumeAndGet() {
@@ -216,7 +213,6 @@ public class Source {
     public void consume(int x) {
         p = p + x;
     }
-
 
     public char get() {
         return cs[p];

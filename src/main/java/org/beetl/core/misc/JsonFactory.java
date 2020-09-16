@@ -21,7 +21,6 @@ public class JsonFactory {
             throw new IllegalStateException("沒有对应的jackson或者fastjson库");
         }
 
-
     }
 
     public static JsonTool get() {

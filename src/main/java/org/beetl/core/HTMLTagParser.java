@@ -62,7 +62,6 @@ class HTMLTagParser {
             {'/', '>'};
 //	char[] cr = new char[]	{ '\n' };
 
-
     public HTMLTagParser(char[] cs, int index, String bindingAttr, boolean isStart) {
         this.cs = cs;
         this.bindingAttr = bindingAttr;
@@ -209,7 +208,6 @@ class HTMLTagParser {
         }
         return sb.toString();
     }
-
 
     protected void findBindingFlag() {
         this.stripSpace();
@@ -497,7 +495,6 @@ class HTMLTagParser {
         System.out.println(htmltag.varBidingStr);
         System.out.println(htmltag.htmlAttributeNameMap);
         System.out.println(htmltag.getHtmlColMapAsString());
-
 
     }
 }

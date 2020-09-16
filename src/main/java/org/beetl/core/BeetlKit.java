@@ -67,7 +67,6 @@ public class BeetlKit {
         return gt.runScript(script, emptyMap);
     }
 
-
     /**
      * 执行脚本，和参数，返回脚本里的Root scope的变量
      */
@@ -75,7 +74,6 @@ public class BeetlKit {
         return gt.runScript(script, new HashMap<String, Object>());
 
     }
-
 
     /**
      * @param template  模板内容

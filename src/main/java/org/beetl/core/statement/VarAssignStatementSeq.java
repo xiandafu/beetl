@@ -50,5 +50,4 @@ public class VarAssignStatementSeq extends Statement {
 
     }
 
-
 }

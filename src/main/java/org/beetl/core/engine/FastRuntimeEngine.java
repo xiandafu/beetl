@@ -28,7 +28,6 @@ public class FastRuntimeEngine extends DefaultTemplateEngine {
         return super.createProgram(rs, reader, textMap, cr, gt);
     }
 
-
     protected GrammarCreator getGrammerCreator(GroupTemplate gt) {
         GrammarCreator grammar = new NewGrammarCreator();
         if (gt.getConf().isStrict()) {
@@ -48,7 +47,6 @@ public class FastRuntimeEngine extends DefaultTemplateEngine {
         return grammar;
     }
 
-
     class NewGrammarCreator extends GrammarCreator {
         @Override
         public VarRef createVarRef(VarAttribute[] attributes, boolean hasSafe, Expression safe, GrammarToken token,
@@ -65,6 +63,5 @@ public class FastRuntimeEngine extends DefaultTemplateEngine {
         }
 
     }
-
 
 }

@@ -80,9 +80,7 @@ public class VarRefAssignStatement extends VarAssignStatement {
             throw be;
         }
 
-
     }
-
 
     public int getVarIndex() {
         return varIndex;

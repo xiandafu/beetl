@@ -62,5 +62,4 @@ public class JsonMapExpression extends Expression {
         }
     }
 
-
 }

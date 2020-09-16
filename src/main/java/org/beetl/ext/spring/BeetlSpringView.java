@@ -61,12 +61,9 @@ public class BeetlSpringView extends AbstractTemplateView {
         this.groupTemplate = groupTemplate;
     }
 
-
     public GroupTemplate getGroupTemplate() {
         return groupTemplate;
     }
-
-
 
     /* ----- ----- ----- ----- 构造函数 ----- ----- ----- ----- */
 

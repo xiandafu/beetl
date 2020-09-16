@@ -97,7 +97,6 @@ public class WebRender {
             template.binding("parameter", new ParameterWrapper(request));
             template.binding("cookie", new CookieFunction());
 
-
             modifyTemplate(template, key, request, response, args);
 
             String strWebAppExt = gt.getConf().getWebAppExt();
@@ -105,7 +104,6 @@ public class WebRender {
                 WebRenderExt renderExt = this.getWebRenderExt(strWebAppExt);
                 renderExt.modify(template, gt, request, response);
             }
-
 
             if (gt.getConf().isDirectByteOutput()) {
                 os = response.getOutputStream();

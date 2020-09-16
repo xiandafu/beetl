@@ -76,7 +76,6 @@ public class VarRef extends Expression implements IVarIndex {
             return value;
         }
 
-
         for (int i = 0; i < attributes.length; i++) {
 
             VarAttribute attr = attributes[i];
@@ -216,7 +215,6 @@ public class VarRef extends Expression implements IVarIndex {
             throw ex;
         }
 
-
         for (int i = 0; i < attributes.length - 1; i++) {
 
             VarAttribute attr = attributes[i];
@@ -260,6 +258,5 @@ public class VarRef extends Expression implements IVarIndex {
     public int getVarIndex() {
         return this.varIndex;
     }
-
 
 }

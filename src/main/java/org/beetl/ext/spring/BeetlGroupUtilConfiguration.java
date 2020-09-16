@@ -140,7 +140,6 @@ public class BeetlGroupUtilConfiguration extends AbstractGroupTemplateConfig imp
             root = webPath + root;
         }
 
-
     }
 
     private void initGroupTemplate() throws IOException {

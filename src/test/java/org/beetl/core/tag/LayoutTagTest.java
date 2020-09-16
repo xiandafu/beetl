@@ -18,7 +18,7 @@ public class LayoutTagTest extends BasicTestCase
 		this.bind(t, "user", user);
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/tag/layout_expected.html"), str);
-				
+
 	}
 
 	@Test
@@ -32,7 +32,6 @@ public class LayoutTagTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/tag/layoutinclude_expected.html"), str);
 
-	
 	}
 
 }

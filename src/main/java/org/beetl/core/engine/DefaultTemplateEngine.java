@@ -91,7 +91,6 @@ public class DefaultTemplateEngine implements TemplateEngine {
             }
         }
 
-
         return program;
     }
 
@@ -110,7 +109,6 @@ public class DefaultTemplateEngine implements TemplateEngine {
         AntlrProgramBuilder pb = new AntlrProgramBuilder(gt, gc);
         return pb;
     }
-
 
     /**
      * 语法节点生成器，子类可以扩展射生成自己个性化节点解析，比如带有xss的输出的${}，限制循环个数的for语法

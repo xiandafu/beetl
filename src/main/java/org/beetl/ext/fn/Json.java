@@ -18,5 +18,4 @@ public class Json implements Function {
         return object == null ? "" : JsonFactory.get().render(object);
     }
 
-
 }

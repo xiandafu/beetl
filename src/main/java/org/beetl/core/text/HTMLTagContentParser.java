@@ -64,9 +64,7 @@ class HTMLTagContentParser {
     static char[] ENT_TAGS = new char[]
             {'/', '>'};
 
-
     AttributeNameConvert attributeNameConvert = null;
-
 
     public HTMLTagContentParser(AttributeNameConvert attributeNameConvert, char[] cs, int index, String bindingAttr, boolean isStart) {
         this.attributeNameConvert = attributeNameConvert;
@@ -212,7 +210,6 @@ class HTMLTagContentParser {
         }
 
     }
-
 
     protected void findBindingFlag() {
         this.stripSpace();
@@ -470,7 +467,6 @@ class HTMLTagContentParser {
         sb.setCharAt(sb.length() - 1, '}');
         return sb.toString();
     }
-
 
     public boolean isEmptyTag() {
         return this.isEmptyTag;

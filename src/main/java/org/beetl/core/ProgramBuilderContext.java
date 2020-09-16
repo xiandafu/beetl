@@ -54,12 +54,10 @@ public class ProgramBuilderContext {
     // 当前block
     BlockEnvContext current = root;
 
-
     // 节点运算辅助对象
     List<Object> listNodeEval = new LinkedList<Object>();
     // 全局变量名以及描述
     Map<String, VarDescrption> globalVar = new HashMap<String, VarDescrption>();
-
 
     // 为所有变量分配的空间长度
     int varIndexSize = 0;
@@ -81,7 +79,6 @@ public class ProgramBuilderContext {
         blockVar.setParent(current);
         current = blockVar;
     }
-
 
     public void exitBlock() {
         current = current.parent;
@@ -108,7 +105,6 @@ public class ProgramBuilderContext {
         root.getVars().put(varName, varDesc);
         return false;
     }
-
 
     /**
      * 自上向下查找

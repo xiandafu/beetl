@@ -20,8 +20,6 @@ public class DeleteTagTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/tag/delete_expected.html"), str);
 
-		
-
 	}
 
 }

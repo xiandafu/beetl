@@ -67,5 +67,4 @@ public class TernaryExpression extends Expression {
         return cond ? a.evaluate(ctx) : (b != null ? b.evaluate(ctx) : null);
     }
 
-
 }

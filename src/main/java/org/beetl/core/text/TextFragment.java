@@ -12,7 +12,6 @@ public class TextFragment extends Fragment {
 
     }
 
-
     public void appendTextFragment(Fragment fr) {
         if (fr instanceof TextFragment) {
             text.append(((TextFragment) fr).text);
@@ -23,7 +22,6 @@ public class TextFragment extends Fragment {
             throw new IllegalArgumentException(fr.getClass().getName());
         }
     }
-
 
     @Override
     public StringBuilder getScript() {
@@ -41,7 +39,6 @@ public class TextFragment extends Fragment {
         source.parser.getTextVars().put(varName, text.toString());
         return script;
     }
-
 
     @Override
     public Fragment consumeAndReturnNext() {
@@ -69,7 +66,6 @@ public class TextFragment extends Fragment {
         return null;
     }
 
-
     public boolean onlySpace() {
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
@@ -80,11 +76,9 @@ public class TextFragment extends Fragment {
         return true;
     }
 
-
     /*删除一个\*/
     public void removeTextEscape() {
         text.setLength(text.length() - 1);
     }
-
 
 }

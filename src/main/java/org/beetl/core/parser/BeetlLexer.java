@@ -130,13 +130,11 @@ public class BeetlLexer extends Lexer {
         return VOCABULARY;
     }
 
-
     public void notifyListeners(LexerNoViableAltException e) {
         String text = _input.getText(Interval.of(_tokenStartCharIndex, _input.index()));
         ANTLRErrorListener listener = getErrorListenerDispatch();
         listener.syntaxError(this, null, _tokenStartLine, _tokenStartCharPositionInLine, text, e);
     }
-
 
     public BeetlLexer(CharStream input) {
         super(input);

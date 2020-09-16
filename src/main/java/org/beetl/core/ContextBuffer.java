@@ -34,7 +34,6 @@ public class ContextBuffer {
     private char[] charBuffer = new char[charBufferSize];
     private byte[] byteBuffer = new byte[byteBufferSize];
 
-
     public ContextBuffer(int maxSize, boolean inner) {
         this(maxSize);
         this.inner = inner;
@@ -46,7 +45,6 @@ public class ContextBuffer {
         }
         this.maxSize = maxSize;
     }
-
 
     public char[] getCharBuffer() {
         return this.charBuffer;
@@ -86,6 +84,5 @@ public class ContextBuffer {
         }
 
     }
-
 
 }

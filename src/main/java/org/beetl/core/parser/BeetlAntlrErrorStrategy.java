@@ -51,13 +51,13 @@ import org.beetl.core.statement.GrammarToken;
  */
 public class BeetlAntlrErrorStrategy extends DefaultErrorStrategy
 {
-	
+
 	static HashSet<String> keys = new HashSet<String>();
 	static Map<String,String> expects = new HashMap<String,String>();
 	static{
 		expects.put("LEFT_PAR", "(");
 		expects.put("RIGHT_PAR", ")");
-		
+
 	}
 	static {
 		keys.add("select");
@@ -76,7 +76,7 @@ public class BeetlAntlrErrorStrategy extends DefaultErrorStrategy
 		keys.add("default");
 		keys.add("try");
 		keys.add("catch");
-		
+
 	}
 	@Override
 	public void recover(Parser recognizer, RecognitionException e)
@@ -118,9 +118,7 @@ public class BeetlAntlrErrorStrategy extends DefaultErrorStrategy
 
 			throw exception;
 		}
-		
-		
-		
+
 	}
 
 	protected void reportNoViableAlternative(Parser recognizer,  NoViableAltException e)
@@ -147,7 +145,7 @@ public class BeetlAntlrErrorStrategy extends DefaultErrorStrategy
 					escapeWSAndQuote(input), e);
 		}
 		//		String msg = "no viable alternative at input " + escapeWSAndQuote(input);
-	
+
 		exception.pushToken(this.getGrammarToken(e.getOffendingToken()));
 
 		throw exception;
@@ -203,7 +201,7 @@ public class BeetlAntlrErrorStrategy extends DefaultErrorStrategy
 		{
 			return getMissingSymbol(recognizer);
 		}
-		
+
 //		BeetlException exception = new BeetlParserException(BeetlException.PARSER_MISS_ERROR);
 //		exception.pushToken(this.getGrammarToken(recognizer.getCurrentToken()));
 //		throw exception;
@@ -229,8 +227,7 @@ public class BeetlAntlrErrorStrategy extends DefaultErrorStrategy
 		if(expect.equals("'>>'")){
 			expect = "'模板的占位结束符号'";
 		}
-		
-		
+
 		String tokenStr = getTokenErrorDisplay(t);
 		String msg = null;
 		if(expect.equals("'}'")&&tokenStr.equals("'>>'")) {
@@ -239,8 +236,6 @@ public class BeetlAntlrErrorStrategy extends DefaultErrorStrategy
 			//常规情况
 			 msg = "缺少输入 " + expect + " 在 " + tokenStr+" 后面";
 		}
-		
-		
 
 		BeetlException exception = new BeetlParserException(BeetlException.PARSER_MISS_ERROR, msg);
 		exception.pushToken(this.getGrammarToken(t));
@@ -266,7 +261,7 @@ public class BeetlAntlrErrorStrategy extends DefaultErrorStrategy
 		exception.pushToken(this.getGrammarToken(t));
 		throw exception;
 	}
-	
+
 	protected String getErrorKey(String key) {
 		if(key.equals("'>>'")) {
 			return "占位结束符号";

@@ -34,7 +34,6 @@ public class TemplateProxy extends Template {
         clear();
     }
 
-
     public void binding(String varName, Object o) {
         current().binding(varName, o);
     }
@@ -43,12 +42,10 @@ public class TemplateProxy extends Template {
         current().fastBinding(map);
     }
 
-
     public Context getCtx() {
         //有些功能是可以把渲染后模板的变量保存下来（比如脚本引擎)，目前此类不支持，渲染完毕就关闭
         throw new UnsupportedOperationException();
     }
-
 
     /**
      * 语法校验，如果返回BeetlException，则表示语法有错，返回null，语法无错误
@@ -72,6 +69,5 @@ public class TemplateProxy extends Template {
     protected void clear() {
         local.set(null);
     }
-
 
 }

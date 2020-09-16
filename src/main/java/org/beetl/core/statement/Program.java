@@ -42,7 +42,6 @@ public class Program {
     public Resource res = null;
     public GroupTemplate gt = null;
 
-
     public Program() {
 
     }
@@ -71,6 +70,5 @@ public class Program {
             }
         }
     }
-
 
 }

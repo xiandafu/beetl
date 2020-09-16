@@ -39,5 +39,4 @@ public abstract class ASTNode implements java.io.Serializable {
         this.token = token;
     }
 
-
 }

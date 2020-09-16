@@ -30,7 +30,6 @@ public class ForeachHtmlTag extends GeneralVarTagBinding {
             containStatus = true;
         }
 
-
         ILoopStatus it = GeneralLoopStatus.getIteratorStatus(value);
         while (it.hasNext()) {
             Object item = it.next();
@@ -41,7 +40,6 @@ public class ForeachHtmlTag extends GeneralVarTagBinding {
             }
             this.doBodyRender();
         }
-
 
     }
 }

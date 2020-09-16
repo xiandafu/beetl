@@ -46,7 +46,6 @@ public class LayoutResourceHtmlTag extends Tag {
     public static String defaultLayoutName = "layoutContent";
     public static final String layoutNameAttr = "layoutContent";
 
-
     @Override
     public void render() {
 
@@ -77,7 +76,6 @@ public class LayoutResourceHtmlTag extends Tag {
         Resource sibling = ctx.getResource();
         return gt.getResourceLoader().getResourceId(sibling, this.getTargetResource());
     }
-
 
     protected String getTargetResource() {
         @SuppressWarnings("unchecked")

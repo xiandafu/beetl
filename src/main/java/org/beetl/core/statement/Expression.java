@@ -36,7 +36,6 @@ import org.beetl.core.Context;
  */
 public abstract class Expression extends ASTNode {
 
-
     public Expression(GrammarToken token) {
         super(token);
         // TODO Auto-generated constructor stub
@@ -45,6 +44,5 @@ public abstract class Expression extends ASTNode {
     public Object evaluate(Context ctx) {
         throw new RuntimeException("MUST IMPLEMENT");
     }
-
 
 }

@@ -61,7 +61,6 @@ public class SourceFragement {
                     //合并
                     text.appendTextFragment(nextFr);
 
-
                 }
             }
 
@@ -124,6 +123,5 @@ public class SourceFragement {
         }
 
     }
-
 
 }

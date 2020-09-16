@@ -42,7 +42,6 @@ public class AjaxStatement extends Statement {
     String ajaxId = null;
     ProgramMetaData localProgramMetaData = null;
 
-
     public AjaxStatement(BlockStatement block, GrammarToken token, boolean defaultRender) {
         super(token);
         this.block = block;

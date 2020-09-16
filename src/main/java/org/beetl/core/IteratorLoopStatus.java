@@ -12,7 +12,6 @@ public class IteratorLoopStatus implements ILoopStatus {
         this.it = it;
     }
 
-
     public final boolean hasNext() {
         return this.it.hasNext();
     }

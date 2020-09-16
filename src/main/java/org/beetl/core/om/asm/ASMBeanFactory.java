@@ -111,7 +111,6 @@ public class ASMBeanFactory {
         return obj;
     }
 
-
     private static void writeClassToFile(final byte[] code, final Class<?> beanClass, final String generatedBeanName) {
         try {
             String classPath = beanClass.getResource("").getPath();

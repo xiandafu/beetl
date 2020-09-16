@@ -49,7 +49,6 @@ import org.beetl.core.io.ByteWriter_Char;
 public class BeetlUtil {
     //一般变量名称12个足够了
 
-
     protected static String webroot;
 
     static byte[] chars = new byte[]
@@ -327,7 +326,6 @@ public class BeetlUtil {
         }
     }
 
-
     public static String getParameterDescription(Class[] types) {
         if (types == null || types.length == 0) {
             return "()";
@@ -340,6 +338,5 @@ public class BeetlUtil {
         sb.setCharAt(sb.length() - 1, ')');
         return sb.toString();
     }
-
 
 }

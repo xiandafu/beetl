@@ -21,7 +21,6 @@ import org.beetl.ext.web.WebRender;
  */
 public class WebSimulate extends BaseSimulate {
 
-
     public WebSimulate(GroupTemplate gt) {
         this(gt, null, "/values");
     }
@@ -29,7 +28,6 @@ public class WebSimulate extends BaseSimulate {
     public WebSimulate(GroupTemplate gt, JsonUtil jsonUtil) {
         this(gt, jsonUtil, "/values");
     }
-
 
     public WebSimulate(GroupTemplate gt, JsonUtil jsonUtil, String base) {
         super(gt, jsonUtil, base);
@@ -105,9 +103,7 @@ public class WebSimulate extends BaseSimulate {
             render.render(readerPath.toString(), req, rsp);
         }
 
-
     }
-
 
     /**
      * 返回渲染的模板，默认就是path。
@@ -136,6 +132,5 @@ public class WebSimulate extends BaseSimulate {
         WebRender render = new WebRender(gt);
         render.render(path, req, rsp, null);
     }
-
 
 }
