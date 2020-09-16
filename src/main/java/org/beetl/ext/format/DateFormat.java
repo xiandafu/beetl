@@ -72,7 +72,11 @@ public class DateFormat implements Format {
             map = new HashMap<String, SimpleDateFormat>(4, 0.65f);
             threadlocal.set(map);
         }
-        return map.putIfAbsent(pattern, DEFAULT_KEY.equals(pattern)
-                ? new SimpleDateFormat() : new SimpleDateFormat(pattern));
+        SimpleDateFormat format = map.get(pattern);
+        if (format == null) {
+            format = DEFAULT_KEY.equals(pattern) ? new SimpleDateFormat() : new SimpleDateFormat(pattern);
+            map.put(pattern, format);
+        }
+        return format;
     }
 }
