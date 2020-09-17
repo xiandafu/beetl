@@ -29,19 +29,19 @@ package org.beetl.core.om;
 
 /**
  * 封装了一个获取对象的属性的值的方法
- * @author joelli
  *
+ * @author xiandafu
  */
-public abstract class AttributeAccess implements java.io.Serializable
-{
+public abstract class AttributeAccess implements java.io.Serializable {
 
-	public abstract Object value(Object o, Object name);
-	public void setValue(Object o,String name,Object value){
-		ObjectSetterUtil.set(o,name,value);
-	}
+    public abstract Object value(Object o, Object name);
 
-	public void setValue(Object o,Object name,Object value){
-		ObjectSetterUtil.set(o,name,value);
-	}
+    public void setValue(Object o, String name, Object value) {
+        ObjectSetterUtil.set(o, name, value);
+    }
+
+    public void setValue(Object o, Object name, Object value) {
+        ObjectSetterUtil.set(o, name, value);
+    }
 
 }

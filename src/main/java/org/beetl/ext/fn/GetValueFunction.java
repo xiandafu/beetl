@@ -34,24 +34,21 @@ import org.beetl.core.Function;
 
 /**
  * 内部使用
- * @author 闲大赋予
  *
+ * @author 闲大赋予
  */
-public class GetValueFunction implements Function
-{
+public class GetValueFunction implements Function {
 
-	public Object call(Object[] paras, Context ctx)
-	{
-		int len = paras.length;
-		Map<String, Object> map = (Map<String, Object>) ctx.globalVar.get("beetlKitMap");
-		for (int i = 0; i < len; i++)
-		{
-			String key = (String) paras[i];
-			Object value = paras[++i];
-			map.put(key, value);
-		}
-		return map;
+    public Object call(Object[] paras, Context ctx) {
+        int len = paras.length;
+        Map<String, Object> map = (Map<String, Object>) ctx.globalVar.get("beetlKitMap");
+        for (int i = 0; i < len; i++) {
+            String key = (String) paras[i];
+            Object value = paras[++i];
+            map.put(key, value);
+        }
+        return map;
 
-	}
+    }
 
 }

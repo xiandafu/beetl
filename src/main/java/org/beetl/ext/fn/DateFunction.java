@@ -41,47 +41,37 @@ import org.beetl.core.Function;
  * &lt;% var time = date('2011-1-1','yyyy-MM-dd')  %&gt;
  * </pre>
  * <p>
- * time对象是java.util.Date对象  
- * @author joelli
+ * time对象是java.util.Date对象
  *
+ * @author xiandafu
  */
-public class DateFunction implements Function
-{
+public class DateFunction implements Function {
 
-	public Date call(Object[] paras, Context ctx)
-	{
-		if (paras.length == 0)
-		{
-			return new Date();
-		}else if(paras.length==1) {
-			if(paras[0] !=null && paras[0] instanceof Long) {
-				return new Date((Long) paras[0]);
-			}else {
-				throw new RuntimeException("Parse date Error, Arg Long ");
-			}
-			
-		}
-		else
-		{
-			if (paras.length == 2)
-			{
+    public Date call(Object[] paras, Context ctx) {
+        if (paras.length == 0) {
+            return new Date();
+        } else if (paras.length == 1) {
+            if (paras[0] != null && paras[0] instanceof Long) {
+                return new Date((Long) paras[0]);
+            } else {
+                throw new RuntimeException("Parse date Error, Arg Long ");
+            }
 
-				if (paras[0] instanceof String && paras[1] instanceof String)
-				{
-					SimpleDateFormat sdf = new SimpleDateFormat((String) paras[1]);
-					try
-					{
-						return sdf.parse((String) paras[0]);
-					}
-					catch (ParseException e)
-					{
-						throw new RuntimeException("Parse date Error"+e.getMessage());
-					}
-				}
+        } else {
+            if (paras.length == 2) {
 
-			}
-			throw new RuntimeException("Parse date Error,Args String,Sting ");
-		}
+                if (paras[0] instanceof String && paras[1] instanceof String) {
+                    SimpleDateFormat sdf = new SimpleDateFormat((String) paras[1]);
+                    try {
+                        return sdf.parse((String) paras[0]);
+                    } catch (ParseException e) {
+                        throw new RuntimeException("Parse date Error" + e.getMessage());
+                    }
+                }
 
-	}
+            }
+            throw new RuntimeException("Parse date Error,Args String,Sting ");
+        }
+
+    }
 }

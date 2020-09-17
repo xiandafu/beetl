@@ -30,62 +30,51 @@ package org.beetl.core.io;
 import java.io.IOException;
 import java.io.Writer;
 
-public class NoLockStringWriter extends Writer
-{
+public class NoLockStringWriter extends Writer {
 
-	//todo reuse parent writer buf??
-	protected char buf[];
-	protected int count;
+    //todo reuse parent writer buf??
+    protected char buf[];
+    protected int count;
 
-	public NoLockStringWriter()
-	{
-		this.buf = new char[64];
-	}
+    public NoLockStringWriter() {
+        this.buf = new char[64];
+    }
 
+    @Override
+    public void write(char[] cbuf, int off, int len) throws IOException {
+        int newcount = count + len;
+        if (newcount > buf.length) {
+            buf = copyOf(buf, Math.max(buf.length << 1, newcount));
+        }
+        System.arraycopy(cbuf, off, buf, count, len);
+        count = newcount;
+    }
 
-	@Override
-	public void write(char[] cbuf, int off, int len) throws IOException
-	{
-		int newcount = count + len;
-		if (newcount > buf.length)
-		{
-			buf = copyOf(buf, Math.max(buf.length << 1, newcount));
-		}
-		System.arraycopy(cbuf, off, buf, count, len);
-		count = newcount;
-	}
+    public static char[] copyOf(char[] original, int newLength) {
+        char[] copy = new char[newLength];
+        System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength));
+        return copy;
+    }
 
-	public static char[] copyOf(char[] original, int newLength)
-	{
-		char[] copy = new char[newLength];
-		System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength));
-		return copy;
-	}
+    public void write(String str) throws IOException {
+        if (str != null) {
+            this.write(str.toCharArray());
+        }
+    }
 
-	public void write(String str) throws IOException
-	{
-		if (str != null)
-		{
-			this.write(str.toCharArray());
-		}
-	}
+    @Override
+    public void flush() throws IOException {
 
-	@Override
-	public void flush() throws IOException
-	{
+    }
 
-	}
+    @Override
+    public void close() throws IOException {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void close() throws IOException
-	{
-		// TODO Auto-generated method stub
+    }
 
-	}
-
-	public String toString()
-	{
-		return new String(buf, 0, count);
-	}
+    public String toString() {
+        return new String(buf, 0, count);
+    }
 
 }

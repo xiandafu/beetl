@@ -34,53 +34,48 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * Beetl允许注册模板文件为一个方法
- * @author joelli
  *
+ * @author xiandafu
  */
 public class FileFunctionWrapper implements Function {
 
-	String resourceId = null;
+    String resourceId = null;
 
-	/** 模板文件的资源标示
-	 * @param resourceId
-	 */
-	public FileFunctionWrapper(String resourceId) {
-		this.resourceId = resourceId;
-	}
+    /**
+     * 模板文件的资源标示
+     */
+    public FileFunctionWrapper(String resourceId) {
+        this.resourceId = resourceId;
+    }
 
-	@Override
-	public Object call(Object[] paras, Context ctx) {
-		try {
+    @Override
+    public Object call(Object[] paras, Context ctx) {
+        try {
 
-			Template template = ctx.gt.getTemplate(this.resourceId);
-			// 能显示异常
-			template.isRoot = false;
-			template.binding(ctx.globalVar);
-			for (int i = 0; i < paras.length; i++) {
-				template.binding("para".concat(String.valueOf(i)), paras[i]);
-			}
+            Template template = ctx.gt.getTemplate(this.resourceId);
+            // 能显示异常
+            template.isRoot = false;
+            template.binding(ctx.globalVar);
+            for (int i = 0; i < paras.length; i++) {
+                template.binding("para".concat(String.valueOf(i)), paras[i]);
+            }
 
-			template.renderTo(ctx.byteWriter);
-			Object[] vars = template.getCtx().vars;
-			Object o = vars[vars.length - 1];
-			if (o != Context.NOT_EXIST_OBJECT) {
-				return o;
-			} else {
-				return null;
-			}
+            template.renderTo(ctx.byteWriter);
+            Object[] vars = template.getCtx().vars;
+            Object o = vars[vars.length - 1];
+            if (o != Context.NOT_EXIST_OBJECT) {
+                return o;
+            } else {
+                return null;
+            }
 
-		}
+        } catch (BeetlException ex) {
 
-		catch (BeetlException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            throw new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 " + this.resourceId, ex);
+        }
 
-			throw ex;
-		} catch (Exception ex) {
-			BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 " + this.resourceId,
-					ex);
-
-			throw be;
-		}
-
-	}
+    }
 
 }

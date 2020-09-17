@@ -35,44 +35,36 @@ import org.beetl.core.ByteWriter;
 
 /**
  * 模板变量对应的类型，其内容是字节
- * @author joelli
  *
+ * @author xiandafu
  */
-public class ByteBodyContent implements BodyContent
-{
-	byte[] bs;
-	int count;
-	String charset = null;
+public class ByteBodyContent implements BodyContent {
+    byte[] bs;
+    int count;
+    String charset = null;
 
-	public ByteBodyContent(byte[] bs, int count, String charset)
-	{
-		this.bs = bs;
-		this.charset = charset;
-		this.count = count;
+    public ByteBodyContent(byte[] bs, int count, String charset) {
+        this.bs = bs;
+        this.charset = charset;
+        this.count = count;
 
-	}
+    }
 
-	public String getBody()
-	{
-		return this.toString();
-	}
+    public String getBody() {
+        return this.toString();
+    }
 
-	public String toString()
-	{
-		try
-		{
-			return new String(bs, 0, count, charset);
-		}
-		catch (UnsupportedEncodingException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
+    public String toString() {
+        try {
+            return new String(bs, 0, count, charset);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@Override
-	public void fill(ByteWriter bw) throws IOException
-	{
-		bw.write(bs, count);
+    @Override
+    public void fill(ByteWriter bw) throws IOException {
+        bw.write(bs, count);
 
-	}
+    }
 }

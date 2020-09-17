@@ -18,7 +18,6 @@ public class SwitchTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/control/swi/switch_expected.html"), str);
 
-		
 	}
 
 	@Test
@@ -29,7 +28,6 @@ public class SwitchTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/control/swi/switch2_expected.html"), str);
 
-	
 	}
 
 	@Test

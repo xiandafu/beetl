@@ -37,7 +37,7 @@ import org.beetl.core.misc.PrimitiveArrayUtil;
 /**
  * 判断全局变量是否为“空”，下列情况属于为空·的情况
  * <ul>
- * 
+ *
  * <li>变量不存在</li>
  * <li>变量存在，但为null</li>
  * <li>变量存在，但是字符，其长途为0</li>
@@ -46,59 +46,50 @@ import org.beetl.core.misc.PrimitiveArrayUtil;
  * </ul>
  * 参数可以一个到多个,如<p>
  * ${empty("list")}
- * @author joelli
  *
+ * @author xiandafu
  */
 @Deprecated
 public class EmptyFunction implements Function {
 
-	@Override
-	public Boolean call(Object[] paras, Context ctx) {
+    @Override
+    public Boolean call(Object[] paras, Context ctx) {
 
-		String key = null;
-		for (Object o : paras) {
-			key = (String) o;
-			if (ctx.globalVar.containsKey(key)) {
-				Object result = ctx.getGlobal(key);
-				if (result != null) {
+        String key = null;
+        for (Object o : paras) {
+            key = (String) o;
+            if (ctx.globalVar.containsKey(key)) {
+                Object result = ctx.getGlobal(key);
+                if (result != null) {
 
-					if (result instanceof String) {
+                    if (result instanceof String) {
 
-						if (((String) result).length() != 0) {
-							return false;
-						}
+                        if (((String) result).length() != 0) {
+                            return false;
+                        }
 
-					} else if (result instanceof Collection) {
-						if (((Collection) result).size() != 0) {
-							return false;
-						}
-					} else if (result instanceof Map) {
-						if (((Map) result).size() != 0) {
-							return false;
-						}
-					} else if (result.getClass().isArray()) {
-						Class ct = result.getClass().getComponentType();
-						if (ct.isPrimitive()) {
-							return PrimitiveArrayUtil.getSize(result) == 0;
-						} else {
-							return ((Object[]) result).length == 0;
-						}
-					} else {
-						return false;
-					}
+                    } else if (result instanceof Collection) {
+                        if (((Collection) result).size() != 0) {
+                            return false;
+                        }
+                    } else if (result instanceof Map) {
+                        if (((Map) result).size() != 0) {
+                            return false;
+                        }
+                    } else if (result.getClass().isArray()) {
+                        return result.getClass().getComponentType().isPrimitive()
+                                ? PrimitiveArrayUtil.getSize(result) == 0
+                                : ((Object[]) result).length == 0;
+                    } else {
+                        return false;
+                    }
+                }
+            }
 
-				} else {
+        }
 
-					continue;
-				}
+        return true;
 
-			}
-
-		}
-
-		return true;
-
-	}
-
+    }
 
 }

@@ -29,28 +29,24 @@ package org.beetl.core.exception;
 
 /**
  * 语法解析异常
- * @author joelli
  *
+ * @author xiandafu
  */
-public class BeetlParserException extends BeetlException
-{
+public class BeetlParserException extends BeetlException {
 
-	public BeetlParserException(String detailCode)
-	{
-		super(detailCode);
-		// TODO Auto-generated constructor stub
-	}
+    public BeetlParserException(String detailCode) {
+        super(detailCode);
+        // TODO Auto-generated constructor stub
+    }
 
-	public BeetlParserException(String detailCode, String msg)
-	{
-		super(detailCode, msg);
+    public BeetlParserException(String detailCode, String msg) {
+        super(detailCode, msg);
 
-	}
+    }
 
-	public BeetlParserException(String detailCode, String msg, Throwable cause)
-	{
-		super(detailCode, msg, cause);
+    public BeetlParserException(String detailCode, String msg, Throwable cause) {
+        super(detailCode, msg, cause);
 
-	}
+    }
 
 }

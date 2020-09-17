@@ -21,7 +21,6 @@ public class GeneralNumberTest extends BasicTestCase {
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/exp/general_add_expected.html"), str);
 
-
 	}
 
 	@Test
@@ -41,7 +40,6 @@ public class GeneralNumberTest extends BasicTestCase {
 		String str = t.render();
 
 		AssertJUnit.assertEquals(this.getFileContent("/exp/general_compare_expected.html"), str);
-
 
 	}
 

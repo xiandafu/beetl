@@ -14,7 +14,7 @@ public class TryCatchTest extends BasicTestCase
 		Template t = gt.getTemplate("/control/trycatch/general_template.html");
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/control/trycatch/general_expected.html"), str);
-		
+
 	}
 
 	@Test
@@ -24,7 +24,6 @@ public class TryCatchTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/control/trycatch/noerror_expected.html"), str);
 
-		
 	}
 
 }

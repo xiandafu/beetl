@@ -31,98 +31,96 @@ import org.beetl.core.Context;
 import org.beetl.core.exception.BeetlException;
 
 /**
- * 
  * for(var a=0;a &lt;10;i++){}elsefor{}
- * @author joelli
  *
+ * @author xiandafu
  */
 public class GeneralForStatement extends Statement implements IGoto {
-	public Expression[] expInit;
-	public Expression condtion;
-	public Expression[] expUpdate;
-	public Statement forPart;
-	public Statement elseforPart;
-	public VarAssignStatementSeq varAssignSeq;
-	public boolean hasGoto = false;
-	public short itType = 0;
+    public Expression[] expInit;
+    public Expression condtion;
+    public Expression[] expUpdate;
+    public Statement forPart;
+    public Statement elseforPart;
+    public VarAssignStatementSeq varAssignSeq;
+    public boolean hasGoto = false;
+    public short itType = 0;
 
-	// for(expInit;condtion;expUpdate){}
-	public GeneralForStatement(VarAssignStatementSeq varAssignSeq, Expression[] expInit, Expression condtion,
-			Expression[] expUpdate, Statement forPart, Statement elseforPart, GrammarToken token) {
-		super(token);
-		this.varAssignSeq = varAssignSeq;
-		this.expInit = expInit;
-		this.condtion = condtion;
-		this.expUpdate = expUpdate;
-		this.elseforPart = elseforPart;
-		this.forPart = forPart;
+    // for(expInit;condtion;expUpdate){}
+    public GeneralForStatement(VarAssignStatementSeq varAssignSeq, Expression[] expInit, Expression condtion,
+                               Expression[] expUpdate, Statement forPart, Statement elseforPart, GrammarToken token) {
+        super(token);
+        this.varAssignSeq = varAssignSeq;
+        this.expInit = expInit;
+        this.condtion = condtion;
+        this.expUpdate = expUpdate;
+        this.elseforPart = elseforPart;
+        this.forPart = forPart;
 
-	}
+    }
 
-	public void execute(Context ctx) {
-		if (expInit != null) {
-			for (Expression exp : expInit) {
-				exp.evaluate(ctx);
-			}
-		}
-		if (varAssignSeq != null) {
-			varAssignSeq.execute(ctx);
-		}
-		// todo 需要提高效率，减少hasLooped赋值，以及每次gotoFlag检测，然而，这个不太常用，目前不优化
+    public void execute(Context ctx) {
+        if (expInit != null) {
+            for (Expression exp : expInit) {
+                exp.evaluate(ctx);
+            }
+        }
+        if (varAssignSeq != null) {
+            varAssignSeq.execute(ctx);
+        }
+        // todo 需要提高效率，减少hasLooped赋值，以及每次gotoFlag检测，然而，这个不太常用，目前不优化
 
-		// boolean hasLooped = false;
-		for (;;) {
-			Object val = condtion.evaluate(ctx);
-			boolean bool = false;
-			if (val instanceof Boolean) {
-				bool = ((Boolean) val).booleanValue();
-			} else {
-				BeetlException be = new BeetlException(BeetlException.BOOLEAN_EXPECTED_ERROR);
-				be.pushToken(condtion.token);
-				throw be;
-			}
+        // boolean hasLooped = false;
+        for (; ; ) {
+            Object val = condtion.evaluate(ctx);
+            boolean bool = false;
+            if (val instanceof Boolean) {
+                bool = ((Boolean) val).booleanValue();
+            } else {
+                BeetlException be = new BeetlException(BeetlException.BOOLEAN_EXPECTED_ERROR);
+                be.pushToken(condtion.token);
+                throw be;
+            }
 
-			if (bool) {
-				// hasLooped = true;
-				forPart.execute(ctx);
-				switch (ctx.gotoFlag) {
-					case IGoto.NORMAL:
-						break;
-					case IGoto.CONTINUE:
-						ctx.gotoFlag = IGoto.NORMAL;
-						break;
-					case IGoto.RETURN:
-						return;
-					case IGoto.BREAK:
-						ctx.gotoFlag = IGoto.NORMAL;
-						return;
-				}
+            if (bool) {
+                // hasLooped = true;
+                forPart.execute(ctx);
+                switch (ctx.gotoFlag) {
+                    case IGoto.NORMAL:
+                        break;
+                    case IGoto.CONTINUE:
+                        ctx.gotoFlag = IGoto.NORMAL;
+                        break;
+                    case IGoto.RETURN:
+                        return;
+                    case IGoto.BREAK:
+                        ctx.gotoFlag = IGoto.NORMAL;
+                        return;
+                }
 
-			} else {
-				break;
-			}
+            } else {
+                break;
+            }
 
-			if (this.expUpdate != null) {
-				for (Expression exp : expUpdate) {
-					exp.evaluate(ctx);
-				}
-			}
+            if (this.expUpdate != null) {
+                for (Expression exp : expUpdate) {
+                    exp.evaluate(ctx);
+                }
+            }
 
-		}
+        }
 
-	}
+    }
 
-	@Override
-	public final boolean hasGoto() {
-		// TODO Auto-generated method stub
-		return hasGoto;
-	}
+    @Override
+    public final boolean hasGoto() {
+        // TODO Auto-generated method stub
+        return hasGoto;
+    }
 
-	@Override
-	public final void setGoto(boolean occour) {
-		this.hasGoto = occour;
+    @Override
+    public final void setGoto(boolean occour) {
+        this.hasGoto = occour;
 
-	}
-
+    }
 
 }

@@ -34,7 +34,7 @@ import java.math.BigDecimal;
 /**
  * 用于本地调用类型转化
  *
- * @author joelli
+ * @author xiandafu
  */
 public class ObjectMethodMatchConf {
     public final static int INT_CONVERT = 1;

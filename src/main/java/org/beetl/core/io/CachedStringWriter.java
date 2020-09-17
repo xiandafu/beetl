@@ -10,10 +10,9 @@ package org.beetl.core.io;
  * </pre>
  */
 public class CachedStringWriter extends NoLockStringWriter {
-    public String toString()
-    {
+    public String toString() {
 
-        String str =  new String(buf, 0, count);
+        String str = new String(buf, 0, count);
         count = 0;
         /**
          * 如果buf过长，可以考虑清空或者缩容
@@ -25,9 +24,9 @@ public class CachedStringWriter extends NoLockStringWriter {
         return str;
     }
 
-    public static ThreadLocal<CachedStringWriter> buffers = new ThreadLocal<CachedStringWriter>(){
-        public CachedStringWriter initialValue(){
-            return  new CachedStringWriter();
+    public static ThreadLocal<CachedStringWriter> buffers = new ThreadLocal<CachedStringWriter>() {
+        public CachedStringWriter initialValue() {
+            return new CachedStringWriter();
         }
     };
 }

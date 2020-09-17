@@ -24,24 +24,19 @@ public class ScriptDelimeter extends Delimeter {
 
     @Override
     public boolean matchEnd(StringBuilder script) {
-        boolean match = false;
-        if (isMatchFirstGroup) {
-            match = matchEnd(this.end,script);
-
-        } else if (this.hasTwoGroup) {
-            match = matchEnd(this.end1,script);
-        }
-        return match;
+        return isMatchFirstGroup
+                ? matchEnd(this.end, script)
+                : (hasTwoGroup && matchEnd(this.end1, script));
     }
 
-    private boolean matchEnd(char[] end,StringBuilder script){
+    private boolean matchEnd(char[] end, StringBuilder script) {
         if (end != null) {
             return source.matchAndSKipEnd(end);
         } else {
             int matchCount = source.isMatchCR();
-            if (matchCount!=0) {
+            if (matchCount != 0) {
                 endIsCr = true;
-                source.consume(matchCount);;
+                source.consume(matchCount);
                 source.addLine();
                 script.append("\n");
                 return true;

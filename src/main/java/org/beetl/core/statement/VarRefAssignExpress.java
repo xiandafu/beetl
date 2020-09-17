@@ -34,84 +34,82 @@ import org.beetl.core.om.AABuilder;
 import org.beetl.core.om.AttributeAccess;
 import org.beetl.core.om.ObjectSetterUtil;
 
-
 /**
  * call(xxx.cc = exp); 返回是exp
- * @author joelli
  *
+ * @author xiandafu
  */
 public class VarRefAssignExpress extends Expression implements IVarIndex {
 
-	public Expression exp;
-	public VarRef varRef;
-	protected VarAttribute lastVarAttribute = null;
-	protected int varIndex = -1;
+    public Expression exp;
+    public VarRef varRef;
+    protected VarAttribute lastVarAttribute = null;
+    protected int varIndex = -1;
 
-	public VarRefAssignExpress(Expression exp, VarRef varRef) {
-		super(varRef.token);
-		this.exp = exp;
-		this.varRef = varRef;
-		if (varRef.attributes.length == 0) {
-			lastVarAttribute = null;
-		} else {
-			lastVarAttribute = varRef.attributes[varRef.attributes.length - 1];
+    public VarRefAssignExpress(Expression exp, VarRef varRef) {
+        super(varRef.token);
+        this.exp = exp;
+        this.varRef = varRef;
+        if (varRef.attributes.length == 0) {
+            lastVarAttribute = null;
+        } else {
+            lastVarAttribute = varRef.attributes[varRef.attributes.length - 1];
 
-		}
-	}
+        }
+    }
 
-	public Object evaluate(Context ctx) {
-		Object value = exp.evaluate(ctx);
-		if (lastVarAttribute == null) {
+    public Object evaluate(Context ctx) {
+        Object value = exp.evaluate(ctx);
+        if (lastVarAttribute == null) {
 
-			ctx.vars[varIndex] = value;
-			return value;
-		}
-		Object obj = varRef.evaluateUntilLast(ctx);
-		Object key = null;
+            ctx.vars[varIndex] = value;
+            return value;
+        }
+        Object obj = varRef.evaluateUntilLast(ctx);
+        Object key = null;
 
-		if (lastVarAttribute instanceof VarSquareAttribute) {
-			key = (((VarSquareAttribute) lastVarAttribute).exp).evaluate(ctx);
-		} else {
-			key = lastVarAttribute.name;
-		}
+        if (lastVarAttribute instanceof VarSquareAttribute) {
+            key = (((VarSquareAttribute) lastVarAttribute).exp).evaluate(ctx);
+        } else {
+            key = lastVarAttribute.name;
+        }
 
-		if(obj==null){
-			BeetlException bx = new BeetlException(BeetlException.NULL);
-			bx.pushToken(varRef.token);
-			throw bx;
-		}
+        if (obj == null) {
+            BeetlException bx = new BeetlException(BeetlException.NULL);
+            bx.pushToken(varRef.token);
+            throw bx;
+        }
 
-		try {
+        try {
 
-			AttributeAccess aa= AABuilder.buildFiledAccessor(obj.getClass());
-			aa.setValue(obj,key,value);
+            AttributeAccess aa = AABuilder.buildFiledAccessor(obj.getClass());
+            aa.setValue(obj, key, value);
 
-			return value;
-		
-		} catch (ClassCastException ex) {
-			BeetlException bx = new BeetlException(BeetlException.ATTRIBUTE_INVALID, ex);
-			bx.pushToken(lastVarAttribute.token);
-			throw bx;
-		} catch (BeetlException be) {
-			be.pushToken(lastVarAttribute.token);
-			throw be;
-		}
+            return value;
+
+        } catch (ClassCastException ex) {
+            BeetlException bx = new BeetlException(BeetlException.ATTRIBUTE_INVALID, ex);
+            bx.pushToken(lastVarAttribute.token);
+            throw bx;
+        } catch (BeetlException be) {
+            be.pushToken(lastVarAttribute.token);
+            throw be;
+        }
 
 //		return value;
 
-	}
+    }
 
+    @Override
+    public void setVarIndex(int index) {
+        varIndex = index;
 
-	@Override
-	public void setVarIndex(int index) {
-		varIndex = index;
+    }
 
-	}
-
-	@Override
-	public int getVarIndex() {
-		// TODO Auto-generated method stub
-		return varIndex;
-	}
+    @Override
+    public int getVarIndex() {
+        // TODO Auto-generated method stub
+        return varIndex;
+    }
 
 }

@@ -51,7 +51,6 @@ public class NativeTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/nat/nat_array_expected.html"), str);
 
-		
 	}
 
 	@Test
@@ -63,7 +62,6 @@ public class NativeTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/nat/nat_method2_expected.html"), str);
 
-		
 	}
 
 	@Test
@@ -75,7 +73,6 @@ public class NativeTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/nat/all_expected.html"), str);
 
-	
 	}
 
 	@Test
@@ -87,26 +84,19 @@ public class NativeTest extends BasicTestCase
 			String str = t.render();
 			AssertJUnit.assertEquals(this.getFileContent("/nat/object_expected.html"), str);
 
-
-		
 	}
 
 	@Test
 	public void testPrivateMethodCall() throws Exception
 	{
 
-
 			Template t = gt.getTemplate("/nat/nat_private_method_template.html");
 			this.bind(t, "test", Request.getRequest());
 			String str = t.render();
 			AssertJUnit.assertEquals(this.getFileContent("/nat/nat_private_method_expected.html"), str);
 
-
-
-	
 	}
-	
-	
+
 	@Test
 	public void testSecurity() throws Exception
 	{
@@ -115,10 +105,10 @@ public class NativeTest extends BasicTestCase
 		Configuration cfg = Configuration.defaultConfiguration();
 		GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
 		Template t = gt.getTemplate("hello,${@java.lang.System.currentTimeMillis()}");
-	
+
 		String str = t.render();
 		AssertJUnit.assertEquals("hello,", str);
-	
+
 	}
 
 	public String getText()

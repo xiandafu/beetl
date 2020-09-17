@@ -37,69 +37,66 @@ import java.util.Map;
  * 方法bind(name,value) 来绑定变量，或者更常用的是binds(Object... array)如下是一个例子
  * <pre>
  * public class TestGeneralVarTagBinding extends GeneralVarTagBinding
-{
-
-	
-	public void render()
-	{
-		for (int i = 0; i &lt; 5; i++)
-		{
-			this.bind("value", i);// or this.binds(i);
-			this.doBodyRender();
-		}
-
-	}
-
-}
-
-  </pre>
-  此例子会循环渲染标签体5次，并且每次循环都会设置value的值，如下是模板内容
-  <pre>
- &lt;#tag ; value&gt;
-	${value}
- &lt;/#tag&gt;
- </pre>
-
+ * {
+ *
+ *
+ * public void render()
+ * {
+ * for (int i = 0; i &lt; 5; i++)
+ * {
+ * this.bind("value", i);// or this.binds(i);
+ * this.doBodyRender();
+ * }
+ *
+ * }
+ *
+ * }
+ *
+ * </pre>
+ * 此例子会循环渲染标签体5次，并且每次循环都会设置value的值，如下是模板内容
+ * <pre>
+ * &lt;#tag ; value&gt;
+ * ${value}
+ * &lt;/#tag&gt;
+ * </pre>
  */
 public abstract class GeneralVarTagBinding extends Tag {
-	/**
-	 * 记录了变量名字应该放到Contxt.vars的哪一个位置
-	 */
-	private LinkedHashMap<String, Integer> name2Index = null;
+    /**
+     * 记录了变量名字应该放到Contxt.vars的哪一个位置
+     */
+    private LinkedHashMap<String, Integer> name2Index = null;
 
+    public void mapName2Index(LinkedHashMap<String, Integer> map) {
+        name2Index = map;
+    }
 
-	public void mapName2Index(LinkedHashMap<String, Integer> map) {
-		name2Index = map;
-	}
+    /**
+     * 按照标签变量声明的顺序绑定
+     */
+    protected void binds(Object... array) {
+        if (name2Index == null) {
+            throw new RuntimeException("html标签没有定义绑定变量,但标签实现中试图绑定" + Arrays.asList(array));
+        }
 
-	/**按照标签变量声明的顺序绑定
-	 * @param array
-	 */
-	protected void binds(Object... array) {
-		if (name2Index == null) {
-			throw new RuntimeException("html标签没有定义绑定变量,但标签实现中试图绑定" + Arrays.asList(array));
-		}
+        Iterator<Integer> it = name2Index.values().iterator();
+        for (Object o : array) {
+            int index = it.next();
+            ctx.vars[index] = o;
+        }
+    }
 
-		Iterator<Integer> it = name2Index.values().iterator();
-		for (int i = 0; i < array.length; i++) {
-			int index = it.next();
-			ctx.vars[index] = array[i];
-		}
-	}
+    public Object getAttributeValue(String attrName) {
+        Map map = (Map) this.args[1];
+        return map.get(attrName);
 
+    }
 
-	public Object getAttributeValue(String attrName) {
-		Map map = (Map) this.args[1];
-		return map.get(attrName);
+    public String getHtmlTagName() {
+        return (String) this.args[0];
+    }
 
-	}
-
-	public String getHtmlTagName() {
-		return (String) this.args[0];
-	}
-
-	public Map<String, Object> getAttributes() {
-		return (Map<String, Object>) this.args[1];
-	}
+    public Map<String, Object> getAttributes() {
+        return (Map<String, Object>) this.args[1];
+    }
 
 }

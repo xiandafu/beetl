@@ -32,28 +32,16 @@ import org.beetl.core.Function;
 
 /**
  * 函数nvl，如果对象为null，则返回第二个参数，否则，返回自己
- *${nvl(user,"不存在"}
- * 
- * @author joelli
+ * ${nvl(user,"不存在"}
  *
+ * @author xiandafu
  */
-public class NVLFunction implements Function
-{
+public class NVLFunction implements Function {
 
-	public Object call(Object[] paras, Context ctx)
-	{
-		if (paras.length != 2)
-		{
-			throw new RuntimeException("参数错误，期望Object,Object");
-		}
-		if (paras[0] == null)
-		{
-			return paras[1];
-		}
-		else
-		{
-			return paras[0];
-		}
-
-	}
+    public Object call(Object[] paras, Context ctx) {
+        if (paras.length != 2) {
+            throw new RuntimeException("参数错误，期望Object,Object");
+        }
+        return paras[0] == null ? paras[1] : paras[0];
+    }
 }

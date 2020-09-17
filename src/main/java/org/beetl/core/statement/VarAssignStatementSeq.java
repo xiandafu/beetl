@@ -31,24 +31,23 @@ import org.beetl.core.Context;
 
 /**
  * var a=1,b=2 ....;
- * @author joelli
  *
+ * @author xiandafu
  */
 public class VarAssignStatementSeq extends Statement {
-	public Statement[] sts;
+    public Statement[] sts;
 
-	public VarAssignStatementSeq(Statement[] sts, GrammarToken token) {
-		super(token);
-		this.sts = sts;
-	}
+    public VarAssignStatementSeq(Statement[] sts, GrammarToken token) {
+        super(token);
+        this.sts = sts;
+    }
 
-	@Override
-	public void execute(Context ctx) {
-		for (Statement st : sts) {
-			st.execute(ctx);
-		}
+    @Override
+    public void execute(Context ctx) {
+        for (Statement st : sts) {
+            st.execute(ctx);
+        }
 
-	}
-
+    }
 
 }

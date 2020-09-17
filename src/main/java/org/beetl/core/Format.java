@@ -28,45 +28,36 @@
 package org.beetl.core;
 
 /**
- * 格式化函数，用于模版里占位符里的变量格式化后输出，如:
- * <p></p>
- * ${user.birthday,dateFormat='yyyy-MM-dd'}
- * <p></p>
- * dateFormat为格式化函数，通过groupTemplate的registerFormat函数注册，等号后面的
- * 字符串是需要格式化的样式，如果没有，可以不写，如：
- * <p></p>
- * ${user.birthday,dateFormat},格式化函数应该支持pattern为null的情况
- * 
+ * 格式化函数，用于模版里占位符里的变量格式化后输出
+ *
  * <pre>
+ *          ${user.birthday,dateFormat='yyyy-MM-dd'}
+ *          ${user.birthday,dateFormat}
+ *
+ *     1. dateFormat为格式化函数，通过groupTemplate的registerFormat函数注册，
+ *     2. 等号后面的字符串是需要格式化的样式，如果没有，可以不写
+ *     3. 格式化函数应该支持pattern为null的情况
+ *
  * public Object format(Object data, String pattern) {
- * 	if (data instanceof Date) {
- * 		SimpleDateFormat sdf = null;
- * 		if (pattern == null) {
- * 			sdf = new SimpleDateFormat();
- * 		} else {
- * 			sdf = new SimpleDateFormat(pattern);
- * 		}
- * 		return sdf.format(data);
- * 
- * 	} else {
- * 		throw new RuntimeException(&quot;Arg Error:Type should be Date&quot;);
- * 	}
+ *     if (data instanceof Date) {
+ *         SimpleDateFormat sdf = (pattern == null) ? new SimpleDateFormat() : new SimpleDateFormat(pattern);
+ *         return sdf.format(data);
+ *     }
+ * 	  throw new RuntimeException(&quot;Arg Error:Type should be Date&quot;);
  * }
+ *
  * </pre>
- * 
- * @author joelli
- * 
+ *
+ * @author xiandafu
  */
-public interface Format
-{
+public interface Format {
 
-	/**
-	 * @param data
-	 *            格式化对象
-	 * @param pattern
-	 *            ，模式，格式换函数需要考虑到pattern为null的情况
-	 * @return
-	 */
-	public Object format(Object data, String pattern);
+    /**
+     * 按照 {@param pattern} 指定的模式对 {@param data} 对象进行格式化
+     *
+     * @param data    格式化对象
+     * @param pattern 模式，格式换函数需要考虑到 pattern 为 null 的情况
+     */
+    Object format(Object data, String pattern);
 
 }

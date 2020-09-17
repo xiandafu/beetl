@@ -43,336 +43,279 @@ import org.beetl.core.statement.GrammarToken;
 import org.beetl.core.statement.IGoto;
 import org.beetl.core.statement.IVarIndex;
 
-/** 结合AntlrProgramBuilder 将模板生成Program，该类负责记录变量定义的位置和出现的位置
- * @author joelli
+/**
+ * 结合AntlrProgramBuilder 将模板生成Program，该类负责记录变量定义的位置和出现的位置
  *
+ * @author xiandafu
  */
-public class ProgramBuilderContext
-{
-	// 程序根
-	BlockEnvContext root = new BlockEnvContext();
-	// 当前block
-	BlockEnvContext current = root;
+public class ProgramBuilderContext {
+    // 程序根
+    BlockEnvContext root = new BlockEnvContext();
+    // 当前block
+    BlockEnvContext current = root;
 
+    // 节点运算辅助对象
+    List<Object> listNodeEval = new LinkedList<Object>();
+    // 全局变量名以及描述
+    Map<String, VarDescrption> globalVar = new HashMap<String, VarDescrption>();
 
-	// 节点运算辅助对象
-	List<Object> listNodeEval = new LinkedList<Object>();
-	// 全局变量名以及描述
-	Map<String, VarDescrption> globalVar = new HashMap<String, VarDescrption>();
+    // 为所有变量分配的空间长度
+    int varIndexSize = 0;
+    // 全局变量在空间中的位置
+    public Map<String, Integer> globalIndexMap = new HashMap<String, Integer>();
 
+    boolean isSafeOutput = false;
 
-	// 为所有变量分配的空间长度
-	int varIndexSize = 0;
-	// 全局变量在空间中的位置
-	public Map<String, Integer> globalIndexMap = new HashMap<String, Integer>();
+    /**
+     * 顶级变量在空间中的位置
+     */
+    public Map<String, Integer> rootIndexMap = new HashMap<String, Integer>();
 
-	boolean isSafeOutput = false;
+    /**
+     * 进入一个scope
+     */
+    public void enterBlock() {
+        BlockEnvContext blockVar = new BlockEnvContext();
+        blockVar.setParent(current);
+        current = blockVar;
+    }
 
-	/**
-	 *  顶级变量在空间中的位置
-	 */
-	public Map<String, Integer> rootIndexMap = new HashMap<String, Integer>();
+    public void exitBlock() {
+        current = current.parent;
+    }
 
-	/**
-	 * 进入一个scope
-	 */
-	public void enterBlock()
-	{
-		BlockEnvContext blockVar = new BlockEnvContext();
-		blockVar.setParent(current);
-		current = blockVar;
-	}
+    public void addVarAndPostion(ASTNode first) {
+        this.addVar(first.token.text);
+        this.setVarPosition(first.token.text, first);
+    }
 
+    /**
+     * 动态添加一个顶级变量
+     */
+    public boolean addRootVarAdnPosition(ASTNode first) {
+        String varName = first.token.text;
+        //需要查找是否已经被定义过了，不能定义
+        if (searchVar(root, varName) != null) {
+            return true;
+        }
 
+        VarDescrption varDesc = new VarDescrption();
+        varDesc.setVarName(varName);
+        varDesc.where.add(first);
+        root.getVars().put(varName, varDesc);
+        return false;
+    }
 
-	public void exitBlock()
-	{
-		current = current.parent;
-	}
+    /**
+     * 自上向下查找
+     */
+    public ASTNode searchVar(BlockEnvContext ctx, String name) {
+        if (ctx.getVarDescrption(name) != null) {
+            return ctx.getVarDescrption(name).where.get(0);
+        }
+        for (BlockEnvContext child : ctx.blockList) {
+            ASTNode node = searchVar(child, name);
+            if (node != null) {
+                return node;
+            }
+        }
+        return null;
+    }
 
-	public void addVarAndPostion(ASTNode first)
-	{
-		this.addVar(first.token.text);
-		this.setVarPosition(first.token.text, first);
-	}
+    /**
+     * 在当前context定义变量
+     */
+    public void addVar(String varName) {
+        VarDescrption varDesc = new VarDescrption();
+        varDesc.setVarName(varName);
+        this.current.getVars().put(varName, varDesc);
+    }
 
-	/**
-	 * 动态添加一个顶级变量
-	 * @param first
-	 * @return
-	 */
-	public boolean addRootVarAdnPosition(ASTNode first){
-		String varName =first.token.text;
-		//需要查找是否已经被定义过了，不能定义
-		if(searchVar(root,varName)!=null){
-			return true;
-		}
+    /**
+     * 变量属性，展示没用上，本来想用在ide属性提示,但ide插件门槛太高了，搞不定
+     */
+    public void setVarAttr(String varName, String attrName) {
+        VarDescrption varDesc = findVar(varName);
+        varDesc.attrList.add(attrName);
+    }
 
-		VarDescrption varDesc = new VarDescrption();
-		varDesc.setVarName(varName);
-		varDesc.where.add(first);
-		root.getVars().put(varName,varDesc);
-		return false;
-	}
+    public void setVarPosition(String varName, ASTNode where) {
+        VarDescrption varDesc = findVar(varName);
+        varDesc.where.add(where);
+    }
 
+    protected GrammarToken hasDefined(String varName) {
+        BlockEnvContext scope = current;
+        while (scope != null) {
+            VarDescrption varDesc = scope.getVarDescrption(varName);
+            if (varDesc != null) {
+                return varDesc.where.get(0).token;
+            } else {
+                scope = scope.parent;
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * 自上向下查找
-	 * @param ctx
-	 * @param name
-	 * @return
-	 */
-	public ASTNode searchVar(BlockEnvContext ctx,String name){
-		if(ctx.getVarDescrption(name)!=null){
-			return ctx.getVarDescrption(name).where.get(0);
-		}
-		for(BlockEnvContext child:ctx.blockList){
-			ASTNode node = searchVar(child,name);
-			if(node!=null){
-				return node;
-			}
-		}
-		return null;
-	}
+    protected VarDescrption findVar(String varName) {
+        BlockEnvContext scope = current;
+        while (scope != null) {
+            VarDescrption varDesc = scope.getVarDescrption(varName);
+            if (varDesc != null) {
+                return varDesc;
+            } else {
+                scope = scope.parent;
+            }
+        }
 
-	/**在当前context定义变量
-	 * @param varName
-	 */
-	public void addVar(String varName)
-	{
-		VarDescrption varDesc = new VarDescrption();
-		varDesc.setVarName(varName);
-		this.current.getVars().put(varName, varDesc);
-	}
+        // 未发现，是模板全局变量
+        VarDescrption desc = globalVar.get(varName);
+        if (desc == null) {
+            desc = new VarDescrption();
+            globalVar.put(varName, desc);
+        }
 
-	/**
-	 * 变量属性，展示没用上，本来想用在ide属性提示,但ide插件门槛太高了，搞不定
-	 * @param varName
-	 * @param attrName
-	 */
-	public void setVarAttr(String varName, String attrName)
-	{
-		VarDescrption varDesc = findVar(varName);
-		varDesc.attrList.add(attrName);
-	}
+        return desc;
 
-	public void setVarPosition(String varName, ASTNode where)
-	{
-		VarDescrption varDesc = findVar(varName);
-		varDesc.where.add(where);
-	}
+    }
 
-	protected GrammarToken hasDefined(String varName)
-	{
-		BlockEnvContext scope = current;
-		while (scope != null)
-		{
-			VarDescrption varDesc = scope.getVarDescrption(varName);
-			if (varDesc != null)
-			{
-				return varDesc.where.get(0).token;
-			}
-			else
-			{
-				scope = scope.parent;
-			}
-		}
-		return null;
-	}
+    public int setNodeEvalObject(Object o) {
+        listNodeEval.add(o);
+        return listNodeEval.size() - 1;
+    }
 
-	protected VarDescrption findVar(String varName)
-	{
-		BlockEnvContext scope = current;
-		while (scope != null)
-		{
-			VarDescrption varDesc = scope.getVarDescrption(varName);
-			if (varDesc != null)
-			{
-				return varDesc;
-			}
-			else
-			{
-				scope = scope.parent;
-			}
-		}
+    public void anzlyszeGlobal() {
+        int index = 0;
+        for (Entry<String, VarDescrption> entry : globalVar.entrySet()) {
+            globalIndexMap.put(entry.getKey(), index);
 
-		// 未发现，是模板全局变量
-		VarDescrption desc = globalVar.get(varName);
-		if (desc == null)
-		{
-			desc = new VarDescrption();
-			globalVar.put(varName, desc);
-		}
+            VarDescrption vd = entry.getValue();
+            String[] attrs = vd.attrList.toArray(new String[0]);
 
-		return desc;
+            for (ASTNode node : vd.where) {
+                ((IVarIndex) node).setVarIndex(index);
+            }
+            index++;
+        }
+    }
 
-	}
+    public void anzlyszeLocal() {
+        anzlysze(this.root, this.globalVar.size(), true);
+    }
 
-	public int setNodeEvalObject(Object o)
-	{
-		listNodeEval.add(o);
-		return listNodeEval.size() - 1;
-	}
+    private void anzlysze(BlockEnvContext block, int nextIndex, boolean isRoot) {
 
-	public void anzlyszeGlobal()
-	{
-		int index = 0;
-		for (Entry<String, VarDescrption> entry : globalVar.entrySet())
-		{
-			globalIndexMap.put(entry.getKey(), index);
+        for (Entry<String, VarDescrption> entry : block.vars.entrySet()) {
+            VarDescrption vd = entry.getValue();
+            // 暂时不考虑变量有可能没有被引用，（for 循环中的状态变量），因此不需要分配空间
+            // if (!vd.where.isEmpty()) {
+            for (ASTNode node : vd.where) {
+                ((IVarIndex) node).setVarIndex(nextIndex);
+                if (isRoot) {
+                    this.rootIndexMap.put(vd.getVarName(), nextIndex);
+                }
+            }
+            nextIndex++;
+            // }
 
-			VarDescrption vd = entry.getValue();
-			String[] attrs = vd.attrList.toArray(new String[0]);
+        }
+        varIndexSize = Math.max(varIndexSize, nextIndex);
 
-			for (ASTNode node : vd.where)
-			{
-				((IVarIndex) node).setVarIndex(index);
-			}
-			index++;
-		}
-	}
+        for (BlockEnvContext subBlock : block.blockList) {
+            anzlysze(subBlock, nextIndex, false);
+            int inc = subBlock.vars.size();
+            varIndexSize = Math.max(varIndexSize, nextIndex + inc);
+        }
 
-	public void anzlyszeLocal()
-	{
-		anzlysze(this.root, this.globalVar.size(), true);
-	}
-
-	private void anzlysze(BlockEnvContext block, int nextIndex, boolean isRoot)
-	{
-
-		for (Entry<String, VarDescrption> entry : block.vars.entrySet())
-		{
-			VarDescrption vd = entry.getValue();
-			// 暂时不考虑变量有可能没有被引用，（for 循环中的状态变量），因此不需要分配空间
-			// if (!vd.where.isEmpty()) {
-			for (ASTNode node : vd.where)
-			{
-				((IVarIndex) node).setVarIndex(nextIndex);
-				if (isRoot)
-				{
-					this.rootIndexMap.put(vd.getVarName(), nextIndex);
-				}
-			}
-			nextIndex++;
-			// }
-
-		}
-		varIndexSize = Math.max(varIndexSize, nextIndex);
-
-		for (BlockEnvContext subBlock : block.blockList)
-		{
-			anzlysze(subBlock, nextIndex, false);
-			int inc = subBlock.vars.size();
-			varIndexSize = Math.max(varIndexSize, nextIndex + inc);
-		}
-
-	}
+    }
 
 }
 
-class BlockEnvContext
-{
-	Map<String, VarDescrption> vars = new TreeMap<String, VarDescrption>();
-	// chidren
-	List<BlockEnvContext> blockList = new ArrayList<BlockEnvContext>();
-	BlockEnvContext parent = null;
-	int gotoValue = IGoto.NORMAL;
+class BlockEnvContext {
+    Map<String, VarDescrption> vars = new TreeMap<String, VarDescrption>();
+    // chidren
+    List<BlockEnvContext> blockList = new ArrayList<BlockEnvContext>();
+    BlockEnvContext parent = null;
+    int gotoValue = IGoto.NORMAL;
 
-	boolean canStopContinueBreakFlag = false;
+    boolean canStopContinueBreakFlag = false;
 
-	public Map<String, VarDescrption> getVars()
-	{
-		return vars;
-	}
+    public Map<String, VarDescrption> getVars() {
+        return vars;
+    }
 
-	public void setVars(Map<String, VarDescrption> vars)
-	{
-		this.vars = vars;
-	}
+    public void setVars(Map<String, VarDescrption> vars) {
+        this.vars = vars;
+    }
 
-	public List<BlockEnvContext> getBlockList()
-	{
-		return blockList;
-	}
+    public List<BlockEnvContext> getBlockList() {
+        return blockList;
+    }
 
-	public void setBlockList(List<BlockEnvContext> blockList)
-	{
-		this.blockList = blockList;
-	}
+    public void setBlockList(List<BlockEnvContext> blockList) {
+        this.blockList = blockList;
+    }
 
-	public BlockEnvContext getParent()
-	{
-		return parent;
-	}
+    public BlockEnvContext getParent() {
+        return parent;
+    }
 
-	public void setParent(BlockEnvContext parent)
-	{
-		this.parent = parent;
-		parent.blockList.add(this);
-	}
+    public void setParent(BlockEnvContext parent) {
+        this.parent = parent;
+        parent.blockList.add(this);
+    }
 
-	public VarDescrption getVarDescrption(String varName)
-	{
-		return vars.get(varName);
-	}
+    public VarDescrption getVarDescrption(String varName) {
+        return vars.get(varName);
+    }
 
-	public String toString()
-	{
+    public String toString() {
 
-		StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
-		sb.append(vars.toString());
+        sb.append(vars.toString());
 
-		for (BlockEnvContext block : blockList)
-		{
-			sb.append(block).append("\n");
-		}
+        for (BlockEnvContext block : blockList) {
+            sb.append(block).append("\n");
+        }
 
-		return sb.append("\n").toString();
-	}
+        return sb.append("\n").toString();
+    }
 
 }
 
-class VarDescrption
-{
+class VarDescrption {
 
-	String varName;
-	Set<String> attrList = new HashSet<String>();
-	List<ASTNode> where = new ArrayList<ASTNode>();
+    String varName;
+    Set<String> attrList = new HashSet<String>();
+    List<ASTNode> where = new ArrayList<ASTNode>();
 
-	public String getVarName()
-	{
-		return varName;
-	}
+    public String getVarName() {
+        return varName;
+    }
 
-	public void setVarName(String varName)
-	{
-		this.varName = varName;
-	}
+    public void setVarName(String varName) {
+        this.varName = varName;
+    }
 
-	public Set<String> getAttrList()
-	{
-		return attrList;
-	}
+    public Set<String> getAttrList() {
+        return attrList;
+    }
 
-	public void setAttrList(Set<String> attrList)
-	{
-		this.attrList = attrList;
-	}
+    public void setAttrList(Set<String> attrList) {
+        this.attrList = attrList;
+    }
 
-	public String toString()
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append("").append(attrList).append("\n");
-		sb.append("where:");
-		;
-		for (ASTNode w : where)
-		{
-			sb.append("索引：").append(((IVarIndex) w).getVarIndex()).append(",").append(w.token.line).append("行");
-			sb.append(";");
-		}
-		sb.append("\n");
-		return sb.toString();
-	}
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(attrList).append("\n");
+        sb.append("where:");
+        for (ASTNode w : where) {
+            sb.append("索引：").append(((IVarIndex) w).getVarIndex()).append(",").append(w.token.line).append("行");
+            sb.append(";");
+        }
+        sb.append("\n");
+        return sb.toString();
+    }
 
 }

@@ -33,52 +33,43 @@ import org.beetl.core.Context;
 import org.beetl.core.Function;
 
 /**
- * 
  * @author 张健川 dlut.zjc@gmail.com,fixed by leonlau 10181606@qq.com
-
  */
-public class Range implements Function
-{
-	@Override
-	public Iterator<Integer> call(Object[] paras, Context ctx)
-	{
-		final int param1 = ((Number) paras[0]).intValue();
-		final int param2 = ((Number) paras[1]).intValue();
+public class Range implements Function {
+    @Override
+    public Iterator<Integer> call(Object[] paras, Context ctx) {
+        final int param1 = ((Number) paras[0]).intValue();
+        final int param2 = ((Number) paras[1]).intValue();
 
-		if (paras.length > 3)
-		{
-			throw new RuntimeException("参数设置不正确");
-		}
-		final int param3 = paras.length == 3 ? ((Number) paras[2]).intValue() : 1;
-		if (param3 == 0)
-		{ //原地踏步走？
-			throw new RuntimeException("参数step(步进)非零整数");
-		}
-		return new Iterator<Integer>() {
-			private int start = param1;
-			private int end = param2;
-			private int step = param3;
-			private int currentValue = start;
+        if (paras.length > 3) {
+            throw new RuntimeException("参数设置不正确");
+        }
+        final int param3 = paras.length == 3 ? ((Number) paras[2]).intValue() : 1;
+        if (param3 == 0) { //原地踏步走？
+            throw new RuntimeException("参数step(步进)非零整数");
+        }
+        return new Iterator<Integer>() {
+            private int start = param1;
+            private int end = param2;
+            private int step = param3;
+            private int currentValue = start;
 
-			@Override
-			public boolean hasNext()
-			{
-				return step > 0 ? currentValue < end : currentValue > end;
-			}
+            @Override
+            public boolean hasNext() {
+                return step > 0 ? currentValue < end : currentValue > end;
+            }
 
-			@Override
-			public Integer next()
-			{
-				Integer temp = currentValue;
-				currentValue += step;
-				return temp;
-			}
+            @Override
+            public Integer next() {
+                Integer temp = currentValue;
+                currentValue += step;
+                return temp;
+            }
 
-			@Override
-			public void remove()
-			{
+            @Override
+            public void remove() {
 
-			}
-		};
-	}
+            }
+        };
+    }
 }

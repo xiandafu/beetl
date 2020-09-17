@@ -12,9 +12,9 @@ public class Source {
     boolean isSupportHtmlTag = false;
     int lastCrSize = 0;
     // source正在哪个位置
-	TextFragment lastTextFragment = null;
-	BeetlFragment beetlFragment = null;
-  
+    TextFragment lastTextFragment = null;
+    BeetlFragment beetlFragment = null;
+
     public Source(char[] cs) {
         this.cs = cs;
         this.p = 0;
@@ -33,17 +33,17 @@ public class Source {
             isSupportHtmlTag = true;
         }
     }
-    
+
     public String findCr() {
-    	p =0;
-    	while(!isEof()) {
-    		int crCount = this.isMatchCR();
-    		if(crCount!=0) {
-    			return new String(this.consumeAndGetCR(crCount));
-    		}
-    		this.consume();
-    	}
-    	return null;
+        p = 0;
+        while (!isEof()) {
+            int crCount = this.isMatchCR();
+            if (crCount != 0) {
+                return new String(this.consumeAndGetCR(crCount));
+            }
+            this.consume();
+        }
+        return null;
     }
 
     public boolean isPlaceHolderStart() {
@@ -78,101 +78,80 @@ public class Source {
         return isMatch;
     }
 
-	public boolean matchAndSKipEnd(char[] text) {
-		boolean isMatch = this.isMatch(text) && !hasScriptEscape();
-		if (isMatch) {
-			this.consume(text.length);
-		}
-		return isMatch;
-	}
+    public boolean matchAndSKipEnd(char[] text) {
+        boolean isMatch = this.isMatch(text) && !hasScriptEscape();
+        if (isMatch) {
+            this.consume(text.length);
+        }
+        return isMatch;
+    }
 
     public boolean isSupportHtmlTag() {
         return isSupportHtmlTag;
     }
-
-
-
-
 
     protected void addLine() {
         this.curLine++;
     }
 
     public boolean hasEscape() {
-        if (p > 0) {
-            if (cs[p - 1] == '\\') {
-                if (p > 1) {
-
-                    if(cs[p - 2] != '\\'){
-                    	// 删除最后一个\ \@
-						removeTextEscape();
-						return true;
-					}else{
-                    	//删除一个 \\@
-						removeTextEscape();
-						return false;
-					}
-                }else{
-					// 删除最后一个\ \@
-					removeTextEscape();
-					return true;
-				}
-
-            } else {
-                return false;
-            }
-
-        } else {
+        if (p <= 0) {
             return false;
         }
+        if (cs[p - 1] != '\\') {
+            return false;
+        }
+        if (p <= 1) {
+            // 删除最后一个\ \@
+            removeTextEscape();
+            return true;
+        }
+        if (cs[p - 2] == '\\') {
+            //删除一个 \\@
+            removeTextEscape();
+            return false;
+        }
+        // 删除最后一个\ \@
+        removeTextEscape();
+        return true;
     }
 
+    public boolean hasScriptEscape() {
+        if (p <= 0) {
+            return false;
+        }
+        if (cs[p - 1] != '\\') {
+            return false;
+        }
+        if (p <= 1) {
+            // 删除最后一个\ \@
+            removeScriptEscape();
+            return true;
+        }
+        if (cs[p - 2] == '\\') {
+            //删除一个 \\@
+            removeScriptEscape();
+            return false;
+        }
+        // 删除最后一个\ \@
+        removeScriptEscape();
+        return true;
+    }
 
-	public boolean hasScriptEscape() {
-		if (p > 0) {
-			if (cs[p - 1] == '\\') {
-				if (p > 1) {
+    public void removeScriptEscape() {
+        beetlFragment.removeEscape();
 
-					if(cs[p - 2] != '\\'){
-						// 删除最后一个\ \@
-						removeScriptEscape();
-						return true;
-					}else{
-						//删除一个 \\@
-						removeScriptEscape();
-						return false;
-					}
-				}else{
-					// 删除最后一个\ \@
-					removeScriptEscape();
-					return true;
-				}
+    }
 
-			} else {
-				return false;
-			}
+    public void removeTextEscape() {
+        lastTextFragment.removeTextEscape();
 
-		} else {
-			return false;
-		}
-	}
-
-
-	public void removeScriptEscape(){
-		beetlFragment.removeEscape();
-
-	}
-
-    public void removeTextEscape(){
-		lastTextFragment.removeTextEscape();
-
-	}
-
+    }
 
     public boolean isMatch(char[] str) {
         int cur = p;
-        for (int i = 0; i < str.length; i++) {
-            if (cur < size && cs[cur] == str[i]) {
+        for (char c : str) {
+            if (cur < size && cs[cur] == c) {
                 cur++;
             } else {
                 return false;
@@ -181,9 +160,9 @@ public class Source {
         return true;
     }
 
-    public boolean isCrStart(){
+    public boolean isCrStart() {
         int crLength = isMatchCR();
-        if(crLength==0){
+        if (crLength == 0) {
             return false;
         }
         this.lastCrSize = crLength;
@@ -191,17 +170,17 @@ public class Source {
 
     }
 
-    public int isMatchCR(){
+    public int isMatchCR() {
         // window \r\n linux \n mac \r
         char c = cs[p];
-        if (c == '\n' ) {
-        	
+        if (c == '\n') {
+
             return 1;
         }
-        if(c=='\r'){
-            if(size>p+1){
-                if(cs[p+1]=='\n'){
-                    return 1+1;
+        if (c == '\r') {
+            if (size > p + 1) {
+                if (cs[p + 1] == '\n') {
+                    return 1 + 1;
                 }
             }
             return 1;
@@ -209,19 +188,18 @@ public class Source {
 
         return 0;
 
-
     }
 
-    public char consumeAndGet(){
+    public char consumeAndGet() {
         char c = this.get();
         this.consume();
 
         return c;
     }
 
-    public char[] consumeAndGetCR(int size){
+    public char[] consumeAndGetCR(int size) {
         char[] cs = new char[size];
-        for(int i=0;i<size;i++){
+        for (int i = 0; i < size; i++) {
             cs[i] = consumeAndGet();
         }
         this.addLine();
@@ -235,7 +213,6 @@ public class Source {
     public void consume(int x) {
         p = p + x;
     }
-
 
     public char get() {
         return cs[p];

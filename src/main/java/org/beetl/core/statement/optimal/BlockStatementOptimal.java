@@ -34,24 +34,19 @@ import org.beetl.core.statement.IGoto;
 import org.beetl.core.statement.Statement;
 
 /**
- *  { statement1;statement2 }
- * @author joelli
+ * { statement1;statement2 }
  *
+ * @author xiandafu
  */
-public class BlockStatementOptimal extends BlockStatement  {
+public class BlockStatementOptimal extends BlockStatement {
 
+    public BlockStatementOptimal(Statement[] nodes, GrammarToken token) {
+        super(nodes, token);
+    }
 
+    public void execute(Context ctx) {
+        nodes[0].execute(ctx);
 
-	public BlockStatementOptimal(Statement[] nodes, GrammarToken token) {
-		super(nodes,token);
-	}
-
-	public void execute(Context ctx) {
-		nodes[0].execute(ctx);
-
-	}
-
-
-
+    }
 
 }

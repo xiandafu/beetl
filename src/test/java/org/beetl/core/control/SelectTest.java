@@ -18,7 +18,6 @@ public class SelectTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/control/select/select_expected.html"), str);
 
-
 	}
 
 	@Test
@@ -29,7 +28,6 @@ public class SelectTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/control/select/select2_expected.html"), str);
 
-	
 	}
 
 	@Test
@@ -40,7 +38,6 @@ public class SelectTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/control/select/default_expected.html"), str);
 
-		
 	}
 
 }

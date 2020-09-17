@@ -6,28 +6,28 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * list.~size
- * @author joelli
  *
+ * @author xiandafu
  */
 public class VarVirtualAttribute extends VarAttribute {
-	protected String name = null;
+    protected String name = null;
 
-	public VarVirtualAttribute(GrammarToken token) {
-		super(token);
-		this.name = token.text;
+    public VarVirtualAttribute(GrammarToken token) {
+        super(token);
+        this.name = token.text;
 
-	}
+    }
 
-	public Object evaluate(Context ctx, Object o) {
+    public Object evaluate(Context ctx, Object o) {
 
-		VirtualClassAttribute vae = ctx.gt.getVirtualAttributeEval(o.getClass(), name);
-		if (vae == null) {
-			BeetlException be = new BeetlException(BeetlException.VIRTUAL_NOT_FOUND);
-			be.pushToken(token);
-			throw be;
-		}
-		return vae.eval(o, name, ctx);
+        VirtualClassAttribute vae = ctx.gt.getVirtualAttributeEval(o.getClass(), name);
+        if (vae == null) {
+            BeetlException be = new BeetlException(BeetlException.VIRTUAL_NOT_FOUND);
+            be.pushToken(token);
+            throw be;
+        }
+        return vae.eval(o, name, ctx);
 
-	}
+    }
 
 }

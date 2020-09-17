@@ -36,7 +36,7 @@ package org.beetl.core.om;
  * <li>普通PoJo对象,</li>
  * </ul>
  *
- * @author joelli
+ * @author xiandafu
  */
 public class AABuilder {
 
@@ -47,9 +47,8 @@ public class AABuilder {
 
     public static AttributeAccess buildFiledAccessor(Class c) {
 
-      return defalutAAFactory.buildFiledAccessor(c);
+        return defalutAAFactory.buildFiledAccessor(c);
 
     }
-
 
 }

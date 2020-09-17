@@ -1,6 +1,5 @@
 package org.beetl.core.om.asm;
 
-
 import java.util.List;
 
 import org.beetl.core.BasicTestCase;
@@ -8,7 +7,6 @@ import org.beetl.core.exception.BeetlException;
 import org.beetl.core.fun.ObjectUtil;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
-
 
 public class ASMBeanFactoryTest extends BasicTestCase {
 
@@ -46,7 +44,6 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(user, "填"));
 	}
 
-
 	@Test
 	public void testByProp() throws Exception {
 		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(User.class, true);
@@ -64,7 +61,6 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(user, "写"));
 		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(user, "填"));
 	}
-
 
 	@Test
 	public void testOnlyGet() throws Exception {

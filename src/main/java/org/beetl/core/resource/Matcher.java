@@ -27,18 +27,17 @@
  */
 package org.beetl.core.resource;
 
-/**  
- * 匹配器接口,实现类必须实现equals和hashCode接口 
- * @author 李飞 (lifei@wellbole.com)   
+/**
+ * 匹配器接口,实现类必须实现equals和hashCode接口
+ *
+ * @author 李飞 (lifei@wellbole.com)
  */
-public interface Matcher
-{
-	/**
-	 *
-	 * 检查key是否匹配（满足）某种规则  
-	 * @param key view路径
-	 * @return 匹配该规则，则返回一个新的key，否则返回null
-	 *
-	 */
-	String match(String key);
+public interface Matcher {
+    /**
+     * 检查key是否匹配(满足)某种规则
+     *
+     * @param key view路径
+     * @return 如果匹配该规则，则返回一个新的 key ，否则返回 null
+     */
+    String match(String key);
 }

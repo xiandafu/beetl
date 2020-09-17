@@ -37,50 +37,49 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- *  一个html标签方式的tag,同includeTag
- *  
- *  <#html:includeFragment file=""  fragment="" arg1="" arg2=""/>
- * @author xiandafu
+ * 一个html标签方式的tag,同includeTag
  *
+ * <#html:includeFragment file=""  fragment="" arg1="" arg2=""/>
+ *
+ * @author xiandafu
  */
 public class IncludeResourceFragmentHtmlTag extends Tag {
 
-	@Override
-	public void render() {
-		Object resourceId = getRelResourceId();
-		Map<String, Object> attrs = ((Map<String, Object>) this.args[1]);
-		String fragment = (String)attrs.get("fragment");
-		Template t = gt.getAjaxTemplate(resourceId,fragment);
-		t.isRoot = false;
-		// 快速复制父模板的变量
-		t.binding(this.ctx.globalVar);
-		for (Entry<String, Object> entry : attrs.entrySet()) {
-			String attrName = entry.getKey();
-			if (attrName.equals("file")||attrName.equals("fragment")) {
-				continue;
-			}
-			Object value = entry.getValue();
-			t.binding(attrName, value);
+    @Override
+    public void render() {
+        Object resourceId = getRelResourceId();
+        Map<String, Object> attrs = ((Map<String, Object>) this.args[1]);
+        String fragment = (String) attrs.get("fragment");
+        Template t = gt.getAjaxTemplate(resourceId, fragment);
+        t.isRoot = false;
+        // 快速复制父模板的变量
+        t.binding(this.ctx.globalVar);
+        for (Entry<String, Object> entry : attrs.entrySet()) {
+            String attrName = entry.getKey();
+            if (attrName.equals("file") || attrName.equals("fragment")) {
+                continue;
+            }
+            Object value = entry.getValue();
+            t.binding(attrName, value);
 
-		}
+        }
 
-		ByteWriter bw = ctx.byteWriter;
-		t.renderTo(bw);
+        ByteWriter bw = ctx.byteWriter;
+        t.renderTo(bw);
 
-	}
+    }
 
-	protected Object getRelResourceId() {
-		Resource sibling = ctx.getResource();
-		return gt.getResourceLoader().getResourceId(sibling, this.getTargetResource());
-	}
+    protected Object getRelResourceId() {
+        Resource sibling = ctx.getResource();
+        return gt.getResourceLoader().getResourceId(sibling, this.getTargetResource());
+    }
 
-
-	protected String getTargetResource() {
-		@SuppressWarnings("unchecked")
-		String targetResourceId = (String) ((Map<String, Object>) this.args[1]).get("file");
-		if (targetResourceId == null || targetResourceId.trim().length() == 0) {
-			throw new BeetlException(BeetlException.ERROR, "缺少 file属性 ");
-		}
-		return targetResourceId;
-	}
+    protected String getTargetResource() {
+        @SuppressWarnings("unchecked")
+        String targetResourceId = (String) ((Map<String, Object>) this.args[1]).get("file");
+        if (targetResourceId == null || targetResourceId.trim().length() == 0) {
+            throw new BeetlException(BeetlException.ERROR, "缺少 file属性 ");
+        }
+        return targetResourceId;
+    }
 }

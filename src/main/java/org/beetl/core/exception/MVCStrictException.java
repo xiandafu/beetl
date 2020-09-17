@@ -31,17 +31,15 @@ import org.beetl.core.statement.GrammarToken;
 
 /**
  * 严格MVC限制异常
- * @author joelli
  *
+ * @author xiandafu
  */
-public class MVCStrictException extends BeetlException
-{
+public class MVCStrictException extends BeetlException {
 
-	public MVCStrictException(GrammarToken token)
-	{
-		super(BeetlException.STRICK_MVC);
-		this.token = token;
-		// TODO Auto-generated constructor stub
-	}
+    public MVCStrictException(GrammarToken token) {
+        super(BeetlException.STRICK_MVC);
+        this.token = token;
+        // TODO Auto-generated constructor stub
+    }
 
 }

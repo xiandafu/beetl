@@ -27,19 +27,16 @@
  */
 package org.beetl.core.statement.nat;
 
-public class ClassNode extends NativeNode
-{
-	public String cls = null;
+public class ClassNode extends NativeNode {
+    public String cls = null;
 
-	public ClassNode(String cls)
-	{
-		this.cls = cls;
-	}
+    public ClassNode(String cls) {
+        this.cls = cls;
+    }
 
-	@Override
-	public String getName()
-	{
-		return cls;
-	}
+    @Override
+    public String getName() {
+        return cls;
+    }
 
 }

@@ -2,8 +2,6 @@ package org.beetl.core.text;
 
 public class ScriptBlockFragment extends ScriptFragment {
 
-
-
     public ScriptBlockFragment(Source source) {
         super(source);
         this.source = source;
@@ -16,22 +14,16 @@ public class ScriptBlockFragment extends ScriptFragment {
 
     @Override
     public Fragment consumeAndReturnNext() {
-        while (!source.isEof()&&!source.isScriptEnd(script)) {
-        	script.append(source.consumeAndGet());
+        while (!source.isEof() && !source.isScriptEnd(script)) {
+            script.append(source.consumeAndGet());
         }
         this.setEndLine();
-        if (source.isEof()) {
-            return null;
-        }
-        return this.findNext();
+        return source.isEof() ? null : this.findNext();
+    }
+
+    public void appendCr() {
+        script.append(TextParser.cr1);
 
     }
-    
-	public void appendCr() {
-		script.append(TextParser.cr1);
-		
-	}
-
-
 
 }

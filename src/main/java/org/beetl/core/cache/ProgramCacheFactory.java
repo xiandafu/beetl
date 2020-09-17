@@ -32,30 +32,27 @@ import org.beetl.core.fun.ObjectUtil;
 /**
  * 存储Program的缓存，默认是采用{@link LocalCache},可以通过设置
  * {@link Cache} 属性来设置新的缓存对象
- * @author joelli
  *
+ * @author xiandafu
  */
-public class ProgramCacheFactory
-{
-	/**
-	 * 缓存实现类的类名
-	 */
-	public static String CACHE = "org.beetl.core.cache.LocalCache";
+public class ProgramCacheFactory {
+    /**
+     * 缓存实现类的类名
+     */
+    public static String CACHE = "org.beetl.core.cache.LocalCache";
 
-	public static Cache defaulCache()
-	{
-		
-		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		if(loader==null) {
-			loader = ProgramCacheFactory.class.getClassLoader();
-		}
-		try{
-			return (Cache) ObjectUtil.instance(CACHE,loader);
-		}catch(Exception ex){
-			System.out.println("load "+CACHE+ " by "+loader+" error ,instead local");
-			return new  LocalCache();
-		}
+    public static Cache defaulCache() {
 
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        if (loader == null) {
+            loader = ProgramCacheFactory.class.getClassLoader();
+        }
+        try {
+            return (Cache) ObjectUtil.instance(CACHE, loader);
+        } catch (Exception ex) {
+            System.out.println("load " + CACHE + " by " + loader + " error ,instead local");
+            return new LocalCache();
+        }
 
-	}
+    }
 }

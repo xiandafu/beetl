@@ -32,75 +32,72 @@ import org.beetl.core.ContextFormat;
 import org.beetl.core.Format;
 import org.beetl.core.exception.BeetlException;
 
-/** ${date,dateFormat='yyyy-mm-dd'}
- * @author joelli
+/**
+ * ${date,dateFormat='yyyy-mm-dd'}
  *
+ * @author xiandafu
  */
 public class FormatExpression extends Expression {
-	String name;
-	String pattern;
+    String name;
+    String pattern;
 
-	/**${date,name=pattern}
-	 * @param name
-	 * @param pattern
-	 * @param token
-	 */
-	public FormatExpression(String name, String pattern, GrammarToken token) {
-		super(token);
-		this.name = name;
-		this.pattern = pattern;
-	}
+    /**
+     * ${date,name=pattern}
+     */
+    public FormatExpression(String name, String pattern, GrammarToken token) {
+        super(token);
+        this.name = name;
+        this.pattern = pattern;
+    }
 
-	public Object evaluate(Context ctx) {
-		throw new UnsupportedOperationException();
-	}
+    public Object evaluate(Context ctx) {
+        throw new UnsupportedOperationException();
+    }
 
-	public Object evaluateValue(Object o, Context ctx) {
+    public Object evaluateValue(Object o, Context ctx) {
 
-		Format format = null;
-		if (name != null) {
-			format = ctx.gt.getFormat(name);
-		} else {
-			if (o == null) return null;
-			format = ctx.gt.getDefaultFormat(o.getClass());
-		}
+        Format format = null;
+        if (name != null) {
+            format = ctx.gt.getFormat(name);
+        } else {
+            if (o == null) return null;
+            format = ctx.gt.getDefaultFormat(o.getClass());
+        }
 
-		if (format == null) {
-			BeetlException ex = new BeetlException(BeetlException.FORMAT_NOT_FOUND);
-			ex.pushToken(token);
-			throw ex;
-		}
-		try {
-			if (format instanceof ContextFormat) {
-				return ((ContextFormat) format).format(o, pattern, ctx);
-			} else {
-				return format.format(o, pattern);
-			}
+        if (format == null) {
+            BeetlException ex = new BeetlException(BeetlException.FORMAT_NOT_FOUND);
+            ex.pushToken(token);
+            throw ex;
+        }
+        try {
+            if (format instanceof ContextFormat) {
+                return ((ContextFormat) format).format(o, pattern, ctx);
+            } else {
+                return format.format(o, pattern);
+            }
 
-		} catch (Exception e) {
-			BeetlException ex = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用格式化函数抛出异常", e);
-			ex.pushToken(token);
-			throw ex;
-		}
+        } catch (Exception e) {
+            BeetlException ex = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用格式化函数抛出异常", e);
+            ex.pushToken(token);
+            throw ex;
+        }
 
-	}
+    }
 
+    public String getName() {
+        return name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getPattern() {
+        return pattern;
+    }
 
-	public String getPattern() {
-		return pattern;
-	}
-
-	public void setPattern(String pattern) {
-		this.pattern = pattern;
-	}
-
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
 
 }

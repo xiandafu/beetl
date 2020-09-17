@@ -32,56 +32,55 @@ import org.beetl.core.Context;
 import org.beetl.core.misc.ALU;
 
 /**
- *  a&gt; b,a&gt;=b,a==b,a&gt;b,a&gt;=b
- * @author joelli
+ * a&gt; b,a&gt;=b,a==b,a&gt;b,a&gt;=b
  *
+ * @author xiandafu
  */
 public class CompareExpression extends Expression {
 
-	final short EQUAL = 0;
-	final short NOT_EQUAL = 1;
-	final short LARGE = 2;
-	final short LARGE_EQUAL = 3;
-	final short LESS = 4;
-	final short LESS_EQUAL = 5;
+    final short EQUAL = 0;
+    final short NOT_EQUAL = 1;
+    final short LARGE = 2;
+    final short LARGE_EQUAL = 3;
+    final short LESS = 4;
+    final short LESS_EQUAL = 5;
 
-	short compareMode = EQUAL;
+    short compareMode = EQUAL;
 
-	public Expression a;
-	public Expression b;
+    public Expression a;
+    public Expression b;
 
-	public CompareExpression(Expression a, Expression b, short mode, GrammarToken token) {
-		super(token);
-		this.a = a;
-		this.b = b;
-		this.compareMode = mode;
-	}
+    public CompareExpression(Expression a, Expression b, short mode, GrammarToken token) {
+        super(token);
+        this.a = a;
+        this.b = b;
+        this.compareMode = mode;
+    }
 
-	public Object evaluate(Context ctx) {
-		Object x = a.evaluate(ctx);
-		Object y = b.evaluate(ctx);
-		int r = 0;
-		switch (compareMode) {
-			case EQUAL:
-				return ALU.equals(x, y);
+    public Object evaluate(Context ctx) {
+        Object x = a.evaluate(ctx);
+        Object y = b.evaluate(ctx);
+        int r = 0;
+        switch (compareMode) {
+            case EQUAL:
+                return ALU.equals(x, y);
 
-			case NOT_EQUAL:
-				return !ALU.equals(x, y);
-			case LARGE_EQUAL:
-				return !ALU.less(x, y, a, b);
+            case NOT_EQUAL:
+                return !ALU.equals(x, y);
+            case LARGE_EQUAL:
+                return !ALU.less(x, y, a, b);
 
-			case LARGE:
-				return !ALU.lessEquals(x, y, a, b);
-			case LESS:
-				return ALU.less(x, y, a, b);
-			case LESS_EQUAL:
-				return ALU.lessEquals(x, y, a, b);
-			default:
-				throw new RuntimeException("不可能发生");
+            case LARGE:
+                return !ALU.lessEquals(x, y, a, b);
+            case LESS:
+                return ALU.less(x, y, a, b);
+            case LESS_EQUAL:
+                return ALU.lessEquals(x, y, a, b);
+            default:
+                throw new RuntimeException("不可能发生");
 
-		}
+        }
 
-	}
-
+    }
 
 }

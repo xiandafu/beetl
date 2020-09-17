@@ -30,42 +30,42 @@ package org.beetl.core.statement;
 import org.beetl.core.Context;
 import org.beetl.core.misc.ALU;
 
-/** ++i 或者 i++ 或者--i 或者i--
- * @author joelli
+/**
+ * ++i 或者 i++ 或者--i 或者i--
  *
+ * @author xiandafu
  */
 public class IncDecExpression extends Expression implements IVarIndex {
-	boolean isInc, returnOrginal;
-	int index;
+    boolean isInc, returnOrginal;
+    int index;
 
-	public IncDecExpression(boolean isInc, boolean returnOrginal, GrammarToken token) {
-		super(token);
-		this.isInc = isInc;
-		this.returnOrginal = returnOrginal;
-	}
+    public IncDecExpression(boolean isInc, boolean returnOrginal, GrammarToken token) {
+        super(token);
+        this.isInc = isInc;
+        this.returnOrginal = returnOrginal;
+    }
 
-	public  Object evaluate(Context ctx) {
-		Object c = ctx.vars[index];
-		Object newValue = isInc ? ALU.plusOne(c, this) : ALU.minusOne(c, this);
-		if (isInc) {
-			newValue = ALU.plusOne(c, this);
-		} else {
-			newValue = ALU.minusOne(c, this);
-		}
-		ctx.vars[index] = newValue;
-		return returnOrginal ? c : newValue;
-	}
+    public Object evaluate(Context ctx) {
+        Object c = ctx.vars[index];
+        Object newValue = isInc ? ALU.plusOne(c, this) : ALU.minusOne(c, this);
+        if (isInc) {
+            newValue = ALU.plusOne(c, this);
+        } else {
+            newValue = ALU.minusOne(c, this);
+        }
+        ctx.vars[index] = newValue;
+        return returnOrginal ? c : newValue;
+    }
 
+    @Override
+    public void setVarIndex(int index) {
+        this.index = index;
 
-	@Override
-	public void setVarIndex(int index) {
-		this.index = index;
+    }
 
-	}
-
-	@Override
-	public int getVarIndex() {
-		return index;
-	}
+    @Override
+    public int getVarIndex() {
+        return index;
+    }
 
 }

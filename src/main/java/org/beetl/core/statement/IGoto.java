@@ -28,18 +28,31 @@
 package org.beetl.core.statement;
 
 /**
- *  流程控制
- * @author joelli
+ * 用于语句块声明中的流程控制
  *
+ * @author xiandafu
  */
-public interface IGoto
-{
-	public final static short NORMAL = 0;
-	public final static short CONTINUE = 1;
-	public final static short BREAK = 2;
-	public final static short RETURN = 3;
+public interface IGoto {
+    /** 正常逻辑 */
+    short NORMAL = 0;
+    /** {@code continue} */
+    short CONTINUE = 1;
+    /** {@code break} */
+    short BREAK = 2;
+    /** {@code return} */
+    short RETURN = 3;
 
-	public boolean hasGoto();
+    /**
+     * 是否存在 {@code goto} 关键字
+     *
+     * @return true表示存在，false表示不存在
+     */
+    boolean hasGoto();
 
-	public void setGoto(boolean occour);
+    /**
+     * 设置是否存在 {@code goto} 关键字
+     *
+     * @param occur 是否存在 {@code goto} 关键字
+     */
+    void setGoto(boolean occur);
 }

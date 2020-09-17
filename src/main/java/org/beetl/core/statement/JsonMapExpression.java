@@ -35,32 +35,31 @@ import org.beetl.core.Context;
 
 /**
  * {a:1,b:2}
- * @author joelli
  *
+ * @author xiandafu
  */
 public class JsonMapExpression extends Expression {
 
-	Map<String, Expression> map;
-	public Expression[] array;
+    Map<String, Expression> map;
+    public Expression[] array;
 
-	public JsonMapExpression(Map<String, Expression> map, GrammarToken token) {
-		super(token);
-		this.map = map;
-		array = map.values().toArray(new Expression[0]);
-	}
+    public JsonMapExpression(Map<String, Expression> map, GrammarToken token) {
+        super(token);
+        this.map = map;
+        array = map.values().toArray(new Expression[0]);
+    }
 
-	public Object evaluate(Context ctx) {
-		if (map.size() == 0) {
-			return new LinkedHashMap();
-		} else {
-			Map values = new LinkedHashMap(map.size());
-			for (Entry<String, Expression> entry : map.entrySet()) {
-				values.put(entry.getKey(), entry.getValue().evaluate(ctx));
-			}
-			return values;
+    public Object evaluate(Context ctx) {
+        if (map.size() == 0) {
+            return new LinkedHashMap();
+        } else {
+            Map values = new LinkedHashMap(map.size());
+            for (Entry<String, Expression> entry : map.entrySet()) {
+                values.put(entry.getKey(), entry.getValue().evaluate(ctx));
+            }
+            return values;
 
-		}
-	}
-
+        }
+    }
 
 }

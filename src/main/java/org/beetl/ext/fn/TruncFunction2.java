@@ -39,71 +39,62 @@ import org.beetl.core.Function;
  * 截取数字，剩下指定位数,如果输入0，则取整，因为这个仅仅用于输出，所以建议用format函数定制
  * 如
  * ${trunc2(12.333,1)},输出是12.3
- * 
+ *
  * 推荐使用
- *
- *
  */
 
-public class TruncFunction2 implements Function
-{
+public class TruncFunction2 implements Function {
 
-	public Object call(Object[] paras, Context ctx)
-	{
-		Object obj = paras[0];
-		
-		if(obj==null){
-			return null;
-		}
-		if(obj instanceof Date){
-			return truncateDate((Date)obj,(String)(paras.length==1?null:paras[1]));
-		}else if(obj instanceof Number){
-			return truncateNumber((Number)obj,(Number)(paras.length==1?null:paras[1]));
-		}else{
-			throw new UnsupportedOperationException("truncate :"+obj.getClass().getName());
-		}
-		
-		
-	}
-	protected String truncateNumber(Number data,Number pos){
-		
-		String str = data.toString();
-		
-		int index = str.indexOf(".");
-		if(index==-1){
-			return str;
-		}
-		
-		if(pos==null){
-			 return str.substring(0,index);
-		}else{
-			int p = pos.intValue();
-			if(p==0){
-				throw new IllegalArgumentException("参数不能为0");
-			}
-			//小数位
-			int dig = str.length()-index-1;
-			if(dig>=p){
-				return str.substring(0,index+p+1);
-			}else{
-				return str;
-			}
-			
-		}
-		
-	}
-	protected String truncateDate(Date d,String format){
-		if(format==null){
-			format = "yyyy-MM-dd";
-		}
-		SimpleDateFormat sdf = new SimpleDateFormat(format);
-		return sdf.format(d);
-	}
+    public Object call(Object[] paras, Context ctx) {
+        Object obj = paras[0];
 
-	public static void main(String[] args){
-		TruncFunction2 f = new TruncFunction2();
-		System.out.println(f.truncateNumber(116.136d, 2));
-		System.out.println(f.truncateDate(new Date(), "MM"));
-	}
+        if (obj == null) {
+            return null;
+        }
+        if (obj instanceof Date) {
+            return truncateDate((Date) obj, (String) (paras.length == 1 ? null : paras[1]));
+        } else if (obj instanceof Number) {
+            return truncateNumber((Number) obj, (Number) (paras.length == 1 ? null : paras[1]));
+        } else {
+            throw new UnsupportedOperationException("truncate :" + obj.getClass().getName());
+        }
+
+    }
+
+    protected String truncateNumber(Number data, Number pos) {
+
+        String str = data.toString();
+
+        int index = str.indexOf(".");
+        if (index == -1) {
+            return str;
+        }
+
+        if (pos == null) {
+            return str.substring(0, index);
+        }
+        int p = pos.intValue();
+        if (p == 0) {
+            throw new IllegalArgumentException("参数不能为0");
+        }
+        //小数位
+        int dig = str.length() - index - 1;
+        return dig >= p ? str.substring(0, index + p + 1) : str;
+
+    }
+
+    protected String truncateDate(Date d, String format) {
+        if (format == null) {
+            format = "yyyy-MM-dd";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(d);
+    }
+
+    public static void main(String[] args) {
+        TruncFunction2 f = new TruncFunction2();
+        System.out.println(f.truncateNumber(116.136d, 2));
+        System.out.println(f.truncateDate(new Date(), "MM"));
+    }
 
 }

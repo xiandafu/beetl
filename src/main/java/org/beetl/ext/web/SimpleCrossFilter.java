@@ -45,56 +45,47 @@ import javax.servlet.http.HttpSession;
 import org.beetl.core.GroupTemplate;
 import org.beetl.ext.simulate.WebSimulate;
 
-/** 用于直接访问模板页面，此fitler会根据只要要访问的模板页面，运行同样同路径下的var文件，获取模板需要的全局变量，然后渲染模板
- * @author joelli
- * @since 2.1.0
+/**
+ * 用于直接访问模板页面，此fitler会根据只要要访问的模板页面，运行同样同路径下的var文件，获取模板需要的全局变量，然后渲染模板
  *
+ * @author xiandafu
+ * @since 2.1.0
  */
-public abstract class SimpleCrossFilter implements Filter
-{
-	WebSimulate simulate = null;
-	public SimpleCrossFilter()
-	{
-		simulate = new WebSimulate(getGroupTemplate());
-	}
+public abstract class SimpleCrossFilter implements Filter {
+    WebSimulate simulate = null;
 
-	public void destroy()
-	{
-		// TODO Auto-generated method stub
-	}
+    public SimpleCrossFilter() {
+        simulate = new WebSimulate(getGroupTemplate());
+    }
 
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
-			ServletException
-	{
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse rsp = (HttpServletResponse) response;
-		if (canProcceed(req, response))
-		{
-			
-			simulate.execute(req,rsp);
-		}
-		else
-		{
+    public void destroy() {
+        // TODO Auto-generated method stub
+    }
 
-			chain.doFilter(request, response);
-		}
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+            ServletException {
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse rsp = (HttpServletResponse) response;
+        if (canProcceed(req, response)) {
 
-	}
+            simulate.execute(req, rsp);
+        } else {
 
+            chain.doFilter(request, response);
+        }
 
-	/** 返回一个GroupTemlate
-	 * @return
-	 */
-	protected abstract GroupTemplate getGroupTemplate();
+    }
 
-	/** 是否处理此请求，默认总是处理
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	protected boolean canProcceed(ServletRequest request, ServletResponse response)
-	{
-		return true;
-	}
+    /**
+     * 返回一个GroupTemlate
+     */
+    protected abstract GroupTemplate getGroupTemplate();
+
+    /**
+     * 是否处理此请求，默认总是处理
+     */
+    protected boolean canProcceed(ServletRequest request, ServletResponse response) {
+        return true;
+    }
 
 }

@@ -27,23 +27,19 @@
  */
 package org.beetl.core.statement.nat;
 
-public class NativeAtrributeNode extends NativeNode
-{
-	public String attribute;
+public class NativeAtrributeNode extends NativeNode {
+    public String attribute;
 
-	public NativeAtrributeNode(String attribute)
-	{
-		this.attribute = attribute;
-	}
+    public NativeAtrributeNode(String attribute) {
+        this.attribute = attribute;
+    }
 
-	public String attribute()
-	{
-		return this.attribute;
-	}
+    public String attribute() {
+        return this.attribute;
+    }
 
-	@Override
-	public String getName()
-	{
-		return attribute;
-	}
+    @Override
+    public String getName() {
+        return attribute;
+    }
 }

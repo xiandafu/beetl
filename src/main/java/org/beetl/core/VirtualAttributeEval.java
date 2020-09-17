@@ -28,13 +28,18 @@
 package org.beetl.core;
 
 /**
- * 虚拟属性,
- * 
- * @author joelli
- * 
+ * 虚拟属性
+ *
+ * @author xiandafu
  */
-public interface VirtualAttributeEval extends VirtualClassAttribute
-{
+public interface VirtualAttributeEval extends VirtualClassAttribute {
 
-	public boolean isSupport(Class c, String attributeName);
+    /**
+     * 根据自定义规则去匹配 {@code subClass} 和 {@code attributeName} 是否满足某种条件
+     *
+     * @param subClass      子类，实现方法中可以判断subClass是否是Map/List的子类或子接口
+     * @param attributeName 属性名称，实现方法中可以判断attributeName是否与某个字符串相等
+     * @return true 表示支持，false 表示不支持
+     */
+    boolean isSupport(Class subClass, String attributeName);
 }

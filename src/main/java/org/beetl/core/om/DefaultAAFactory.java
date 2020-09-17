@@ -44,22 +44,18 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DefaultAAFactory {
 
-    protected  ListAA listAA = new ListAA();
-    protected  MapAA mapAA = new MapAA();
-    protected  ArrayAA arrayAA = new ArrayAA();
-    protected  MapEntryAA mapEntryAA = new MapEntryAA();
+    protected ListAA listAA = new ListAA();
+    protected MapAA mapAA = new MapAA();
+    protected ArrayAA arrayAA = new ArrayAA();
+    protected MapEntryAA mapEntryAA = new MapEntryAA();
     /**
-     *  可以替换成自己的实现，比如，允许属性上增加注解来设定返回的属性值
-     *
+     * 可以替换成自己的实现，比如，允许属性上增加注解来设定返回的属性值
      */
 
-    protected  ReflectBeanAA reflectBeanAA = ReflectBeanAA.instance;
-    protected  Map<Class, AttributeAccess> classAttrs = new ConcurrentHashMap<Class, AttributeAccess>();
+    protected ReflectBeanAA reflectBeanAA = ReflectBeanAA.instance;
+    protected Map<Class, AttributeAccess> classAttrs = new ConcurrentHashMap<Class, AttributeAccess>();
 
-
-
-
-    public DefaultAAFactory(){
+    public DefaultAAFactory() {
         classAttrs.put(HashMap.class, mapAA);
         classAttrs.put(ConcurrentHashMap.class, mapAA);
         classAttrs.put(LinkedHashMap.class, mapAA);
@@ -69,40 +65,39 @@ public class DefaultAAFactory {
 
     }
 
-    public  AttributeAccess buildFiledAccessor(Class c) {
+    public AttributeAccess buildFiledAccessor(Class c) {
 
         AttributeAccess aa = classAttrs.get(c);
         if (aa != null) {
             return aa;
         }
         if (c.isArray()) {
-            classAttrs.putIfAbsent(c,arrayAA);
+            classAttrs.putIfAbsent(c, arrayAA);
             return arrayAA;
         }
 
         if (Map.class.isAssignableFrom(c)) {
-            classAttrs.putIfAbsent(c,mapAA);
+            classAttrs.putIfAbsent(c, mapAA);
             return mapAA;
         }
 
         if (List.class.isAssignableFrom(c)) {
-            classAttrs.putIfAbsent(c,listAA);
+            classAttrs.putIfAbsent(c, listAA);
             return listAA;
         }
 
-        if(Map.Entry.class.isAssignableFrom(c)){
-            classAttrs.putIfAbsent(c,mapEntryAA);
+        if (Map.Entry.class.isAssignableFrom(c)) {
+            classAttrs.putIfAbsent(c, mapEntryAA);
             return mapEntryAA;
         }
-
 
         aa = registerClass(c);
         return aa;
 
     }
 
-    protected  AttributeAccess registerClass(Class c) {
-        classAttrs.put(c,reflectBeanAA);
+    protected AttributeAccess registerClass(Class c) {
+        classAttrs.put(c, reflectBeanAA);
         return reflectBeanAA;
     }
 

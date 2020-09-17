@@ -32,41 +32,29 @@ import java.math.BigDecimal;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.misc.PrimitiveArrayUtil;
 
-/**访问数组的封装类,attr需要任何能转成int的数值类型
- * @author joelli
+/**
+ * 访问数组的封装类,attr需要任何能转成int的数值类型
  *
+ * @author xiandafu
  */
-public class ArrayAA extends AttributeAccess
-{
+public class ArrayAA extends AttributeAccess {
 
-	public Object value(Object o, Object attr)
-	{
-		if (attr instanceof Integer || attr instanceof Long || attr instanceof Short || attr instanceof Byte
-				|| attr instanceof BigDecimal)
-		{
-			int index = ((Number) attr).intValue();
-			if (index < 0)
-			{
-				BeetlException ex = new BeetlException(BeetlException.ARRAY_INDEX_ERROR, "索引必须大于或者等于");
-				throw ex;
-			}
+    public Object value(Object o, Object attr) {
+        if (attr instanceof Integer || attr instanceof Long || attr instanceof Short || attr instanceof Byte
+                || attr instanceof BigDecimal) {
+            int index = ((Number) attr).intValue();
+            if (index < 0) {
+                throw new BeetlException(BeetlException.ARRAY_INDEX_ERROR, "索引必须大于或者等于");
+            }
 
-			if (o.getClass().getComponentType().isPrimitive())
-			{
-				return PrimitiveArrayUtil.getObject(o, index);
-			}
-			else
-			{
-				return ((Object[]) o)[index];
-			}
+            return o.getClass().getComponentType().isPrimitive()
+                    ? PrimitiveArrayUtil.getObject(o, index)
+                    : ((Object[]) o)[index];
+        } else {
+            throw new BeetlException(BeetlException.ARRAY_INDEX_ERROR,
+                    "该对象是数组，期望是整形或者是BigDecimal类型, 如果对象是动态的的，需要directive dynamic ");
+        }
 
-		}
-		else
-		{
-			BeetlException ex = new BeetlException(BeetlException.ARRAY_INDEX_ERROR, "该对象是数组，期望是整形或者是BigDecimal类型, 如果对象是动态的的，需要directive dynamic ");
-			throw ex;
-		}
-
-	}
+    }
 
 }

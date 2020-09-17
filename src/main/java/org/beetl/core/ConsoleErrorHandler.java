@@ -35,163 +35,137 @@ import java.util.Date;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.exception.ErrorInfo;
 
-/** 向控制台输出错误，并不抛出异常
- * @author joelli
+/**
+ * 向控制台输出错误，并不抛出异常
  *
+ * @author xiandafu
  */
-public class ConsoleErrorHandler implements ErrorHandler
-{
+public class ConsoleErrorHandler implements ErrorHandler {
 
-	@Override
-	public void processExcption(BeetlException ex, Writer writer)
-	{
+    @Override
+    public void processExcption(BeetlException ex, Writer writer) {
 
-		ErrorInfo error = new ErrorInfo(ex);
+        ErrorInfo error = new ErrorInfo(ex);
 
-		if (error.getErrorCode().equals(BeetlException.CLIENT_IO_ERROR_ERROR))
-		{
-			//不输出详细提示信息
-			if(!ex.gt.conf.isIgnoreClientIOError){
-				println(writer, "客户端IO异常:" + getResourceName(ex.resource.id) + ":" + error.getMsg());
-				if (ex.getCause() != null)
-				{
-					this.printThrowable(writer, ex.getCause());
-				}
-				return;
+        if (error.getErrorCode().equals(BeetlException.CLIENT_IO_ERROR_ERROR)) {
+            //不输出详细提示信息
+            if (!ex.gt.conf.isIgnoreClientIOError) {
+                println(writer, "客户端IO异常:" + getResourceName(ex.resource.id) + ":" + error.getMsg());
+                if (ex.getCause() != null) {
+                    this.printThrowable(writer, ex.getCause());
+                }
+                return;
 
-			}
-			
-		}
+            }
 
-		int line = error.getErrorTokenLine();
+        }
 
-		StringBuilder sb = new StringBuilder(">>").append(this.getDateTime()).append(":").append(error.getType())
-				.append(":").append(error.getErrorTokenText()).append(" 位于").append(line!=0?line+"行":"").append(" 资源:")
-				.append(getResourceName(ex.resource.id));
+        int line = error.getErrorTokenLine();
 
-		if (error.getErrorCode().equals(BeetlException.TEMPLATE_LOAD_ERROR))
-		{
-			if (error.getMsg() != null)
-				sb.append(error.getMsg());
-			println(writer, sb.toString());
-			println(writer,ex.gt.getResourceLoader().getInfo());
-			return;
-		}
+        StringBuilder sb = new StringBuilder(">>").append(this.getDateTime()).append(":").append(error.getType())
+                .append(":").append(error.getErrorTokenText()).append(" 位于").append(line != 0 ? line + "行" : "").append(" 资源:")
+                .append(getResourceName(ex.resource.id));
 
-		println(writer, sb.toString());
-		if (ex.getMessage() != null)
-		{
-			println(writer, ex.getMessage());
-		}
+        if (error.getErrorCode().equals(BeetlException.TEMPLATE_LOAD_ERROR)) {
+            if (error.getMsg() != null)
+                sb.append(error.getMsg());
+            println(writer, sb.toString());
+            println(writer, ex.gt.getResourceLoader().getInfo());
+            return;
+        }
 
-		ResourceLoader resLoader = ex.gt.getResourceLoader();
-		//潜在问题，此时可能得到是一个新的模板（开发模式下），不过可能性很小，忽略！
+        println(writer, sb.toString());
+        if (ex.getMessage() != null) {
+            println(writer, ex.getMessage());
+        }
 
-		String content = null;
-		try
-		{
-			
-			Resource res = ex.resource;
-			//显示前后三行的内容
-			int[] range = this.getRange(line);
-			content = res.getContent(range[0], range[1]);
-			if (content != null)
-			{
-				String[] strs = content.split(ex.cr);
-				int lineNumber = range[0];
-				for (int i = 0; i < strs.length; i++)
-				{
-					print(writer, "" + lineNumber);
-					print(writer, "|");
-					println(writer, strs[i]);
-					lineNumber++;
-				}
+        ResourceLoader resLoader = ex.gt.getResourceLoader();
+        //潜在问题，此时可能得到是一个新的模板（开发模式下），不过可能性很小，忽略！
 
-			}
-		}
-		catch (IOException e)
-		{
+        String content = null;
+        try {
 
-			//ingore
+            Resource res = ex.resource;
+            //显示前后三行的内容
+            int[] range = this.getRange(line);
+            content = res.getContent(range[0], range[1]);
+            if (content != null) {
+                String[] strs = content.split(ex.cr);
+                int lineNumber = range[0];
+                for (String str : strs) {
+                    print(writer, "" + lineNumber);
+                    print(writer, "|");
+                    println(writer, str);
+                    lineNumber++;
+                }
 
-		}
+            }
+        } catch (IOException e) {
 
-		if (error.hasCallStack())
-		{
-			println(writer, "  ========================");
-			println(writer, "  调用栈:");
-			for (int i = 0; i < error.getResourceCallStack().size(); i++)
-			{
-				println(writer, "  " + error.getResourceCallStack().get(i) + " 行："
-						+ error.getTokenCallStack().get(i).line);
-			}
-		}
+            //ingore
 
-		printCause(error, writer);
-		try
-		{
-			writer.flush();
-		}
-		catch (IOException e)
-		{
+        }
 
-		}
+        if (error.hasCallStack()) {
+            println(writer, "  ========================");
+            println(writer, "  调用栈:");
+            for (int i = 0; i < error.getResourceCallStack().size(); i++) {
+                println(writer, "  " + error.getResourceCallStack().get(i) + " 行："
+                        + error.getTokenCallStack().get(i).line);
+            }
+        }
 
-	}
+        printCause(error, writer);
+        try {
+            writer.flush();
+        } catch (IOException e) {
 
-	protected void printCause(ErrorInfo error, Writer writer)
-	{
-		Throwable t = error.getCause();
-		if (t != null)
-		{
-			printThrowable(writer, t);
-		}
+        }
 
-	}
+    }
 
-	protected Object getResourceName(Object resourceId)
-	{
-		return resourceId;
-	}
+    protected void printCause(ErrorInfo error, Writer writer) {
+        Throwable t = error.getCause();
+        if (t != null) {
+            printThrowable(writer, t);
+        }
 
-	protected void println(Writer w, String msg)
-	{
-		System.out.println(msg);
-	}
+    }
 
-	protected void print(Writer w, String msg)
-	{
-		System.out.print(msg);
-	}
+    protected Object getResourceName(Object resourceId) {
+        return resourceId;
+    }
 
-	protected void printThrowable(Writer w, Throwable t)
-	{
-		t.printStackTrace();
-	}
+    protected void println(Writer w, String msg) {
+        System.out.println(msg);
+    }
 
-	protected int[] getRange(int line)
-	{
-		int startLine = 0;
-		int endLine = 0;
-		if (line > 3)
-		{
-			startLine = line - 3;
-		}
-		else
-		{
-			startLine = 1;
-		}
+    protected void print(Writer w, String msg) {
+        System.out.print(msg);
+    }
 
-		endLine = startLine + 6;
-		return new int[]
-		{ startLine, endLine };
-	}
+    protected void printThrowable(Writer w, Throwable t) {
+        t.printStackTrace();
+    }
 
-	protected String getDateTime()
-	{
-		Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
-		return sdf.format(date);
-	}
+    protected int[] getRange(int line) {
+        int startLine = 0;
+        int endLine = 0;
+        if (line > 3) {
+            startLine = line - 3;
+        } else {
+            startLine = 1;
+        }
+
+        endLine = startLine + 6;
+        return new int[]
+                {startLine, endLine};
+    }
+
+    protected String getDateTime() {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+        return sdf.format(date);
+    }
 
 }

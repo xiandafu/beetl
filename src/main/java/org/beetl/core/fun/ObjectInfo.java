@@ -36,62 +36,52 @@ import java.util.Map;
 
 /**
  * 指定类包含的所有方法，并且按照方法名归类
- * @author joelli
  *
+ * @author xiandafu
  */
-public class ObjectInfo
-{
-	Map<String, List<Method>> map = new HashMap<String, List<Method>>();
-	List<Method> allMethod = new ArrayList<Method>();
-	Class c = null;
+public class ObjectInfo {
+    Map<String, List<Method>> map = new HashMap<String, List<Method>>();
+    List<Method> allMethod = new ArrayList<Method>();
+    Class c = null;
 
-	public ObjectInfo(Class c)
-	{
-		this.c = c;
-		init();
-	}
+    public ObjectInfo(Class c) {
+        this.c = c;
+        init();
+    }
 
-	public List<Method> getMethods(String name)
-	{
-		return map.get(name);
-	}
+    public List<Method> getMethods(String name) {
+        return map.get(name);
+    }
 
-	public List<Method> allMethods()
-	{
-		return allMethod;
-	}
+    public List<Method> allMethods() {
+        return allMethod;
+    }
 
-	public Map<String, List<Method>> getMap()
-	{
-		return this.map;
-	}
+    public Map<String, List<Method>> getMap() {
+        return this.map;
+    }
 
-	private void init()
-	{
-		Method[] ms = c.getMethods();
-		for (Method m : ms)
-		{
-			//仅仅获取public
-			if (Modifier.isPublic(m.getModifiers()))
-			{
-				if (m.getDeclaringClass() == Object.class)
-				{
-					continue;
-				}
-				String name = m.getName();
-				List<Method> list = map.get(name);
-				if (list == null)
-				{
-					list = new ArrayList<Method>(1);
-					map.put(name, list);
+    private void init() {
+        Method[] ms = c.getMethods();
+        for (Method m : ms) {
+            //仅仅获取public
+            if (Modifier.isPublic(m.getModifiers())) {
+                if (m.getDeclaringClass() == Object.class) {
+                    continue;
+                }
+                String name = m.getName();
+                List<Method> list = map.get(name);
+                if (list == null) {
+                    list = new ArrayList<Method>(1);
+                    map.put(name, list);
 
-				}
-				list.add(m);
-				allMethod.add(m);
-			}
+                }
+                list.add(m);
+                allMethod.add(m);
+            }
 
-		}
+        }
 
-	}
+    }
 
 }

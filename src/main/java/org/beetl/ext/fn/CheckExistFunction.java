@@ -34,27 +34,25 @@ import org.beetl.core.Function;
  * 判断是否存在全局变量，是否存在全局变量userList,sessions
  * ${exist('userList','sessions')}
  * 参数可以一个到多个
- * @author joelli
  *
+ * @author xiandafu
  */
 public class CheckExistFunction implements Function {
 
-	@Override
-	public Boolean call(Object[] paras, Context ctx) {
+    @Override
+    public Boolean call(Object[] paras, Context ctx) {
 
-		if (ctx.globalVar == null) return false;
-		String key = null;
-		for (Object o : paras) {
-			key = (String) o;
-
-			if (ctx.globalVar.containsKey(key)) {
-				continue;
-			} else {
-				return false;
-			}
-		}
-		return true;
-
-	}
+        if (ctx.globalVar == null) {
+            return false;
+        }
+        String key;
+        for (Object o : paras) {
+            key = (String) o;
+            if (!ctx.globalVar.containsKey(key)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

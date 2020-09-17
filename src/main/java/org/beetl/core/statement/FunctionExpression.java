@@ -38,110 +38,108 @@ import org.beetl.core.fun.FileFunctionWrapper;
 
 /**
  * call();
- * @author joelli
  *
+ * @author xiandafu
  */
 public class FunctionExpression extends Expression {
-	String name;
-	public Expression[] exps;
-	public VarAttribute[] vas;
-	public Expression safeExp;
-	boolean hasSafe = false;
+    String name;
+    public Expression[] exps;
+    public VarAttribute[] vas;
+    public Expression safeExp;
+    boolean hasSafe = false;
 
-	public FunctionExpression(String name, Expression[] exps, VarAttribute[] vas, boolean hasSafe, Expression safeExp,
-			GrammarToken token) {
-		super(token);
-		this.name = name;
-		this.exps = exps;
-		this.vas = vas;
-		this.safeExp = safeExp;
-		this.hasSafe = hasSafe;
-	}
+    public FunctionExpression(String name, Expression[] exps, VarAttribute[] vas, boolean hasSafe, Expression safeExp,
+                              GrammarToken token) {
+        super(token);
+        this.name = name;
+        this.exps = exps;
+        this.vas = vas;
+        this.safeExp = safeExp;
+        this.hasSafe = hasSafe;
+    }
 
-	public Object evaluate(Context ctx) {
-		Function fn = ctx.gt.getFunction(name);
-		if (fn == null) {
-			// 检查html实现
-			Resource resource = getResource(ctx.gt, name);
-			if (resource.getResourceLoader().exist(resource.getId())) {
-				fn = new FileFunctionWrapper(resource.getId().toString());
+    public Object evaluate(Context ctx) {
+        Function fn = ctx.gt.getFunction(name);
+        if (fn == null) {
+            // 检查html实现
+            Resource resource = getResource(ctx.gt, name);
+            if (resource.getResourceLoader().exist(resource.getId())) {
+                fn = new FileFunctionWrapper(resource.getId().toString());
 
-			} else {
-				BeetlException ex = new BeetlException(BeetlException.FUNCTION_NOT_FOUND);
-				ex.pushToken(token);
-				throw ex;
-			}
+            } else {
+                BeetlException ex = new BeetlException(BeetlException.FUNCTION_NOT_FOUND);
+                ex.pushToken(token);
+                throw ex;
+            }
 
-		}
+        }
 
-		Object[] paras = new Object[exps.length];
-		for (int i = 0; i < paras.length; i++) {
-			paras[i] = exps[i].evaluate(ctx);
-		}
-		Object value = null;
-		try {
-			value = fn.call(paras, ctx);
-		} catch (BeetlException ex) {
-			ex.pushToken(token);
-			throw ex;
-		} catch (RuntimeException ex) {
-			BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 " + name, ex);
-			be.pushToken(this.token);
-			throw be;
-		}
+        Object[] paras = new Object[exps.length];
+        for (int i = 0; i < paras.length; i++) {
+            paras[i] = exps[i].evaluate(ctx);
+        }
+        Object value = null;
+        try {
+            value = fn.call(paras, ctx);
+        } catch (BeetlException ex) {
+            ex.pushToken(token);
+            throw ex;
+        } catch (RuntimeException ex) {
+            BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 " + name, ex);
+            be.pushToken(this.token);
+            throw be;
+        }
 
-		Object ret = null;
+        Object ret = null;
 
-		if (vas == null) {
-			ret = value;
-		} else {
+        if (vas == null) {
+            ret = value;
+        } else {
 
-			for (VarAttribute attr : vas) {
+            for (VarAttribute attr : vas) {
 
-				try {
-					value = attr.evaluate(ctx, value);
-				} catch (BeetlException ex) {
-					ex.pushToken(attr.token);
-					throw ex;
+                try {
+                    value = attr.evaluate(ctx, value);
+                } catch (BeetlException ex) {
+                    ex.pushToken(attr.token);
+                    throw ex;
 
-				} catch (RuntimeException ex) {
-					BeetlException be = new BeetlException(BeetlException.ATTRIBUTE_INVALID, "属性访问出错", ex);
-					be.pushToken(attr.token);
-					throw be;
-				}
+                } catch (RuntimeException ex) {
+                    BeetlException be = new BeetlException(BeetlException.ATTRIBUTE_INVALID, "属性访问出错", ex);
+                    be.pushToken(attr.token);
+                    throw be;
+                }
 
-				if (value == null) {
-					if (hasSafe) {
-						return safeExp == null ? null : safeExp.evaluate(ctx);
-					} else {
-						BeetlException be = new BeetlException(BeetlException.ERROR, "空指针 ");
-						be.pushToken(attr.token);
-						throw be;
-					}
+                if (value == null) {
+                    if (hasSafe) {
+                        return safeExp == null ? null : safeExp.evaluate(ctx);
+                    } else {
+                        BeetlException be = new BeetlException(BeetlException.ERROR, "空指针 ");
+                        be.pushToken(attr.token);
+                        throw be;
+                    }
 
-				}
+                }
 
-			}
-			ret = value;
-		}
+            }
+            ret = value;
+        }
 
-		if (ret == null && hasSafe) {
-			return safeExp == null ? null : safeExp.evaluate(ctx);
-		} else {
-			return ret;
-		}
+        if (ret == null && hasSafe) {
+            return safeExp == null ? null : safeExp.evaluate(ctx);
+        } else {
+            return ret;
+        }
 
-	}
+    }
 
+    private Resource getResource(GroupTemplate gt, String name) {
+        Map<String, String> resourceMap = gt.getConf().getResourceMap();
+        String functionSuffix = resourceMap.get("functionSuffix");
+        String functionRoot = resourceMap.get("functionRoot");
+        String path = name.replace(".", "/");
+        return gt.getResourceLoader().getResource(functionRoot + "/" + path + "." + functionSuffix);
 
-	private Resource getResource(GroupTemplate gt, String name) {
-		Map<String, String> resourceMap = gt.getConf().getResourceMap();
-		String functionSuffix = resourceMap.get("functionSuffix");
-		String functionRoot = resourceMap.get("functionRoot");
-		String path = name.replace(".", "/");
-		Resource resource = gt.getResourceLoader().getResource(functionRoot + "/" + path + "." + functionSuffix);
-		return resource;
-
-	}
+    }
 
 }

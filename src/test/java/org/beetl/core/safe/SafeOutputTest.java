@@ -17,7 +17,6 @@ public class SafeOutputTest extends BasicTestCase
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/safe/safe_expected.html"), str);
 
-		
 	}
 
 	@Test
@@ -57,7 +56,5 @@ public class SafeOutputTest extends BasicTestCase
 		AssertJUnit.assertEquals(this.getFileContent("/safe/has_expected.html"), str);
 
 	}
-
-
 
 }

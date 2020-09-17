@@ -5,9 +5,8 @@ import org.beetl.core.Function;
 import org.beetl.core.misc.JsonFactory;
 
 public class AllGlobaAsJsonlFunction implements Function {
-	@Override
-	public Object call(Object[] paras, Context ctx) {
-		String str = JsonFactory.get().render(ctx.globalVar);
-		return str;
-	}
+    @Override
+    public Object call(Object[] paras, Context ctx) {
+        return JsonFactory.get().render(ctx.globalVar);
+    }
 }

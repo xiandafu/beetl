@@ -30,20 +30,16 @@ package org.beetl.core.statement;
 import org.beetl.core.Context;
 
 /**
- *  ; ; 多余分号
- * @author joelli
+ * ; ; 多余分号
  *
+ * @author xiandafu
  */
 public class EndStatement extends Statement {
 
-	public EndStatement() {
-		super(null);
-	}
+    public EndStatement() {
+        super(null);
+    }
 
-	public final void execute(Context ctx) {
-
-		return;
-	}
-
-
+    public final void execute(Context ctx) {
+    }
 }

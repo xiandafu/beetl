@@ -32,20 +32,20 @@ import org.beetl.core.Context;
 
 /**
  * break;
- * @author joelli
  *
+ * @author xiandafu
  */
 public class BreakStatement extends Statement {
 
-	public BreakStatement(GrammarToken token) {
-		super(token);
-		// TODO Auto-generated constructor stub
-	}
+    public BreakStatement(GrammarToken token) {
+        super(token);
+        // TODO Auto-generated constructor stub
+    }
 
-	@Override
-	public  void execute(Context ctx) {
-		ctx.gotoFlag = IGoto.BREAK;
+    @Override
+    public void execute(Context ctx) {
+        ctx.gotoFlag = IGoto.BREAK;
 
-	}
+    }
 
 }

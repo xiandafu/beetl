@@ -10,21 +10,12 @@ import org.beetl.core.misc.JsonFactory;
 /**
  * 使用jackson或者fastjson 序列化对对象
  */
-public class Json implements Function
-{
+public class Json implements Function {
 
-	@Override
-	public String call(Object[] paras, Context ctx)
-	{
-		Object o = paras[0];
-		if(o==null){
-			return "";
-		}
-		String msg = JsonFactory.get().render(o);
-		return msg;
-
-	}
-
-
+    @Override
+    public String call(Object[] paras, Context ctx) {
+        Object object = paras[0];
+        return object == null ? "" : JsonFactory.get().render(object);
+    }
 
 }

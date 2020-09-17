@@ -29,20 +29,17 @@ package org.beetl.core;
 
 /**
  * 模板内部的一些事件
- * @author joelli
  *
+ * @author xiandafu
  */
-public class Event
-{
-	Object event = null;
+public class Event {
+    Object event = null;
 
-	public Event(Object eventTarget)
-	{
-		this.event = eventTarget;
-	}
+    public Event(Object eventTarget) {
+        this.event = eventTarget;
+    }
 
-	public Object getEventTaget()
-	{
-		return event;
-	}
+    public Object getEventTaget() {
+        return event;
+    }
 }

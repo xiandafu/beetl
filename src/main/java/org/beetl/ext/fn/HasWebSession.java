@@ -34,17 +34,15 @@ import org.beetl.core.Function;
 
 /**
  * &lt;% hasSession() % &gt;
- * @author jeolli
  *
+ * @author xiandafu
  */
-public class HasWebSession implements Function
-{
+public class HasWebSession implements Function {
 
-	public Boolean call(Object[] paras, Context ctx)
-	{
-		HttpServletRequest requet = (HttpServletRequest) ctx.getGlobal("request");
-		return requet.getSession(false) != null;
+    public Boolean call(Object[] paras, Context ctx) {
+        HttpServletRequest requet = (HttpServletRequest) ctx.getGlobal("request");
+        return requet.getSession(false) != null;
 
-	}
+    }
 
 }

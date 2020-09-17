@@ -31,31 +31,30 @@ import org.beetl.core.Context;
 
 /**
  * var xxx = exp;
- * @author joelli
  *
+ * @author xiandafu
  */
 public class VarAssignStatement extends Statement implements IVarIndex {
 
-	protected int varIndex;
-	public Expression exp;
+    protected int varIndex;
+    public Expression exp;
 
-	public VarAssignStatement(Expression exp, GrammarToken token) {
-		super(token);
-		this.exp = exp;
-	}
+    public VarAssignStatement(Expression exp, GrammarToken token) {
+        super(token);
+        this.exp = exp;
+    }
 
-	public void execute(Context ctx) {
-		ctx.vars[varIndex] = exp.evaluate(ctx);
+    public void execute(Context ctx) {
+        ctx.vars[varIndex] = exp.evaluate(ctx);
 
-	}
+    }
 
-	public int getVarIndex() {
-		return varIndex;
-	}
+    public int getVarIndex() {
+        return varIndex;
+    }
 
-	public void setVarIndex(int varIndex) {
-		this.varIndex = varIndex;
-	}
-
+    public void setVarIndex(int varIndex) {
+        this.varIndex = varIndex;
+    }
 
 }

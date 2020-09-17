@@ -31,21 +31,20 @@ import org.beetl.core.Context;
 
 /**
  * continue;
- * @author joelli
  *
+ * @author xiandafu
  */
 public class ContinueStatement extends Statement {
 
-	public ContinueStatement(GrammarToken token) {
-		super(token);
-		// TODO Auto-generated constructor stub
-	}
+    public ContinueStatement(GrammarToken token) {
+        super(token);
+        // TODO Auto-generated constructor stub
+    }
 
-	@Override
-	public  void execute(Context ctx) {
-		ctx.gotoFlag = IGoto.CONTINUE;
+    @Override
+    public void execute(Context ctx) {
+        ctx.gotoFlag = IGoto.CONTINUE;
 
-	}
-
+    }
 
 }

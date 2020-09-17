@@ -4,9 +4,8 @@ import java.util.Stack;
 
 /**
  * html 配置
- * 
- * @author Administrator
  *
+ * @author Administrator
  */
 public class HtmlTagConfig {
     String htmlTagStart = "<#";
@@ -15,7 +14,7 @@ public class HtmlTagConfig {
 
     char[] start = null;
     char[] end = null;
-    
+
     //<#a attr="${abc}" > 目前总是固定值${}
     String phStart = "${";
     String phEnd = "}";
@@ -30,10 +29,10 @@ public class HtmlTagConfig {
         this.start = htmlTagStart.toCharArray();
         this.end = this.htmlTagEnd.toCharArray();
     }
-    
+
     public HtmlTagConfig() {
-    	 this.start = htmlTagStart.toCharArray();
-         this.end = this.htmlTagEnd.toCharArray();
+        this.start = htmlTagStart.toCharArray();
+        this.end = this.htmlTagEnd.toCharArray();
     }
 
     public void init(Source source) {

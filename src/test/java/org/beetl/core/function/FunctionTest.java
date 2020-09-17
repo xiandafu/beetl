@@ -29,7 +29,6 @@ public class FunctionTest extends BasicTestCase {
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/function/function_package_expected.html"), str);
 
-
 	}
 
 	public void testIsEmpty() throws Exception {
@@ -58,7 +57,6 @@ public class FunctionTest extends BasicTestCase {
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/function/tojson_expected.html"), str);
 
-
 	}
 
 	public void testSafeOutput() throws Exception {
@@ -66,7 +64,6 @@ public class FunctionTest extends BasicTestCase {
 		Template t = gt.getTemplate("/function/null_template.html");
 		String str = t.render();
 		AssertJUnit.assertEquals(this.getFileContent("/function/null_expected.html"), str);
-
 
 	}
 

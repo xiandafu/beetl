@@ -40,16 +40,16 @@ public class DefaultEncoder {
 
             final CharsetEncoder encoder;
             final ByteBuffer bb;
-            byte[] buffer = this.localBuffer.getByteBuffer((int)(len * this.expansionFactor));
+            byte[] buffer = this.localBuffer.getByteBuffer((int) (len * this.expansionFactor));
             if (buffer.length != 0) {
                 (encoder = this.charsetEncoder).reset().encode(CharBuffer.wrap(chars, 0, len),
-                    bb = ByteBuffer.wrap(buffer), true);
+                        bb = ByteBuffer.wrap(buffer), true);
                 encoder.flush(bb);
                 out.write(buffer, 0, bb.position());
             } else {
-                buffer = new byte[(int)(len * this.expansionFactor)];
+                buffer = new byte[(int) (len * this.expansionFactor)];
                 (encoder = this.charsetEncoder).reset().encode(CharBuffer.wrap(chars, 0, len),
-                    bb = ByteBuffer.wrap(buffer), true);
+                        bb = ByteBuffer.wrap(buffer), true);
                 encoder.flush(bb);
                 out.write(buffer, 0, bb.position());
             }

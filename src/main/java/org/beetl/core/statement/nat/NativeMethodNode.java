@@ -29,21 +29,18 @@ package org.beetl.core.statement.nat;
 
 import org.beetl.core.statement.Expression;
 
-public class NativeMethodNode extends NativeNode
-{
-	public String method;
-	public Expression[] paras;
+public class NativeMethodNode extends NativeNode {
+    public String method;
+    public Expression[] paras;
 
-	public NativeMethodNode(String method, Expression[] paras)
-	{
-		this.method = method;
-		this.paras = paras;
-	}
+    public NativeMethodNode(String method, Expression[] paras) {
+        this.method = method;
+        this.paras = paras;
+    }
 
-	@Override
-	public String getName()
-	{
-		return method + "()";
-	}
+    @Override
+    public String getName() {
+        return method + "()";
+    }
 
 }

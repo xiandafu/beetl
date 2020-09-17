@@ -23,9 +23,7 @@ public class PojoTest extends BasicTestCase
 		AssertJUnit.assertEquals(this.getFileContent("/lang/pojo_expected.html"), str);
 
 	}
-	
-	
-	
+
 }
 
 class Pojo{
@@ -34,9 +32,7 @@ class Pojo{
 	boolean isGood = true;
 	boolean girl = true;
 	boolean iGood = true;
-	
-	
-	
+
 	public String getcName() {
 		return cName;
 	}
@@ -67,11 +63,10 @@ class Pojo{
 	public void setGirl(boolean girl) {
 		this.girl = girl;
 	}
-	
+
 	public Object get(Object a){
 		return a+"cc";
 	}
-	
-}
 
+}
 

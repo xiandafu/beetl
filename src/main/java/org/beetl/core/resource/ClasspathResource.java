@@ -41,98 +41,74 @@ import org.beetl.core.ResourceLoader;
 import org.beetl.core.exception.BeetlException;
 
 /**
- *  
- * @author joelli
- *
+ * @author xiandafu
  */
-public class ClasspathResource extends Resource<String>
-{
-	String path = null;
+public class ClasspathResource extends Resource<String> {
+    String path = null;
 
-	File file = null;
-	long lastModified = 0;
-	
-	public ClasspathResource(String key, String path, ResourceLoader resourceLoader)
-	{
-		super(key, resourceLoader);
-		this.path = path;
-	}
+    File file = null;
+    long lastModified = 0;
 
-	@Override
-	public Reader openReader()
-	{
-		ClasspathResourceLoader loader = ((ClasspathResourceLoader)resourceLoader);
-		ClassLoader cs = loader.getClassLoader();
-		URL url = cs.getResource(path);
-		if(url==null){
-			//兼容以前的写法
-			url = resourceLoader.getClass().getResource(path);
-		}
-		
-		if (url == null)
-		{
-			BeetlException be = new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR);
-			be.pushResource(this);
-			throw be;
-		}
-		InputStream is;
-		try
-		{
-			is = url.openStream();
-		}
-		catch (IOException e1)
-		{
-			BeetlException be = new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR);
-			be.pushResource(this);
-			throw be;
-		}
+    public ClasspathResource(String key, String path, ResourceLoader resourceLoader) {
+        super(key, resourceLoader);
+        this.path = path;
+    }
 
-		if (is == null)
-		{
-			BeetlException be = new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR);
-			be.pushResource(this);
-			throw be;
-		}
+    @Override
+    public Reader openReader() {
+        ClasspathResourceLoader loader = ((ClasspathResourceLoader) resourceLoader);
+        ClassLoader cs = loader.getClassLoader();
+        URL url = cs.getResource(path);
+        if (url == null) {
+            //兼容以前的写法
+            url = resourceLoader.getClass().getResource(path);
+        }
 
-		if (url.getProtocol().equals("file"))
-		{
-			try {
-                file = new File(java.net.URLDecoder.decode(url.getFile(),"UTF-8"));
+        if (url == null) {
+            BeetlException be = new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR);
+            be.pushResource(this);
+            throw be;
+        }
+        InputStream is;
+        try {
+            is = url.openStream();
+        } catch (IOException e1) {
+            BeetlException be = new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR);
+            be.pushResource(this);
+            throw be;
+        }
+
+        if (is == null) {
+            BeetlException be = new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR);
+            be.pushResource(this);
+            throw be;
+        }
+
+        if (url.getProtocol().equals("file")) {
+            try {
+                file = new File(java.net.URLDecoder.decode(url.getFile(), "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
             }
-			lastModified = file.lastModified();
-		}
+            lastModified = file.lastModified();
+        }
 
-		Reader br;
-		try
-		{
-			br = new BufferedReader(new InputStreamReader(is, ((ClasspathResourceLoader) this.resourceLoader).charset));
-			return br;
-		}
-		catch (UnsupportedEncodingException e)
-		{
-			return null;
-		}
-	}
+        try {
+            InputStreamReader isr = new InputStreamReader(is, ((ClasspathResourceLoader) this.resourceLoader).charset);
+            return new BufferedReader(isr);
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
+    }
 
-	@Override
-	public boolean isModified()
-	{
-		if (file != null)
-		{
-			return file.lastModified() != this.lastModified;
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean isModified() {
+        return (file != null) && (file.lastModified() != lastModified);
+    }
 
-	@Override
-	public String getId()
-	{
-		return id;
-	}
+    @Override
+    public String getId() {
+        return id;
+    }
 
 }

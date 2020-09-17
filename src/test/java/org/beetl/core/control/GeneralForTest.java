@@ -19,7 +19,6 @@ public class GeneralForTest extends BasicTestCase
 		String expected = this.getFileContent("/control/generalFor/general_expected.html");
 		AssertJUnit.assertEquals(expected, str);
 
-
 	}
 
 	@Test

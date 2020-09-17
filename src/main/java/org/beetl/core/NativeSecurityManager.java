@@ -29,17 +29,18 @@ package org.beetl.core;
 
 /**
  * 判断是否允许调用本地方法
- * @author joelli
  *
+ * @author xiandafu
  */
-public interface NativeSecurityManager
-{
-	/**
-	 * @param resourceId 资源id
-	 * @param c 调用类名
-	 * @param target 调用的类实例
-	 * @param method 调用类的方法名
-	 * @return
-	 */
-	public boolean permit(Object resourceId, Class c, Object target, String method);
+public interface NativeSecurityManager {
+    /**
+     * 判断是否允许调用本地方法
+     *
+     * @param resourceId 资源id
+     * @param c          调用类名
+     * @param target     调用的类实例
+     * @param method     调用类的方法名
+     * @return true 表示允许，false 表示不允许
+     */
+    boolean permit(Object resourceId, Class c, Object target, String method);
 }

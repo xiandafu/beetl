@@ -34,62 +34,53 @@ import org.beetl.core.misc.BeetlUtil;
 
 /**
  * Web应用加载器
- * 
- * @author joelli
- * 
- * 
+ *
+ * @author xiandafu
  */
-public class WebAppResourceLoader extends FileResourceLoader
-{
+public class WebAppResourceLoader extends FileResourceLoader {
 
-	public WebAppResourceLoader()
-	{
+    public WebAppResourceLoader() {
 
-		this.root = BeetlUtil.getWebRoot() + File.separator;
+        this.root = BeetlUtil.getWebRoot() + File.separator;
 
-	}
+    }
 
-	/** 
-	 * @param root 
-	 */
-	public WebAppResourceLoader(String root)
-	{
+    /**
+     *
+     */
+    public WebAppResourceLoader(String root) {
 
-		if (root != null)
-			this.root = root;
-		else
-		{
-			this.root = BeetlUtil.getWebRoot() + File.separator;
-		}
+        if (root != null)
+            this.root = root;
+        else {
+            this.root = BeetlUtil.getWebRoot() + File.separator;
+        }
 
-	}
+    }
 
-	public WebAppResourceLoader(String root, String charset)
-	{
+    public WebAppResourceLoader(String root, String charset) {
 
-		this();
-		this.root = root;
-		this.charset = charset;
-	}
+        this();
+        this.root = root;
+        this.charset = charset;
+    }
 
-	@Override
-	public Resource getResource(String key)
-	{
+    @Override
+    public Resource getResource(String key) {
 
-		return super.getResource(key);
-	}
+        return super.getResource(key);
+    }
 
-	@Override
-	public void close()
-	{
-		// TODO Auto-generated method stub
+    @Override
+    public void close() {
+        // TODO Auto-generated method stub
 
-	}
-	
-	@Override
-	public String getInfo() {
-		// TODO Auto-generated method stub
-		return "WebAppResourceLoader,Root="+this.root;
-	}
+    }
+
+    @Override
+    public String getInfo() {
+        // TODO Auto-generated method stub
+        return "WebAppResourceLoader,Root=" + this.root;
+    }
 
 }

@@ -19,16 +19,19 @@ public class LazyResponseWrapper extends HttpServletResponseWrapper {
     public ServletOutputStream getOutputStream() throws IOException {
         return new ServletOutputStream() {
             protected OutputStream proxy;
+
             public void write(int b) throws IOException {
-                if (proxy == null)
+                if (proxy == null) {
                     proxy = getResponse().getOutputStream();
+                }
                 proxy.write(b);
             }
-            
+
             public void write(byte[] paramArrayOfByte, int off, int len)
                     throws IOException {
-                if (proxy == null)
+                if (proxy == null) {
                     proxy = getResponse().getOutputStream();
+                }
                 proxy.write(paramArrayOfByte, off, len);
             }
         };

@@ -34,151 +34,100 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * 简单实现
- * @author jeolli
  *
+ * @author xiandafu
  */
-public class SimpleCacheManager implements CacheManager
-{
+public class SimpleCacheManager implements CacheManager {
 
-	
-	protected ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-	protected Map<String, CachedEntry> map = new HashMap<String, CachedEntry>();
+    protected ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    protected Map<String, CachedEntry> map = new HashMap<String, CachedEntry>();
 
-	public Object getObject(String key)
-	{
-		lock.readLock().lock();
-		try
-		{
-			CachedEntry entry = map.get(key);
-			if (entry != null)
-			{
-				if (entry.disableTime < System.currentTimeMillis())
-				{
-					//过期了,不删除，等待调用set方法
-					return null;
-				}
-				else
-				{
-					Object o = entry.sr.get();
-					return o;
-				}
-			}
-			else
-			{
-				return null;
-			}
-		}
-		finally
-		{
-			lock.readLock().unlock();
-		}
-		// TODO Auto-generated method stub
+    public Object getObject(String key) {
+        lock.readLock().lock();
+        try {
+            CachedEntry entry = map.get(key);
+            if (entry != null) {
+                if (entry.disableTime < System.currentTimeMillis()) {
+                    //过期了,不删除，等待调用set方法
+                    return null;
+                } else {
+                    Object o = entry.sr.get();
+                    return o;
+                }
+            } else {
+                return null;
+            }
+        } finally {
+            lock.readLock().unlock();
+        }
+        // TODO Auto-generated method stub
 
-	}
+    }
 
-	public void setObject(String key, Object value, long period)
-	{
-		lock.writeLock().lock();
-		try
-		{
-			CachedEntry entry = new CachedEntry();
-			entry.sr = new SoftReference(value);
-			if (period == 0)
-			{
-				entry.disableTime = Long.MAX_VALUE;
-			}
-			else
-			{
-				entry.disableTime = System.currentTimeMillis() + period * 1000;
-			}
+    public void setObject(String key, Object value, long period) {
+        lock.writeLock().lock();
+        try {
+            CachedEntry entry = new CachedEntry();
+            entry.sr = new SoftReference(value);
+            if (period == 0) {
+                entry.disableTime = Long.MAX_VALUE;
+            } else {
+                entry.disableTime = System.currentTimeMillis() + period * 1000;
+            }
 
-			map.put(key, entry);
+            map.put(key, entry);
 
-		}
-		finally
-		{
-			lock.writeLock().unlock();
-		}
+        } finally {
+            lock.writeLock().unlock();
+        }
 
-	}
+    }
 
-	static class CachedEntry
-	{
-		public SoftReference sr;
-		public long disableTime;
-	}
+    static class CachedEntry {
+        public SoftReference sr;
+        public long disableTime;
+    }
 
-	public boolean isDisable(String key)
-	{
-		lock.readLock().lock();
-		try
-		{
-			CachedEntry entry = map.get(key);
-			if (entry != null&&entry.sr.get()!=null)
-			{
-				if (entry.disableTime < System.currentTimeMillis())
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			else
-			{
-				return true;
-			}
-		}
-		finally
-		{
-			lock.readLock().unlock();
-		}
-	}
+    public boolean isDisable(String key) {
+        lock.readLock().lock();
+        try {
+            CachedEntry entry = map.get(key);
+            return (entry == null || entry.sr.get() == null) || entry.disableTime < System.currentTimeMillis();
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
 
-	public void clearAll()
-	{
-		lock.writeLock().lock();
-		try
-		{
-			map.clear();
-		}
-		finally
-		{
-			lock.writeLock().unlock();
-		}
+    public void clearAll() {
+        lock.writeLock().lock();
+        try {
+            map.clear();
+        } finally {
+            lock.writeLock().unlock();
+        }
 
-	}
+    }
 
-	public void clearAll(String... keys)
-	{
-		lock.writeLock().lock();
-		try
-		{
-			for (String key : keys)
-			{
-				map.remove(key);
-			}
-		}
-		finally
-		{
-			lock.writeLock().unlock();
-		}
+    public void clearAll(String... keys) {
+        lock.writeLock().lock();
+        try {
+            for (String key : keys) {
+                map.remove(key);
+            }
+        } finally {
+            lock.writeLock().unlock();
+        }
 
-	}
+    }
 
-	public void clearAll(String key)
-	{
-		lock.writeLock().lock();
-		try
-		{
-			map.remove(key);
-		}
-		finally
-		{
-			lock.writeLock().unlock();
-		}
+    public void clearAll(String key) {
+        lock.writeLock().lock();
+        try {
+            map.remove(key);
+        } finally {
+            lock.writeLock().unlock();
+        }
 
-	}
+    }
 
 }

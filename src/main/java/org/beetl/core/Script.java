@@ -40,190 +40,173 @@ import org.beetl.core.misc.BeetlUtil;
 import org.beetl.core.statement.ErrorGrammarProgram;
 import org.beetl.core.statement.Program;
 
-/** 模板类
- * @author joelli
+/**
+ * 模板类
  *
+ * @author xiandafu
  */
-public class  Script<T> {
-	protected  Program program;
-	protected Configuration cf;
-	protected GroupTemplate gt;
-	protected Context ctx = null;
-	protected boolean  success = false ;
-	protected Map result = null;
-	protected ErrorInfo  errorInfo = null;
-	protected BeetlException  ex = null;
-	private boolean done = false ;
+public class Script<T> {
+    protected Program program;
+    protected Configuration cf;
+    protected GroupTemplate gt;
+    protected Context ctx = null;
+    protected boolean success = false;
+    protected Map result = null;
+    protected ErrorInfo errorInfo = null;
+    protected BeetlException ex = null;
+    private boolean done = false;
 
+    protected Script(GroupTemplate gt, Program program, Configuration cf) {
+        this.program = program;
+        this.cf = cf;
+        this.gt = gt;
+        ctx = new Context(gt);
+    }
 
-	protected Script(GroupTemplate gt, Program program, Configuration cf) {
-		this.program = program;
-		this.cf = cf;
-		this.gt = gt;
-		ctx = new Context(gt);
-	}
+    /**
+     * 获取模板输出的文本，结果是一个String
+     */
+    public void execute() throws BeetlException {
+        if (done) {
+            return;
+        }
+        StringWriter sw = new StringWriter();
+        try {
+            renderTo(sw);
+            success = true;
+        } catch (BeetlException ex) {
+            success = false;
+            this.ex = ex;
+            this.errorInfo = new ErrorInfo(ex);
+        }
+        done = true;
 
-	/**
-	 * 获取模板输出的文本，结果是一个String
-	 * 
-	 * @return
-	 * @throws BeetlException
-	 */
-	public void  execute() throws BeetlException {
-		if(done){
-			return ;
-		}
-		StringWriter sw = new StringWriter();
-		try{
-			renderTo(sw);
-			success = true;
-		}catch(BeetlException ex){
-			success = false ;
-			this.ex = ex;
-			this.errorInfo = new ErrorInfo(ex);
-		}
-		done = true;
+    }
 
+    public boolean isSuccess() {
+        return success;
+    }
 
-	}
+    public Map getResult() {
+        if (!success) {
+            throw ex;
+        }
+        if (result == null) {
+            result = parseResult();
+        }
+        return result;
+    }
 
-	public boolean isSuccess(){
-		return success;
-	}
+    public Object getVar(String varName) {
+        return getResult().get(varName);
+    }
 
-	public Map getResult(){
-		if(!success){
-			throw ex;
-		}
-		if(result==null){
-			result =  parseResult();
-		}
-		return result;
-	}
-	public Object getVar(String varName){
-		Map ret = getResult();
-		return ret.get(varName);
-	}
-	public T getReturnValue(){
-		Map ret = getResult();
-		return (T)ret.get("return");
-	}
+    public T getReturnValue() {
+        Map ret = getResult();
+        return (T) ret.get("return");
+    }
 
-	public ErrorInfo getErrorInfo(){
-		if(isSuccess()){
-			throw new IllegalStateException("脚本运行成功");
-		}
-		return this.errorInfo;
-	}
+    public ErrorInfo getErrorInfo() {
+        if (isSuccess()) {
+            throw new IllegalStateException("脚本运行成功");
+        }
+        return this.errorInfo;
+    }
 
-	protected Map parseResult(){
-		Map<String, Integer> idnexMap = program.metaData.getTemplateRootScopeIndexMap();
-		Object[] values = ctx.vars;
-		Map<String, Object> result = new HashMap<String, Object>();
-		for (Entry<String, Integer> entry : idnexMap.entrySet()) {
-			String name = entry.getKey();
-			int index = entry.getValue();
-			Object value = values[index];
-			result.put(name, value);
-		}
-		if (values == null) {
-			return null;
-		}
-		Object ret = ctx.vars[ctx.vars.length - 1];
-		if (ret != Context.NOT_EXIST_OBJECT) {
-			result.put("return", ret);
-		}
+    protected Map parseResult() {
+        Map<String, Integer> idnexMap = program.metaData.getTemplateRootScopeIndexMap();
+        Object[] values = ctx.vars;
+        Map<String, Object> result = new HashMap<String, Object>();
+        for (Entry<String, Integer> entry : idnexMap.entrySet()) {
+            String name = entry.getKey();
+            int index = entry.getValue();
+            Object value = values[index];
+            result.put(name, value);
+        }
+        if (values == null) {
+            return null;
+        }
+        Object ret = ctx.vars[ctx.vars.length - 1];
+        if (ret != Context.NOT_EXIST_OBJECT) {
+            result.put("return", ret);
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	/**
-	 * 获取模板输出的文本,输出到Writer里
-	 * 
-	 * @param writer
-	 * @throws BeetlException
-	 */
-	protected void renderTo(Writer writer) throws BeetlException {
-		ByteWriter_Char byteWriter = new ByteWriter_Char(writer, cf.charset, ctx);
-		this.renderTo(byteWriter);
+    /**
+     * 获取模板输出的文本,输出到Writer里
+     */
+    protected void renderTo(Writer writer) throws BeetlException {
+        ByteWriter_Char byteWriter = new ByteWriter_Char(writer, cf.charset, ctx);
+        this.renderTo(byteWriter);
 
-	}
+    }
 
+    public void renderTo(ByteWriter byteWriter) {
 
+        try {
+            ctx.byteWriter = byteWriter;
+            ctx.byteOutputMode = cf.directByteOutput;
+            ctx.gt = this.gt;
 
-	public void renderTo(ByteWriter byteWriter) {
+            program.metaData.initContext(ctx);
+            program.execute(ctx);
+            this.success = true;
 
-		try {
-			ctx.byteWriter = byteWriter;
-			ctx.byteOutputMode = cf.directByteOutput;
-			ctx.gt = this.gt;
+        } catch (BeetlException e) {
+            if (!(program instanceof ErrorGrammarProgram)) {
+                e.pushResource(this.program.res);
+            }
+            Writer w = BeetlUtil.getWriterByByteWriter(ctx.byteWriter);
 
-			program.metaData.initContext(ctx);
-			program.execute(ctx);
-			this.success =true;
+            e.gt = this.program.gt;
+            e.cr = this.program.metaData.lineSeparator;
+            throw e;
 
-		} catch (BeetlException e) {
-			if (!(program instanceof ErrorGrammarProgram)) {
-				e.pushResource(this.program.res);
-			}
-			Writer w = BeetlUtil.getWriterByByteWriter(ctx.byteWriter);
+        }
 
-			e.gt = this.program.gt;
-			e.cr = this.program.metaData.lineSeparator;
-			throw e;
+    }
 
-		}
+    /**
+     * 为模板绑定一个变量，infer是true
+     *
+     * @param varName 变量名称，必须符合jaavascript 命名规范
+     * @param o       模板变量
+     */
+    public void binding(String varName, Object o) {
+        ctx.set(varName, o);
+    }
 
+    /**
+     * 为脚本绑定多个变量，map的key，value对应了变量名称和变量值。key必须符合javascript命名规范
+     */
+    public void binding(Map map) {
+        Map<String, Object> values = map;
+        if (values == null) return;
+        for (Entry<String, Object> entry : values.entrySet()) {
+            this.binding(entry.getKey(), entry.getValue());
+        }
 
+    }
 
-	}
+    public void fastBinding(Map map) {
+        ctx.globalVar = map;
+    }
 
+    public Context getCtx() {
+        return this.ctx;
+    }
 
-	/**
-	 * 为模板绑定一个变量，infer是true
-	 * 
-	 * @param varName
-	 *            变量名称，必须符合jaavascript 命名规范
-	 * @param o
-	 *            模板变量
-	 */
-	public void binding(String varName, Object o) {
-		ctx.set(varName, o);
-	}
-
-	/**
-	 * 为脚本绑定多个变量，map的key，value对应了变量名称和变量值。key必须符合javascript命名规范
-	 * 
-	 * @param map
-	 */
-	public void binding(Map map) {
-		Map<String, Object> values = map;
-		if (values == null) return;
-		for (Entry<String, Object> entry : values.entrySet()) {
-			this.binding(entry.getKey(), entry.getValue());
-		}
-
-	}
-
-	public void fastBinding(Map map) {
-		ctx.globalVar = map;
-	}
-
-	public Context getCtx() {
-		return this.ctx;
-	}
-
-	/**
-	 * 语法校验，如果返回ErrorInfo，则表示语法有错，返回null，语法无错误
-	 * @return
-	 */
-	public BeetlException validate() {
-		if (!(program instanceof ErrorGrammarProgram)) {
-			return null;
-		}
-		ErrorGrammarProgram error = (ErrorGrammarProgram) program;
-		return error.getException();
-	}
-
+    /**
+     * 语法校验，如果返回ErrorInfo，则表示语法有错，返回null，语法无错误
+     */
+    public BeetlException validate() {
+        if (!(program instanceof ErrorGrammarProgram)) {
+            return null;
+        }
+        ErrorGrammarProgram error = (ErrorGrammarProgram) program;
+        return error.getException();
+    }
 
 }

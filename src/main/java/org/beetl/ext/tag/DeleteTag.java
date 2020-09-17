@@ -29,16 +29,17 @@ package org.beetl.ext.tag;
 
 import org.beetl.core.tag.Tag;
 
-/** 什么都不干的tag，遗留代码
- * @author xiandafu
+/**
+ * 什么都不干的tag，遗留代码
  *
+ * @author xiandafu
  */
 public class DeleteTag extends Tag {
 
-	@Override
-	public void render() {
-		// do nothing,just ignore body
+    @Override
+    public void render() {
+        // do nothing,just ignore body
 
-	}
+    }
 
 }

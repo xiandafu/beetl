@@ -11,16 +11,15 @@ public class CRFragment extends Fragment {
 
     @Override
     public StringBuilder getScript() {
-    	StringBuilder script = new StringBuilder();
-    	Integer varName = source.getParser().getRandomeTextVarName();
-		script.append("<$" + varName + ">>");
-		script.append(cr);
-		
-		// 添加一个静态变量
-		source.parser.getTextVars().put(varName, new String(cr));
+        StringBuilder script = new StringBuilder();
+        Integer varName = source.getParser().getRandomeTextVarName();
+        script.append("<$" + varName + ">>");
+        script.append(cr);
+
+        // 添加一个静态变量
+        source.parser.getTextVars().put(varName, new String(cr));
         return script;
     }
-
 
     @Override
     public Fragment consumeAndReturnNext() {
@@ -30,23 +29,18 @@ public class CRFragment extends Fragment {
             if (source.isPlaceHolderStart()) {
                 return new PlaceHolderFragment(source);
             } else if (source.isScriptStart()) {
-                ScriptBlockFragment scriptFragement = new ScriptBlockFragment(source);
-                return scriptFragement;
+                return new ScriptBlockFragment(source);
             } else if (source.isHtmlTagStart()) {
-                HtmlTagStartFragment htmlTagStart = new HtmlTagStartFragment(source);
-                return htmlTagStart;
+                return new HtmlTagStartFragment(source);
             } else if (source.isHtmlTagEnd()) {
-                HtmlTagEndFragment htmlTagEndFragment = new HtmlTagEndFragment(source);
-                return htmlTagEndFragment;
+                return new HtmlTagEndFragment(source);
             } else if (source.isCrStart()) {
-                CRFragment crFragment = new CRFragment(source);
-                return crFragment;
+                return new CRFragment(source);
             } else {
                 return new TextFragment(source);
             }
         }
         return null;
     }
-    
- 
+
 }

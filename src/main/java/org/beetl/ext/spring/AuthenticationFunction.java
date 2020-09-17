@@ -13,12 +13,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * @author Chen Rui
  */
 public class AuthenticationFunction implements Function {
-	@Override
-	public Object call(Object[] paras, Context ctx) {
-		// 获取安全上下文
-		SecurityContext securityContext = SecurityContextHolder.getContext();
-		Authentication authentication = securityContext != null ? securityContext.getAuthentication() : null;
-		// 获取认证凭证
-		return ((authentication == null) || (authentication instanceof AnonymousAuthenticationToken)) ? null : authentication;
-	}
+    @Override
+    public Object call(Object[] paras, Context ctx) {
+        // 获取安全上下文
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext != null ? securityContext.getAuthentication() : null;
+        // 获取认证凭证
+        return ((authentication == null) || (authentication instanceof AnonymousAuthenticationToken)) ? null : authentication;
+    }
 }

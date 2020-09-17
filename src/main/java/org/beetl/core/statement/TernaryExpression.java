@@ -32,50 +32,39 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * 三元表达式
- * 
- * condtion?a:b
- * @author joelli
  *
+ * condtion?a:b
+ *
+ * @author xiandafu
  */
 public class TernaryExpression extends Expression {
 
-	public Expression condtion;
-	public Expression a;
-	public Expression b;
+    public Expression condtion;
+    public Expression a;
+    public Expression b;
 
-	public TernaryExpression(Expression condtion, Expression a, Expression b, GrammarToken token) {
-		super(token);
-		this.condtion = condtion;
-		this.a = a;
-		this.b = b;
+    public TernaryExpression(Expression condtion, Expression a, Expression b, GrammarToken token) {
+        super(token);
+        this.condtion = condtion;
+        this.a = a;
+        this.b = b;
 
-	}
+    }
 
-	public Object evaluate(Context ctx) {
+    public Object evaluate(Context ctx) {
 
-		Object value = condtion.evaluate(ctx);
-		if (value == null) {
-			BeetlException be = new BeetlException(BeetlException.NULL);
-			be.pushToken(condtion.token);
-			throw be;
-		} else if (!(value instanceof Boolean)) {
-			BeetlException be = new BeetlException(BeetlException.BOOLEAN_EXPECTED_ERROR);
-			be.pushToken(condtion.token);
-			throw be;
-		}
-		boolean cond = (Boolean) value;
-
-		if (cond) {
-			return a.evaluate(ctx);
-		} else {
-			if (b != null) {
-				return b.evaluate(ctx);
-			} else {
-				return null;
-			}
-		}
-
-	}
-
+        Object value = condtion.evaluate(ctx);
+        if (value == null) {
+            BeetlException be = new BeetlException(BeetlException.NULL);
+            be.pushToken(condtion.token);
+            throw be;
+        } else if (!(value instanceof Boolean)) {
+            BeetlException be = new BeetlException(BeetlException.BOOLEAN_EXPECTED_ERROR);
+            be.pushToken(condtion.token);
+            throw be;
+        }
+        boolean cond = (Boolean) value;
+        return cond ? a.evaluate(ctx) : (b != null ? b.evaluate(ctx) : null);
+    }
 
 }

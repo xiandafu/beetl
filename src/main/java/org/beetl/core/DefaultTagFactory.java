@@ -33,35 +33,24 @@ import org.beetl.core.tag.TagFactory;
 
 /**
  * Tag工场类
- * @author joelli
  *
+ * @author xiandafu
  */
-public class DefaultTagFactory implements TagFactory
-{
-	Class tagCls;
+public class DefaultTagFactory implements TagFactory {
+    Class tagCls;
 
-	public DefaultTagFactory(Class tagCls)
-	{
-		this.tagCls = tagCls;
-	}
+    public DefaultTagFactory(Class tagCls) {
+        this.tagCls = tagCls;
+    }
 
-	@Override
-	public Tag createTag()
-	{
-		try
-		{
-			Tag tag = (Tag) tagCls.newInstance();
-			return tag;
-		}
-		catch (InstantiationException e)
-		{
-			BeetlException bex = new BeetlException(BeetlException.TAG_INSTANCE_ERROR, "实例化 " + tagCls + " 出错");
-			throw bex;
-		}
-		catch (IllegalAccessException e)
-		{
-			BeetlException bex = new BeetlException(BeetlException.TAG_INSTANCE_ERROR, "不能实例化 " + tagCls);
-			throw bex;
-		}
-	}
+    @Override
+    public Tag createTag() {
+        try {
+            return (Tag) tagCls.newInstance();
+        } catch (InstantiationException e) {
+            throw new BeetlException(BeetlException.TAG_INSTANCE_ERROR, "实例化 " + tagCls + " 出错");
+        } catch (IllegalAccessException e) {
+            throw new BeetlException(BeetlException.TAG_INSTANCE_ERROR, "不能实例化 " + tagCls);
+        }
+    }
 }

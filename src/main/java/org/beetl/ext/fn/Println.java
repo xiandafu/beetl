@@ -36,38 +36,30 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * &lt;% println("hello") % &gt;
- * @author jeolli
  *
+ * @author xiandafu
  */
-public class Println implements Function
-{
+public class Println implements Function {
 
-	public String call(Object[] paras, Context ctx)
-	{
-		try
-		{
-			ByteWriter w = ctx.byteWriter;
-			if (paras.length == 0)
-			{
-				w.writeString(ctx.template.program.metaData.lineSeparator);
-				return "";
-			}
-			Object o = paras[0];
+    public String call(Object[] paras, Context ctx) {
+        try {
+            ByteWriter w = ctx.byteWriter;
+            if (paras.length == 0) {
+                w.writeString(ctx.template.program.metaData.lineSeparator);
+                return "";
+            }
+            Object o = paras[0];
 
-			if (o != null)
-			{
+            if (o != null) {
 
-				w.writeString(o.toString());
-				w.writeString(ctx.template.program.metaData.lineSeparator);
-			}
+                w.writeString(o.toString());
+                w.writeString(ctx.template.program.metaData.lineSeparator);
+            }
 
-		}
-		catch (IOException e)
-		{
-			BeetlException be = new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR);
-			throw be;
-		}
-		return "";
+        } catch (IOException e) {
+            throw new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR);
+        }
+        return "";
 
-	}
+    }
 }

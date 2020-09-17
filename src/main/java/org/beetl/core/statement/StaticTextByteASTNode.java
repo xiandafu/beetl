@@ -34,30 +34,29 @@ import org.beetl.core.exception.BeetlException;
 
 /**
  * 模板的静态部分
- * @author joelli
  *
+ * @author xiandafu
  */
 public final class StaticTextByteASTNode extends Statement {
 
-	int textIndex;
+    int textIndex;
 
-	public StaticTextByteASTNode(int textIndex, GrammarToken token) {
-		super(token);
-		this.textIndex = textIndex;
-		// TODO Auto-generated constructor stub
-	}
+    public StaticTextByteASTNode(int textIndex, GrammarToken token) {
+        super(token);
+        this.textIndex = textIndex;
+        // TODO Auto-generated constructor stub
+    }
 
-	@Override
-	public void execute(Context ctx) {
-		try {
-			ctx.byteWriter.write((byte[]) ctx.staticTextArray[textIndex]);
-		} catch (IOException ex) {
-			BeetlException be = new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR, "Client IO Error", ex);
-			be.pushToken(this.token);
-			throw be;
-		}
+    @Override
+    public void execute(Context ctx) {
+        try {
+            ctx.byteWriter.write((byte[]) ctx.staticTextArray[textIndex]);
+        } catch (IOException ex) {
+            BeetlException be = new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR, "Client IO Error", ex);
+            be.pushToken(this.token);
+            throw be;
+        }
 
-	}
-
+    }
 
 }

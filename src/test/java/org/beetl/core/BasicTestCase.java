@@ -7,8 +7,6 @@ import org.beetl.core.resource.ClasspathResourceLoader;
 
 import junit.framework.TestCase;
 
-
-
 public class BasicTestCase extends TestCase {
 	// 日志对象
 
@@ -38,8 +36,6 @@ public class BasicTestCase extends TestCase {
 		rs = new ClasspathResourceLoader("template/");
 
 		gt = new GroupTemplate(rs, cf);
-
-
 
 	}
 

@@ -17,7 +17,7 @@ public class FileFunctionTest extends BasicTestCase {
 	public static GroupTemplate newGt = null;
 	static {
 		Properties ps = new Properties();
-	
+
 		ps.setProperty("DELIMITER_STATEMENT_START", "@");
 		ps.setProperty("DELIMITER_STATEMENT_END", "null");
 		ps.setProperty("DELIMITER_STATEMENT_START2", "<%");
@@ -30,7 +30,6 @@ public class FileFunctionTest extends BasicTestCase {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-
 
 		newRs = new ClasspathResourceLoader("/template");
 

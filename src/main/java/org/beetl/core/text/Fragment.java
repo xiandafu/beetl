@@ -7,7 +7,6 @@ public abstract class Fragment {
     protected int endLine;
     private FragmentStatus status = FragmentStatus.normal;
 
-
     public Fragment(Source source) {
         this.source = source;
         this.setStartLine();
@@ -15,15 +14,12 @@ public abstract class Fragment {
 
     public abstract StringBuilder getScript();
 
-
     public abstract Fragment consumeAndReturnNext();
 
-
-
     protected Fragment findNext() {
-    	if(source.isEof()) {
-    		return null;
-    	}
+        if (source.isEof()) {
+            return null;
+        }
         if (source.isScriptStart()) {
             this.setEndLine();
             return new ScriptBlockFragment(source);
@@ -36,11 +32,9 @@ public abstract class Fragment {
         } else if (source.isHtmlTagEnd()) {
             this.setEndLine();
             return new HtmlTagEndFragment(source);
-        }else if(source.isCrStart()){
-            CRFragment crFragment = new CRFragment(source);
-            return crFragment;
-        }
-        else {
+        } else if (source.isCrStart()) {
+            return new CRFragment(source);
+        } else {
             this.setEndLine();
             return new TextFragment(source);
         }
@@ -49,7 +43,6 @@ public abstract class Fragment {
     protected void setStartLine() {
         this.startLine = source.curLine;
     }
-
 
     protected void setEndLine() {
         this.endLine = source.curLine;
@@ -67,6 +60,5 @@ public abstract class Fragment {
     public String toString() {
         return this.getClass().getSimpleName() + " from " + this.startLine + " to " + this.endLine;
     }
-
 
 }
