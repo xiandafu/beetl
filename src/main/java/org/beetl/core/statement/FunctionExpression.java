@@ -63,7 +63,8 @@ public class FunctionExpression extends Expression {
         if (fn == null) {
             // 检查html实现
             Resource resource = getResource(ctx.gt, name);
-            if (resource.getResourceLoader().exist(resource.getId())) {
+
+            if (resource!=null&&resource.getResourceLoader().exist(resource.getId())) {
                 fn = new FileFunctionWrapper(resource.getId().toString());
 
             } else {
@@ -133,7 +134,7 @@ public class FunctionExpression extends Expression {
 
     }
 
-    private Resource getResource(GroupTemplate gt, String name) {
+    protected Resource getResource(GroupTemplate gt, String name) {
         Map<String, String> resourceMap = gt.getConf().getResourceMap();
         String functionSuffix = resourceMap.get("functionSuffix");
         String functionRoot = resourceMap.get("functionRoot");

@@ -231,7 +231,7 @@ public class BeetlAntlrErrorStrategy extends DefaultErrorStrategy
 		String tokenStr = getTokenErrorDisplay(t);
 		String msg = null;
 		if(expect.equals("'}'")&&tokenStr.equals("'>>'")) {
-			 msg = "试图在第"+t.getLine()+"行未找到 '{' 匹配的结束符号 '}'";
+			 msg = "未找到 '{' 匹配的结束符号 '}'";
 		}else {
 			//常规情况
 			 msg = "缺少输入 " + expect + " 在 " + tokenStr+" 后面";
