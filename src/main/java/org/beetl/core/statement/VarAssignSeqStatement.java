@@ -25,43 +25,29 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.beetl.core.cache;
+package org.beetl.core.statement;
 
-import org.beetl.core.config.BeetlConfig;
-import org.beetl.core.fun.ObjectUtil;
-import org.beetl.core.log.Log;
+import org.beetl.core.Context;
 
 /**
- * 存储Program的缓存，默认是采用{@link LocalCache},可以通过设置
- * {@link Cache} 属性来设置新的缓存对象
+ * var a=1,b=2 ....;
  *
  * @author xiandafu
  */
-public class ProgramCacheFactory {
-    /** DEBUG flag */
-    private static final boolean DEBUG = BeetlConfig.DEBUG;
-    /** Log TAG */
-    private static final String TAG = "ProgramCacheFactory";
-    /** 缓存实现类的类名 */
-    public static String CACHE = "org.beetl.core.cache.LocalCache";
+public class VarAssignSeqStatement extends Statement {
+    public Statement[] sts;
 
-    /**
-     * 默认的缓存实现
-     *
-     * @return 如果通过 {@link #CACHE} 获取缓存实例失败，则返回一个 {@link LocalCache} 类型的新实例
-     */
-    public static Cache defaultCache() {
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        if (loader == null) {
-            loader = ProgramCacheFactory.class.getClassLoader();
-        }
-        try {
-            return (Cache) ObjectUtil.instance(CACHE, loader);
-        } catch (Exception ex) {
-            if (DEBUG) {
-                Log.d(TAG, "load " + CACHE + " by " + loader + " error ,instead local\n" + ex.toString());
-            }
-            return new LocalCache();
-        }
+    public VarAssignSeqStatement(Statement[] sts, GrammarToken token) {
+        super(token);
+        this.sts = sts;
     }
+
+    @Override
+    public void execute(Context ctx) {
+        for (Statement st : sts) {
+            st.execute(ctx);
+        }
+
+    }
+
 }
