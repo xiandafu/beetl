@@ -1,7 +1,7 @@
 package org.beetl.core.config;
 
 /**
- * Beetl config
+ * Beetl 配置类
  *
  * @author z8g
  * @since 2020-09-21

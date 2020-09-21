@@ -44,6 +44,7 @@ public class BlockStatement extends Statement implements IGoto {
         this.nodes = nodes;
     }
 
+    @Override
     public void execute(Context ctx) {
         if (this.hasGoto) {
             for (Statement node : nodes) {
@@ -51,7 +52,6 @@ public class BlockStatement extends Statement implements IGoto {
                 if (ctx.gotoFlag != 0) {
                     return;
                 }
-
             }
         } else {
             for (Statement node : nodes) {

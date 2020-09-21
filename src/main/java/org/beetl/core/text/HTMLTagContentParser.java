@@ -27,6 +27,9 @@
  */
 package org.beetl.core.text;
 
+import org.beetl.core.config.BeetlConfig;
+import org.beetl.core.log.Log;
+
 import java.util.*;
 
 /**
@@ -35,6 +38,9 @@ import java.util.*;
  * @author xiandafu
  */
 class HTMLTagContentParser {
+
+    /** Log TAG */
+    private static final String TAG = "HTMLTagContentParser";
 
     int index = 0;
     char[] cs = null;
@@ -496,11 +502,10 @@ class HTMLTagContentParser {
         String input = "<#ab id=\"1>";
         HTMLTagContentParser htmltag = new HTMLTagContentParser(new DefaultAttributeNameConvert(), input.toCharArray(), 2, "var,export", true);
         htmltag.parser();
-        System.out.println(htmltag.getTagName());
-        System.out.println(htmltag.getExpMap());
-        System.out.println(htmltag.isEmptyTag());
-        System.out.println(htmltag.hasVarBinding);
-        System.out.println(htmltag.varBidingStr);
-
+        Log.i(TAG, "tagName=" + htmltag.getTagName());
+        Log.i(TAG, "expMap=" + htmltag.getExpMap());
+        Log.i(TAG, "isEmptyTag=" + htmltag.isEmptyTag());
+        Log.i(TAG, "hasVarBinding=" + htmltag.hasVarBinding);
+        Log.i(TAG, "varBidingStr=" + htmltag.varBidingStr);
     }
 }

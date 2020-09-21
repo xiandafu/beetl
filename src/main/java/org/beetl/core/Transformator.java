@@ -38,8 +38,10 @@ import java.util.Map.Entry;
 import java.util.Stack;
 import java.util.TreeMap;
 
+import org.beetl.core.config.BeetlConfig;
 import org.beetl.core.exception.HTMLTagParserException;
 import org.beetl.core.exception.TextParserException;
+import org.beetl.core.log.Log;
 import org.beetl.core.statement.GrammarToken;
 
 /**
@@ -48,6 +50,11 @@ import org.beetl.core.statement.GrammarToken;
  * @author xiandafu
  */
 public class Transformator {
+
+    /** DEBUG flag */
+    private static final boolean DEBUG = BeetlConfig.DEBUG;
+    /** Log TAG */
+    private static final String TAG = "Transformator";
 
     String htmlTagStart = "<#";
     String htmlTagEnd = "</#";
@@ -768,23 +775,26 @@ public class Transformator {
         Transformator p = new Transformator("${", "}", "<%", "%>");
         p.enableHtmlTagSupport("<#", "/#>", "var");
         try {
-
             // String str = " #:var u='hello';:# \n $u$";
             String str = "<%a%>a\n<%c%>";
-
             BufferedReader reader = new BufferedReader(p.transform(str));
             String line = null;
-            System.out.println(p.getTextMap());
             String v = p.getTextMap().get(0);
-            System.out.println("==============================");
+            if (DEBUG) {
+                Log.d(TAG, p.getTextMap().toString());
+                Log.d(TAG, "==============================");
+            }
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                if (DEBUG) {
+                    Log.d(TAG, line);
+                }
             }
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
+            if (DEBUG) {
+                Log.e(TAG, ex.getMessage());
+                ex.printStackTrace();
+            }
         }
-
     }
 
     public void clear() {

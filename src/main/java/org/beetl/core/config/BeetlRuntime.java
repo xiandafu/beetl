@@ -1,7 +1,7 @@
 package org.beetl.core.config;
 
 /**
- * 用于获取各种运行时
+ * Beetl运行时，用于获取各种运行时
  */
 public class BeetlRuntime {
 

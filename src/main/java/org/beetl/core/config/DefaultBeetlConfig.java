@@ -1,5 +1,8 @@
 package org.beetl.core.config;
 
+/**
+ * 默认的Beetl配置
+ */
 public class DefaultBeetlConfig implements IBeetlConfig {
 
     @Override
