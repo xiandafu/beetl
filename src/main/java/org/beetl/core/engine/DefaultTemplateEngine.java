@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -22,72 +21,68 @@ import org.beetl.core.statement.AjaxStatement;
 import org.beetl.core.statement.Program;
 import org.beetl.core.statement.ProgramMetaData;
 
-public class DefaultTemplateEngine implements TemplateEngine {
-
+/**
+ * 默认的视图引擎
+ */
+public class DefaultTemplateEngine implements TemplateEngine, IGrammarConstants {
+    /** ANTLR 错误策略 */
     protected BeetlAntlrErrorStrategy antlrErrorStrategy = new BeetlAntlrErrorStrategy();
+    /** 语法错误监听器 */
     protected SyntaxErrorListener syntaxError = new SyntaxErrorListener();
+    /** 严格MVC下不允许的语法，跟逻辑相关 */
+    protected static final String[] STRICT_DISABLE_GRAMMARS = {
+            Arth, ClassNativeCall, Compare, Function, IncDec, InstanceNativeCall, VarAssign,
+            VarRefAssign, VarRefAssignExp,
+    };
 
     @Override
     public Program createProgram(Resource resource, Reader reader, Map<Integer, String> textMap, String cr,
                                  GroupTemplate gt) {
 
-        BeetlLexer lexer = null;
-        ;
+        BeetlLexer lexer;
         try {
             lexer = new BeetlLexer(CharStreams.fromReader(reader));
-        } catch (IOException e1) {
-            // 不可能发生，
-            throw new IllegalStateException(e1);
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex); // 不可能发生
         }
+
+        // 设置 ANTLR 的错误监听器
         lexer.removeErrorListeners();
         lexer.addErrorListener(syntaxError);
 
+        // 生成 prog 语法树
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-
         BeetlParser parser = new BeetlParser(tokens);
-        // 测试代码
         parser.setErrorHandler(antlrErrorStrategy);
+        ProgContext tree = parser.prog(); // 参见 BeetlParser.g4 中的 prog
 
-        //
-
-        ProgContext tree = parser.prog();
-
-        // begin parsing at init rule
-        AntlrProgramBuilder pb = getAntlrBuilder(gt);
-        ProgramMetaData data = pb.build(tree);
+        // 创建脚本运行程序
         Program program = new Program();
-        program.metaData = data;
         program.res = resource;
-
         program.gt = gt;
-
-        program.metaData.staticTextArray = new Object[textMap.size()];
+        program.metaData = getAntlrBuilder(gt).build(tree);
         program.metaData.lineSeparator = cr;
-        int i = 0;
+        program.metaData.staticTextArray = new Object[textMap.size()];
+
+        // 模板静态数据
+        int index = 0;
         Configuration conf = gt.getConf();
+        boolean directByteOutput = conf.isDirectByteOutput();
         String charset = conf.getCharset();
-        boolean byteOut = conf.isDirectByteOutput();
-        for (Entry<Integer, String> entry : textMap.entrySet()) {
-            if (byteOut) {
-                try {
-                    program.metaData.staticTextArray[i++] = entry.getValue().getBytes(charset);
-                } catch (UnsupportedEncodingException e) {
-                    throw new RuntimeException(e);
-                }
-            } else {
-
-                program.metaData.staticTextArray[i++] = entry.getValue().toCharArray();
-
+        try {
+            for (String v : textMap.values()) {
+                program.metaData.staticTextArray[index++] = directByteOutput ? v.getBytes(charset) : v.toCharArray();
             }
-
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
 
+        // AJAX 元数据
         if (program.metaData.ajaxs != null) {
-            //如果ajax内容
             for (AjaxStatement ajax : program.metaData.ajaxs.values()) {
-                ProgramMetaData locaMetaData = ajax.getLocalProgramMetaData();
-                locaMetaData.staticTextArray = program.metaData.staticTextArray;
-                locaMetaData.lineSeparator = cr;
+                ProgramMetaData metaData = ajax.getLocalProgramMetaData();
+                metaData.staticTextArray = program.metaData.staticTextArray;
+                metaData.lineSeparator = cr;
             }
         }
 
@@ -95,40 +90,41 @@ public class DefaultTemplateEngine implements TemplateEngine {
     }
 
     /**
-     * 子类可以加工Program，修改或者添加包括静态文本或者Statement语句
+     * 子类可以加工{@param program}，修改或者添加包括静态文本或者Statement语句
+     *
+     * @param program 脚本运行程序
      */
     protected void checkProgram(Program program) {
-
     }
 
     /**
      * 获取一个beetl模板的解析器，子类可以扩展
+     *
+     * @param groupTemplate 组模板
+     * @return 一个新的 ANTLR 程序构建器的实例
      */
-    protected AntlrProgramBuilder getAntlrBuilder(GroupTemplate gt) {
-        GrammarCreator gc = this.getGrammerCreator(gt);
-        AntlrProgramBuilder pb = new AntlrProgramBuilder(gt, gc);
-        return pb;
+    protected AntlrProgramBuilder getAntlrBuilder(GroupTemplate groupTemplate) {
+        GrammarCreator grammarCreator = this.getGrammarCreator(groupTemplate);
+        return new AntlrProgramBuilder(groupTemplate, grammarCreator);
     }
 
     /**
      * 语法节点生成器，子类可以扩展射生成自己个性化节点解析，比如带有xss的输出的${}，限制循环个数的for语法
+     *
+     * @param groupTemplate 组模板
+     * @return 一个新的语法创建者的实例
      */
-    protected GrammarCreator getGrammerCreator(GroupTemplate gt) {
-        GrammarCreator grammar = new GrammarCreator();
-        if (gt.getConf().isStrict()) {
-            // 严格MVC 不允许很多语法，跟逻辑相关的
-            grammar.disable("VarAssign");
-            grammar.disable("Function");
-            grammar.disable("IncDec");
-            grammar.disable("VarRefAssignExp");
-            grammar.disable("VarRefAssign");
-            grammar.disable("ClassNativeCall");
-            grammar.disable("InstanceNativeCall");
-            grammar.disable("Arth");
-            grammar.disable("Compare");
-            grammar.disable("InstanceNativeCall");
+    protected GrammarCreator getGrammarCreator(GroupTemplate groupTemplate) {
+        GrammarCreator result = new GrammarCreator();
+        setStrictDisableGrammars(result, groupTemplate);
+        return result;
+    }
 
+    protected void setStrictDisableGrammars(GrammarCreator grammarCreator, GroupTemplate groupTemplate) {
+        if (groupTemplate.getConf().isStrict()) {
+            for (String disableGrammar : STRICT_DISABLE_GRAMMARS) {
+                grammarCreator.addDisableGrammar(disableGrammar);
+            }
         }
-        return grammar;
     }
 }

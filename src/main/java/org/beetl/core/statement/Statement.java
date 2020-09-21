@@ -36,9 +36,13 @@ import org.beetl.core.Context;
  */
 public abstract class Statement extends ASTNode {
 
+    /**
+     * 构造方法
+     *
+     * @param token 语法单词
+     */
     public Statement(GrammarToken token) {
         super(token);
-
     }
 
     public abstract void execute(Context ctx);

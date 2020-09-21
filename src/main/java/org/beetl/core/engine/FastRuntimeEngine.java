@@ -12,13 +12,17 @@ import org.beetl.core.statement.optimal.BlockStatementOptimal;
 import org.beetl.core.statement.optimal.VarRefOptimal;
 
 /**
- * POJO 的属性采用ASM来访问
+ * 快速运行时引擎
+ * 基于默认模板引擎，POJO 的属性采用 ASM 来访问
  */
 public class FastRuntimeEngine extends DefaultTemplateEngine {
 
+    /**
+     * 构造方法
+     */
     public FastRuntimeEngine() {
         super();
-        //TOOD,改成非静态，跟引擎相关属性
+        // TODO: 改成非静态，跟引擎相关属性
         AABuilder.defalutAAFactory = new AsmAAFactory();
     }
 
@@ -28,30 +32,21 @@ public class FastRuntimeEngine extends DefaultTemplateEngine {
         return super.createProgram(rs, reader, textMap, cr, gt);
     }
 
-    protected GrammarCreator getGrammerCreator(GroupTemplate gt) {
-        GrammarCreator grammar = new NewGrammarCreator();
-        if (gt.getConf().isStrict()) {
-            // 严格MVC 不允许很多语法，跟逻辑相关的
-            grammar.disable("VarAssign");
-            grammar.disable("Function");
-            grammar.disable("IncDec");
-            grammar.disable("VarRefAssignExp");
-            grammar.disable("VarRefAssign");
-            grammar.disable("ClassNativeCall");
-            grammar.disable("InstanceNativeCall");
-            grammar.disable("Arth");
-            grammar.disable("Compare");
-            grammar.disable("InstanceNativeCall");
-
-        }
-        return grammar;
+    @Override
+    protected GrammarCreator getGrammarCreator(GroupTemplate groupTemplate) {
+        GrammarCreator result = new FastGrammarCreator();
+        super.setStrictDisableGrammars(result, groupTemplate);
+        return result;
     }
 
-    class NewGrammarCreator extends GrammarCreator {
+    /**
+     * 自定义的语法创建者
+     */
+    private static class FastGrammarCreator extends GrammarCreator {
         @Override
         public VarRef createVarRef(VarAttribute[] attributes, boolean hasSafe, Expression safe, GrammarToken token,
                                    GrammarToken firstToken) {
-            check("VarRefOptimal");
+            disableSyntaxCheck(GrammarCreator.VarRefOptimal);
             return (attributes.length == 1 && !hasSafe)
                     ? new VarRefOptimal(attributes[0], token, firstToken)
                     : new VarRef(attributes, hasSafe, safe, firstToken);
@@ -61,7 +56,6 @@ public class FastRuntimeEngine extends DefaultTemplateEngine {
         public BlockStatement createBlock(Statement[] nodes, GrammarToken token) {
             return (nodes.length == 1) ? new BlockStatementOptimal(nodes, token) : new BlockStatement(nodes, token);
         }
-
     }
 
 }

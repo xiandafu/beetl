@@ -40,13 +40,19 @@ import org.beetl.core.statement.Statement;
  */
 public class BlockStatementOptimal extends BlockStatement {
 
+    /**
+     * 构造方法
+     *
+     * @param nodes 语句块结点列表
+     * @param token 单词
+     */
     public BlockStatementOptimal(Statement[] nodes, GrammarToken token) {
         super(nodes, token);
     }
 
+    @Override
     public void execute(Context ctx) {
         nodes[0].execute(ctx);
-
     }
 
 }

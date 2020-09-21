@@ -14,7 +14,7 @@ import org.beetl.core.statement.GrammarToken;
 import org.beetl.core.statement.IGoto;
 import org.beetl.core.statement.Program;
 import org.beetl.core.statement.Statement;
-import org.beetl.core.statement.VarAssignStatementSeq;
+import org.beetl.core.statement.VarAssignSeqStatement;
 import org.beetl.core.statement.WhileStatement;
 
 /**
@@ -24,28 +24,28 @@ import org.beetl.core.statement.WhileStatement;
  */
 public class OnlineTemplateEngine extends DefaultTemplateEngine {
 
-    public static int MAX = 5;
-    public static String ERROR = "错误:在线引擎不允许循环次数超过  " + MAX;
+    /** 最大循环次数 */
+    public static int MAX_NUM_LOOP = 5;
+    /** 错误信息 */
+    public static String MAX_NUM_LOOP_ERROR = "错误:在线引擎不允许循环次数超过  " + MAX_NUM_LOOP;
 
     @Override
     public Program createProgram(Resource rs, Reader reader, Map<Integer, String> textMap, String cr,
                                  GroupTemplate gt) {
-
         return super.createProgram(rs, reader, textMap, cr, gt);
     }
 
     @Override
-    protected GrammarCreator getGrammerCreator(GroupTemplate gt) {
-        GrammarCreator old = super.getGrammerCreator(gt);
-        GrammarCreator grammar = new OnlineGrammarCreator();
-        grammar.setDisable(old.getDisable());
-        return grammar;
+    protected GrammarCreator getGrammarCreator(GroupTemplate groupTemplate) {
+        GrammarCreator result = new OnlineGrammarCreator();
+        super.setStrictDisableGrammars(result, groupTemplate);
+        return result;
     }
 
     static class OnlineGrammarCreator extends GrammarCreator {
 
         @Override
-        public GeneralForStatement createFor(VarAssignStatementSeq varAssignSeq, Expression[] expInit,
+        public GeneralForStatement createFor(VarAssignSeqStatement varAssignSeq, Expression[] expInit,
                                              Expression condtion, Expression[] expUpdate, Statement forPart, Statement elseforPart,
                                              GrammarToken token) {
             return new RestrictForStatement(varAssignSeq, expInit, condtion, expUpdate, forPart, elseforPart, token);
@@ -59,7 +59,7 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
     }
 
     static class RestrictForStatement extends GeneralForStatement {
-        public RestrictForStatement(VarAssignStatementSeq varAssignSeq, Expression[] expInit, Expression condtion,
+        public RestrictForStatement(VarAssignSeqStatement varAssignSeq, Expression[] expInit, Expression condtion,
                                     Expression[] expUpdate, Statement forPart, Statement elseforPart, GrammarToken token) {
             super(varAssignSeq, expInit, condtion, expUpdate, forPart, elseforPart, token);
         }
@@ -76,7 +76,7 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
             }
 
             int i = 0;
-            for (; i < OnlineTemplateEngine.MAX; i++) {
+            for (; i < MAX_NUM_LOOP; i++) {
                 boolean bool = (Boolean) condtion.evaluate(ctx);
                 if (bool) {
                     forPart.execute(ctx);
@@ -105,9 +105,9 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
 
             }
 
-            if (i >= OnlineTemplateEngine.MAX) {
+            if (i >= MAX_NUM_LOOP) {
                 try {
-                    ctx.byteWriter.writeString(ERROR);
+                    ctx.byteWriter.writeString(MAX_NUM_LOOP_ERROR);
                     ctx.byteWriter.flush();
 
                 } catch (IOException e) {
@@ -127,7 +127,7 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
         @Override
         public void execute(Context ctx) {
             int i = 0;
-            while (i < OnlineTemplateEngine.MAX) {
+            while (i < MAX_NUM_LOOP) {
                 Object result = exp.evaluate(ctx);
                 if (result instanceof Boolean) {
                     if ((Boolean) result) {
@@ -145,9 +145,9 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
                 i++;
             }
 
-            if (i >= OnlineTemplateEngine.MAX) {
+            if (i >= MAX_NUM_LOOP) {
                 try {
-                    ctx.byteWriter.writeString(ERROR);
+                    ctx.byteWriter.writeString(MAX_NUM_LOOP_ERROR);
 
                 } catch (IOException e) {
                     // ignore
