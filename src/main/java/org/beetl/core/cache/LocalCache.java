@@ -38,35 +38,32 @@ import java.util.function.Function;
  */
 public class LocalCache implements Cache {
 
-    Map map = new ConcurrentHashMap();
+    /** 线程安全的缓存 */
+    private final Map<Object,Object> threadSafeCache = new ConcurrentHashMap<>();
 
     @Override
     public Object get(Object key) {
-        return map.get(key);
+        return threadSafeCache.get(key);
     }
 
     @Override
     public Object get(Object key, Function function) {
-        return map.computeIfAbsent(key, function);
-
+        return threadSafeCache.computeIfAbsent(key, function);
     }
 
     @Override
     public void remove(Object key) {
-        map.remove(key);
-
+        threadSafeCache.remove(key);
     }
 
     @Override
     public void set(Object key, Object value) {
-        map.put(key, value);
-
+        threadSafeCache.put(key, value);
     }
 
     @Override
     public void clearAll() {
-        map.clear();
-
+        threadSafeCache.clear();
     }
 
 }
