@@ -27,6 +27,9 @@
  */
 package org.beetl.core.resource;
 
+import org.beetl.core.config.BeetlConfig;
+import org.beetl.core.log.Log;
+
 /**
  * 检查key以给定的字符串开头的匹配器
  *
@@ -34,19 +37,14 @@ package org.beetl.core.resource;
  */
 public class StartsWithMatcher implements Matcher {
 
-    /**
-     * 前缀
-     */
+    /** Log TAG */
+    private static final String TAG = "org.beetl.core.lab.StartsWithMatcher";
+
+    /** 前缀 */
     private String prefix;
-
-    /**
-     * 前缀长度
-     */
+    /** 前缀长度 */
     private int prefixLen = 0;
-
-    /**
-     * 返回的newKey是否保留前缀，默认不保留。
-     */
+    /** 返回的newKey是否保留前缀，默认不保留 */
     private boolean withPrefix = false;
 
     public StartsWithMatcher() {
@@ -127,8 +125,9 @@ public class StartsWithMatcher implements Matcher {
 
     public static void main(String[] args) {
         StartsWithMatcher swm = new StartsWithMatcher("/com/wellbole").withoutPrefix();
-        System.out.println(swm.match("/com/wellbole/app/pg/index.html"));
+        Log.i(TAG, swm.match("/com/wellbole/app/pg/index.html"));
+
         swm = new StartsWithMatcher("/com/wellbole").withPrefix();
-        System.out.println(swm.match("/com/wellbole/app/pg/index.html"));
+        Log.i(TAG, swm.match("/com/wellbole/app/pg/index.html"));
     }
 }

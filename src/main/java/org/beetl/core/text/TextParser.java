@@ -2,6 +2,8 @@ package org.beetl.core.text;
 
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
+import org.beetl.core.config.BeetlConfig;
+import org.beetl.core.log.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,6 +18,11 @@ import java.util.Map;
  * @author xiandafu
  */
 public class TextParser {
+
+    /** DEBUG flag */
+    private static final boolean DEBUG = BeetlConfig.DEBUG;
+    /** Log TAG */
+    private static final String TAG = "TextParser";
 
     Map<Integer, String> textVars = new HashMap<Integer, String>();
     int textNameSuffix = 0;
@@ -81,13 +88,10 @@ public class TextParser {
 
     protected void scan1(Reader orginal) throws IOException {
         StringBuilder temp = new StringBuilder();
-        int bufSzie = 1024;
-        char[] cs = new char[bufSzie];
-        int len = -1;
-
-        while ((len = orginal.read(cs)) != -1) {
+        int bufSize = 1024;
+        char[] cs = new char[bufSize];
+        for (int len = orginal.read(cs); len != -1; len = orginal.read(cs)) {
             temp.append(cs, 0, len);
-
         }
 
         cs = temp.toString().toCharArray();
@@ -138,15 +142,13 @@ public class TextParser {
         StringReader str = new StringReader(text);
         TextParser textParser = new TextParser(null, pd, sd, htmlConfig);
         textParser.doParse(str);
+        Log.i(TAG, textParser.getTextVars().toString());
 
-        System.out.println(textParser.getTextVars());
-        String line = null;
         BufferedReader reader = new BufferedReader(new StringReader(textParser.getScript().toString()));
-        System.out.println("==============================");
-        while ((line = reader.readLine()) != null) {
-            System.out.println(line);
+        Log.i(TAG, "==============================");
+        for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+            Log.i(TAG, line);
         }
-
     }
 
 }

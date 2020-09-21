@@ -32,7 +32,6 @@ public class DefaultTemplateEngine implements TemplateEngine {
                                  GroupTemplate gt) {
 
         BeetlLexer lexer = null;
-        ;
         try {
             lexer = new BeetlLexer(CharStreams.fromReader(reader));
         } catch (IOException e1) {
@@ -47,8 +46,6 @@ public class DefaultTemplateEngine implements TemplateEngine {
         BeetlParser parser = new BeetlParser(tokens);
         // 测试代码
         parser.setErrorHandler(antlrErrorStrategy);
-
-        //
 
         ProgContext tree = parser.prog();
 
@@ -106,8 +103,7 @@ public class DefaultTemplateEngine implements TemplateEngine {
      */
     protected AntlrProgramBuilder getAntlrBuilder(GroupTemplate gt) {
         GrammarCreator gc = this.getGrammerCreator(gt);
-        AntlrProgramBuilder pb = new AntlrProgramBuilder(gt, gc);
-        return pb;
+        return new AntlrProgramBuilder(gt, gc);
     }
 
     /**

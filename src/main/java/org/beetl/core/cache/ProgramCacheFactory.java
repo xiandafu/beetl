@@ -27,7 +27,9 @@
  */
 package org.beetl.core.cache;
 
+import org.beetl.core.config.BeetlConfig;
 import org.beetl.core.fun.ObjectUtil;
+import org.beetl.core.log.Log;
 
 /**
  * 存储Program的缓存，默认是采用{@link LocalCache},可以通过设置
@@ -36,9 +38,12 @@ import org.beetl.core.fun.ObjectUtil;
  * @author xiandafu
  */
 public class ProgramCacheFactory {
-    /**
-     * 缓存实现类的类名
-     */
+    /** DEBUG flag */
+    private static final boolean DEBUG = BeetlConfig.DEBUG;
+    /** Log TAG */
+    private static final String TAG = "ProgramCacheFactory";
+
+    /** 缓存实现类的类名 */
     public static String CACHE = "org.beetl.core.cache.LocalCache";
 
     public static Cache defaulCache() {
@@ -50,7 +55,9 @@ public class ProgramCacheFactory {
         try {
             return (Cache) ObjectUtil.instance(CACHE, loader);
         } catch (Exception ex) {
-            System.out.println("load " + CACHE + " by " + loader + " error ,instead local");
+            if (DEBUG) {
+                Log.d(TAG, "load " + CACHE + " by " + loader + " error ,instead local");
+            }
             return new LocalCache();
         }
 

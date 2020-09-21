@@ -3,17 +3,20 @@ package org.beetl.core.lab;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
-import org.beetl.core.TemplateProxy;
+import org.beetl.core.config.BeetlConfig;
+import org.beetl.core.log.Log;
 import org.beetl.core.resource.ClasspathResourceLoader;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author xiandafu
  */
 public class Test {
+
+    /** DEBUG flag */
+    private static final boolean DEBUG = BeetlConfig.DEBUG;
+    /** Log TAG */
+    private static final String TAG = "org.beetl.core.lab.Test";
+
     public static void main(String[] args) throws Exception {
 
         ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("lab/");
@@ -27,7 +30,9 @@ public class Test {
 
         for (int i = 0; i < 1; i++) {
             t.binding("testUser", new MyTestObject("abc"));
-            System.out.println(i + " " + t.render());
+            if (DEBUG) {
+                Log.d(TAG, i + " " + t.render());
+            }
         }
 
     }
