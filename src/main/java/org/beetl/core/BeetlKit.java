@@ -5,8 +5,10 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.beetl.core.config.BeetlConfig;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.exception.ErrorInfo;
+import org.beetl.core.log.Log;
 import org.beetl.core.resource.StringTemplateResourceLoader;
 
 /**
@@ -14,6 +16,11 @@ import org.beetl.core.resource.StringTemplateResourceLoader;
  * * @author
  */
 public class BeetlKit {
+
+    /** DEBUG flag */
+    private static final boolean DEBUG = BeetlConfig.DEBUG;
+    /** Log TAG */
+    private static final String TAG = "BeetlKit";
 
     /**
      * BeetlKit 默认使用的GroupTemplate，用户可以设置新的
@@ -88,13 +95,13 @@ public class BeetlKit {
         BeetlKit.gt.getConf().setStatementStart("@");
         BeetlKit.gt.getConf().setStatementEnd(null);
         String json = "var a=".concat("[1,2,c+1 ]").concat(";");
-        Map map;
         try {
-            map = BeetlKit.execute(json);
+            BeetlKit.execute(json);
         } catch (BeetlException e) {
-            ErrorInfo info = new ErrorInfo(e);
-            System.out.println(info.toString());
+            if (DEBUG) {
+                ErrorInfo info = new ErrorInfo(e);
+                Log.e(TAG, "error=" + info.toString());
+            }
         }
-
     }
 }

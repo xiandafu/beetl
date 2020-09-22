@@ -34,10 +34,10 @@ import org.beetl.core.Context;
  *
  * @author xiandafu
  */
-public class VarAssignStatementSeq extends Statement {
+public class VarAssignSeqStatement extends Statement {
     public Statement[] sts;
 
-    public VarAssignStatementSeq(Statement[] sts, GrammarToken token) {
+    public VarAssignSeqStatement(Statement[] sts, GrammarToken token) {
         super(token);
         this.sts = sts;
     }

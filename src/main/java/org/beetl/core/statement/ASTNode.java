@@ -28,13 +28,19 @@
 package org.beetl.core.statement;
 
 /**
- * 节点基类
+ * 抽象语法树结点基础类
  *
  * @author xiandafu
  */
 public abstract class ASTNode implements java.io.Serializable {
+    /** 当前结点的语法单词 */
     public GrammarToken token;
 
+    /**
+     * 构造方法
+     *
+     * @param token 语法单词
+     */
     public ASTNode(GrammarToken token) {
         this.token = token;
     }

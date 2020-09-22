@@ -73,7 +73,7 @@ public class GroupTemplate {
     ResourceLoader resourceLoader = null;
     Configuration conf = null;
     TemplateEngine engine = null;
-    Cache programCache = ProgramCacheFactory.defaulCache();
+    Cache programCache = ProgramCacheFactory.defaultCache();
     List<Listener> ls = new ArrayList<Listener>();
     // 所有注册的方法
     Map<String, Function> fnMap = new HashMap<String, Function>();

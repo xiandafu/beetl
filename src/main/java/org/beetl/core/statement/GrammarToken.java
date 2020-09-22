@@ -28,21 +28,39 @@
 package org.beetl.core.statement;
 
 /**
- * 语法节点，包含所在行数，以及内容
+ * 语法节点
+ * 包含所处行号，列号，以及文本表示
  *
  * @author xiandafu
  */
 public class GrammarToken implements Cloneable, java.io.Serializable {
+    /** 行号 */
     public int line;
+    /** 文本表示 */
     public String text;
+    /** 列号 */
     public int col;
 
+    /**
+     * 构造方法
+     *
+     * @param text 文本表示
+     * @param line 行号
+     * @param col  列号
+     */
     public GrammarToken(String text, int line, int col) {
         this.text = text;
         this.line = line;
         this.col = col;
     }
 
+    /**
+     * 创建一个新的语法单词
+     *
+     * @param tagName 标签名称
+     * @param line    行号
+     * @return 一个新的语法单词实例
+     */
     public static GrammarToken createToken(String tagName, int line) {
         return new GrammarToken(tagName, line, 1);
     }
@@ -54,9 +72,9 @@ public class GrammarToken implements Cloneable, java.io.Serializable {
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
-
     }
 
+    @Override
     public String toString() {
         return text;
     }

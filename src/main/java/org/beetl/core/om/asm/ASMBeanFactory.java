@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.beetl.core.GroupTemplate;
+import org.beetl.core.config.BeetlConfig;
+import org.beetl.core.log.Log;
 import org.beetl.core.misc.ByteClassLoader;
 import org.beetl.core.om.AttributeAccess;
 import org.beetl.core.om.ReflectBeanAA;
@@ -20,6 +22,11 @@ import org.beetl.core.om.ReflectBeanAA;
  *
  */
 public class ASMBeanFactory {
+
+    /** DEBUG flag */
+    private static final boolean DEBUG = BeetlConfig.DEBUG;
+    /** Log TAG */
+    private static final String TAG = "ASMBeanFactory";
 
     private final Map<Class<?>, AttributeAccess> beanMap = new ConcurrentHashMap<>();
     private final Map<ClassLoader, ByteClassLoader> classLoaders = new ConcurrentHashMap<>();
@@ -116,6 +123,9 @@ public class ASMBeanFactory {
             String classPath = beanClass.getResource("").getPath();
             // 将二进制流写到本地磁盘上
             File file = new File(classPath, BeanEnhanceUtils.getSimpleClassName(generatedBeanName) + ".class");
+            if (DEBUG) {
+                Log.d(TAG, file.getAbsolutePath());
+            }
             System.out.println(file.getAbsolutePath());
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(code);

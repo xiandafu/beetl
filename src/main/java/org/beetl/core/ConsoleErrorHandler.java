@@ -32,6 +32,7 @@ import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.beetl.core.config.BeetlConfig;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.exception.ErrorInfo;
 
@@ -118,8 +119,7 @@ public class ConsoleErrorHandler implements ErrorHandler {
         printCause(error, writer);
         try {
             writer.flush();
-        } catch (IOException e) {
-
+        } catch (IOException ignored) {
         }
 
     }

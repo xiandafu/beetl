@@ -29,7 +29,6 @@ package org.beetl.core;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -66,7 +65,6 @@ import org.beetl.core.parser.BeetlParser.CompareExpContext;
 import org.beetl.core.parser.BeetlParser.ConstantsTextStatmentContext;
 import org.beetl.core.parser.BeetlParser.ContinueStContext;
 import org.beetl.core.parser.BeetlParser.DirectiveExpContext;
-import org.beetl.core.parser.BeetlParser.DirectiveExpIDListContext;
 import org.beetl.core.parser.BeetlParser.DirectiveStContext;
 import org.beetl.core.parser.BeetlParser.EndContext;
 import org.beetl.core.parser.BeetlParser.ExpressionContext;
@@ -164,13 +162,11 @@ import org.beetl.core.statement.ReturnStatement;
 import org.beetl.core.statement.SelectStatement;
 import org.beetl.core.statement.Statement;
 import org.beetl.core.statement.StatementExpression;
-import org.beetl.core.statement.StaticTextASTNode;
-import org.beetl.core.statement.StaticTextByteASTNode;
 import org.beetl.core.statement.SwitchStatement;
 import org.beetl.core.statement.TagStatement;
 import org.beetl.core.statement.TryCatchStatement;
 import org.beetl.core.statement.VarAssignStatement;
-import org.beetl.core.statement.VarAssignStatementSeq;
+import org.beetl.core.statement.VarAssignSeqStatement;
 import org.beetl.core.statement.VarAttribute;
 import org.beetl.core.statement.VarDefineNode;
 import org.beetl.core.statement.VarRef;
@@ -981,7 +977,7 @@ public class AntlrProgramBuilder {
                 hasSafe = true;
             }
 
-            ForStatement forStatement = gc.createForIn(forVar, exp, hasSafe, forPart, elseForPart, forVar.token);
+            ForStatement forStatement = gc.createForIn(forVar, exp, hasSafe, forPart, elseForPart);
 
             this.checkGoto(forStatement);
             pbCtx.exitBlock();
@@ -990,7 +986,7 @@ public class AntlrProgramBuilder {
             GeneralForControlContext forCtx = forTypeCtx.generalForControl();
 
             Expression[] initExp = null;
-            VarAssignStatementSeq varInitSeq = null;
+            VarAssignSeqStatement varInitSeq = null;
             Expression condtion = null;
             Expression[] updateExp = null;
             if (forCtx.forInit() != null) {
@@ -1083,14 +1079,14 @@ public class AntlrProgramBuilder {
         }
     }
 
-    private VarAssignStatementSeq parseVarSt(VarStContext node) {
+    private VarAssignSeqStatement parseVarSt(VarStContext node) {
         VarStContext varSt = node;
         VarDeclareListContext ctx = varSt.varDeclareList();
         return parseVarDeclareList(ctx);
 
     }
 
-    private VarAssignStatementSeq parseVarDeclareList(VarDeclareListContext ctx) {
+    private VarAssignSeqStatement parseVarDeclareList(VarDeclareListContext ctx) {
         List<AssignMentContext> list = ctx.assignMent();
         List<VarAssignStatement> listNode = new ArrayList<VarAssignStatement>();
         for (AssignMentContext amc : list) {
@@ -1103,7 +1099,7 @@ public class AntlrProgramBuilder {
 
         }
 
-        VarAssignStatementSeq seq = this.gc.createVarAssignSeq(listNode.toArray(new VarAssignStatement[0]));
+        VarAssignSeqStatement seq = this.gc.createVarAssignSeq(listNode.toArray(new VarAssignStatement[0]));
         return seq;
     }
 

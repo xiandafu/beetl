@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.statement.AjaxStatement;
@@ -42,7 +43,7 @@ import org.beetl.core.statement.TagVarBindingStatement;
 import org.beetl.core.statement.TernaryExpression;
 import org.beetl.core.statement.TryCatchStatement;
 import org.beetl.core.statement.VarAssignStatement;
-import org.beetl.core.statement.VarAssignStatementSeq;
+import org.beetl.core.statement.VarAssignSeqStatement;
 import org.beetl.core.statement.VarAttribute;
 import org.beetl.core.statement.VarDefineNode;
 import org.beetl.core.statement.VarRef;
@@ -61,36 +62,30 @@ import org.beetl.core.statement.nat.NativeNode;
  *
  * @author xiandafu
  */
-public class GrammarCreator {
-    protected HashSet<String> disable = new HashSet<String>();
+public class GrammarCreator implements IGrammarConstants {
 
-    public HashSet<String> getDisable() {
-        return disable;
-    }
-
-    public void setDisable(HashSet<String> disable) {
-        this.disable = disable;
-    }
+    /** 禁用语法的集合 */
+    protected Set<String> disableGrammarSet = new HashSet<>();
 
     /**
      * 参考BeetlLexer.g4
      */
-    public void disable(String grammar) {
-        disable.add(grammar);
+    public void addDisableGrammar(String disableGrammar) {
+        disableGrammarSet.add(disableGrammar);
     }
 
-    public VarAssignStatementSeq createVarAssignSeq(VarAssignStatement[] assings) {
-        check("VarAssignSeq");
-        return new VarAssignStatementSeq(assings, null);
+    public VarAssignSeqStatement createVarAssignSeq(VarAssignStatement[] assings) {
+        disableSyntaxCheck(VarAssignSeq);
+        return new VarAssignSeqStatement(assings, null);
     }
 
     public VarAssignStatement createVarAssign(Expression exp, GrammarToken token) {
-        check("VarAssign");
+        disableSyntaxCheck(VarAssign);
         return new VarAssignStatement(exp, token);
     }
 
     public VarRefAssignStatement createVarRefAssign(Expression exp, VarRef varRef) {
-        check("VarRefAssign");
+        disableSyntaxCheck(VarRefAssign);
         return new VarRefAssignStatement(exp, varRef);
     }
 
@@ -99,44 +94,44 @@ public class GrammarCreator {
     }
 
     public PlaceholderST createTextOutputSt(Expression exp, FormatExpression format) {
-        check("TextOutputSt");
+        disableSyntaxCheck(TextOutputSt);
         return new PlaceholderST(exp, format, null);
     }
 
     public PlaceholderST createTextOutputSt2(Expression exp, FormatExpression format) {
-        check("TextOutputSt2");
+        disableSyntaxCheck(TextOutputSt2);
         return new PlaceholderST(exp, format, null);
     }
 
     public ReturnStatement createReturn(Expression exp) {
-        check("Return");
+        disableSyntaxCheck(Return);
         return new ReturnStatement(exp, null);
     }
 
     public BreakStatement createBreak(GrammarToken token) {
-        check("Break");
+        disableSyntaxCheck(Break);
         return new BreakStatement(token);
     }
 
     public ContinueStatement createContinue(GrammarToken token) {
-        check("Continue");
+        disableSyntaxCheck(Continue);
         return new ContinueStatement(token);
     }
 
     public ForStatement createForIn(VarDefineNode forVar, Expression exp, boolean hasSafe, Statement forPart,
-                                    Statement elseForPart, GrammarToken token) {
-        check("ForIn");
+                                    Statement elseForPart) {
+        disableSyntaxCheck(ForIn);
         return new ForStatement(forVar, exp, hasSafe, forPart, elseForPart, forVar.token);
     }
 
-    public GeneralForStatement createFor(VarAssignStatementSeq varAssignSeq, Expression[] expInit, Expression condtion,
+    public GeneralForStatement createFor(VarAssignSeqStatement varAssignSeq, Expression[] expInit, Expression condtion,
                                          Expression[] expUpdate, Statement forPart, Statement elseforPart, GrammarToken token) {
-        check("For");
+        disableSyntaxCheck(For);
         return new GeneralForStatement(varAssignSeq, expInit, condtion, expUpdate, forPart, elseforPart, token);
     }
 
     public WhileStatement createWhile(Expression exp, Statement whileBody, GrammarToken token) {
-        check("While");
+        disableSyntaxCheck(While);
         return new WhileStatement(exp, whileBody, token);
     }
 
@@ -150,7 +145,7 @@ public class GrammarCreator {
 
     public IfStatement createIf(Expression condtion, Statement ifStatement, Statement elseStatement,
                                 GrammarToken token) {
-        check("If");
+        disableSyntaxCheck(If);
         return new IfStatement(condtion, ifStatement, elseStatement, token);
     }
 
@@ -160,35 +155,35 @@ public class GrammarCreator {
 
     public TryCatchStatement createTry(BlockStatement tryPart, BlockStatement catchPart, VarDefineNode error,
                                        GrammarToken token) {
-        check("Try");
+        disableSyntaxCheck(Try);
         return new TryCatchStatement(tryPart, catchPart, error, token);
     }
 
     public TagStatement createTag(String tagName, Expression[] expList, Statement block, GrammarToken token) {
-        check("Tag");
+        disableSyntaxCheck(Tag);
         return new TagStatement(tagName, expList, block, token);
     }
 
     public TagVarBindingStatement createVarTag(String tagName, Expression[] expList, Statement block,
                                                VarDefineNode[] varDefine, GrammarToken token) {
-        check("VarTag");
+        disableSyntaxCheck(VarTag);
         return new TagVarBindingStatement(tagName, expList, block, varDefine, token);
     }
 
     public SwitchStatement createSwitch(Expression value, LinkedHashMap<Expression, BlockStatement> map,
                                         BlockStatement defaultBlock, GrammarToken token) {
-        check("Switch");
+        disableSyntaxCheck(Switch);
         return new SwitchStatement(value, map, defaultBlock, token);
     }
 
     public SelectStatement createSelect(Expression value, Expression[] conditions, BlockStatement[] blocks,
                                         BlockStatement defaultBlock, GrammarToken token) {
-        check("Select");
+        disableSyntaxCheck(Select);
         return new SelectStatement(value, conditions, blocks, defaultBlock, token);
     }
 
     public AjaxStatement createAjax(BlockStatement block, GrammarToken token, boolean defaultRender) {
-        check("Ajax");
+        disableSyntaxCheck(Ajax);
         return new AjaxStatement(block, token, defaultRender);
     }
 
@@ -196,7 +191,7 @@ public class GrammarCreator {
 
     public FunctionExpression createFunction(String name, Expression[] exps, VarAttribute[] vas, boolean hasSafe,
                                              Expression safeExp, GrammarToken token) {
-        check("Function");
+        disableSyntaxCheck(Function);
         return new FunctionExpression(name, exps, vas, hasSafe, safeExp, token);
     }
 
@@ -205,95 +200,95 @@ public class GrammarCreator {
     }
 
     public CompareExpression createCompare(Expression a, Expression b, short mode, GrammarToken token) {
-        check("Compare");
+        disableSyntaxCheck(Compare);
         return new CompareExpression(a, b, mode, token);
     }
 
     public TernaryExpression createTernary(Expression condtion, Expression a, Expression b, GrammarToken token) {
-        check("Ternary");
+        disableSyntaxCheck(Ternary);
         return new TernaryExpression(condtion, a, b, token);
     }
 
     public ArthExpression createArth(Expression a, Expression b, short mode, GrammarToken token) {
-        check("Arth");
+        disableSyntaxCheck(Arth);
         return new ArthExpression(a, b, mode, token);
     }
 
     public JsonArrayExpression createJasonArray(List<Expression> list, GrammarToken token) {
-        check("JasonArray");
+        disableSyntaxCheck(JasonArray);
         return new JsonArrayExpression(list, token);
     }
 
     public JsonMapExpression createJsonMap(Map<String, Expression> map, GrammarToken token) {
-        check("JsonMap");
+        disableSyntaxCheck(JsonMap);
         return new JsonMapExpression(map, token);
     }
 
     public FunctionExpression createFunctionExp(String name, Expression[] exps, VarAttribute[] vas, boolean hasSafe,
                                                 Expression safeExp, GrammarToken token) {
-        check("FunctionExp");
+        disableSyntaxCheck(FunctionExp);
         return new FunctionExpression(name, exps, vas, hasSafe, safeExp, token);
     }
 
     public NativeCallExpression createClassNativeCall(ClassNode clsNode, NativeNode[] chain, GrammarToken token) {
-        check("ClassNativeCall");
+        disableSyntaxCheck(ClassNativeCall);
         return new NativeCallExpression(clsNode, chain, token);
     }
 
     public NativeCallExpression createInstanceNativeCall(InstanceNode insNode, NativeNode[] chain, GrammarToken token) {
-        check("InstanceNativeCall");
+        disableSyntaxCheck(InstanceNativeCall);
         return new NativeCallExpression(insNode, chain, token);
     }
 
     public AndExpression createAnd(Expression exp1, Expression exp2, GrammarToken token) {
-        check("And");
+        disableSyntaxCheck(And);
         return new AndExpression(exp1, exp2, token);
     }
 
     public OrExpression createOr(Expression exp1, Expression exp2, GrammarToken token) {
-        check("Or");
+        disableSyntaxCheck(Or);
         return new OrExpression(exp1, exp2, token);
     }
 
     public NotBooleanExpression createNot(Expression exp, GrammarToken token) {
-        check("Not");
+        disableSyntaxCheck(Not);
         return new NotBooleanExpression(exp, token);
     }
 
     public NegExpression createNeg(Expression exp, GrammarToken token) {
-        check("Neg");
+        disableSyntaxCheck(Neg);
         return new NegExpression(exp, token);
     }
 
     public IncDecExpression createIncDec(boolean isInc, boolean returnOrginal, GrammarToken token) {
-        check("IncDec");
+        disableSyntaxCheck(IncDec);
         return new IncDecExpression(isInc, returnOrginal, token);
     }
 
     public VarRef createVarRef(VarAttribute[] attributes, boolean hasSafe, Expression safe, GrammarToken token,
                                GrammarToken firstToken) {
-        check("VarRefOptimal");
+        disableSyntaxCheck(VarRefOptimal);
         return new VarRef(attributes, hasSafe, safe, firstToken);
     }
 
     public VarRefAssignExpress createVarRefAssignExp(Expression exp, VarRef varRef) {
-        check("VarRefAssignExp");
+        disableSyntaxCheck(VarRefAssignExp);
         return new VarRefAssignExpress(exp, varRef);
     }
 
     public ContentBodyExpression createTemplateContent(BlockStatement block, GrammarToken token) {
-        check("TemplateContent");
+        disableSyntaxCheck(TemplateContent);
         return new ContentBodyExpression(block, token);
     }
 
     public FormatExpression createFormat(String name, String pattern, GrammarToken token) {
-        check("Format");
+        disableSyntaxCheck(Format);
         return new FormatExpression(name, pattern, token);
     }
 
-    protected void check(String ast) {
-        //禁止使用的语法列表
-        if (this.disable.contains(ast)) {
+    protected void disableSyntaxCheck(String ast) {
+        // 禁用的语法列表
+        if (this.disableGrammarSet.contains(ast)) {
             throw new BeetlException(BeetlException.GRAMMAR_NOT_ALLOWED, "语法 " + ast + "不允许");
         }
     }

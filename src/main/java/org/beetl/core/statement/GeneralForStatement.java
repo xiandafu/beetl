@@ -41,12 +41,12 @@ public class GeneralForStatement extends Statement implements IGoto {
     public Expression[] expUpdate;
     public Statement forPart;
     public Statement elseforPart;
-    public VarAssignStatementSeq varAssignSeq;
+    public VarAssignSeqStatement varAssignSeq;
     public boolean hasGoto = false;
     public short itType = 0;
 
     // for(expInit;condtion;expUpdate){}
-    public GeneralForStatement(VarAssignStatementSeq varAssignSeq, Expression[] expInit, Expression condtion,
+    public GeneralForStatement(VarAssignSeqStatement varAssignSeq, Expression[] expInit, Expression condtion,
                                Expression[] expUpdate, Statement forPart, Statement elseforPart, GrammarToken token) {
         super(token);
         this.varAssignSeq = varAssignSeq;
