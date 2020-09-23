@@ -215,7 +215,7 @@ public class GrammarCreator implements IGrammarConstants {
     }
 
     public JsonArrayExpression createJasonArray(List<Expression> list, GrammarToken token) {
-        disableSyntaxCheck(JasonArray);
+        disableSyntaxCheck(JsonArray);
         return new JsonArrayExpression(list, token);
     }
 

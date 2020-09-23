@@ -9,7 +9,7 @@ public interface IGrammarConstants {
     String Tag = "Tag";
     String Try = "Try";
     String If = "If";
-    String While = "VarRefOptimal";
+    String While = "While";
     String For = "For";
     String ForIn = "ForIn";
     String Continue = "Continue";
@@ -34,7 +34,7 @@ public interface IGrammarConstants {
     String ClassNativeCall = "ClassNativeCall";
     String FunctionExp = "FunctionExp";
     String JsonMap = "JsonMap";
-    String JasonArray = "JasonArray";
+    String JsonArray = "JsonArray";
     String Arth = "Arth";
     String Ternary = "Ternary";
     String Compare = "Compare";
