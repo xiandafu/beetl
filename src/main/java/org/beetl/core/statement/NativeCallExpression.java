@@ -13,7 +13,7 @@ import org.beetl.core.fun.ObjectUtil;
 import org.beetl.core.statement.nat.ClassNode;
 import org.beetl.core.statement.nat.InstanceNode;
 import org.beetl.core.statement.nat.NativeArrayNode;
-import org.beetl.core.statement.nat.NativeAtrributeNode;
+import org.beetl.core.statement.nat.NativeAttributeNode;
 import org.beetl.core.statement.nat.NativeMethodNode;
 import org.beetl.core.statement.nat.NativeNode;
 
@@ -53,11 +53,11 @@ public class NativeCallExpression extends Expression {
 
             lastNode = insNode;
         } else {
-            targetCls = ctx.gt.loadClassBySimpleName(this.clsNode.cls);
+            targetCls = ctx.gt.loadClassBySimpleName(this.clsNode.clazz);
 
             if (targetCls == null) {
                 BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "该类不存在");
-                be.pushToken(GrammarToken.createToken(clsNode.cls, token.line));
+                be.pushToken(GrammarToken.createToken(clsNode.clazz, token.line));
                 throw be;
             }
             lastNode = clsNode;
@@ -66,8 +66,8 @@ public class NativeCallExpression extends Expression {
 
         for (NativeNode node : chain) {
 
-            if (node instanceof NativeAtrributeNode) {
-                String attr = ((NativeAtrributeNode) node).attribute;
+            if (node instanceof NativeAttributeNode) {
+                String attr = ((NativeAttributeNode) node).attribute;
                 try {
                     checkNull(targetCls, lastNode);
                     Field f = targetCls.getField(attr);
@@ -118,7 +118,7 @@ public class NativeCallExpression extends Expression {
             } else if (node instanceof NativeMethodNode) {
                 NativeMethodNode methodNode = (NativeMethodNode) node;
                 String method = methodNode.method;
-                Expression[] expList = methodNode.paras;
+                Expression[] expList = methodNode.params;
                 this.checkPermit(ctx, targetCls, targetObj, method);
 
                 Object[] args = expList.length == 0 ? ObjectUtil.EMPTY_OBJECT_ARRAY : new Object[expList.length];

@@ -178,7 +178,7 @@ import org.beetl.core.statement.WhileStatement;
 import org.beetl.core.statement.nat.ClassNode;
 import org.beetl.core.statement.nat.InstanceNode;
 import org.beetl.core.statement.nat.NativeArrayNode;
-import org.beetl.core.statement.nat.NativeAtrributeNode;
+import org.beetl.core.statement.nat.NativeAttributeNode;
 import org.beetl.core.statement.nat.NativeMethodNode;
 import org.beetl.core.statement.nat.NativeNode;
 import org.beetl.core.tag.TagFactory;
@@ -1288,7 +1288,7 @@ public class AntlrProgramBuilder {
 
         for (int j = i; j < ids.size(); j++) {
             // 剩下的是属性
-            NativeAtrributeNode attribute = new NativeAtrributeNode(ids.get(j).getText());
+            NativeAttributeNode attribute = new NativeAttributeNode(ids.get(j).getText());
             nativeList.add(attribute);
         }
 
@@ -1299,8 +1299,8 @@ public class AntlrProgramBuilder {
                 NativeMethodNode methodNode = null;
                 String method = null;
                 NativeNode lastNode = nativeList.get(nativeList.size() - 1);
-                if (lastNode instanceof NativeAtrributeNode) {
-                    method = ((NativeAtrributeNode) lastNode).attribute;
+                if (lastNode instanceof NativeAttributeNode) {
+                    method = ((NativeAttributeNode) lastNode).attribute;
                     //
                     nativeList.remove(nativeList.size() - 1);
 
@@ -1329,7 +1329,7 @@ public class AntlrProgramBuilder {
             } else if (tree instanceof NativeVarRefChainContext) {
                 List<TerminalNode> nodes = ((NativeVarRefChainContext) tree).Identifier();
                 for (TerminalNode node : nodes) {
-                    NativeAtrributeNode attributeNode = new NativeAtrributeNode(node.getText());
+                    NativeAttributeNode attributeNode = new NativeAttributeNode(node.getText());
                     nativeList.add(attributeNode);
                 }
             } else {

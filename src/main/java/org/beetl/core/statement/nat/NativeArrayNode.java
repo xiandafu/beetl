@@ -29,9 +29,18 @@ package org.beetl.core.statement.nat;
 
 import org.beetl.core.statement.Expression;
 
+/**
+ * Java 数组的语法树结点
+ */
 public class NativeArrayNode extends NativeNode {
+    /** 表达式 */
     public Expression exp;
 
+    /**
+     * 构造方法
+     *
+     * @param expression 表达式
+     */
     public NativeArrayNode(Expression expression) {
         this.exp = expression;
     }
