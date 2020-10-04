@@ -27,16 +27,25 @@
  */
 package org.beetl.core.statement.nat;
 
+/**
+ * Java类的语法树结点
+ */
 public class ClassNode extends NativeNode {
-    public String cls = null;
+    /** 类 */
+    public String clazz = null;
 
-    public ClassNode(String cls) {
-        this.cls = cls;
+    /**
+     * 构造方法
+     *
+     * @param clazz 类
+     */
+    public ClassNode(String clazz) {
+        this.clazz = clazz;
     }
 
     @Override
     public String getName() {
-        return cls;
+        return clazz;
     }
 
 }

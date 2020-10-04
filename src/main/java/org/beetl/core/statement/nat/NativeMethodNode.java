@@ -29,13 +29,24 @@ package org.beetl.core.statement.nat;
 
 import org.beetl.core.statement.Expression;
 
+/**
+ * Java 方法的语法树结点
+ */
 public class NativeMethodNode extends NativeNode {
+    /** Java 方法名称 */
     public String method;
-    public Expression[] paras;
+    /** 方法的参数列表 */
+    public Expression[] params;
 
-    public NativeMethodNode(String method, Expression[] paras) {
+    /**
+     * 构造方法
+     *
+     * @param method 方法名称
+     * @param params 参数列表
+     */
+    public NativeMethodNode(String method, Expression[] params) {
         this.method = method;
-        this.paras = paras;
+        this.params = params;
     }
 
     @Override

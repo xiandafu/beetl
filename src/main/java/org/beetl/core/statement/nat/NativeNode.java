@@ -27,7 +27,15 @@
  */
 package org.beetl.core.statement.nat;
 
+/**
+ * Java 结点
+ */
 public abstract class NativeNode implements java.io.Serializable {
+    /**
+     * 获取结点的名称
+     *
+     * @return 结点的名称
+     */
     abstract public String getName();
 
 }

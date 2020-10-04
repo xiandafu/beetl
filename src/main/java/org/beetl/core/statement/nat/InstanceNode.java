@@ -29,9 +29,18 @@ package org.beetl.core.statement.nat;
 
 import org.beetl.core.statement.VarRef;
 
+/**
+ * 实例的语法树结点
+ */
 public class InstanceNode extends NativeNode {
+    /** 引用 */
     public VarRef ref;
 
+    /**
+     * 构造方法
+     *
+     * @param ref 引用
+     */
     public InstanceNode(VarRef ref) {
         this.ref = ref;
     }

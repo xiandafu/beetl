@@ -42,14 +42,16 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
         return result;
     }
 
-    static class OnlineGrammarCreator extends GrammarCreator {
+    /**
+     * 线上引擎的语法创建者，通过重写 {@code for} 和 {@code while} 语句块来限制循环次数等
+     */
+    private static class OnlineGrammarCreator extends GrammarCreator {
 
         @Override
         public GeneralForStatement createFor(VarAssignSeqStatement varAssignSeq, Expression[] expInit,
-                                             Expression condtion, Expression[] expUpdate, Statement forPart, Statement elseforPart,
-                                             GrammarToken token) {
-            return new RestrictForStatement(varAssignSeq, expInit, condtion, expUpdate, forPart, elseforPart, token);
-
+                                             Expression condition, Expression[] expUpdate, Statement forPart,
+                                             Statement elseforPart, GrammarToken token) {
+            return new RestrictForStatement(varAssignSeq, expInit, condition, expUpdate, forPart, elseforPart, token);
         }
 
         @Override
@@ -58,10 +60,26 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
         }
     }
 
-    static class RestrictForStatement extends GeneralForStatement {
-        public RestrictForStatement(VarAssignSeqStatement varAssignSeq, Expression[] expInit, Expression condtion,
-                                    Expression[] expUpdate, Statement forPart, Statement elseforPart, GrammarToken token) {
-            super(varAssignSeq, expInit, condtion, expUpdate, forPart, elseforPart, token);
+    /**
+     * 受限制的循环，用于重写循环块，主要是对最大循环次数作了限制
+     */
+    private static class RestrictForStatement extends GeneralForStatement {
+
+        /**
+         * 构造方法
+         *
+         * @param varAssignSeq 变量委派序列
+         * @param expInit      初始化的表达式
+         * @param condition    条件
+         * @param expUpdate    更新后的表达式
+         * @param forPart      for部分
+         * @param elseforPart  elsefor部分
+         * @param token        语法单词
+         */
+        public RestrictForStatement(VarAssignSeqStatement varAssignSeq, Expression[] expInit,
+                                    Expression condition, Expression[] expUpdate, Statement forPart,
+                                    Statement elseforPart, GrammarToken token) {
+            super(varAssignSeq, expInit, condition, expUpdate, forPart, elseforPart, token);
         }
 
         @Override
@@ -77,7 +95,7 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
 
             int i = 0;
             for (; i < MAX_NUM_LOOP; i++) {
-                boolean bool = (Boolean) condtion.evaluate(ctx);
+                boolean bool = (Boolean) condition.evaluate(ctx);
                 if (bool) {
                     forPart.execute(ctx);
                     switch (ctx.gotoFlag) {
@@ -92,7 +110,6 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
                             ctx.gotoFlag = IGoto.NORMAL;
                             return;
                     }
-
                 } else {
                     break;
                 }
@@ -109,9 +126,7 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
                 try {
                     ctx.byteWriter.writeString(MAX_NUM_LOOP_ERROR);
                     ctx.byteWriter.flush();
-
-                } catch (IOException e) {
-                    // ignore
+                } catch (IOException ignored) {
                 }
             }
 
@@ -119,7 +134,7 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
 
     }
 
-    static class RestrictWhileStatement extends WhileStatement {
+    private static class RestrictWhileStatement extends WhileStatement {
         public RestrictWhileStatement(Expression exp, Statement whileBody, GrammarToken token) {
             super(exp, whileBody, token);
         }
@@ -148,14 +163,11 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
             if (i >= MAX_NUM_LOOP) {
                 try {
                     ctx.byteWriter.writeString(MAX_NUM_LOOP_ERROR);
+                } catch (IOException ignored) {
 
-                } catch (IOException e) {
-                    // ignore
                 }
             }
-
         }
-
     }
 
 }

@@ -27,15 +27,19 @@
  */
 package org.beetl.core.statement.nat;
 
-public class NativeAtrributeNode extends NativeNode {
+/**
+ * Java 属性的语法树结点
+ */
+public class NativeAttributeNode extends NativeNode {
+    /** 属性 */
     public String attribute;
 
-    public NativeAtrributeNode(String attribute) {
+    /**
+     * 构造方法
+     * @param attribute 属性
+     */
+    public NativeAttributeNode(String attribute) {
         this.attribute = attribute;
-    }
-
-    public String attribute() {
-        return this.attribute;
     }
 
     @Override

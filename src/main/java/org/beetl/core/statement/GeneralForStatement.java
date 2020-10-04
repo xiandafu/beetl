@@ -37,7 +37,7 @@ import org.beetl.core.exception.BeetlException;
  */
 public class GeneralForStatement extends Statement implements IGoto {
     public Expression[] expInit;
-    public Expression condtion;
+    public Expression condition;
     public Expression[] expUpdate;
     public Statement forPart;
     public Statement elseforPart;
@@ -45,19 +45,30 @@ public class GeneralForStatement extends Statement implements IGoto {
     public boolean hasGoto = false;
     public short itType = 0;
 
-    // for(expInit;condtion;expUpdate){}
-    public GeneralForStatement(VarAssignSeqStatement varAssignSeq, Expression[] expInit, Expression condtion,
+    /**
+     * 构造方法
+     * 示例 {@code for(expInit;condtion;expUpdate){} }
+     *
+     * @param varAssignSeq 变量委派序列
+     * @param expInit      初始化的表达式
+     * @param condition    条件
+     * @param expUpdate    更新后的表达式
+     * @param forPart      for部分
+     * @param elseforPart  elsefor部分
+     * @param token        语法单词
+     */
+    public GeneralForStatement(VarAssignSeqStatement varAssignSeq, Expression[] expInit, Expression condition,
                                Expression[] expUpdate, Statement forPart, Statement elseforPart, GrammarToken token) {
         super(token);
         this.varAssignSeq = varAssignSeq;
         this.expInit = expInit;
-        this.condtion = condtion;
+        this.condition = condition;
         this.expUpdate = expUpdate;
         this.elseforPart = elseforPart;
         this.forPart = forPart;
-
     }
 
+    @Override
     public void execute(Context ctx) {
         if (expInit != null) {
             for (Expression exp : expInit) {
@@ -71,13 +82,13 @@ public class GeneralForStatement extends Statement implements IGoto {
 
         // boolean hasLooped = false;
         for (; ; ) {
-            Object val = condtion.evaluate(ctx);
+            Object val = condition.evaluate(ctx);
             boolean bool = false;
             if (val instanceof Boolean) {
                 bool = ((Boolean) val).booleanValue();
             } else {
                 BeetlException be = new BeetlException(BeetlException.BOOLEAN_EXPECTED_ERROR);
-                be.pushToken(condtion.token);
+                be.pushToken(condition.token);
                 throw be;
             }
 
