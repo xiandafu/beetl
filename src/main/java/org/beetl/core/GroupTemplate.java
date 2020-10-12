@@ -163,7 +163,7 @@ public class GroupTemplate {
 
     protected void init() {
         conf.build();
-        engine = TemplateEngineFactory.getEngine(conf.getEngine());
+		engine = (TemplateEngine)ObjectUtil.instance(conf.getEngine(),classLoader);
         this.initFunction();
         this.initFormatter();
         this.initTag();
