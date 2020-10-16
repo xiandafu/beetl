@@ -10,13 +10,16 @@ import java.lang.reflect.Modifier;
  * @author xiandafu
  */
 public class AsmAAFactory extends DefaultAAFactory {
-    ASMBeanFactory asmBeanFactory = null;
+    /** 创建 ASM JavaBean 工厂实例时，是否使用属性描述符 */
+    private static final boolean USE_PROPERTY_DESCRIPTOR = true;
+
+    /** ASM JavaBean 工厂 */
+    private final ASMBeanFactory asmBeanFactory;
 
     public AsmAAFactory() {
         super();
         //beetl 里主要通过JavaBean规范获取取属性,asmBeanFactory也可以直接设置通过fields来获取
-        asmBeanFactory = new ASMBeanFactory(true);
-
+        asmBeanFactory = new ASMBeanFactory(USE_PROPERTY_DESCRIPTOR);
     }
 
     @Override

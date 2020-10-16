@@ -67,10 +67,9 @@ public class ASMBeanFactory {
         }
         try {
             ClassLoader beanClassLoader = beanClass.getClassLoader();
-            if (beanClassLoader == null) {
-                // java自带类或者没有classloader的类
-                beanMap.put(beanClass, ReflectBeanAA.instance);
-                return ReflectBeanAA.instance;
+            if (beanClassLoader == null) { // java自带类或者没有classloader的类
+                beanMap.put(beanClass, ReflectBeanAA.INSTANCE);
+                return ReflectBeanAA.INSTANCE;
             }
 
             byte[] code = EnhanceClassGenerator.generate(beanClass, this.usePropertyDescriptor);
@@ -103,18 +102,16 @@ public class ASMBeanFactory {
     }
 
     private Object loadContextClassLoader(byte[] code, String className) {
-        Object obj = null;
+        Object obj;
         try {
-
             Class<?> enhanceClass = byteContextLoader.findClassByName(className);
             if (enhanceClass == null) {
                 enhanceClass = byteContextLoader.defineClass(className, code);
             }
-            obj = obj = enhanceClass.newInstance();
+            obj = enhanceClass.newInstance();
         } catch (Exception ex) {
             return null;
         }
-
         return obj;
     }
 
