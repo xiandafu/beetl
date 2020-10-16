@@ -14,7 +14,6 @@ import java.lang.annotation.RetentionPolicy;
  */
 public class AnnotationTest {
 
-    @Test
     public void testAll() {
         String res = formatValue(null); // 编译器提示： Passing 'null' argument to parameter annotated as @NotNull
 

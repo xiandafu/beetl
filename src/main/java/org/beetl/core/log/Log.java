@@ -16,14 +16,26 @@
 
 package org.beetl.core.log;
 
+import org.intellij.lang.annotations.MagicConstant;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.net.UnknownHostException;
 
 /**
  * 日志实现
  */
 public final class Log {
+
+    /**
+     * 日志级别的标识
+     */
+    @MagicConstant(intValues = {VERBOSE, DEBUG, INFO, WARN, ERROR})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface LogLevelId {
+    }
 
     /** 日志级别：全部   {@link Log#v} */
     public static final int VERBOSE = 2;
@@ -199,13 +211,9 @@ public final class Log {
      * @param tag 标签
      * @param msg 日志消息
      */
-    public static int println(int priority, String tag, String msg) {
+    public static int println(@LogLevelId int priority, String tag, String msg) {
         String priorityText;
         switch (priority) {
-            case VERBOSE: {
-                priorityText = VERBOSE_TEXT;
-                break;
-            }
             case DEBUG: {
                 priorityText = DEBUG_TEXT;
                 break;
@@ -223,7 +231,7 @@ public final class Log {
                 break;
             }
             default: {
-                priorityText = "";
+                priorityText = VERBOSE_TEXT;
                 break;
             }
         }
