@@ -45,10 +45,11 @@ public class ErrorInfo {
     int errorTokenLine = 0;
     String msg;
     Throwable cause;
+    @BeetlException.BeetlErrorCode
     String errorCode = null;
     List<Resource> resourceCallStack = null;
     List<GrammarToken> tokenCallStack = null;
-    public static Map<String, String> errorLocalMap = new HashMap<String, String>();
+    public static Map<String, String> errorLocalMap = new HashMap<>();
 
     static {
         errorLocalMap.put(BeetlException.ERROR, "错误");
@@ -61,61 +62,43 @@ public class ErrorInfo {
         errorLocalMap.put(BeetlException.TAG_NOT_FOUND, concat("该标签未注册", BeetlException.TAG_NOT_FOUND));
         errorLocalMap.put(BeetlException.VIRTUAL_NOT_FOUND, concat("未找到虚拟属性", BeetlException.VIRTUAL_NOT_FOUND));
         errorLocalMap.put(BeetlException.TAG_INSTANCE_ERROR, concat("创建Tag错", BeetlException.TAG_INSTANCE_ERROR));
-        errorLocalMap.put(BeetlException.NATIVE_CALL_INVALID,
-                concat("本地调用不合法，找不到类或者方法", BeetlException.NATIVE_CALL_INVALID));
-        errorLocalMap.put(BeetlException.NATIVE_CALL_EXCEPTION,
-                concat("调用方法抛出了异常", BeetlException.NATIVE_CALL_EXCEPTION));
-        errorLocalMap.put(BeetlException.NATIVE_SECUARITY_EXCEPTION,
-                concat("安全管理器不允许的本地调用", BeetlException.NATIVE_SECUARITY_EXCEPTION));
+        errorLocalMap.put(BeetlException.NATIVE_CALL_INVALID, concat("本地调用不合法，找不到类或者方法", BeetlException.NATIVE_CALL_INVALID));
+        errorLocalMap.put(BeetlException.NATIVE_CALL_EXCEPTION, concat("调用方法抛出了异常", BeetlException.NATIVE_CALL_EXCEPTION));
+        errorLocalMap.put(BeetlException.NATIVE_SECUARITY_EXCEPTION, concat("安全管理器不允许的本地调用", BeetlException.NATIVE_SECUARITY_EXCEPTION));
         errorLocalMap.put(BeetlException.FORMAT_NOT_FOUND, concat("未注册的格式化函数", BeetlException.FORMAT_NOT_FOUND));
-        errorLocalMap.put(BeetlException.DEFAULT_FORMAT_NOT_FOUND,
-                concat("类型未有对应的默认的格式化函数", BeetlException.DEFAULT_FORMAT_NOT_FOUND));
+        errorLocalMap.put(BeetlException.DEFAULT_FORMAT_NOT_FOUND, concat("类型未有对应的默认的格式化函数", BeetlException.DEFAULT_FORMAT_NOT_FOUND));
         errorLocalMap.put(BeetlException.ATTRIBUTE_INVALID, concat("属性获取异常", BeetlException.ATTRIBUTE_INVALID));
         errorLocalMap.put(BeetlException.ATTRIBUTE_NOT_FOUND, concat("未找到属性", BeetlException.ATTRIBUTE_NOT_FOUND));
-        errorLocalMap.put(BeetlException.CAST_LIST_OR_MAP_ERROR,
-                concat("模板里使用了[]指示应该是Map或者List，但实际上不是此类型", BeetlException.CAST_LIST_OR_MAP_ERROR));
+        errorLocalMap.put(BeetlException.CAST_LIST_OR_MAP_ERROR, concat("模板里使用了[]指示应该是Map或者List，但实际上不是此类型", BeetlException.CAST_LIST_OR_MAP_ERROR));
         errorLocalMap.put(BeetlException.ATTRIBUTE_NOT_FOUND_PRIVATE, concat("未找到属性，可能是私有属性", BeetlException.ATTRIBUTE_NOT_FOUND));
         errorLocalMap.put(BeetlException.NULL, concat("表达式值为空", BeetlException.NULL));
         errorLocalMap.put(BeetlException.DIV_ZERO_ERROR, concat("除0错误", BeetlException.DIV_ZERO_ERROR));
         errorLocalMap.put(BeetlException.ARRAY_INDEX_ERROR, concat("数组index错", BeetlException.ARRAY_INDEX_ERROR));
         errorLocalMap.put(BeetlException.ARRAY_TYPE_ERROR, concat("本地调用[] 期望类型是数组", BeetlException.ARRAY_TYPE_ERROR));
-        errorLocalMap.put(BeetlException.BOOLEAN_EXPECTED_ERROR,
-                concat("期望为Boolean类型", BeetlException.BOOLEAN_EXPECTED_ERROR));
-        errorLocalMap.put(BeetlException.COLLECTION_EXPECTED_ERROR,
-                concat("期望遍历目标是是集合，数组，Iterator，Iterable", BeetlException.COLLECTION_EXPECTED_ERROR));
-        errorLocalMap
-                .put(BeetlException.NUMBER_EXPECTED_ERROR, concat("期望是数字类型", BeetlException.NUMBER_EXPECTED_ERROR));
+        errorLocalMap.put(BeetlException.BOOLEAN_EXPECTED_ERROR, concat("期望为Boolean类型", BeetlException.BOOLEAN_EXPECTED_ERROR));
+        errorLocalMap.put(BeetlException.COLLECTION_EXPECTED_ERROR, concat("期望遍历目标是是集合，数组，Iterator，Iterable", BeetlException.COLLECTION_EXPECTED_ERROR));
+        errorLocalMap.put(BeetlException.NUMBER_EXPECTED_ERROR, concat("期望是数字类型", BeetlException.NUMBER_EXPECTED_ERROR));
         errorLocalMap.put(BeetlException.STRICK_MVC, concat("严格MVC，不允许的语法", BeetlException.STRICK_MVC));
         errorLocalMap.put(BeetlException.NATIVE_NOT_ALLOWED, concat("本地调用不允许", BeetlException.NATIVE_NOT_ALLOWED));
         errorLocalMap.put(BeetlException.GET_CALL_ERROR, concat("属性获取错误", BeetlException.GET_CALL_ERROR));
         errorLocalMap.put(BeetlException.TOKEN_ERROR, concat("词法错误", BeetlException.TOKEN_ERROR));
-        errorLocalMap.put(BeetlException.PARSER_HTML_TAG_ERROR,
-                concat("解析HTML标签出错", BeetlException.PARSER_HTML_TAG_ERROR));
-
+        errorLocalMap.put(BeetlException.PARSER_HTML_TAG_ERROR, concat("解析HTML标签出错", BeetlException.PARSER_HTML_TAG_ERROR));
         errorLocalMap.put(BeetlException.PARSER_UNKNOW_ERROR, concat("语法错误", BeetlException.PARSER_UNKNOW_ERROR));
         errorLocalMap.put(BeetlException.PARSER_VIABLE_ERROR, concat("语法错误，无法继续解析模板", BeetlException.PARSER_VIABLE_ERROR));
         errorLocalMap.put(BeetlException.PARSER_MISS_ERROR, concat("缺少符号", BeetlException.PARSER_MISS_ERROR));
         errorLocalMap.put(BeetlException.PARSER_PREDICATE_ERROR, concat("语法错误", BeetlException.PARSER_PREDICATE_ERROR));
-        errorLocalMap.put(BeetlException.TYPE_SEARCH_ERROR,
-                concat("未找到指定类型，请配置类搜索路径或者增加类包名", BeetlException.TYPE_SEARCH_ERROR));
-        errorLocalMap.put(BeetlException.PARSER_NATIVE_ERROR,
-                concat("本地调用格式出错，不允许此格式", BeetlException.PARSER_NATIVE_ERROR));
-        errorLocalMap.put(BeetlException.TEMPLATE_LOAD_ERROR,
-                concat("错找不到指定模板或者加载错", BeetlException.TEMPLATE_LOAD_ERROR));
-        errorLocalMap
-                .put(BeetlException.CLIENT_IO_ERROR_ERROR, concat("客户端IO出错", BeetlException.CLIENT_IO_ERROR_ERROR));
-        errorLocalMap.put(BeetlException.EXPRESSION_NOT_COMPATIBLE,
-                concat("表达式类型不一致，无法运算", BeetlException.EXPRESSION_NOT_COMPATIBLE));
-
-        errorLocalMap.put(BeetlException.AJAX_ALREADY_DEFINED,
-                concat("Ajax 锚点已经定义", BeetlException.AJAX_ALREADY_DEFINED));
+        errorLocalMap.put(BeetlException.TYPE_SEARCH_ERROR, concat("未找到指定类型，请配置类搜索路径或者增加类包名", BeetlException.TYPE_SEARCH_ERROR));
+        errorLocalMap.put(BeetlException.PARSER_NATIVE_ERROR, concat("本地调用格式出错，不允许此格式", BeetlException.PARSER_NATIVE_ERROR));
+        errorLocalMap.put(BeetlException.TEMPLATE_LOAD_ERROR, concat("错找不到指定模板或者加载错", BeetlException.TEMPLATE_LOAD_ERROR));
+        errorLocalMap.put(BeetlException.CLIENT_IO_ERROR_ERROR, concat("客户端IO出错", BeetlException.CLIENT_IO_ERROR_ERROR));
+        errorLocalMap.put(BeetlException.EXPRESSION_NOT_COMPATIBLE, concat("表达式类型不一致，无法运算", BeetlException.EXPRESSION_NOT_COMPATIBLE));
+        errorLocalMap.put(BeetlException.AJAX_ALREADY_DEFINED, concat("Ajax 锚点已经定义", BeetlException.AJAX_ALREADY_DEFINED));
         errorLocalMap.put(BeetlException.AJAX_NOT_FOUND, concat("Ajax 锚点未定义", BeetlException.AJAX_NOT_FOUND));
         errorLocalMap.put(BeetlException.AJAX_PROPERTY_ERROR, concat("Ajax 属性设置错误", BeetlException.AJAX_PROPERTY_ERROR));
-
     }
 
-    static String concat(String info, String code) {
-        return info.concat("(").concat(code).concat(")");
+    private static String concat(String info, @BeetlException.BeetlErrorCode String code) {
+        return info + "(" + code + ")";
     }
 
     public ErrorInfo(BeetlException ex) {
@@ -131,14 +114,12 @@ public class ErrorInfo {
             } else {
                 this.errorTokenText = ex.getMessage();
             }
-
         } else {
             if (ex.token != null) {
                 this.errorTokenText = ex.token.text;
             } else {
                 ex.printStackTrace();
             }
-
         }
 
         this.msg = ex.getMessage();
@@ -199,6 +180,7 @@ public class ErrorInfo {
     /**
      * 错误编码
      */
+    @BeetlException.BeetlErrorCode
     public String getErrorCode() {
         return errorCode;
     }
@@ -236,17 +218,6 @@ public class ErrorInfo {
 
     public void setTokenCallStack(List<GrammarToken> tokenCallStack) {
         this.tokenCallStack = tokenCallStack;
-    }
-
-    public static Map<String, String> getErrorLocalMap() {
-        return errorLocalMap;
-    }
-
-    /**
-     * 可以设置新的错误码到错误描述的映射
-     */
-    public static void setErrorLocalMap(Map<String, String> errorLocalMap) {
-        ErrorInfo.errorLocalMap = errorLocalMap;
     }
 
     @Override

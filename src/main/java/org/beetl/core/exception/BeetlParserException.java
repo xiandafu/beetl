@@ -34,19 +34,35 @@ package org.beetl.core.exception;
  */
 public class BeetlParserException extends BeetlException {
 
-    public BeetlParserException(String detailCode) {
+    /**
+     * 构造方法
+     *
+     * @param detailCode 错误码
+     */
+    public BeetlParserException(@BeetlErrorCode String detailCode) {
         super(detailCode);
         // TODO Auto-generated constructor stub
     }
 
-    public BeetlParserException(String detailCode, String msg) {
+    /**
+     * 构造方法
+     *
+     * @param detailCode 错误码
+     * @param msg        错误信息
+     */
+    public BeetlParserException(@BeetlErrorCode String detailCode, String msg) {
         super(detailCode, msg);
-
     }
 
-    public BeetlParserException(String detailCode, String msg, Throwable cause) {
+    /**
+     * 构造方法
+     *
+     * @param detailCode 错误码
+     * @param msg        错误信息
+     * @param cause      崩溃
+     */
+    public BeetlParserException(@BeetlErrorCode String detailCode, String msg, Throwable cause) {
         super(detailCode, msg, cause);
-
     }
 
 }

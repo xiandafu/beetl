@@ -36,6 +36,11 @@ import org.beetl.core.statement.GrammarToken;
  */
 public class NativeNotAllowedException extends BeetlException {
 
+    /**
+     * 构造方法
+     *
+     * @param token 语法单词
+     */
     public NativeNotAllowedException(GrammarToken token) {
         super(BeetlException.NATIVE_NOT_ALLOWED);
         this.token = token;

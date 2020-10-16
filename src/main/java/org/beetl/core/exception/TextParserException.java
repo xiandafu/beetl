@@ -33,12 +33,16 @@ package org.beetl.core.exception;
  * @author xiandafu
  */
 public class TextParserException extends BeetlException {
-
+    /** 行号 */
     public int line = 0;
 
+    /**
+     * 构造方法
+     *
+     * @param message 错误信息
+     */
     public TextParserException(String message) {
         super(BeetlException.ERROR, message);
-
     }
 
 }
