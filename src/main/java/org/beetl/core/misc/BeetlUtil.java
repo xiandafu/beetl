@@ -33,7 +33,9 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.beetl.core.ByteWriter;
 import org.beetl.core.GroupTemplate;
@@ -68,43 +70,26 @@ public class BeetlUtil {
     //最近一次错误记录
     static int[] checkReult = new int[2];
 
-    static List<String> chineseTokens = new ArrayList<String>();
-    static List<String> englishTokens = new ArrayList<String>();
-
+    /** 部分中文、英文 Token 映射表 */
+    static Map<String, String> zhEnTokenMap = new HashMap<>();
     static {
-        chineseTokens.add("，");
-        englishTokens.add(",");
-        chineseTokens.add("；");
-        englishTokens.add(";");
-
-        chineseTokens.add("）");
-        englishTokens.add(")");
-        chineseTokens.add("（");
-        englishTokens.add("(");
-
-        chineseTokens.add("‘");
-        englishTokens.add("'");
-        chineseTokens.add("“");
-        englishTokens.add("\"");
-        chineseTokens.add("。");
-        englishTokens.add(".");
-        chineseTokens.add("｝");
-        englishTokens.add("}");
-        chineseTokens.add("｛");
-        englishTokens.add("{");
-        chineseTokens.add("＝");
-        englishTokens.add("=");
-        chineseTokens.add("！");
-        englishTokens.add("!");
-        chineseTokens.add("％");
-        englishTokens.add("%");
-        chineseTokens.add("／");
-        englishTokens.add("/");
-        chineseTokens.add("＼");
-        englishTokens.add("\\");
-        chineseTokens.add("．");
-        englishTokens.add(".");
-
+        zhEnTokenMap.put("，", ",");
+        zhEnTokenMap.put("；", ";");
+        zhEnTokenMap.put("）", ")");
+        zhEnTokenMap.put("（", "(");
+        zhEnTokenMap.put("‘", "'");
+        zhEnTokenMap.put("’", "'");
+        zhEnTokenMap.put("“", "\"");
+        zhEnTokenMap.put("”", "\"");
+        zhEnTokenMap.put("。", ".");
+        zhEnTokenMap.put("｝", "}");
+        zhEnTokenMap.put("｛", "{");
+        zhEnTokenMap.put("＝", "=");
+        zhEnTokenMap.put("！", "!");
+        zhEnTokenMap.put("％", "%");
+        zhEnTokenMap.put("／", "/");
+        zhEnTokenMap.put("＼", "\\");
+        zhEnTokenMap.put("．", ".");
     }
 
     /**
@@ -289,13 +274,15 @@ public class BeetlUtil {
         return checkReult;
     }
 
+    /**
+     * 出现中文字符时，提示对应的英文字符
+     *
+     * @param msg 可能是中文的字符串
+     * @return 如果不是当前知道的中文字符，返回原来的字符串，否则提示出对应的英文字符
+     */
     public static String reportChineseTokenError(String msg) {
-
-        if (chineseTokens.contains(msg)) {
-            return msg + " 貌似输入了中文符号,应该是 " + englishTokens.get(chineseTokens.indexOf(msg));
-        } else {
-            return msg;
-        }
+        String maybeEnChar = zhEnTokenMap.get(msg);
+        return maybeEnChar != null ? msg + " 貌似输入了中文符号,应该是 " + maybeEnChar : msg;
     }
 
     /*优化引擎会假定传给模板的变量是同一类型（同一个class或者具有同样接口或者父类,如果不是这样，会导致ClassCastException*/
