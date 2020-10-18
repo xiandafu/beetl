@@ -33,14 +33,23 @@ package org.beetl.core.exception;
  * @author xiandafu
  */
 public class HTMLTagParserException extends BeetlException {
-
+    /** 行号 */
     public int line = 0;
 
+    /**
+     * 构造方法
+     *
+     * @param message 错误信息
+     */
     public HTMLTagParserException(String message) {
         super(BeetlException.PARSER_HTML_TAG_ERROR, message);
-
     }
 
+    /**
+     * 获取HTML标签的错误信息
+     *
+     * @return 错误信息
+     */
     public String getHtmlTagErrorMsg() {
         return super.getMessage();
     }

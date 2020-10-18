@@ -36,6 +36,11 @@ import org.beetl.core.statement.GrammarToken;
  */
 public class MVCStrictException extends BeetlException {
 
+    /**
+     * 构造方法
+     *
+     * @param token 语法单词
+     */
     public MVCStrictException(GrammarToken token) {
         super(BeetlException.STRICK_MVC);
         this.token = token;

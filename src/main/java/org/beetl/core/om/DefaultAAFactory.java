@@ -43,30 +43,35 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author xiandafu
  */
 public class DefaultAAFactory {
-
     protected ListAA listAA = new ListAA();
     protected MapAA mapAA = new MapAA();
     protected ArrayAA arrayAA = new ArrayAA();
     protected MapEntryAA mapEntryAA = new MapEntryAA();
+    /** 可以替换成自己的实现，比如，允许属性上增加注解来设定返回的属性值 */
+    protected ReflectBeanAA reflectBeanAA = ReflectBeanAA.INSTANCE;
+
+    /** [Class] 为 key，[获取对象的属性的值的方法]为 value 的映射 */
+    protected Map<Class, AttributeAccess> classAttrs;
+
     /**
-     * 可以替换成自己的实现，比如，允许属性上增加注解来设定返回的属性值
+     * 构造方法
      */
-
-    protected ReflectBeanAA reflectBeanAA = ReflectBeanAA.instance;
-    protected Map<Class, AttributeAccess> classAttrs = new ConcurrentHashMap<Class, AttributeAccess>();
-
     public DefaultAAFactory() {
+        classAttrs = new ConcurrentHashMap<>();
         classAttrs.put(HashMap.class, mapAA);
         classAttrs.put(ConcurrentHashMap.class, mapAA);
         classAttrs.put(LinkedHashMap.class, mapAA);
-
         classAttrs.put(ArrayList.class, listAA);
         classAttrs.put(Entry.class, mapEntryAA);
-
     }
 
+    /**
+     * 返回一个获取对象的属性的值的方法
+     *
+     * @param c 类
+     * @return 获取对象的属性的值的方法
+     */
     public AttributeAccess buildFiledAccessor(Class c) {
-
         AttributeAccess aa = classAttrs.get(c);
         if (aa != null) {
             return aa;

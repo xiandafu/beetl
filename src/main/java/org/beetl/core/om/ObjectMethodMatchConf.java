@@ -37,6 +37,7 @@ import java.math.BigDecimal;
  * @author xiandafu
  */
 public class ObjectMethodMatchConf {
+
     public final static int INT_CONVERT = 1;
     public final static int LONG_CONVERT = 2;
     public final static int DOUBLE_CONVERT = 3;

@@ -12,7 +12,7 @@ import org.beetl.core.fun.ObjectUtil;
 
 public class ReflectBeanAA extends AttributeAccess {
 
-    public static ReflectBeanAA instance = new ReflectBeanAA();
+    public static final ReflectBeanAA INSTANCE = new ReflectBeanAA();
 
     private ReflectBeanAA() {
 
@@ -24,11 +24,8 @@ public class ReflectBeanAA extends AttributeAccess {
         String key = (String) name;
         MethodInvoker mi = ObjectUtil.getInvokder(c, key);
         if (mi == null) {
-            if (ObjectUtil.hasPrivateAttribute(c, key)) {
-                throw new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND_PRIVATE, key);
-            } else {
-                throw new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND, key);
-            }
+            throw new BeetlException(ObjectUtil.hasPrivateAttribute(c, key)
+                    ? BeetlException.ATTRIBUTE_NOT_FOUND_PRIVATE : BeetlException.ATTRIBUTE_NOT_FOUND, key);
         }
         return mi.get(o);
     }
