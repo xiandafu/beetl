@@ -275,7 +275,6 @@ public class GroupTemplate {
 
     public void setClassLoader(ClassLoader classLoader) {
         this.classLoader = classLoader;
-
     }
 
     /**
@@ -285,12 +284,22 @@ public class GroupTemplate {
         return loadScriptTemplate(key, this.resourceLoader);
     }
 
+    @Deprecated
+	public Script getScript(String key) {
+		return getScript((Object)key);
+	}
+
     /**
      * 获得脚本
      */
     public Script getScript(Object key, ResourceLoader loader) {
         return loadScriptTemplate(key, loader);
     }
+
+    @Deprecated
+    public Script getScript(String key, ResourceLoader loader) {
+		return getScript((Object)key, loader);
+	}
 
     /**
      * 执行某个脚本，参数是paras，返回的是顶级变量
@@ -302,12 +311,23 @@ public class GroupTemplate {
 
     }
 
+    @Deprecated
+	public Map runScript(String key, Map<String, Object> paras) throws BeetlException {
+		return this.runScript((Object)key, paras);
+
+	}
+
     /**
      * 执行某个脚本，参数是paras，返回的是顶级变量 ,如果script有输出，则输出到writer里
      */
     public Map runScript(Object key, Map<String, Object> paras, Writer w) throws BeetlException {
         return this.runScript(key, paras, w, this.resourceLoader);
     }
+
+    @Deprecated
+	public Map runScript(String key, Map<String, Object> paras, Writer w) throws BeetlException {
+		return this.runScript((Object)key, paras, w);
+	}
 
     /**
      * 执行某个脚本，参数是paras，返回的是顶级变量
@@ -327,25 +347,51 @@ public class GroupTemplate {
 
     }
 
+    @Deprecated
+	public Map runScript(String key, Map<String, Object> paras, Writer w, ResourceLoader loader)
+			throws BeetlException {
+		return this.runScript((Object)key,paras,w,loader);
+
+	}
+
     public BeetlException validateTemplate(Object key, ResourceLoader loader) {
         Template t = getTemplate(key, loader);
         return t.validate();
     }
+
+    @Deprecated
+	public BeetlException validateTemplate(String key, ResourceLoader loader) {
+		return validateTemplate((Object)key,loader);
+	}
 
     public BeetlException validateTemplate(Object key) {
         Template t = getTemplate(key, this.resourceLoader);
         return t.validate();
     }
 
+    @Deprecated
+	public BeetlException validateTemplate(String key) {
+		return this.validateTemplate((Object)key);
+	}
     public BeetlException validateScript(Object key, ResourceLoader loader) {
         return loadScriptTemplate(key, loader).validate();
     }
+
+    @Deprecated
+	public BeetlException validateScript(String key, ResourceLoader loader) {
+		return validateScript((Object)key, loader);
+	}
 
     public BeetlException validateScript(Object key) {
         return loadScriptTemplate(key, this.resourceLoader).validate();
     }
 
-    private Map getSrirptTopScopeVars(Template t) {
+    @Deprecated
+	public BeetlException validateScript(String key) {
+		return validateScript((Object)key);
+	}
+
+    private Map getScriptTopScopeVars(Template t) {
         Map<String, Integer> idnexMap = t.program.metaData.getTemplateRootScopeIndexMap();
         Object[] values = t.ctx.vars;
         Map<String, Object> result = new HashMap<String, Object>();
@@ -384,6 +430,11 @@ public class GroupTemplate {
         return this.getTemplateByLoader(key, loader, null);
     }
 
+    @Deprecated
+	public Template getTemplate(String key, ResourceLoader loader) {
+		return this.getTemplate((Object)key, loader);
+	}
+
     /**
      * 获取模板key的标有ajaxId的模板片段。
      */
@@ -392,6 +443,14 @@ public class GroupTemplate {
         template.ajaxId = ajaxId;
         return template;
     }
+
+	/**
+	 * 获取模板key的标有ajaxId的模板片段。
+	 */
+	@Deprecated
+	public Template getAjaxTemplate(String key, String ajaxId, ResourceLoader loader) {
+		return getAjaxTemplate((Object)key,ajaxId,loader);
+	}
 
     /**
      * 得到模板，并指明父模板
@@ -402,11 +461,21 @@ public class GroupTemplate {
         return template;
     }
 
+    @Deprecated
+	public Template getTemplate(String key, String parent, ResourceLoader loader) {
+		return getTemplate((Object)key,parent,loader);
+	}
+
     public Template getTemplate(Object key, Context parent) {
         Template template = this.getTemplateByLoader(key, this.resourceLoader, parent.localBuffer);
         template.isRoot = false;
         return template;
     }
+
+    @Deprecated
+	public Template getTemplate(String key, Context parent) {
+		return getTemplate((Object)key,parent);
+	}
 
     /**
      * 获取指定模板。
@@ -416,6 +485,12 @@ public class GroupTemplate {
 
         return getTemplateByLoader(key, this.resourceLoader, null);
     }
+
+    @Deprecated
+	public Template getTemplate(String key) {
+
+		return getTemplate((Object)key);
+	}
 
     /**
      * 获取模板的ajax片段，
@@ -428,6 +503,12 @@ public class GroupTemplate {
         t.ajaxId = ajaxId;
         return t;
     }
+
+    @Deprecated
+	public Template getAjaxTemplate(String key, String ajaxId) {
+		return  getAjaxTemplate((Object)key, ajaxId);
+
+	}
 
     /**
      * Template类是线程安全和高效的，但只能运行一次就抛弃。如果想一直持有Template
@@ -458,17 +539,29 @@ public class GroupTemplate {
     /**
      * 判断是否加载过模板
      */
-    public boolean hasTemplate(String key) {
+    public boolean hasTemplate(Object key) {
         Program program = (Program) this.programCache.get(key);
         return program != null;
     }
 
+
+    @Deprecated
+	public boolean hasTemplate(String key) {
+		return hasTemplate((Object)key);
+	}
+
     /**
      * 手工删除加载过的模板
      */
-    public void removeTemplate(String key) {
+    public void removeTemplate(Object key) {
         programCache.remove(key);
     }
+
+
+    @Deprecated
+	public void removeTemplate(String key) {
+		removeTemplate((Object)key);
+	}
 
     private Program loadTemplate(Resource res) {
         TextParser text = null;
