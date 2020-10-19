@@ -59,7 +59,6 @@ import java.io.IOException;
 
 import org.beetl.core.io.FloatingIOWriter;
 import org.beetl.core.io.IntIOWriter;
-import org.beetl.core.io.LongIOWriter;
 
 /**
  * 混合了字节和字符的Writer
@@ -120,20 +119,15 @@ public abstract class ByteWriter {
     }
 
     public void writeInteger(Integer i) throws IOException {
-
-        IntIOWriter.writeInteger(this, i);
-
+        IntIOWriter.writeInt(this, i);
     }
 
     public void writeShort(Short i) throws IOException {
-
-        IntIOWriter.writeShort(this, i);
-
+        IntIOWriter.writeInt(this, i);
     }
 
     public void writeLong(Long i) throws IOException {
-
-        LongIOWriter.writeLong(this, i);
+        IntIOWriter.writeLong(this, i);
     }
 
     public void writeObject(Object o) throws IOException {
