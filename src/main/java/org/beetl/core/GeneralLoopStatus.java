@@ -63,8 +63,8 @@ public class GeneralLoopStatus implements ILoopStatus {
         } else if (o instanceof Enumeration) {
             return new GeneralLoopStatus((Enumeration) o);
         } else {
-            throw new RuntimeException("Object:" + o.getClass() + " 不能使用在For循环里");
-
+//            throw new RuntimeException("Object:" + o.getClass() + " 不能使用在For循环里");
+			return null;
         }
     }
 

@@ -1,6 +1,6 @@
 <%
-var c = [];
-
+var a =1;
 %>
-
-${@c.contains1("b")}
+<#html:foreach items="${a}" var="data">
+${data}
+</#html:foreach>
