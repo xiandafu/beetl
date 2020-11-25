@@ -8,7 +8,7 @@ import java.util.Map;
 import org.beetl.core.config.BeetlConfig;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.exception.ErrorInfo;
-import org.beetl.core.log.Log;
+import org.beetl.android.util.Log;
 import org.beetl.core.resource.StringTemplateResourceLoader;
 
 /**
