@@ -330,7 +330,7 @@ public class ALU {
             }
             throw valueIsNullException(o1, o2, node1, node2);
         } else {
-            throw valueIsNullException(o1, o2, node1, node2);
+            return null;
         }
     }
 
