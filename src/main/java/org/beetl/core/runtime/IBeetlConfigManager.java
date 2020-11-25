@@ -1,9 +1,9 @@
-package org.beetl.core.config;
+package org.beetl.core.runtime;
 
 /**
  * Beetl 配置
  */
-public interface IBeetlConfig {
+public interface IBeetlConfigManager {
 
     /**
      * 返回当前环境是否为调试环境

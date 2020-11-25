@@ -16,7 +16,8 @@
 
 package org.beetl.android.util;
 
-import org.beetl.core.config.BeetlRuntime;
+import org.beetl.android.internal.util.EmptyArray;
+import org.beetl.core.runtime.BeetlRuntime;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -47,7 +48,7 @@ import java.util.Set;
  * explicit call to set the capacity should turn off this aggressive shrinking behavior.</p>
  */
 public final class ArrayMap<K, V> implements Map<K, V> {
-    private static final boolean DEBUG = BeetlRuntime.getConfigRuntime().isDebug();
+    private static final boolean DEBUG = BeetlRuntime.getConfigManager().isDebug();
     private static final String TAG = "ArrayMap";
 
     /**

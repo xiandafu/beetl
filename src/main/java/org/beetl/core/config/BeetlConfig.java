@@ -1,5 +1,7 @@
 package org.beetl.core.config;
 
+import org.beetl.core.runtime.BeetlRuntime;
+
 /**
  * Beetl 配置类
  *
@@ -8,8 +10,8 @@ package org.beetl.core.config;
  */
 public class BeetlConfig {
     /** DEBUG flag */
-    public static final boolean DEBUG = BeetlRuntime.getConfigRuntime().isDebug();
+    public static final boolean DEBUG = BeetlRuntime.getConfigManager().isDebug();
     /** RELEASE flag */
-    public static final boolean RELEASE = BeetlRuntime.getConfigRuntime().isRelease();
+    public static final boolean RELEASE = BeetlRuntime.getConfigManager().isRelease();
 
 }

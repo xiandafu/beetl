@@ -17,6 +17,8 @@
 package org.beetl.android.text;
 
 
+import org.beetl.android.internal.util.ArrayUtils;
+import org.beetl.android.internal.util.EmptyArray;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
@@ -558,7 +560,7 @@ public class TextUtils {
         }
 
         if (buf == null || buf.length < len)
-            buf = new char[len];
+            buf = ArrayUtils.newUnpaddedCharArray(len);
 
         return buf;
     }
@@ -811,5 +813,5 @@ public class TextUtils {
     /** 避免重复创建 char 数组 */
     private static char[] sTemp = null;
     /** 空的 String 数组 */
-    private static String[] EMPTY_STRING_ARRAY = new String[]{};
+    private static String[] EMPTY_STRING_ARRAY = EmptyArray.STRING;
 }
