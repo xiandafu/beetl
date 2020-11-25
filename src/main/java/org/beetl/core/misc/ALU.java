@@ -27,11 +27,14 @@
  */
 package org.beetl.core.misc;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.math.BigDecimal;
 
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.statement.ASTNode;
 import org.beetl.core.statement.GrammarToken;
+import org.intellij.lang.annotations.MagicConstant;
 
 /**
  * 用于算数表达式，对于加法，允许null值，但其他则不允许，将抛出异常
@@ -50,87 +53,95 @@ public class ALU {
     public static final int INTEGER = 6;
     public static final int SHORT = 7;
     public static final int CHAR = 8;
-    public static final int HS = 9;
+    public static final int BIG_DECIMAL = 9;
+
+    @MagicConstant(intValues = {NULL, OBJECT, STRING, DOUBLE, FLOAT, LONG, INTEGER, SHORT, CHAR, BIG_DECIMAL})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface AluType {
+    }
 
     public static int scale = 12;
     public static int round = BigDecimal.ROUND_HALF_DOWN;
 
-    public static int getBaseType(final Object o1, final Object o2) {
-        if (o1 != null && o2 != null) {
-            final Class cls1;
-            final Class cls2;
-
-            if ((cls1 = o1.getClass()) == String.class || (cls2 = o2.getClass()) == String.class) {
-                return STRING;
-            } //
-            else if (cls1 == Character.class && cls2 == Character.class) {
-                return CHAR;
-            } //
-            if (o1 instanceof Number && o2 instanceof Number) {
-
-                if (cls1 == BigDecimal.class || cls2 == BigDecimal.class) {
-                    return HS;
-                } //
-                else if (cls1 == Double.class || cls2 == Double.class) {
-                    return DOUBLE;
-                }//
-                else if (cls1 == Float.class || cls2 == Float.class) {
-                    return FLOAT;
-                } //
-                else if (cls1 == Long.class || cls2 == Long.class) {
-                    return LONG;
-                } //
-                else if (cls1 == Integer.class || cls2 == Integer.class) {
-                    return INTEGER;
-                } //
-                else if (cls1 == Short.class || cls2 == Short.class) {
-                    return SHORT;
-                } //
-
-            }
-
-            // Note: default to String
-            return STRING;
+    /**
+     * 获取 ALU 的类型
+     *
+     * @param left  左值
+     * @param right 右值
+     * @return {@link AluType} 类型
+     */
+    @AluType
+    public static int getAluType(final Object left, final Object right) {
+        if (left == null || right == null) {
+            return NULL;
         }
-        return NULL;
+
+        final Class<?> cls1 = left.getClass();
+        final Class<?> cls2 = right.getClass();
+
+        if (cls1 == Character.class && cls2 == Character.class) {
+            return CHAR;
+        } else if (left instanceof Number && right instanceof Number) {
+            if (cls1 == BigDecimal.class || cls2 == BigDecimal.class) {
+                return BIG_DECIMAL;
+            } else if (cls1 == Double.class || cls2 == Double.class) {
+                return DOUBLE;
+            } else if (cls1 == Float.class || cls2 == Float.class) {
+                return FLOAT;
+            } else if (cls1 == Long.class || cls2 == Long.class) {
+                return LONG;
+            } else if (cls1 == Integer.class || cls2 == Integer.class) {
+                return INTEGER;
+            } else if (cls1 == Short.class || cls2 == Short.class) {
+                return SHORT;
+            }
+        }
+        return STRING;
     }
 
-    public static int getBaseType(Class cls1, Class cls2) {
-
-        if ((cls1 == String.class || (cls2 == String.class))) {
+    /**
+     * 获取 ALU 的类型
+     *
+     * @param cls1 左值的类型
+     * @param cls2 右值的类型
+     * @return {@link AluType} 类型
+     */
+    @AluType
+    public static int getAluType(Class<?> cls1, Class<?> cls2) {
+        if (cls1 == String.class || cls2 == String.class) {
             return STRING;
-        } //
-        else if (cls1 == Character.class && cls2 == Character.class) {
-            return CHAR;
-        } //
-        if (Number.class.isAssignableFrom(cls1) && Number.class.isAssignableFrom(cls2)) {
-
-            if (cls1 == BigDecimal.class || cls2 == BigDecimal.class) {
-                return HS;
-            } //
-            else if (cls1 == Double.class || cls2 == Double.class) {
-                return DOUBLE;
-            }//
-            else if (cls1 == Float.class || cls2 == Float.class) {
-                return FLOAT;
-            } //
-            else if (cls1 == Long.class || cls2 == Long.class) {
-                return LONG;
-            } //
-            else if (cls1 == Integer.class || cls2 == Integer.class) {
-                return INTEGER;
-            } //
-            else if (cls1 == Short.class || cls2 == Short.class) {
-                return SHORT;
-            } //
-
         }
-
+        if (cls1 == Character.class && cls2 == Character.class) {
+            return CHAR;
+        }
+        if (Number.class.isAssignableFrom(cls1) && Number.class.isAssignableFrom(cls2)) {
+            if (cls1 == BigDecimal.class || cls2 == BigDecimal.class) {
+                return BIG_DECIMAL;
+            } else if (cls1 == Double.class || cls2 == Double.class) {
+                return DOUBLE;
+            } else if (cls1 == Float.class || cls2 == Float.class) {
+                return FLOAT;
+            } else if (cls1 == Long.class || cls2 == Long.class) {
+                return LONG;
+            } else if (cls1 == Integer.class || cls2 == Integer.class) {
+                return INTEGER;
+            } else if (cls1 == Short.class || cls2 == Short.class) {
+                return SHORT;
+            }
+        }
         return OBJECT;
     }
 
-    public static Class getBaseTypeClass(Class cls1, Class cls2) {
-        int type = getBaseType(cls1, cls2);
+    /**
+     * 根据类型,先计算 {@link AluType}，再返回对应的 {@link Class}
+     *
+     * @param cls1 左值的类型
+     * @param cls2 右值的类型
+     * @return Java 类型，默认为 {@link Object}
+     * @see #getAluType(Object, Object)
+     */
+    public static Class<?> getBaseTypeClass(Class<?> cls1, Class<?> cls2) {
+        int type = getAluType(cls1, cls2);
         switch (type) {
             case INTEGER:
                 return Integer.class;
@@ -144,65 +155,83 @@ public class ALU {
                 return Float.class;
             case SHORT:
                 return Short.class;
-            case HS:
+            case BIG_DECIMAL:
                 return BigDecimal.class;
             default:
                 return Object.class;
-
         }
     }
 
-    public static int getNumberType(final Number o1) {
-        if (o1 != null) {
-            final Class cls;
-            if ((cls = o1.getClass()) == Integer.class) {
-                return INTEGER;
-            } else if (cls == Long.class) {
-                return LONG;
-            } else if (cls == Short.class) {
-                return SHORT;
-            } else if (cls == Float.class) {
-                return FLOAT;
-            } else if (cls == Double.class) {
-                return DOUBLE;
-            } else if (cls == BigDecimal.class) {
-                return HS;
-            }
+    /**
+     * 获取 Number 实例的 ALU 类型
+     *
+     * @param num {@link Number} 类型的实例
+     * @return {@link AluType} 类型
+     */
+    public static int getNumberType(final Number num) {
+        if (num == null) {
+            return NULL;
         }
-        return NULL;
-    }
-
-    public static int getBaseType(final Object o1) {
-        if (o1 != null) {
-            final Class cls;
-            if ((cls = o1.getClass()) == String.class) {
-                return STRING;
-            } else if (cls == Integer.class) {
-                return INTEGER;
-            } else if (cls == Long.class) {
-                return LONG;
-            } else if (cls == Short.class) {
-                return SHORT;
-            } else if (cls == Float.class) {
-                return FLOAT;
-            } else if (cls == Double.class) {
-                return DOUBLE;
-            } else if (cls == Character.class) {
-                return CHAR;
-            } else if (cls == BigDecimal.class) {
-                return HS;
-            } else {
-                return OBJECT;
-            }
+        final Class<?> cls = num.getClass();
+        if (cls == Integer.class) {
+            return INTEGER;
+        } else if (cls == Long.class) {
+            return LONG;
+        } else if (cls == Short.class) {
+            return SHORT;
+        } else if (cls == Float.class) {
+            return FLOAT;
+        } else if (cls == Double.class) {
+            return DOUBLE;
+        } else if (cls == BigDecimal.class) {
+            return BIG_DECIMAL;
         }
         return NULL;
     }
 
-    public static Object plusOne(final Object o1, ASTNode node) {
-        if (o1 != null) {
-            if (o1 instanceof Number) {
-                final Number num;
-                switch (getNumberType(num = (Number) o1)) {
+    /**
+     * 获取 Object 实例的 ALU 类型
+     *
+     * @param obj {@link Object} 类型的实例
+     * @return {@link AluType} 类型
+     */
+    public static int getAluType(final Object obj) {
+        if (obj == null) {
+            return NULL;
+        }
+        final Class<?> cls = obj.getClass();
+        if (cls == String.class) {
+            return STRING;
+        } else if (cls == Integer.class) {
+            return INTEGER;
+        } else if (cls == Long.class) {
+            return LONG;
+        } else if (cls == Short.class) {
+            return SHORT;
+        } else if (cls == Float.class) {
+            return FLOAT;
+        } else if (cls == Double.class) {
+            return DOUBLE;
+        } else if (cls == Character.class) {
+            return CHAR;
+        } else if (cls == BigDecimal.class) {
+            return BIG_DECIMAL;
+        }
+        return OBJECT;
+    }
+
+    /**
+     * 加1操作
+     *
+     * @param obj  值
+     * @param node AST结点
+     * @return 加1后的值
+     */
+    public static Object plusOne(final Object obj, ASTNode node) {
+        if (obj != null) {
+            if (obj instanceof Number) {
+                final Number num = (Number) obj;
+                switch (getNumberType(num)) {
                     case INTEGER:
                         return Integer.valueOf(num.intValue() + 1);
                     case LONG:
@@ -213,24 +242,29 @@ public class ALU {
                         return Float.valueOf(num.floatValue() + 1F);
                     case SHORT:
                         return Short.valueOf((short) (num.intValue() + 1));
-                    case HS:
-                        BigDecimal bd = (BigDecimal) o1;
+                    case BIG_DECIMAL:
+                        BigDecimal bd = (BigDecimal) obj;
                         return bd.add(BigDecimal.ONE);
-
                 }
             } else {
-
-                throw numberExpectedException(o1, node);
+                throw numberExpectedException(obj, node);
             }
         }
-        throw valueIsNullException(o1, node);
+        throw valueIsNullException(obj, node);
     }
 
-    public static Object minusOne(final Object o1, ASTNode node) {
-        if (o1 != null) {
-            if (o1 instanceof Number) {
-                final Number num;
-                switch (getNumberType(num = (Number) o1)) {
+    /**
+     * 减1操作
+     *
+     * @param obj  值
+     * @param node AST结点
+     * @return 减1后的值
+     */
+    public static Object minusOne(final Object obj, ASTNode node) {
+        if (obj != null) {
+            if (obj instanceof Number) {
+                final Number num = (Number) obj;
+                switch (getNumberType(num)) {
                     case INTEGER:
                         return Integer.valueOf(num.intValue() - 1);
                     case LONG:
@@ -241,28 +275,30 @@ public class ALU {
                         return Float.valueOf(num.floatValue() - 1f);
                     case SHORT:
                         return Short.valueOf((short) (num.intValue() - 1));
-                    case HS:
-                        BigDecimal bd = (BigDecimal) o1;
+                    case BIG_DECIMAL:
+                        BigDecimal bd = (BigDecimal) obj;
                         return bd.min(BigDecimal.ONE);
                 }
             } else {
-                throw numberExpectedException(o1, node);
+                throw numberExpectedException(obj, node);
             }
         }
-        throw valueIsNullException(o1, node);
+        throw valueIsNullException(obj, node);
     }
 
-    // ///////////////////////////
-    // +
-
     /**
-     * 不同于js，数字类型允许一个为null，beetl中，如果数字相加，有一个是null，则抛出异常
+     * 相加操作: {@param o1} + {@param o2}
+     *
+     * @param o1    左值
+     * @param o2    右值
+     * @param node1 AST结点
+     * @param node2 AST结点
+     * @return 相加的结果
      */
     public static Object plus(final Object o1, final Object o2, final ASTNode node1, final ASTNode node2) {
         if (o1 != null && o2 != null) {
-            switch (getBaseType(o1, o2)) {
+            switch (getAluType(o1, o2)) {
                 case STRING:
-
                     return String.valueOf(o1).concat(String.valueOf(o2));
                 case INTEGER:
                     return Integer.valueOf(((Number) o1).intValue() + ((Number) o2).intValue());
@@ -276,40 +312,40 @@ public class ALU {
                     return Short.valueOf((short) (((Number) o1).intValue() + ((Number) o2).intValue()));
                 case CHAR:
                     return Character.valueOf((char) (((Number) o1).intValue() + ((Number) o2).intValue()));
-                case HS:
-                    BigDecimal b1 = getBigDecimal(o1),
-                            b2 = getBigDecimal(o2);
+                case BIG_DECIMAL:
+                    BigDecimal b1 = getBigDecimal(o1);
+                    BigDecimal b2 = getBigDecimal(o2);
                     return b1.add(b2);
-
                 default:
                     throw UnsupportedTypeException(o1, o2, node1, node2, "+");
             }
         } else if (o1 != null) {
-            switch (getBaseType(o1)) {
-                case STRING:
-                    return o1;
-                default: {
-                    throw valueIsNullException(o1, o2, node1, node2);
-                }
+            if (getAluType(o1) == STRING) {
+                return o1;
             }
+            throw valueIsNullException(o1, o2, node1, node2);
         } else if (o2 != null) {
-            switch (getBaseType(o2)) {
-                case STRING:
-                    return o2;
-                default: {
-                    throw valueIsNullException(o1, o2, node1, node2);
-                }
+            if (getAluType(o2) == STRING) {
+                return o2;
             }
+            throw valueIsNullException(o1, o2, node1, node2);
         } else {
-            return o1 != null ? o1 : o2;
+            throw valueIsNullException(o1, o2, node1, node2);
         }
     }
 
-    // -
-
+    /**
+     * 相减操作: {@param o1} - {@param o2}
+     *
+     * @param o1    左值
+     * @param o2    右值
+     * @param node1 AST结点
+     * @param node2 AST结点
+     * @return {@param o1} 减 {@param o2} 的结果
+     */
     public static Object minus(final Object o1, final Object o2, final ASTNode node1, final ASTNode node2) {
         if (o1 != null && o2 != null) {
-            switch (getBaseType(o1, o2)) {
+            switch (getAluType(o1, o2)) {
                 // case STRING:
                 // return String.valueOf(o1) + String.valueOf(o2);
                 case INTEGER:
@@ -324,9 +360,9 @@ public class ALU {
                     return Short.valueOf((short) (((Number) o1).intValue() - ((Number) o2).intValue()));
                 case CHAR:
                     return Character.valueOf((char) (((Number) o1).intValue() - ((Number) o2).intValue()));
-                case HS:
-                    BigDecimal b1 = getBigDecimal(o1),
-                            b2 = getBigDecimal(o2);
+                case BIG_DECIMAL:
+                    BigDecimal b1 = getBigDecimal(o1);
+                    BigDecimal b2 = getBigDecimal(o2);
                     return b1.subtract(b2);
                 default:
                     throw UnsupportedTypeException(o1, o2, node1, node2, "-");
@@ -336,10 +372,16 @@ public class ALU {
         }
     }
 
-    // 负
+    /**
+     * 取反操作: -{@param o1}
+     *
+     * @param o1   值
+     * @param node AST 结点
+     * @return 对 {@param o1} 取反后的值
+     */
     public static Object negative(final Object o1, ASTNode node) {
         if (o1 != null) {
-            switch (getBaseType(o1)) {
+            switch (getAluType(o1)) {
                 // case STRING:
                 // return String.valueOf(o1) + String.valueOf(o2);
                 case INTEGER:
@@ -352,9 +394,8 @@ public class ALU {
                     return -((Number) o1).floatValue();
                 case SHORT:
                     return -((Number) o1).shortValue();
-                case HS:
-                    return (BigDecimal) o1;
-
+                case BIG_DECIMAL:
+                    return ((BigDecimal) o1).negate();
                 default:
                     throw new RuntimeException("value not a number");
             }
@@ -363,11 +404,18 @@ public class ALU {
         }
     }
 
-    // *
-
+    /**
+     * 相乘操作: {@param o1} * {@param o2}
+     *
+     * @param o1    左值
+     * @param o2    右值
+     * @param node1 AST结点
+     * @param node2 AST结点
+     * @return {@param o1} 乘以 {@param o2} 的结果
+     */
     public static Object mult(final Object o1, final Object o2, final ASTNode node1, final ASTNode node2) {
         if (o1 != null && o2 != null) {
-            switch (getBaseType(o1, o2)) {
+            switch (getAluType(o1, o2)) {
                 // case STRING:
                 // return String.valueOf(o1) + String.valueOf(o2);
                 case INTEGER:
@@ -380,9 +428,9 @@ public class ALU {
                     return Float.valueOf(((Number) o1).floatValue() * ((Number) o2).floatValue());
                 case SHORT:
                     return Short.valueOf((short) (((Number) o1).intValue() * ((Number) o2).intValue()));
-                case HS:
-                    BigDecimal b1 = getBigDecimal(o1),
-                            b2 = getBigDecimal(o2);
+                case BIG_DECIMAL:
+                    BigDecimal b1 = getBigDecimal(o1);
+                    BigDecimal b2 = getBigDecimal(o2);
                     return b1.multiply(b2);
                 default:
                     throw UnsupportedTypeException(o1, o2, node1, node2, "*");
@@ -392,11 +440,18 @@ public class ALU {
         }
     }
 
-    // /
-    // @todo: 对0的判断
+    /**
+     * 相除操作: {@param o1} / {@param o2}
+     *
+     * @param o1    左值
+     * @param o2    右值
+     * @param node1 AST结点
+     * @param node2 AST结点
+     * @return {@param o1} 乘以 {@param o2} 的结果
+     */
     public static Object div(final Object o1, final Object o2, final ASTNode node1, final ASTNode node2) {
         if (o1 != null && o2 != null) {
-            switch (getBaseType(o1, o2)) {
+            switch (getAluType(o1, o2)) {
                 case INTEGER:
                 case LONG:
                 case DOUBLE:
@@ -410,7 +465,7 @@ public class ALU {
                     }
                     double a = ((Number) o1).doubleValue() / ((Number) o2).doubleValue();
                     return trim(a, (Number) o1, (Number) o2);
-                case HS:
+                case BIG_DECIMAL:
                     BigDecimal b1 = getBigDecimal(o1),
                             b2 = getBigDecimal(o2);
                     BigDecimal b = b1.divide(b2, scale, round);
@@ -461,7 +516,7 @@ public class ALU {
 
     public static Object mod(final Object o1, final Object o2, final ASTNode node1, final ASTNode node2) {
         if (o1 != null && o2 != null) {
-            switch (getBaseType(o1, o2)) {
+            switch (getAluType(o1, o2)) {
                 // case STRING:
                 // return String.valueOf(o1) + String.valueOf(o2);
                 case INTEGER:
@@ -474,7 +529,7 @@ public class ALU {
                     return Float.valueOf(((Number) o1).floatValue() % ((Number) o2).floatValue());
                 case SHORT:
                     return Short.valueOf((short) (((Number) o1).intValue() % ((Number) o2).intValue()));
-                case HS:
+                case BIG_DECIMAL:
                     BigDecimal b1 = getBigDecimal(o1),
                             b2 = getBigDecimal(o2);
                     return b1.divide(b2);
@@ -497,7 +552,7 @@ public class ALU {
             return true;
         }
         if (o1 instanceof Number && o2 instanceof Number) {
-            switch (getBaseType(o1, o2)) {
+            switch (getAluType(o1, o2)) {
                 // case STRING:
                 // case CHAR:
 
@@ -511,7 +566,7 @@ public class ALU {
                 case FLOAT:
                     return ((Number) o1).floatValue() == ((Number) o2).floatValue();
 
-                case HS:
+                case BIG_DECIMAL:
                     BigDecimal b1 = getBigDecimal(o1),
                             b2 = getBigDecimal(o2);
                     return b1.compareTo(b2) == 0;
@@ -534,7 +589,7 @@ public class ALU {
     // >
     public static boolean greater(final Object o1, final Object o2, final ASTNode node1, final ASTNode node2) {
         if (o1 != null && o2 != null) {
-            switch (getBaseType(o1, o2)) {
+            switch (getAluType(o1, o2)) {
                 // case STRING:
                 case CHAR:
                     return (o1 instanceof Number ? ((Number) o1).intValue() : (int) ((Character) o1).charValue()) > (o2 instanceof Number ? ((Number) o2)
@@ -549,7 +604,7 @@ public class ALU {
                     return ((Number) o1).doubleValue() > ((Number) o2).doubleValue();
                 case FLOAT:
                     return ((Number) o1).floatValue() > ((Number) o2).floatValue();
-                case HS:
+                case BIG_DECIMAL:
                     BigDecimal b1 = getBigDecimal(o1),
                             b2 = getBigDecimal(o2);
                     return b1.compareTo(b2) > 0;
@@ -569,7 +624,7 @@ public class ALU {
 
     public static boolean greaterEquals(final Object o1, final Object o2, final ASTNode node1, final ASTNode node2) {
         if (o1 != null && o2 != null) {
-            switch (getBaseType(o1, o2)) {
+            switch (getAluType(o1, o2)) {
                 // case STRING:
                 case CHAR:
                     return (o1 instanceof Number ? ((Number) o1).intValue() : (int) ((Character) o1).charValue()) >= (o2 instanceof Number ? ((Number) o2)
@@ -584,7 +639,7 @@ public class ALU {
                     return ((Number) o1).doubleValue() >= ((Number) o2).doubleValue();
                 case FLOAT:
                     return ((Number) o1).floatValue() >= ((Number) o2).floatValue();
-                case HS:
+                case BIG_DECIMAL:
                     BigDecimal b1 = getBigDecimal(o1),
                             b2 = getBigDecimal(o2);
                     return b1.compareTo(b2) >= 0;
@@ -604,7 +659,7 @@ public class ALU {
 
     public static boolean less(final Object o1, final Object o2, final ASTNode node1, final ASTNode node2) {
         if (o1 != null && o2 != null) {
-            switch (getBaseType(o1, o2)) {
+            switch (getAluType(o1, o2)) {
                 // case STRING:
                 case CHAR:
                     return (o1 instanceof Number ? ((Number) o1).intValue() : (int) ((Character) o1).charValue()) < (o2 instanceof Number ? ((Number) o2)
@@ -619,7 +674,7 @@ public class ALU {
                     return ((Number) o1).doubleValue() < ((Number) o2).doubleValue();
                 case FLOAT:
                     return ((Number) o1).floatValue() < ((Number) o2).floatValue();
-                case HS:
+                case BIG_DECIMAL:
                     BigDecimal b1 = getBigDecimal(o1),
                             b2 = getBigDecimal(o2);
                     return b1.compareTo(b2) < 0;
@@ -639,7 +694,7 @@ public class ALU {
 
     public static boolean lessEquals(final Object o1, final Object o2, final ASTNode node1, final ASTNode node2) {
         if (o1 != null && o2 != null) {
-            switch (getBaseType(o1, o2)) {
+            switch (getAluType(o1, o2)) {
                 // case STRING:
                 case CHAR:
                     return (o1 instanceof Number ? ((Number) o1).intValue() : (int) ((Character) o1).charValue()) <= (o2 instanceof Number ? ((Number) o2)
@@ -654,7 +709,7 @@ public class ALU {
                     return ((Number) o1).doubleValue() <= ((Number) o2).doubleValue();
                 case FLOAT:
                     return ((Number) o1).floatValue() <= ((Number) o2).floatValue();
-                case HS:
+                case BIG_DECIMAL:
                     BigDecimal b1 = getBigDecimal(o1),
                             b2 = getBigDecimal(o2);
                     return b1.compareTo(b2) <= 0;

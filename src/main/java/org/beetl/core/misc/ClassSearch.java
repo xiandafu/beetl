@@ -40,7 +40,7 @@ import org.beetl.core.GroupTemplate;
  */
 public class ClassSearch {
     Set<String> pkgList;
-    Map<String, Class> map = new ConcurrentHashMap<String, Class>();
+    Map<String, Class> map = new ConcurrentHashMap<>();
     GroupTemplate gt;
 
     /**
@@ -60,7 +60,7 @@ public class ClassSearch {
      */
     public Class getClassByName(String name) {
 
-        if (name.indexOf(".") != -1) {
+        if (name.contains(".")) {
             try {
                 return Class.forName(name, true, gt.getClassLoader());
             } catch (ClassNotFoundException e) {
