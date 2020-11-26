@@ -7,15 +7,6 @@ import java.util.Set;
 public interface IBeetlMemoryManager {
 
     /**
-     * 创建数组实例
-     *
-     * @param type   类型
-     * @param minLen 长度
-     * @return {@param type} 类型的数组实例
-     */
-    Object newUnpaddedArray(Class<?> type, int minLen);
-
-    /**
      * 获取一个 {@link Map} 的实例
      *
      * @return Map 实例，如果池中实例不够，则会创建一个
