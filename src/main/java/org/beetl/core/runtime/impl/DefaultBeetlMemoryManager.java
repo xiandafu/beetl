@@ -1,8 +1,7 @@
 package org.beetl.core.runtime.impl;
 
-import org.beetl.android.util.LruCache;
+import org.beetl.android.util.SparseArray;
 import org.beetl.core.runtime.IBeetlMemoryManager;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
@@ -10,6 +9,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,19 +45,23 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
     private static final int MAP_POOL_MAX_SIZE = 200;
     private static final int LIST_POOL_MAX_SIZE = 200;
     private static final int SET_POOL_MAX_SIZE = 200;
-    private List<Map> mapPool;
-    private List<List> listPool;
-    private List<Set> setPool;
+    private static final int OBJECT_POOL_MAX_SIZE = 100;
+
+    private LinkedList<Map> mapPool;
+    private LinkedList<List> listPool;
+    private LinkedList<Set> setPool;
+    private SparseArray<LinkedList<Clearable>> typeObjectPoolMap;
 
     private void init() {
-        mapPool = new ArrayList<>(MAP_POOL_MAX_SIZE);
-        listPool = new ArrayList<>(LIST_POOL_MAX_SIZE);
-        setPool = new ArrayList<>(SET_POOL_MAX_SIZE);
+        mapPool = new LinkedList<>();
+        listPool = new LinkedList<>();
+        setPool = new LinkedList<>();
+        typeObjectPoolMap = new SparseArray<>();
     }
 
     @Override
     public Map map() {
-        return mapPool.size() == 0 ? new HashMap() : mapPool.remove(0);
+        return mapPool.isEmpty() ? new HashMap() : mapPool.removeLast();
     }
 
     @Override
@@ -65,14 +69,17 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
         if (garbage == null) {
             return false;
         }
+        if (mapPool.size() > MAP_POOL_MAX_SIZE) {
+            return false;
+        }
         garbage.clear();
-        mapPool.add(garbage);
+        mapPool.addLast(garbage);
         return true;
     }
 
     @Override
     public Set set() {
-        return setPool.size() == 0 ? new HashSet() : setPool.remove(0);
+        return setPool.isEmpty() ? new HashSet() : setPool.removeLast();
     }
 
     @Override
@@ -80,14 +87,17 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
         if (garbage == null) {
             return false;
         }
+        if (setPool.size() > SET_POOL_MAX_SIZE) {
+            return false;
+        }
         garbage.clear();
-        setPool.add(garbage);
+        setPool.addLast(garbage);
         return true;
     }
 
     @Override
     public List list() {
-        return listPool.size() == 0 ? new ArrayList() : listPool.remove(0);
+        return listPool.isEmpty() ? new ArrayList() : listPool.removeLast();
     }
 
     @Override
@@ -95,40 +105,65 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
         if (garbage == null) {
             return false;
         }
+        if (listPool.size() > LIST_POOL_MAX_SIZE) {
+            return false;
+        }
         garbage.clear();
-        listPool.add(garbage);
+        listPool.addLast(garbage);
         return true;
     }
 
     @Override
-    public Object newUnpaddedArray(Class<?> kind, int length) {
-        return Array.newInstance(kind, length);
-//        Unsafe unsafe = getUnsafe();
-//        if (unsafe == null) {
-//            return Array.newInstance(kind, length);
-//        }
-//        return null;
+    public boolean recoveryObject(Class<Clearable> type, Clearable garbage) {
+        if (garbage == null) {
+            return false;
+        }
+        int key = type.hashCode();
+        LinkedList<Clearable> pool = typeObjectPoolMap.get(key, new LinkedList<>());
+        if (pool.size() > OBJECT_POOL_MAX_SIZE) {
+            return false;
+        }
+        garbage.clear();
+        pool.addLast(garbage);
+        typeObjectPoolMap.put(key, pool);
+        return true;
     }
 
-    /** 通过反射获取的 Unsafe 类的实例 */
-    private static Unsafe unsafe;
+    @Override
+    public Clearable object(Class<Clearable> type) {
+        int key = type.hashCode();
+        LinkedList<Clearable> pool = typeObjectPoolMap.get(key, new LinkedList<>());
+        if (!pool.isEmpty()) {
+            Clearable result = pool.removeLast();
+            typeObjectPoolMap.put(key, pool);
+            return result;
+        }
 
-    /**
-     * 通过反射获取 Unsafe 类的实例
-     *
-     * @return Unsafe 类的实例
-     */
-    @Nullable
-    public static Unsafe getUnsafe() {
-        if (unsafe == null) {
-            Field unsafeField = Unsafe.class.getDeclaredFields()[0];
-            unsafeField.setAccessible(true);
-            try {
-                unsafe = (Unsafe) unsafeField.get(null);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+        try {
+            return type.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public void clearMemory() {
+        for (Map map : mapPool) {
+            map.clear();
+        }
+        for (List list : listPool) {
+            list.clear();
+        }
+        for (Set set : setPool) {
+            set.clear();
+        }
+        for (int i = 0; i < typeObjectPoolMap.size(); i++) {
+            LinkedList<Clearable> objectPool = typeObjectPoolMap.get(i);
+            for (Clearable object : objectPool) {
+                object.clear();
             }
         }
-        return unsafe;
+
+        init();
     }
 }

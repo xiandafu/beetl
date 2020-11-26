@@ -60,5 +60,14 @@ public interface IBeetlMemoryManager {
      */
     boolean recoveryList(List garbage);
 
+    interface Clearable {
+        void clear();
+    }
+
+    boolean recoveryObject(Class<Clearable> bigObjectType, Clearable bigObject);
+
+    Clearable object(Class<Clearable> bigObjectType);
+
+    void clearMemory();
 
 }
