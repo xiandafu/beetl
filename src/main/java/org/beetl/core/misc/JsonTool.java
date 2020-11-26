@@ -1,5 +1,8 @@
 package org.beetl.core.misc;
 
+/**
+ * JSON 序列化的抽象
+ */
 public interface JsonTool {
     /**
      * 将 {@param object} 渲染成JSON字符串

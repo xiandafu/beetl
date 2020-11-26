@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.config.BeetlConfig;
-import org.beetl.core.log.Log;
+import org.beetl.android.util.Log;
 import org.beetl.core.misc.ByteClassLoader;
 import org.beetl.core.om.AttributeAccess;
 import org.beetl.core.om.ReflectBeanAA;

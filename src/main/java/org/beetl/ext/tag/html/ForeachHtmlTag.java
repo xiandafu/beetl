@@ -32,13 +32,9 @@ public class ForeachHtmlTag extends GeneralVarTagBinding {
         }
 
         ILoopStatus it = GeneralLoopStatus.getIteratorStatus(value);
-        if(it==null){
-			if (it == null) {
-				RuntimeException ex = new RuntimeException(
-						"期望数组或者集合，实际类型是:" + value.getClass());
-				throw ex;
-			}
-		}
+        if (it == null) {
+            throw new RuntimeException("期望数组或者集合，实际类型是:" + value.getClass());
+        }
         while (it.hasNext()) {
             Object item = it.next();
             if (containStatus) {

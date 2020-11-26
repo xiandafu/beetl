@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.beetl.core.log;
+package org.beetl.android.util;
 
 import org.intellij.lang.annotations.MagicConstant;
 
