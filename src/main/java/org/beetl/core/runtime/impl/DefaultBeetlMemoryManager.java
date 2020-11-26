@@ -22,11 +22,8 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
         init();
     }
 
-    /** 单例模式 - 通过内部类初始化，保证实例的线程安全 */
-    private static class Holder {
-        /** 单例模式 - DefaultBeetlMemoryManager 的实例 */
-        private static final IBeetlMemoryManager INSTANCE = new DefaultBeetlMemoryManager();
-    }
+    /** 单例模式 - DefaultBeetlMemoryManager 的实例 */
+    private static IBeetlMemoryManager sInstance;
 
     /**
      * 获取 DefaultBeetlMemoryManager 实例
@@ -34,7 +31,14 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
      * @return 进程内唯一的实例
      */
     public static IBeetlMemoryManager get() {
-        return Holder.INSTANCE;
+        if (sInstance == null) {
+            synchronized (DefaultBeetlMemoryManager.class) {
+                if (sInstance == null) {
+                    sInstance = new DefaultBeetlMemoryManager();
+                }
+            }
+        }
+        return sInstance;
     }
 
     /** 缓存 {@link Map} 实例的数量上限 */
@@ -46,21 +50,28 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
     /** 在每个LinkedList中缓存 {@link Clearable} 实例的数量上限 */
     private static final int OBJECT_POOL_MAX_SIZE = 100;
 
-    private LinkedList<Map> mapPool;
-    private LinkedList<List> listPool;
-    private LinkedList<Set> setPool;
-    private SparseArray<LinkedList<Clearable>> typeObjectPoolMap;
+    /** 保存 Map 实例的缓存池 */
+    private LinkedList<Map> mMapPool;
+    /** 保存 List 实例的缓存池 */
+    private LinkedList<List> mListPool;
+    /** 保存 Set 实例的缓存池 */
+    private LinkedList<Set> mSetPool;
+    /** 维护以 [实例 Class 的 hashCode ] 为 key，[保存 Clearable 实例的缓存池] 为 value 的映射 */
+    private SparseArray<LinkedList<Clearable>> mTypeObjectPoolMap;
 
+    /**
+     * 初始化操作
+     */
     private void init() {
-        mapPool = new LinkedList<>();
-        listPool = new LinkedList<>();
-        setPool = new LinkedList<>();
-        typeObjectPoolMap = new SparseArray<>();
+        mMapPool = new LinkedList<>();
+        mListPool = new LinkedList<>();
+        mSetPool = new LinkedList<>();
+        mTypeObjectPoolMap = new SparseArray<>();
     }
 
     @Override
-    public Map<?, ?> takeMap() {
-        return mapPool.isEmpty() ? new HashMap<>() : mapPool.removeLast();
+    public Map takeMap() {
+        return mMapPool.isEmpty() ? new HashMap<>() : mMapPool.removeLast();
     }
 
     @Override
@@ -68,22 +79,22 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
         if (garbage == null) {
             return false;
         }
-        if (mapPool.size() > MAP_POOL_MAX_SIZE) {
+        if (mMapPool.size() > MAP_POOL_MAX_SIZE) {
             return false;
         }
         garbage.clear();
-        mapPool.addLast(garbage);
+        mMapPool.addLast(garbage);
         return true;
     }
 
     @Override
     public int sizeOfMapPool() {
-        return mapPool.size();
+        return mMapPool.size();
     }
 
     @Override
     public Set takeSet() {
-        return setPool.isEmpty() ? new HashSet<>() : setPool.removeLast();
+        return mSetPool.isEmpty() ? new HashSet<>() : mSetPool.removeLast();
     }
 
     @Override
@@ -91,11 +102,11 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
         if (garbage == null) {
             return false;
         }
-        if (setPool.size() > SET_POOL_MAX_SIZE) {
+        if (mSetPool.size() > SET_POOL_MAX_SIZE) {
             return false;
         }
         garbage.clear();
-        setPool.addLast(garbage);
+        mSetPool.addLast(garbage);
         return true;
     }
 
@@ -106,7 +117,7 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
 
     @Override
     public List takeList() {
-        return listPool.isEmpty() ? new ArrayList() : listPool.removeLast();
+        return mListPool.isEmpty() ? new ArrayList() : mListPool.removeLast();
     }
 
     @Override
@@ -114,17 +125,17 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
         if (garbage == null) {
             return false;
         }
-        if (listPool.size() > LIST_POOL_MAX_SIZE) {
+        if (mListPool.size() > LIST_POOL_MAX_SIZE) {
             return false;
         }
         garbage.clear();
-        listPool.addLast(garbage);
+        mListPool.addLast(garbage);
         return true;
     }
 
     @Override
     public int sizeOfListPool() {
-        return listPool.size();
+        return mListPool.size();
     }
 
     @Override
@@ -133,23 +144,23 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
             return false;
         }
         int key = type.hashCode();
-        LinkedList<Clearable> pool = typeObjectPoolMap.get(key, new LinkedList<>());
+        LinkedList<Clearable> pool = mTypeObjectPoolMap.get(key, new LinkedList<>());
         if (pool.size() > OBJECT_POOL_MAX_SIZE) {
             return false;
         }
         garbage.clear();
         pool.addLast(garbage);
-        typeObjectPoolMap.put(key, pool);
+        mTypeObjectPoolMap.put(key, pool);
         return true;
     }
 
     @Override
     public Clearable takeObject(Class<Clearable> type) {
         int key = type.hashCode();
-        LinkedList<Clearable> pool = typeObjectPoolMap.get(key, new LinkedList<>());
+        LinkedList<Clearable> pool = mTypeObjectPoolMap.get(key, new LinkedList<>());
         if (!pool.isEmpty()) {
             Clearable result = pool.removeLast();
-            typeObjectPoolMap.put(key, pool);
+            mTypeObjectPoolMap.put(key, pool);
             return result;
         }
 
@@ -162,14 +173,14 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
 
     @Override
     public int sizeOfObjectType() {
-        return typeObjectPoolMap.size();
+        return mTypeObjectPoolMap.size();
     }
 
     @Override
     public int sizeOfObjectPool() {
         int length = 0;
-        for (int i = 0; i < typeObjectPoolMap.size(); i++) {
-            LinkedList<Clearable> pool = typeObjectPoolMap.get(i);
+        for (int i = 0; i < mTypeObjectPoolMap.size(); i++) {
+            LinkedList<Clearable> pool = mTypeObjectPoolMap.get(i);
             length += pool.size();
         }
         return length;
@@ -177,17 +188,17 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
 
     @Override
     public void clearMemory() {
-        for (Map map : mapPool) {
+        for (Map map : mMapPool) {
             map.clear();
         }
-        for (List list : listPool) {
+        for (List list : mListPool) {
             list.clear();
         }
-        for (Set set : setPool) {
+        for (Set set : mSetPool) {
             set.clear();
         }
-        for (int i = 0; i < typeObjectPoolMap.size(); i++) {
-            LinkedList<Clearable> objectPool = typeObjectPoolMap.get(i);
+        for (int i = 0; i < mTypeObjectPoolMap.size(); i++) {
+            LinkedList<Clearable> objectPool = mTypeObjectPoolMap.get(i);
             while (!objectPool.isEmpty()) {
                 Clearable object = objectPool.pollLast();
                 object.clear();
@@ -199,10 +210,10 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
     @Override
     public String toString() {
         return "DefaultBeetlMemoryManager{" +
-                "mapPool=" + mapPool +
-                ", listPool=" + listPool +
-                ", setPool=" + setPool +
-                ", typeObjectPoolMap=" + typeObjectPoolMap +
+                "mapPool=" + mMapPool +
+                ", listPool=" + mListPool +
+                ", setPool=" + mSetPool +
+                ", typeObjectPoolMap=" + mTypeObjectPoolMap +
                 '}';
     }
 }
