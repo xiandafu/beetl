@@ -46,9 +46,9 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
     /** 在每个LinkedList中缓存 {@link Clearable} 实例的数量上限 */
     private static final int OBJECT_POOL_MAX_SIZE = 100;
 
-    private LinkedList<Map<?, ?>> mapPool;
-    private LinkedList<List<?>> listPool;
-    private LinkedList<Set<?>> setPool;
+    private LinkedList<Map> mapPool;
+    private LinkedList<List> listPool;
+    private LinkedList<Set> setPool;
     private SparseArray<LinkedList<Clearable>> typeObjectPoolMap;
 
     private void init() {
@@ -82,7 +82,7 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
     }
 
     @Override
-    public Set<?> takeSet() {
+    public Set takeSet() {
         return setPool.isEmpty() ? new HashSet<>() : setPool.removeLast();
     }
 
@@ -177,22 +177,22 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
 
     @Override
     public void clearMemory() {
-        for (Map<?, ?> map : mapPool) {
+        for (Map map : mapPool) {
             map.clear();
         }
-        for (List<?> list : listPool) {
+        for (List list : listPool) {
             list.clear();
         }
-        for (Set<?> set : setPool) {
+        for (Set set : setPool) {
             set.clear();
         }
         for (int i = 0; i < typeObjectPoolMap.size(); i++) {
             LinkedList<Clearable> objectPool = typeObjectPoolMap.get(i);
-            for (Clearable object : objectPool) {
+            while (!objectPool.isEmpty()) {
+                Clearable object = objectPool.pollLast();
                 object.clear();
             }
         }
-
         init();
     }
 
