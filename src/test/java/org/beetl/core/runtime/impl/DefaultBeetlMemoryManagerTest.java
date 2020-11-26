@@ -1,15 +1,12 @@
 package org.beetl.core.runtime.impl;
 
 import org.beetl.core.runtime.BeetlRuntime;
-import org.beetl.core.runtime.IBeetlMemoryManager;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static org.testng.Assert.*;
 
 public class DefaultBeetlMemoryManagerTest {
 
@@ -39,22 +36,26 @@ public class DefaultBeetlMemoryManagerTest {
     public void testList() {
         String tag = "get#";
         int id = 1;
+
         {
-            List list1 = BeetlRuntime.getMemoryManager().list();
+            List list1 = BeetlRuntime.getMemoryManager().takeList();
             list1.add("String");
             list1.add(123);
             list1.add(new HashMap<>());
-            System.out.println("list1 = " + list1);
-            BeetlRuntime.getMemoryManager().recoveryList(list1);
+            boolean recoveryResult = BeetlRuntime.getMemoryManager().recoveryList(list1);
+            Assert.assertTrue(recoveryResult, tag + id++);
 
-            List<String> list2 = BeetlRuntime.getMemoryManager().list();
+            System.out.println(BeetlRuntime.getMemoryManager());
+            System.out.println(BeetlRuntime.getMemoryManager().sizeOfListPool());
+
+            List<String> list2 = BeetlRuntime.getMemoryManager().takeList();
             Assert.assertTrue(list1 == list2, tag + id++);
 
             Assert.assertTrue(list1.isEmpty(), tag + id++);
         }
 
-        List<String> list2 = BeetlRuntime.getMemoryManager().list();
-        List<String> list3 = BeetlRuntime.getMemoryManager().list();
+        List<String> list2 = BeetlRuntime.getMemoryManager().takeList();
+        List<String> list3 = BeetlRuntime.getMemoryManager().takeList();
         Assert.assertTrue(list2 != list3, tag + id++);
     }
 
@@ -73,7 +74,7 @@ public class DefaultBeetlMemoryManagerTest {
 
         long time1 = System.nanoTime();
         for (int i = 0; i < size; i++) {
-            List list = BeetlRuntime.getMemoryManager().list(); // 获取引用，没有则创建
+            List list = BeetlRuntime.getMemoryManager().takeList(); // 获取引用，没有则创建
             opList(list); // List 的数据操作
         }
         long time2 = System.nanoTime();
@@ -85,6 +86,7 @@ public class DefaultBeetlMemoryManagerTest {
 
         System.out.println(tag + id++ + " 耗时: " + (time2 - time1) / 1_000_000 + "ms");
         System.out.println(tag + id++ + " 耗时: " + (time3 - time2) / 1_000_000 + "ms");
+        System.out.println(BeetlRuntime.getMemoryManager());
         Assert.assertTrue(true);
     }
 
