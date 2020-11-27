@@ -31,7 +31,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.beetl.android.util.Log;
 import org.beetl.core.GroupTemplate;
+import org.beetl.core.config.BeetlConfig;
 
 /**
  * 在classloader下仅仅根据类名加载类，会尝试用系统内置的以及配置好的包名作为类的包名
@@ -39,55 +41,70 @@ import org.beetl.core.GroupTemplate;
  * @author xiandafu
  */
 public class ClassSearch {
-    Set<String> pkgList;
-    Map<String, Class> map = new ConcurrentHashMap<>();
-    GroupTemplate gt;
+
+    /** DEBUG flag */
+    private static final boolean DEBUG = BeetlConfig.DEBUG;
+    /** DEBUG TAG */
+    private static final String TAG = "ClassSearch";
+
+    /** 类名与类型的缓存 */
+    final Map<String, Class> nameClassCache = new ConcurrentHashMap<>();
+    /** 去重后的包名列表 */
+    final Set<String> pkgList;
+    /** 用于获取类加载器 */
+    final GroupTemplate gt;
 
     /**
-     * 默认的搜索列表
+     * 构造方法
      */
     public ClassSearch(Set<String> pkgList, GroupTemplate gt) {
         this.pkgList = pkgList;
         this.gt = gt;
-
     }
 
     /**
-     * 根据类名得到指定类，如果类名是带包名，则直接用当前classloader加载，如果仅仅类名
-     * 则尝试用内置的或者配置的包名作为包名尝试加载
+     * 根据类名得到指定类
+     * - 如果类名是带包名，则直接用当前classloader加载
+     * - 如果仅是类名
+     *  - 先尝试从缓存中取
+     *  - 再尝试用内置的或者配置的包名作为包名尝试加载
      *
-     * @return 不成功，返回null
+     * @return 返回 {@param name} 的类型，如果不成功会返回 null
      */
     public Class getClassByName(String name) {
+        ClassLoader classLoader = gt.getClassLoader();
 
+        // 如果类名是带包名，则直接用当前classloader加载
         if (name.contains(".")) {
             try {
-                return Class.forName(name, true, gt.getClassLoader());
+                return Class.forName(name, true, classLoader);
             } catch (ClassNotFoundException e) {
                 return null;
             }
-
-        } else {
-            Class cls = map.get(name);
-            if (cls == null) {
-                for (String pkg : pkgList) {
-                    try {
-                        String clsName = pkg.concat(name);
-                        cls = Class.forName(clsName, true, gt.getClassLoader());
-                        map.put(name, cls);
-                        return cls;
-
-                    } catch (Exception ex) {
-                        // continue;
-                    }
-                }
-                return null;
-            } else {
-                return cls;
-            }
-
         }
 
+        // 如果仅是类名，先尝试从缓存中取
+        Class cls = nameClassCache.get(name);
+        if (cls != null) {
+            return cls;
+        }
+
+        // 再尝试用内置的或者配置的包名作为包名尝试加载
+        for (String pkg : pkgList) {
+            try {
+                String clsName = pkg.concat(name);
+                cls = Class.forName(clsName, true, classLoader);
+                nameClassCache.put(name, cls); // 缓存起来
+                return cls;
+            } catch (Exception ex) {
+                if (DEBUG) {
+                    Log.d(TAG, ex.toString());
+                }
+            }
+        }
+
+        // 如果不成功会返回 null
+        return null;
     }
 
 }
