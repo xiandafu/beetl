@@ -124,6 +124,22 @@
 			<optional>true</optional>
 			<version>3.6.6</version>
 		</dependency>
+
+		<!-- 基准测试用于测试代码性能 -->
+		<dependency>
+			<groupId>org.openjdk.jmh</groupId>
+			<artifactId>jmh-core</artifactId>
+			<scope>test</scope>
+			<version>1.19</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjdk.jmh</groupId>
+			<artifactId>jmh-generator-annprocess</artifactId>
+			<scope>test</scope>
+			<version>1.19</version>
+		</dependency>
+
+		<!-- 单元测试用于测试正确性 -->
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
