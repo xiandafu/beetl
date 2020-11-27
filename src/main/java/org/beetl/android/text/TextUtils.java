@@ -814,4 +814,19 @@ public class TextUtils {
     private static char[] sTemp = null;
     /** 空的 String 数组 */
     private static String[] EMPTY_STRING_ARRAY = EmptyArray.STRING;
+
+    // =================================================================================================================
+    //                                      以下是  Beetl 中定义的方法
+    // =================================================================================================================
+
+    /**
+     * 判断字符串是否为空白
+     *
+     * @param str 给定字符串
+     * @return true表示 {@param str} 为空白
+     */
+    public static boolean isBlank(String str) {
+        return str == null || str.trim().isEmpty();
+    }
+
 }

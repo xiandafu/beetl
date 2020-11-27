@@ -31,6 +31,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,9 +40,12 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.beetl.android.text.TextUtils;
 import org.beetl.core.text.HtmlTagConfig;
 import org.beetl.core.text.PlaceHolderDelimeter;
 import org.beetl.core.text.ScriptDelimeter;
+import org.intellij.lang.annotations.MagicConstant;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * 模板配置，核心文件之一
@@ -74,114 +79,115 @@ public class Configuration {
     String htmlTagFlag = "#";
     /** 是否允许html tag，在web编程中，有可能用到html tag，最好允许 */
     boolean isHtmlTagSupport = false;
-    /** 是否允许直接调用class */
+    /** HTML标签开始符号 */
+    String htmlTagStart;
+    /** HTML标签结束符号 */
+    String htmlTagEnd;
 
+    /** 是否允许直接调用class */
     boolean nativeCall = false;
     /** 输出模式，默认是字符集输出，改成byte输出提高性能 */
     boolean directByteOutput = false;
     /** 严格mvc应用，只有变态的的人才打开此选项 */
     boolean isStrict = false;
 
-    /**
-     * 是否忽略客户端的网络异常
-     */
+    /** 是否忽略客户端的网络异常 */
     boolean isIgnoreClientIOError = true;
 
-    /**
-     * 错误处理类
-     */
+    /** 错误处理类 */
     String errorHandlerClass = "org.beetl.core.ConsoleErrorHandler";
 
-    /**
-     * HTML标签开始符号
-     */
-    String htmlTagStart = "<" + htmlTagFlag;
-    /**
-     * HTML标签结束符号
-     */
-    String htmlTagEnd = "</" + htmlTagFlag;
-
-    /**
-     * html 绑定的属性，如&lt;aa var="customer">
-     */
+    /** html 绑定的属性，如&lt;aa var="customer"> */
     String htmlTagBindingAttribute = "var";
-
+    /** {@link org.beetl.core.text.DefaultAttributeNameConvert} */
     String htmlTagAttributeConvert = "org.beetl.core.text.DefaultAttributeNameConvert";
 
-    /**
-     * 类搜索的包名列表
-     */
-    Set<String> pkgList = new HashSet<String>();
+    /** 类搜索的包名列表 */
+    Set<String> pkgList = new HashSet<>();
 
-    /**
-     * 渲染web 前执行的代码，需要实现WebRenderExt接口，如果为空，则不做操作
-     */
+    /** 渲染web 前执行的代码，需要实现WebRenderExt接口，如果为空，则不做操作 */
     String webAppExt = null;
 
-    // html方法和html标签是否使用特殊的定界符，如模板使用简介的@和回车,html 标签和html tag使用<%%>
+    /** html方法和html标签是否使用特殊的定界符，如模板使用简介的@和回车,html 标签和html tag使用<%%> */
     boolean hasFunctionLimiter = false;
     String functionLimiterStart = null;
     String functionLimiterEnd = null;
 
     // 关于引擎的设置
 
-    // String engine = "org.beetl.core.DefaultTemplateEngine";
+    /** {@code String engine = "org.beetl.core.DefaultTemplateEngine";} */
     String engine = "org.beetl.core.FastRuntimeEngine";
     String nativeSecurity = "org.beetl.core.DefaultNativeSecurityManager";
     String resourceLoader = "org.beetl.core.resource.ClasspathResourceLoader";
 
     // 扩展资源
-    Map<String, String> fnMap = new HashMap<String, String>();
-    Map<String, String> fnPkgMap = new HashMap<String, String>();
+    Map<String, String> fnMap = new HashMap<>();
+    Map<String, String> fnPkgMap = new HashMap<>();
 
-    Map<String, String> formatMap = new HashMap<String, String>();
-    Map<String, String> defaultFormatMap = new HashMap<String, String>(0);
-    Set<String> generalVirtualAttributeSet = new HashSet<String>();
-    Map<String, String> virtualClass = new HashMap<String, String>();
-    Map<String, String> tagFactoryMap = new HashMap<String, String>();
-    Map<String, String> tagMap = new HashMap<String, String>();
-    // 资源loader配置
-    Map<String, String> resourceMap = new HashMap<String, String>();
+    Map<String, String> formatMap = new HashMap<>();
+    Map<String, String> defaultFormatMap = new HashMap<>(0);
+    Set<String> generalVirtualAttributeSet = new HashSet<>();
+    Map<String, String> virtualClass = new HashMap<>();
+    Map<String, String> tagFactoryMap = new HashMap<>();
+    Map<String, String> tagMap = new HashMap<>();
+    /** 资源loader配置 */
+    Map<String, String> resourceMap = new HashMap<>();
 
-    // 缓冲数组
+    /** 缓冲数组长度不能小于 256 */
+    private static final int BUFFER_MIN_SIZE = 256;
+    /** 缓冲数组 */
     int bufferSize = 4096;
     int bufferNum = 64;
 
-    /**
-     * 模板是否整体使用安全输出功能，如果是，则不存在的值返回空，而不是报错
-     */
+    /** 模板是否整体使用安全输出功能，如果是，则不存在的值返回空，而不是报错 */
     boolean safeOutput = false;
 
-    public static String DELIMITER_PLACEHOLDER_START = "DELIMITER_PLACEHOLDER_START";
-    public static String DELIMITER_PLACEHOLDER_END = "DELIMITER_PLACEHOLDER_END";
-    public static String DELIMITER_STATEMENT_START = "DELIMITER_STATEMENT_START";
-    public static String DELIMITER_STATEMENT_END = "DELIMITER_STATEMENT_END";
-    public static String DELIMITER_PLACEHOLDER_START2 = "DELIMITER_PLACEHOLDER_START2";
-    public static String DELIMITER_PLACEHOLDER_END2 = "DELIMITER_PLACEHOLDER_END2";
-    public static String DELIMITER_STATEMENT_START2 = "DELIMITER_STATEMENT_START2";
-    public static String DELIMITER_STATEMENT_END2 = "DELIMITER_STATEMENT_END2";
-    public static String NATIVE_CALL = "NATIVE_CALL";
-    public static String IGNORE_CLIENT_IO_ERROR = "IGNORE_CLIENT_IO_ERROR";
-    public static String DIRECT_BYTE_OUTPUT = "DIRECT_BYTE_OUTPUT";
-    public static String TEMPLATE_ROOT = "TEMPLATE_ROOT";
-    public static String TEMPLATE_CHARSET = "TEMPLATE_CHARSET";
-    public static String ERROR_HANDLER = "ERROR_HANDLER";
-    public static String MVC_STRICT = "MVC_STRICT";
-    public static String WEBAPP_EXT = "WEBAPP_EXT";
-    public static String HTML_TAG_SUPPORT = "HTML_TAG_SUPPORT";
-    public static String HTML_TAG_FLAG = "HTML_TAG_FLAG";
-    public static String HTML_TAG_ATTR_CONVERT = "HTML_TAG_ATTR_CONVERT";
-    public static String IMPORT_PACKAGE = "IMPORT_PACKAGE";
-    public static String ENGINE = "ENGINE";
-    public static String NATIVE_SECUARTY_MANAGER = "NATIVE_SECUARTY_MANAGER";
-    public static String RESOURCE_LOADER = "RESOURCE_LOADER";
-    public static String HTML_TAG_BINDING_ATTRIBUTE = "HTML_TAG_BINDING_ATTRIBUTE";
+    public static final String DELIMITER_PLACEHOLDER_START = "DELIMITER_PLACEHOLDER_START";
+    public static final String DELIMITER_PLACEHOLDER_END = "DELIMITER_PLACEHOLDER_END";
+    public static final String DELIMITER_STATEMENT_START = "DELIMITER_STATEMENT_START";
+    public static final String DELIMITER_STATEMENT_END = "DELIMITER_STATEMENT_END";
+    public static final String DELIMITER_PLACEHOLDER_START2 = "DELIMITER_PLACEHOLDER_START2";
+    public static final String DELIMITER_PLACEHOLDER_END2 = "DELIMITER_PLACEHOLDER_END2";
+    public static final String DELIMITER_STATEMENT_START2 = "DELIMITER_STATEMENT_START2";
+    public static final String DELIMITER_STATEMENT_END2 = "DELIMITER_STATEMENT_END2";
+    public static final String NATIVE_CALL = "NATIVE_CALL";
+    public static final String IGNORE_CLIENT_IO_ERROR = "IGNORE_CLIENT_IO_ERROR";
+    public static final String DIRECT_BYTE_OUTPUT = "DIRECT_BYTE_OUTPUT";
+    public static final String TEMPLATE_ROOT = "TEMPLATE_ROOT";
+    public static final String TEMPLATE_CHARSET = "TEMPLATE_CHARSET";
+    public static final String ERROR_HANDLER = "ERROR_HANDLER";
+    public static final String MVC_STRICT = "MVC_STRICT";
+    public static final String WEBAPP_EXT = "WEBAPP_EXT";
+    public static final String HTML_TAG_SUPPORT = "HTML_TAG_SUPPORT";
+    public static final String HTML_TAG_FLAG = "HTML_TAG_FLAG";
+    public static final String HTML_TAG_ATTR_CONVERT = "HTML_TAG_ATTR_CONVERT";
+    public static final String IMPORT_PACKAGE = "IMPORT_PACKAGE";
+    public static final String ENGINE = "ENGINE";
+    public static final String NATIVE_SECUARTY_MANAGER = "NATIVE_SECUARTY_MANAGER";
+    public static final String RESOURCE_LOADER = "RESOURCE_LOADER";
+    public static final String HTML_TAG_BINDING_ATTRIBUTE = "HTML_TAG_BINDING_ATTRIBUTE";
+    public static final String BUFFER_SIZE = "buffer.maxSize";
+    public static final String BUFFER_NUM = "buffer.num";
+    public static final String SAFE_OUTPUT = "SAFE_OUTPUT";
 
-    public static String BUFFER_SIZE = "buffer.maxSize";
-    public static String BUFFER_NUM = "buffer.num";
+    /** 配置文件的key */
+    @MagicConstant(stringValues = {
+            DELIMITER_PLACEHOLDER_START, DELIMITER_PLACEHOLDER_END,
+            DELIMITER_STATEMENT_START, DELIMITER_STATEMENT_END,
+            DELIMITER_PLACEHOLDER_START2, DELIMITER_PLACEHOLDER_END2,
+            DELIMITER_STATEMENT_START2, DELIMITER_STATEMENT_END2,
+            NATIVE_CALL, IGNORE_CLIENT_IO_ERROR, DIRECT_BYTE_OUTPUT,
+            TEMPLATE_ROOT, TEMPLATE_CHARSET,
+            ERROR_HANDLER, MVC_STRICT, WEBAPP_EXT,
+            HTML_TAG_SUPPORT, HTML_TAG_FLAG, HTML_TAG_ATTR_CONVERT, HTML_TAG_BINDING_ATTRIBUTE,
+            IMPORT_PACKAGE, ENGINE, NATIVE_SECUARTY_MANAGER, RESOURCE_LOADER,
+            BUFFER_SIZE, BUFFER_NUM, SAFE_OUTPUT
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface PropertiesKey {
+    }
 
-    public static String SAFE_OUTPUT = "SAFE_OUTPUT";
-
+    /** 配置文件 */
     Properties ps = null;
 
     DelimeterHolder pd = null;
@@ -192,22 +198,76 @@ public class Configuration {
             ? Thread.currentThread().getContextClassLoader()
             : Configuration.class.getClassLoader();
 
-    public Configuration() throws IOException {
-        initDefault();
-
+    /**
+     * 创建一个新的 Configuration 实例
+     *
+     * @return 一个新的 Configuration 实例
+     * @throws IOException 配置文件不存在等情况
+     */
+    public static Configuration defaultConfiguration() throws IOException {
+        return new Configuration();
     }
 
+    /**
+     * 构造方法
+     *
+     * @throws IOException 文件不存在等情况
+     */
+    public Configuration() throws IOException {
+        initDefault();
+    }
+
+    /**
+     * 构造方法
+     *
+     * @param ps 配置文件
+     * @throws IOException 文件不存在等情况
+     */
     public Configuration(Properties ps) throws IOException {
         initDefault();
         parseProperties(ps);
-
     }
 
     public void build() {
         buildDelimeter();
     }
 
+    private void buildDelimeter() {
+        if (TextUtils.isBlank(placeholderStart) || TextUtils.isBlank(placeholderEnd)) {
+            throw new IllegalArgumentException("占位符不能为空");
+        }
+
+        if (this.placeholderStart2 != null) {
+            if (TextUtils.isBlank(placeholderStart2) || TextUtils.isBlank(placeholderEnd2)) {
+                throw new IllegalArgumentException("定义了2对占位符配置，但占位符2不能为空");
+            }
+            pd = new DelimeterHolder(placeholderStart.toCharArray(), placeholderEnd.toCharArray(),
+                    placeholderStart2.toCharArray(), placeholderEnd2.toCharArray());
+        } else {
+            pd = new DelimeterHolder(placeholderStart.toCharArray(), placeholderEnd.toCharArray());
+        }
+
+        if (TextUtils.isBlank(statementStart)) {
+            throw new IllegalArgumentException("定界符起始符号不能为空");
+        }
+        if (this.statementStart2 != null) {
+            if (TextUtils.isBlank(statementStart2)) {
+                throw new IllegalArgumentException("定义了2对定界符配置，但定界符起始符号不能为空");
+            }
+            sd = new DelimeterHolder(statementStart.toCharArray(),
+                    statementEnd != null ? statementEnd.toCharArray() : null,
+                    statementStart2.toCharArray(),
+                    statementEnd2 != null ? statementEnd2.toCharArray() : null);
+        } else {
+            sd = new DelimeterHolder(statementStart.toCharArray(),
+                    statementEnd != null ? statementEnd.toCharArray() : null);
+        }
+
+        tagConf = new HtmlTagHolder(htmlTagStart, htmlTagEnd, htmlTagBindingAttribute, isHtmlTagSupport);
+    }
+
     private void initDefault() throws IOException {
+        resetHtmlTag();
         // 总是添加这俩个
         pkgList.add("java.util.");
         pkgList.add("java.lang.");
@@ -225,20 +285,28 @@ public class Configuration {
         }
     }
 
-    public void add(File path) throws IOException {
+    private void resetHtmlTag() {
+        htmlTagStart = "<" + htmlTagFlag;
+        htmlTagEnd = "</" + htmlTagFlag;
+    }
+
+    public void add(File file) throws IOException {
         Properties ps = new Properties();
-        ps.load(new FileReader(path));
+        ps.load(new FileReader(file));
         parseProperties(ps);
     }
 
-    public void add(String path) throws IOException {
-
+    public void add(String resourceAsStreamPath) throws IOException {
         Properties ps = new Properties();
-        ps.load(Configuration.class.getResourceAsStream(path));
+        ps.load(Configuration.class.getResourceAsStream(resourceAsStreamPath));
         parseProperties(ps);
-
     }
 
+    /**
+     * 解析配置文件到类字段中
+     *
+     * @param ps 配置文件的内容
+     */
     protected void parseProperties(Properties ps) {
         Set<Map.Entry<Object, Object>> set = ps.entrySet();
         for (Map.Entry<Object, Object> entry : set) {
@@ -246,7 +314,6 @@ public class Configuration {
             String value = (String) entry.getValue();
             setValue(key, value == null ? null : value.trim());
         }
-
     }
 
     protected void setValue(String key, String value) {
@@ -254,75 +321,48 @@ public class Configuration {
             this.charset = value;
         } else if (key.equalsIgnoreCase(DELIMITER_PLACEHOLDER_START)) {
             this.placeholderStart = value;
-
         } else if (key.equalsIgnoreCase(DELIMITER_PLACEHOLDER_END)) {
-
             this.placeholderEnd = value;
         } else if (key.equalsIgnoreCase(DELIMITER_STATEMENT_START)) {
             this.statementStart = value;
         } else if (key.equalsIgnoreCase(DELIMITER_STATEMENT_END)) {
-            if (value == null | value.length() == 0 || value.equals("null")) {
-                this.statementEnd = null;
-            } else {
-                this.statementEnd = value;
-            }
-            /* 第二组定界符号 */
-        } else if (key.equalsIgnoreCase(DELIMITER_PLACEHOLDER_START2)) {
+            this.statementEnd = (TextUtils.isEmpty(value) || TextUtils.equals(value, "null")) ? null : value;
+        } else if (key.equalsIgnoreCase(DELIMITER_PLACEHOLDER_START2)) { // 第二组定界符号
             this.placeholderStart2 = value;
-
         } else if (key.equalsIgnoreCase(DELIMITER_PLACEHOLDER_END2)) {
-
             this.placeholderEnd2 = value;
         } else if (key.equalsIgnoreCase(DELIMITER_STATEMENT_START2)) {
             this.statementStart2 = value;
         } else if (key.equalsIgnoreCase(DELIMITER_STATEMENT_END2)) {
-            if (isBlank(value) || value.equals("null")) {
-                this.statementEnd2 = null;
-            } else {
-                this.statementEnd2 = value;
-            }
-
+            this.statementEnd2 = (TextUtils.isBlank(value) || TextUtils.equals(value, "null")) ? null : value;
         } else if (key.equalsIgnoreCase(NATIVE_CALL)) {
-            this.nativeCall = isBoolean(value, false);
+            this.nativeCall = Boolean.parseBoolean(value);
         } else if (key.equalsIgnoreCase(SAFE_OUTPUT)) {
-            this.safeOutput = isBoolean(value, false);
+            this.safeOutput = Boolean.parseBoolean(value);
         } else if (key.equalsIgnoreCase(IGNORE_CLIENT_IO_ERROR)) {
-            this.isIgnoreClientIOError = isBoolean(value, false);
+            this.isIgnoreClientIOError = Boolean.parseBoolean(value);
         } else if (key.equalsIgnoreCase(DIRECT_BYTE_OUTPUT)) {
-            this.directByteOutput = isBoolean(value, false);
+            this.directByteOutput = Boolean.parseBoolean(value);
         } else if (key.equalsIgnoreCase(ERROR_HANDLER)) {
-            if (isBlank(value) || value.equals("null")) {
-                this.errorHandlerClass = null;
-            } else {
-                this.errorHandlerClass = value;
-            }
-
+            this.errorHandlerClass = (TextUtils.isBlank(value) || value.equals("null")) ? null : value;
         } else if (key.equalsIgnoreCase(WEBAPP_EXT)) {
-            if (value == null || value.length() == 0) {
-
-                this.webAppExt = null;
-            } else {
-                this.webAppExt = value;
-            }
-
+            this.webAppExt = TextUtils.isEmpty(value) ? null : value;
         } else if (key.equalsIgnoreCase(MVC_STRICT)) {
-            this.isStrict = isBoolean(value, false);
+            this.isStrict = Boolean.parseBoolean(value);
         } else if (key.equalsIgnoreCase(HTML_TAG_SUPPORT)) {
-            this.isHtmlTagSupport = isBoolean(value, false);
+            this.isHtmlTagSupport = Boolean.parseBoolean(value);
         } else if (key.equalsIgnoreCase(HTML_TAG_ATTR_CONVERT)) {
-            if (!isBlank(value)) {
+            if (!TextUtils.isBlank(value)) {
                 this.htmlTagAttributeConvert = value;
             }
         } else if (key.equalsIgnoreCase(HTML_TAG_FLAG)) {
             this.htmlTagFlag = value;
-            htmlTagStart = "<" + htmlTagFlag;
-            htmlTagEnd = "</" + htmlTagFlag;
-
+            resetHtmlTag();
         } else if (key.equalsIgnoreCase(HTML_TAG_BINDING_ATTRIBUTE)) {
             this.htmlTagBindingAttribute = value;
         } else if (key.equalsIgnoreCase(IMPORT_PACKAGE)) {
             String[] strs = value.split(";");
-            this.pkgList.addAll(Arrays.asList(strs));
+            this.pkgList.addAll(Arrays.asList(TextUtils.split(value, ",")));
         } else if (key.equalsIgnoreCase(ENGINE)) {
             this.engine = value;
         } else if (key.equalsIgnoreCase(NATIVE_SECUARTY_MANAGER)) {
@@ -333,121 +373,79 @@ public class Configuration {
             this.resourceLoader = value;
         } else if (key.equalsIgnoreCase(BUFFER_SIZE)) {
             this.bufferSize = Integer.parseInt(value);
-            if (bufferSize < 256) {
-                throw new IllegalStateException("GLOBAL.buffer.maxSize 配置不能小于256");
+            if (bufferSize < BUFFER_MIN_SIZE) {
+                throw new IllegalStateException("GLOBAL." + BUFFER_SIZE + " 配置不能小于" + BUFFER_MIN_SIZE);
             }
         } else if (key.equalsIgnoreCase(BUFFER_NUM)) {
             this.bufferNum = Integer.parseInt(value);
         } else {
             // 扩展
-
             if (key.startsWith("fn.") || key.startsWith("FN.")) {
-                addFunction(key, value);
+                String fn = checkValue(value);
+                if (fn != null) {
+                    this.fnMap.put(getExtName(key), fn);
+                }
             } else if (key.startsWith("fnp.") || key.startsWith("FNP.")) {
-                addFunctionPackage(key, value);
+                String fnPkg = checkValue(value);
+                if (fnPkg != null) {
+                    this.fnPkgMap.put(getExtName(key), fnPkg);
+                }
             } else if (key.startsWith("ft.") || key.startsWith("FT.")) {
-                addFormat(key, value);
+                String format = checkValue(value);
+                if (format != null) {
+                    this.formatMap.put(getExtName(key), format);
+                }
             } else if (key.startsWith("ftc.") || key.startsWith("FTC.")) {
-                addDefaultFormat(key, value);
+                String defaultFormat = checkValue(value);
+                if (value != null) {
+                    this.defaultFormatMap.put(getExtName(key), defaultFormat);
+                }
             } else if (key.startsWith("virtual.") || key.startsWith("VIRTUAL.")) {
-                addVirtual(key, value);
+                String virtual = checkValue(value);
+                if (virtual != null) {
+                    this.virtualClass.put(getExtName(key), virtual);
+                }
             } else if (key.startsWith("general_virtual.") || key.startsWith("GENERAL_VIRTUAL.")) {
-                String[] allCls = value.split(";");
-                this.generalVirtualAttributeSet.addAll(Arrays.asList(allCls));
+                this.generalVirtualAttributeSet.addAll(Arrays.asList(TextUtils.split(value, ";")));
             } else if (key.startsWith("tag.") || key.startsWith("TAG.")) {
-                addTag(key, value);
+                String tag = checkValue(value);
+                if (tag != null) {
+                    this.tagMap.put(getExtName(key), tag);
+                }
             } else if (key.startsWith("tagf.") || key.startsWith("TAGF.")) {
-                addTagFactory(key, value);
+                this.tagFactoryMap.put(getExtName(key), value);
             } else if (key.startsWith("resource.") || key.startsWith("RESOURCE.")) {
-                addResource(key, value);
+                this.resourceMap.put(getExtName(key), value);
             }
         }
 
     }
 
-    private void addResource(String key, String value) {
-        String name = this.getExtName(key);
-        this.resourceMap.put(name, value);
-    }
-
-    private void addTagFactory(String key, String value) {
-        String name = this.getExtName(key);
-        this.tagFactoryMap.put(name, value);
-    }
-
-    private void addTag(String key, String value) {
-        value = checkValue(value);
-        if (value == null) {
-            return;
+    protected String checkValue(String value) {
+        String[] vals = TextUtils.split(value, ",");
+        if (vals.length == 1) {
+            return value;
         }
-        String name = this.getExtName(key);
-        this.tagMap.put(name, value);
-    }
-
-    private void addVirtual(String key, String value) {
-        value = checkValue(value);
-        if (value == null) {
-            return;
+        String cls = vals[1];
+        try {
+            // 如果此类不存在，则不加入配置
+            Class.forName(cls, false, classLoader);
+        } catch (ClassNotFoundException e) {
+            return null;
         }
-        String name = this.getExtName(key);
-        this.virtualClass.put(name, value);
+        return vals[0];
     }
 
-    private void addDefaultFormat(String key, String value) {
-        value = checkValue(value);
-        if (value == null) {
-            return;
-        }
-        String name = this.getExtName(key);
-        this.defaultFormatMap.put(name, value);
+    private static String getExtName(@NotNull String key) {
+        return key.substring(key.indexOf(".") + 1);
     }
 
-    private void addFormat(String key, String value) {
-        value = checkValue(value);
-        if (value == null) {
-            return;
-        }
-        String name = this.getExtName(key);
-        this.formatMap.put(name, value);
-    }
-
-    private void addFunction(String key, String value) {
-        value = checkValue(value);
-        if (value == null) {
-            return;
-        }
-        String name = this.getExtName(key);
-        this.fnMap.put(name, value);
-    }
-
-    private void addFunctionPackage(String key, String value) {
-        value = checkValue(value);
-        if (value == null) {
-            return;
-        }
-        String name = this.getExtName(key);
-        this.fnPkgMap.put(name, value);
-    }
-
-    private String getExtName(String key) {
-        int index = key.indexOf(".");
-        return key.substring(index + 1);
-    }
-
-    private boolean isBoolean(String value, boolean defaultValue) {
-        return isNotEmpty(value) ? Boolean.parseBoolean(value) : defaultValue;
-    }
-
-    public boolean isNotEmpty(String str) {
-        return str != null && str.length() != 0;
-    }
+    // =================================================================================================================
+    //                                          getter / setter 方法
+    // =================================================================================================================
 
     public String getCharset() {
         return charset;
-    }
-
-    public static Configuration defaultConfiguration() throws IOException {
-        return new Configuration();
     }
 
     public String getPlaceholderStart() {
@@ -455,9 +453,7 @@ public class Configuration {
     }
 
     public void setPlaceholderStart(String placeholderStart) {
-
         this.placeholderStart = placeholderStart;
-
     }
 
     public String getPlaceholderEnd() {
@@ -752,48 +748,12 @@ public class Configuration {
         this.ps = ps;
     }
 
-    private void buildDelimeter() {
-
-        if (isBlank(placeholderStart) || isBlank(placeholderEnd)) {
-            throw new IllegalArgumentException("占位符不能为空");
-        }
-
-        if (this.placeholderStart2 != null) {
-            if (isBlank(placeholderStart2) || isBlank(placeholderEnd2)) {
-                throw new IllegalArgumentException("定义了2对占位符配置，但占位符2不能为空");
-            }
-            pd = new DelimeterHolder(placeholderStart.toCharArray(), placeholderEnd.toCharArray(),
-                    placeholderStart2.toCharArray(), placeholderEnd2.toCharArray());
-        } else {
-            pd = new DelimeterHolder(placeholderStart.toCharArray(), placeholderEnd.toCharArray());
-        }
-
-        if (isBlank(statementStart)) {
-            throw new IllegalArgumentException("定界符起始符号不能为空");
-        }
-        if (this.statementStart2 != null) {
-            if (isBlank(statementStart2)) {
-                throw new IllegalArgumentException("定义了2对定界符配置，但定界符起始符号不能为空");
-            }
-            sd = new DelimeterHolder(statementStart.toCharArray(),
-                    statementEnd != null ? statementEnd.toCharArray() : null, statementStart2.toCharArray(),
-                    statementEnd2 != null ? statementEnd2.toCharArray() : null);
-        } else {
-
-            sd = new DelimeterHolder(statementStart.toCharArray(),
-                    statementEnd != null ? statementEnd.toCharArray() : null);
-        }
-
-        tagConf = new HtmlTagHolder(getHtmlTagStart(), getHtmlTagEnd(), getHtmlTagBindingAttribute(), this.isHtmlTagSupport);
-
+    public boolean isSafeOutput() {
+        return safeOutput;
     }
 
-    private void checkDelimeter() {
-
-    }
-
-    private boolean isBlank(String str) {
-        return str == null || str.trim().length() == 0;
+    public void setSafeOutput(boolean safeOutput) {
+        this.safeOutput = safeOutput;
     }
 
     public static class HtmlTagHolder {
@@ -811,7 +771,6 @@ public class Configuration {
             this.htmlTagEnd = htmlTagEnd;
             this.htmlTagBindingAttribute = htmlTagBindingAttribute;
             this.support = support;
-
         }
 
         public boolean isSupport() {
@@ -825,9 +784,10 @@ public class Configuration {
     }
 
     public static class DelimeterHolder {
-
-        char[] start, end;
-        char[] start1, end1;
+        char[] start;
+        char[] end;
+        char[] start1;
+        char[] end1;
 
         public DelimeterHolder(char[] start, char[] end) {
             this.start = start;
@@ -842,46 +802,17 @@ public class Configuration {
         }
 
         public PlaceHolderDelimeter createPhd() {
-            if (start1 != null) {
-                return new PlaceHolderDelimeter(start, end, start1, end1);
-            } else {
-                return new PlaceHolderDelimeter(start, end);
-            }
-
+            return start1 == null
+                    ? new PlaceHolderDelimeter(start, end)
+                    : new PlaceHolderDelimeter(start, end, start1, end1);
         }
 
         public ScriptDelimeter createSd() {
-            if (start1 != null) {
-                return new ScriptDelimeter(start, end, start1, end1);
-            } else {
-                return new ScriptDelimeter(start, end);
-            }
-
+            return start1 == null
+                    ? new ScriptDelimeter(start, end)
+                    : new ScriptDelimeter(start, end, start1, end1);
         }
 
     }
 
-    protected String checkValue(String value) {
-        String[] vals = value.split(",");
-        if (vals.length == 1) {
-            return value;
-        }
-        String cls = vals[1];
-        try {
-            //如果此类不存在，则不加入配置
-            Class.forName(cls, false, classLoader);
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-        return vals[0];
-
-    }
-
-    public boolean isSafeOutput() {
-        return safeOutput;
-    }
-
-    public void setSafeOutput(boolean safeOutput) {
-        this.safeOutput = safeOutput;
-    }
 }

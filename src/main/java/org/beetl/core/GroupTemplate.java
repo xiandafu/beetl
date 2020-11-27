@@ -74,17 +74,17 @@ public class GroupTemplate {
     Configuration conf = null;
     TemplateEngine engine = null;
     Cache programCache = ProgramCacheFactory.defaultCache();
-    List<Listener> ls = new ArrayList<Listener>();
+    List<Listener> ls = new ArrayList<>();
     // 所有注册的方法
-    Map<String, Function> fnMap = new HashMap<String, Function>();
+    Map<String, Function> fnMap = new HashMap<>();
     // 格式化函数
-    Map<String, Format> formatMap = new HashMap<String, Format>();
-    Map<Class, Format> defaultFormatMap = new HashMap<Class, Format>(0);
+    Map<String, Format> formatMap = new HashMap<>();
+    Map<Class, Format> defaultFormatMap = new HashMap<>(0);
     // 虚拟函数
-    List<VirtualAttributeEval> virtualAttributeList = new ArrayList<VirtualAttributeEval>();
-    Map<Class, VirtualClassAttribute> virtualClass = new HashMap<Class, VirtualClassAttribute>();
+    List<VirtualAttributeEval> virtualAttributeList = new ArrayList<>();
+    Map<Class, VirtualClassAttribute> virtualClass = new HashMap<>();
     // 标签函数
-    Map<String, TagFactory> tagFactoryMap = new HashMap<String, TagFactory>();
+    Map<String, TagFactory> tagFactoryMap = new HashMap<>();
     ClassSearch classSearch = null;
     // java调用安全管理器
     NativeSecurityManager nativeSecurity = null;
