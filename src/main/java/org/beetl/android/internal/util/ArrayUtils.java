@@ -41,36 +41,36 @@ public class ArrayUtils {
     private ArrayUtils() { /* cannot be instantiated */ }
 
     public static byte[] newUnpaddedByteArray(int minLen) {
-        return (byte[]) BeetlRuntime.getMemoryManager().newUnpaddedArray(byte.class, minLen);
+        return (byte[]) Array.newInstance(byte.class, minLen);
     }
 
     public static char[] newUnpaddedCharArray(int minLen) {
-        return (char[])BeetlRuntime.getMemoryManager().newUnpaddedArray(char.class, minLen);
+        return (char[]) Array.newInstance(char.class, minLen);
     }
 
     public static int[] newUnpaddedIntArray(int minLen) {
-        return (int[])BeetlRuntime.getMemoryManager().newUnpaddedArray(int.class, minLen);
+        return (int[]) Array.newInstance(int.class, minLen);
     }
 
     public static boolean[] newUnpaddedBooleanArray(int minLen) {
-        return (boolean[])BeetlRuntime.getMemoryManager().newUnpaddedArray(boolean.class, minLen);
+        return (boolean[]) Array.newInstance(boolean.class, minLen);
     }
 
     public static long[] newUnpaddedLongArray(int minLen) {
-        return (long[])BeetlRuntime.getMemoryManager().newUnpaddedArray(long.class, minLen);
+        return (long[]) Array.newInstance(long.class, minLen);
     }
 
     public static float[] newUnpaddedFloatArray(int minLen) {
-        return (float[])BeetlRuntime.getMemoryManager().newUnpaddedArray(float.class, minLen);
+        return (float[]) Array.newInstance(float.class, minLen);
     }
 
     public static Object[] newUnpaddedObjectArray(int minLen) {
-        return (Object[])BeetlRuntime.getMemoryManager().newUnpaddedArray(Object.class, minLen);
+        return (Object[]) Array.newInstance(Object.class, minLen);
     }
 
     @SuppressWarnings("unchecked")
     public static <T> T[] newUnpaddedArray(Class<T> clazz, int minLen) {
-        return (T[])BeetlRuntime.getMemoryManager().newUnpaddedArray(clazz, minLen);
+        return (T[]) Array.newInstance(clazz, minLen);
     }
 
     /**
@@ -189,6 +189,7 @@ public class ArrayUtils {
 
     /**
      * Checks that value is present as at least one of the elements of the array.
+     *
      * @param array the array to check in
      * @param value the value to check for
      * @return true if the value is present in the array
@@ -325,11 +326,11 @@ public class ArrayUtils {
         if (array != null) {
             if (!allowDuplicates && contains(array, element)) return array;
             end = array.length;
-            result = (T[])Array.newInstance(kind, end + 1);
+            result = (T[]) Array.newInstance(kind, end + 1);
             System.arraycopy(array, 0, result, 0, end);
         } else {
             end = 0;
-            result = (T[])Array.newInstance(kind, 1);
+            result = (T[]) Array.newInstance(kind, 1);
         }
         result[end] = element;
         return result;
@@ -348,7 +349,7 @@ public class ArrayUtils {
                     if (length == 1) {
                         return null;
                     }
-                    T[] result = (T[])Array.newInstance(kind, length - 1);
+                    T[] result = (T[]) Array.newInstance(kind, length - 1);
                     System.arraycopy(array, 0, result, 0, i);
                     System.arraycopy(array, i + 1, result, i, length - i - 1);
                     return result;
@@ -364,7 +365,7 @@ public class ArrayUtils {
     public static @NotNull int[] appendInt(@Nullable int[] cur, int val,
                                            boolean allowDuplicates) {
         if (cur == null) {
-            return new int[] { val };
+            return new int[]{val};
         }
         final int N = cur.length;
         if (!allowDuplicates) {
@@ -441,7 +442,7 @@ public class ArrayUtils {
     public static @NotNull long[] appendLong(@Nullable long[] cur, long val,
                                              boolean allowDuplicates) {
         if (cur == null) {
-            return new long[] { val };
+            return new long[]{val};
         }
         final int N = cur.length;
         if (!allowDuplicates) {
@@ -575,8 +576,9 @@ public class ArrayUtils {
     /**
      * Removes elements that match the predicate in an efficient way that alters the order of
      * elements in the collection. This should only be used if order is not important.
+     *
      * @param collection The ArrayList from which to remove elements.
-     * @param predicate The predicate that each element is tested against.
+     * @param predicate  The predicate that each element is tested against.
      * @return the number of elements removed.
      */
     public static <T> int unstableRemoveIf(@Nullable ArrayList<T> collection,
