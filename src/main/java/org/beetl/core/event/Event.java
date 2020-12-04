@@ -25,7 +25,7 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.beetl.core;
+package org.beetl.core.event;
 
 /**
  * 模板内部的一些事件
@@ -33,13 +33,13 @@ package org.beetl.core;
  * @author xiandafu
  */
 public class Event {
-    Object event = null;
+    final Object event;
 
     public Event(Object eventTarget) {
         this.event = eventTarget;
     }
 
-    public Object getEventTaget() {
+    public Object getEvent() {
         return event;
     }
 }
