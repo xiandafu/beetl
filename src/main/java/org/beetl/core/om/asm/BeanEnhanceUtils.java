@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -80,50 +81,38 @@ final class BeanEnhanceUtils {
     }
 
     private static void buildFieldDescMapByProperty(ClassDescription classDescription) {
-        buildFieldDescMap(classDescription, converPropToFieldDesc(classDescription.propertyDescriptors));
-    }
+        List<PropertyDescriptor> propList = classDescription.propertyDescriptors;
 
-    /**
-     * 构建 FieldDescription
-     */
-    private static List<FieldDescription> converPropToFieldDesc(List<PropertyDescriptor> propList) {
-        List<FieldDescription> fieldDescs = new ArrayList<>(propList.size() * 2);
-        FieldDescription fieldDesc = null;
-        Method curPropReadMethod = null;
+        List<FieldDescription> fieldDescs = new ArrayList<>(propList.size() << 1);
+        Method curPropReadMethod;
+
         for (PropertyDescriptor prop : propList) {
             curPropReadMethod = prop.getReadMethod();
-            if (curPropReadMethod != null && !ignoreSet.contains(curPropReadMethod.getName())) {
-                fieldDesc = new FieldDescription();
-                fieldDesc.name = prop.getName();
-                fieldDesc.desc = Type.getType(curPropReadMethod.getReturnType()).toString();
-                fieldDesc.readMethodName = curPropReadMethod.getName();
-                fieldDesc.readMethodDesc = getMethodDesc(curPropReadMethod);
-                fieldDescs.add(fieldDesc);
+
+            if ((curPropReadMethod != null) && !ignoreSet.contains(curPropReadMethod.getName())) {
+
+                fieldDescs.add(new FieldDescription(
+                        prop.getName(), Type.getType(curPropReadMethod.getReturnType()).toString(),
+                        curPropReadMethod.getName(), getMethodDesc(curPropReadMethod)
+                ));
+
                 // 2.x兼容,{@see ObjectUtil#getInvokder}
                 if (prop.getPropertyType() == Boolean.class || prop.getPropertyType() == boolean.class) {
-                    // 再生成一个FieldDescription
-                    fieldDescs.add(getBooleanFieldDescription(prop));
+                    fieldDescs.add(new FieldDescription(
+                            curPropReadMethod.getName(), Type.getType(curPropReadMethod.getReturnType()).toString(),
+                            curPropReadMethod.getName(), getMethodDesc(curPropReadMethod)
+                    ));
                 }
 
             }
         }
-        return fieldDescs;
-    }
 
-    private static FieldDescription getBooleanFieldDescription(PropertyDescriptor prop) {
-        Method curPropReadMethod = prop.getReadMethod();
-        String name = curPropReadMethod.getName();
-        FieldDescription booleanDesc = new FieldDescription();
-        booleanDesc.name = name;
-        booleanDesc.desc = Type.getType(curPropReadMethod.getReturnType()).toString();
-        booleanDesc.readMethodName = curPropReadMethod.getName();
-        booleanDesc.readMethodDesc = getMethodDesc(curPropReadMethod);
-        return booleanDesc;
+        buildFieldDescMap(classDescription, fieldDescs);
     }
 
     private static void buildFieldDescMap(ClassDescription classDescription, List<FieldDescription> allFieldDescs) {
         // 先对其按照hashCode进行排序，方便后续生产代码
-        allFieldDescs.sort((p1, p2) -> Integer.compare(p1.name.hashCode(), p2.name.hashCode()));
+        allFieldDescs.sort(Comparator.comparingInt(p -> p.name.hashCode()));
 
         Map<Integer, List<FieldDescription>> filedDescMap = new LinkedHashMap<>();
         int hashCode = 0;
