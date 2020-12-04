@@ -55,12 +55,17 @@ public class ObjectMethodMatchConf {
     // 是否需要转化
     public boolean isNeedConvert;
 
+    @Override
     public String toString() {
-        String str = method.toString() + ",";
+        StringBuilder sb = new StringBuilder(method.toString());
+        sb.append(",");
+
+        String sep = "";
         for (int i : convert) {
-            str = str + i + ",";
+            sb.append(sep).append(i);
+            sep = ",";
         }
-        return str;
+        return sb.toString();
     }
 
     public Object[] convert(Object[] args) {
