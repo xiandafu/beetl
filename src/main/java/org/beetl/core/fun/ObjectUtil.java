@@ -67,9 +67,9 @@ import org.beetl.core.om.ObjectMethodMatchConf;
  */
 public class ObjectUtil {
     //	TODO3.0 改成SoftReference，控制内存大小
-    public final static Map<Class, Map<String, MethodInvoker>> methodInvokerCache = new ConcurrentHashMap<Class, Map<String, MethodInvoker>>();
+    public final static Map<Class, Map<String, MethodInvoker>> methodInvokerCache = new ConcurrentHashMap<>();
 
-    public static Map<Class, ObjectInfo> cachedClassInfoMap = new ConcurrentHashMap<Class, ObjectInfo>();
+    public static Map<Class, ObjectInfo> cachedClassInfoMap = new ConcurrentHashMap<>();
     public static Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 
     protected static PropertyDescriptor[] propertyDescriptors(Class<?> c) throws IntrospectionException {
@@ -143,13 +143,11 @@ public class ObjectUtil {
         }
 
         // General Get
-        Method method = getGetMethod(c, "get", new Class[]
-                {Object.class});
+        Method method = getGetMethod(c, "get", Object.class);
         if (method != null) {
             invoker = new GeneralGetMethodInvoker(method, name);
         } else {
-            method = getGetMethod(c, "get", new Class[]
-                    {String.class});
+            method = getGetMethod(c, "get", String.class);
             if (method != null) {
                 invoker = new GeneralGetMethodInvoker(method, name);
             }
@@ -161,7 +159,7 @@ public class ObjectUtil {
         }
 
         if (map == null) {
-            map = new ConcurrentHashMap<String, MethodInvoker>();
+            map = new ConcurrentHashMap<>();
             map.putIfAbsent(name, invoker);
             methodInvokerCache.putIfAbsent(c, map);
         } else {
@@ -187,9 +185,7 @@ public class ObjectUtil {
             Method m = c.getMethod(methodName, paras);
             m.setAccessible(true);
             return m;
-        } catch (SecurityException e) {
-            return null;
-        } catch (NoSuchMethodException e) {
+        } catch (SecurityException | NoSuchMethodException e) {
             return null;
         }
     }
