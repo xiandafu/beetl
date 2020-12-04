@@ -38,7 +38,6 @@ public abstract class Expression extends ASTNode {
 
     public Expression(GrammarToken token) {
         super(token);
-        // TODO Auto-generated constructor stub
     }
 
     public Object evaluate(Context ctx) {

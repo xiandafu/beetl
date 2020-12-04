@@ -39,7 +39,6 @@ public class BreakStatement extends Statement {
 
     public BreakStatement(GrammarToken token) {
         super(token);
-        // TODO Auto-generated constructor stub
     }
 
     @Override

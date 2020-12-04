@@ -46,12 +46,10 @@ public class IfStatement extends Statement {
         this.condtion = condtion;
         this.ifStatement = ifStatement;
         this.elseStatement = elseStatement;
-        // TODO Auto-generated constructor stub
     }
 
     @Override
     public void execute(Context ctx) {
-        // TODO Auto-generated method stub
         Object value = condtion.evaluate(ctx);
 
         if (ALU.isTrue(value, this)) {

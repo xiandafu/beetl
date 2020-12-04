@@ -38,7 +38,6 @@ public class ContinueStatement extends Statement {
 
     public ContinueStatement(GrammarToken token) {
         super(token);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
