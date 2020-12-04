@@ -492,17 +492,17 @@ class HTMLTagParser {
         this.expMap = expMap;
     }
 
-    public static void main(String[] args) {
-        String input = "<#bbsListTag  >hello ${a}</#bbsListTag>";
-        HTMLTagParser htmltag = new HTMLTagParser(input.toCharArray(), 2, "var", true);
-        htmltag.parser();
-        Log.i(TAG, htmltag.getTagName());
-        Log.i(TAG, htmltag.getExpMap().toString());
-        Log.i(TAG, "" + htmltag.isEmptyTag());
-        Log.i(TAG, "" + htmltag.hasVarBinding);
-        Log.i(TAG, htmltag.varBidingStr);
-        Log.i(TAG, htmltag.htmlAttributeNameMap.toString());
-        Log.i(TAG, htmltag.getHtmlColMapAsString());
-
-    }
+//    public static void main(String[] args) {
+//        String input = "<#bbsListTag  >hello ${a}</#bbsListTag>";
+//        HTMLTagParser htmltag = new HTMLTagParser(input.toCharArray(), 2, "var", true);
+//        htmltag.parser();
+//        Log.i(TAG, htmltag.getTagName());
+//        Log.i(TAG, htmltag.getExpMap().toString());
+//        Log.i(TAG, "" + htmltag.isEmptyTag());
+//        Log.i(TAG, "" + htmltag.hasVarBinding);
+//        Log.i(TAG, htmltag.varBidingStr);
+//        Log.i(TAG, htmltag.htmlAttributeNameMap.toString());
+//        Log.i(TAG, htmltag.getHtmlColMapAsString());
+//
+//    }
 }

@@ -29,6 +29,7 @@ package org.beetl.core;
 
 import java.io.IOException;
 
+import org.beetl.core.cache.ContextBuffer;
 import org.beetl.core.io.FloatingIOWriter;
 import org.beetl.core.io.IntIOWriter;
 

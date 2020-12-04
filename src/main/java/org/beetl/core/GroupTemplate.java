@@ -41,6 +41,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.beetl.core.cache.Cache;
+import org.beetl.core.cache.ContextBuffer;
+import org.beetl.core.cache.ContextLocalBuffers;
 import org.beetl.core.cache.ProgramCacheFactory;
 import org.beetl.core.event.Event;
 import org.beetl.core.event.EventListener;
