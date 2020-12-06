@@ -42,8 +42,6 @@ public class Literal extends Expression implements Comparable {
     public Literal(Object value, GrammarToken token) {
         super(token);
         this.obj = value;
-
-        // TODO Auto-generated constructor stub
     }
 
     @Override

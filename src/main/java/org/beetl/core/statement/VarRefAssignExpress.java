@@ -32,7 +32,6 @@ import org.beetl.core.exception.BeetlException;
 
 import org.beetl.core.om.AABuilder;
 import org.beetl.core.om.AttributeAccess;
-import org.beetl.core.om.ObjectSetterUtil;
 
 /**
  * call(xxx.cc = exp); 返回是exp

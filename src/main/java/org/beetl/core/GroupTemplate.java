@@ -41,7 +41,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.beetl.core.cache.Cache;
+import org.beetl.core.cache.ContextBuffer;
+import org.beetl.core.cache.ContextLocalBuffers;
 import org.beetl.core.cache.ProgramCacheFactory;
+import org.beetl.core.event.Event;
+import org.beetl.core.event.EventListener;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.exception.HTMLTagParserException;
 import org.beetl.core.fun.FunctionWrapper;
@@ -74,26 +78,33 @@ public class GroupTemplate {
     Configuration conf = null;
     TemplateEngine engine = null;
     Cache programCache = ProgramCacheFactory.defaultCache();
-    List<Listener> ls = new ArrayList<>();
-    // 所有注册的方法
+
+    /** 事件监听器列表 */
+    List<EventListener> events = new ArrayList<>();
+
+    /** 所有注册的方法 */
     Map<String, Function> fnMap = new HashMap<>();
-    // 格式化函数
+    /** 格式化函数 */
     Map<String, Format> formatMap = new HashMap<>();
+    /** 默认的格式化函数 */
     Map<Class, Format> defaultFormatMap = new HashMap<>(0);
-    // 虚拟函数
+    /** 虚拟函数列表 */
     List<VirtualAttributeEval> virtualAttributeList = new ArrayList<>();
+    /** 虚类与虚类属性的映射 */
     Map<Class, VirtualClassAttribute> virtualClass = new HashMap<>();
-    // 标签函数
+    /** 标签函数 */
     Map<String, TagFactory> tagFactoryMap = new HashMap<>();
+    /** 用于查找类的工具 */
     ClassSearch classSearch = null;
-    // java调用安全管理器
+    /** 本地调用(这里就是Java)安全管理器 */
     NativeSecurityManager nativeSecurity = null;
+    /** 错误处理类 */
     ErrorHandler errorHandler = null;
+    /** 共享变量 */
     Map<String, Object> sharedVars = null;
-
+    /** 缓冲区 */
     ContextLocalBuffers buffers = null;
-
-    // 用于解析html tag得属性，转化为符合js变量名字
+    /** 用于解析html tag得属性，转化为符合js变量名字 */
     AttributeNameConvert htmlTagAttrNameConvert = null;
 
     /**
@@ -133,13 +144,10 @@ public class GroupTemplate {
      */
 
     public GroupTemplate(ResourceLoader loader, Configuration conf) {
-
         this(loader, conf, null);
-
     }
 
     public GroupTemplate(ResourceLoader loader, Configuration conf, ClassLoader classLoader) {
-
         try {
             this.resourceLoader = loader;
             this.classLoader = classLoader == null ? this.classLoader : classLoader;
@@ -155,15 +163,13 @@ public class GroupTemplate {
     protected void initResourceLoader() {
         if (this.resourceLoader == null) {
             this.resourceLoader = (ResourceLoader) ObjectUtil.instance(conf.resourceLoader, classLoader);
-
         }
         resourceLoader.init(this);
-
     }
 
     protected void init() {
         conf.build();
-		engine = (TemplateEngine)ObjectUtil.instance(conf.getEngine(),classLoader);
+        engine = (TemplateEngine) ObjectUtil.instance(conf.getEngine(), classLoader);
         this.initFunction();
         this.initFormatter();
         this.initTag();
@@ -176,15 +182,12 @@ public class GroupTemplate {
             errorHandler = null;
         } else {
             errorHandler = (ErrorHandler) ObjectUtil.instance(conf.errorHandlerClass, classLoader);
-
         }
 
         htmlTagAttrNameConvert = (AttributeNameConvert) ObjectUtil.instance(conf.htmlTagAttributeConvert, classLoader);
-
     }
 
     protected void initFunction() {
-
         Map<String, String> fnMap = this.conf.fnMap;
         for (Entry<String, String> entry : fnMap.entrySet()) {
             String name = entry.getKey();
@@ -203,7 +206,6 @@ public class GroupTemplate {
     }
 
     protected void initFormatter() {
-
         Map<String, String> formatMap = this.conf.formatMap;
         for (Entry<String, String> entry : formatMap.entrySet()) {
             String name = entry.getKey();
@@ -285,9 +287,9 @@ public class GroupTemplate {
     }
 
     @Deprecated
-	public Script getScript(String key) {
-		return getScript((Object)key);
-	}
+    public Script getScript(String key) {
+        return getScript((Object) key);
+    }
 
     /**
      * 获得脚本
@@ -298,8 +300,8 @@ public class GroupTemplate {
 
     @Deprecated
     public Script getScript(String key, ResourceLoader loader) {
-		return getScript((Object)key, loader);
-	}
+        return getScript((Object) key, loader);
+    }
 
     /**
      * 执行某个脚本，参数是paras，返回的是顶级变量
@@ -308,14 +310,12 @@ public class GroupTemplate {
      */
     public Map runScript(Object key, Map<String, Object> paras) throws BeetlException {
         return this.runScript(key, paras, new StringWriter());
-
     }
 
     @Deprecated
-	public Map runScript(String key, Map<String, Object> paras) throws BeetlException {
-		return this.runScript((Object)key, paras);
-
-	}
+    public Map runScript(String key, Map<String, Object> paras) throws BeetlException {
+        return this.runScript((Object) key, paras);
+    }
 
     /**
      * 执行某个脚本，参数是paras，返回的是顶级变量 ,如果script有输出，则输出到writer里
@@ -325,9 +325,9 @@ public class GroupTemplate {
     }
 
     @Deprecated
-	public Map runScript(String key, Map<String, Object> paras, Writer w) throws BeetlException {
-		return this.runScript((Object)key, paras, w);
-	}
+    public Map runScript(String key, Map<String, Object> paras, Writer w) throws BeetlException {
+        return this.runScript((Object) key, paras, w);
+    }
 
     /**
      * 执行某个脚本，参数是paras，返回的是顶级变量
@@ -348,11 +348,10 @@ public class GroupTemplate {
     }
 
     @Deprecated
-	public Map runScript(String key, Map<String, Object> paras, Writer w, ResourceLoader loader)
-			throws BeetlException {
-		return this.runScript((Object)key,paras,w,loader);
-
-	}
+    public Map runScript(String key, Map<String, Object> paras, Writer w, ResourceLoader loader)
+            throws BeetlException {
+        return this.runScript((Object) key, paras, w, loader);
+    }
 
     public BeetlException validateTemplate(Object key, ResourceLoader loader) {
         Template t = getTemplate(key, loader);
@@ -360,9 +359,9 @@ public class GroupTemplate {
     }
 
     @Deprecated
-	public BeetlException validateTemplate(String key, ResourceLoader loader) {
-		return validateTemplate((Object)key,loader);
-	}
+    public BeetlException validateTemplate(String key, ResourceLoader loader) {
+        return validateTemplate((Object) key, loader);
+    }
 
     public BeetlException validateTemplate(Object key) {
         Template t = getTemplate(key, this.resourceLoader);
@@ -370,26 +369,27 @@ public class GroupTemplate {
     }
 
     @Deprecated
-	public BeetlException validateTemplate(String key) {
-		return this.validateTemplate((Object)key);
-	}
+    public BeetlException validateTemplate(String key) {
+        return this.validateTemplate((Object) key);
+    }
+
     public BeetlException validateScript(Object key, ResourceLoader loader) {
         return loadScriptTemplate(key, loader).validate();
     }
 
     @Deprecated
-	public BeetlException validateScript(String key, ResourceLoader loader) {
-		return validateScript((Object)key, loader);
-	}
+    public BeetlException validateScript(String key, ResourceLoader loader) {
+        return validateScript((Object) key, loader);
+    }
 
     public BeetlException validateScript(Object key) {
         return loadScriptTemplate(key, this.resourceLoader).validate();
     }
 
     @Deprecated
-	public BeetlException validateScript(String key) {
-		return validateScript((Object)key);
-	}
+    public BeetlException validateScript(String key) {
+        return validateScript((Object) key);
+    }
 
     private Map getScriptTopScopeVars(Template t) {
         Map<String, Integer> idnexMap = t.program.metaData.getTemplateRootScopeIndexMap();
@@ -431,9 +431,9 @@ public class GroupTemplate {
     }
 
     @Deprecated
-	public Template getTemplate(String key, ResourceLoader loader) {
-		return this.getTemplate((Object)key, loader);
-	}
+    public Template getTemplate(String key, ResourceLoader loader) {
+        return this.getTemplate((Object) key, loader);
+    }
 
     /**
      * 获取模板key的标有ajaxId的模板片段。
@@ -444,13 +444,13 @@ public class GroupTemplate {
         return template;
     }
 
-	/**
-	 * 获取模板key的标有ajaxId的模板片段。
-	 */
-	@Deprecated
-	public Template getAjaxTemplate(String key, String ajaxId, ResourceLoader loader) {
-		return getAjaxTemplate((Object)key,ajaxId,loader);
-	}
+    /**
+     * 获取模板key的标有ajaxId的模板片段。
+     */
+    @Deprecated
+    public Template getAjaxTemplate(String key, String ajaxId, ResourceLoader loader) {
+        return getAjaxTemplate((Object) key, ajaxId, loader);
+    }
 
     /**
      * 得到模板，并指明父模板
@@ -462,9 +462,9 @@ public class GroupTemplate {
     }
 
     @Deprecated
-	public Template getTemplate(String key, String parent, ResourceLoader loader) {
-		return getTemplate((Object)key,parent,loader);
-	}
+    public Template getTemplate(String key, String parent, ResourceLoader loader) {
+        return getTemplate((Object) key, parent, loader);
+    }
 
     public Template getTemplate(Object key, Context parent) {
         Template template = this.getTemplateByLoader(key, this.resourceLoader, parent.localBuffer);
@@ -473,24 +473,22 @@ public class GroupTemplate {
     }
 
     @Deprecated
-	public Template getTemplate(String key, Context parent) {
-		return getTemplate((Object)key,parent);
-	}
+    public Template getTemplate(String key, Context parent) {
+        return getTemplate((Object) key, parent);
+    }
 
     /**
      * 获取指定模板。
      * 注意，不能根据Template为空来判断模板是否存在，请调用ResourceLoader来判断
      */
     public Template getTemplate(Object key) {
-
         return getTemplateByLoader(key, this.resourceLoader, null);
     }
 
     @Deprecated
-	public Template getTemplate(String key) {
-
-		return getTemplate((Object)key);
-	}
+    public Template getTemplate(String key) {
+        return getTemplate((Object) key);
+    }
 
     /**
      * 获取模板的ajax片段，
@@ -498,17 +496,15 @@ public class GroupTemplate {
      * @param key ，key为模板resourceId
      */
     public Template getAjaxTemplate(Object key, String ajaxId) {
-
         Template t = getTemplateByLoader(key, this.resourceLoader, null);
         t.ajaxId = ajaxId;
         return t;
     }
 
     @Deprecated
-	public Template getAjaxTemplate(String key, String ajaxId) {
-		return  getAjaxTemplate((Object)key, ajaxId);
-
-	}
+    public Template getAjaxTemplate(String key, String ajaxId) {
+        return getAjaxTemplate((Object) key, ajaxId);
+    }
 
     /**
      * Template类是线程安全和高效的，但只能运行一次就抛弃。如果想一直持有Template
@@ -546,9 +542,9 @@ public class GroupTemplate {
 
 
     @Deprecated
-	public boolean hasTemplate(String key) {
-		return hasTemplate((Object)key);
-	}
+    public boolean hasTemplate(String key) {
+        return hasTemplate((Object) key);
+    }
 
     /**
      * 手工删除加载过的模板
@@ -559,9 +555,9 @@ public class GroupTemplate {
 
 
     @Deprecated
-	public void removeTemplate(String key) {
-		removeTemplate((Object)key);
-	}
+    public void removeTemplate(String key) {
+        removeTemplate((Object) key);
+    }
 
     private Program loadTemplate(Resource res) {
         TextParser text = null;
@@ -616,14 +612,6 @@ public class GroupTemplate {
 
     }
 
-    // /** 为事件类型注册一个监听器
-    // * @param type
-    // * @param e
-    // */
-    // public void onEvent(int type,Listener e){
-    //
-    // }
-
     public ResourceLoader getResourceLoader() {
         return resourceLoader;
     }
@@ -645,13 +633,13 @@ public class GroupTemplate {
     }
 
     public void fireEvent(Event event) {
-        for (Listener l : this.ls) {
+        for (EventListener l : this.events) {
             l.onEvent(event);
         }
     }
 
-    public void addListener(Listener listener) {
-        this.ls.add(listener);
+    public void addListener(EventListener eventListener) {
+        this.events.add(eventListener);
     }
 
     public Cache getProgramCache() {
@@ -670,7 +658,6 @@ public class GroupTemplate {
     public void registerFunctionPackage(String packageName, Object o) {
         checkFunctionName(packageName);
         registerFunctionPackage(packageName, o.getClass(), o);
-
     }
 
     /**
@@ -680,7 +667,6 @@ public class GroupTemplate {
         checkFunctionName(packageName);
         Object o = ObjectUtil.tryInstance(cls.getName(), this.classLoader);
         registerFunctionPackage(packageName, cls, o);
-
     }
 
     /**
@@ -689,11 +675,9 @@ public class GroupTemplate {
     public void registerFunctionPackageAsRoot(Class cls) {
         Object o = ObjectUtil.tryInstance(cls.getName(), this.classLoader);
         registerFunctionPackageAsRoot(cls, o);
-
     }
 
     private void checkFunctionName(String name) {
-
         if (!BeetlUtil.checkNameing(name)) {
             int[] log = BeetlUtil.getLog();
             throw new RuntimeException("注册方法名不合法:" + name + ",错误位置:" + log[0] + ",出现错误的字符:" + (char) log[1]);
@@ -709,7 +693,6 @@ public class GroupTemplate {
                 this.registerFunction(fw.functionName, fw);
             }
         }
-
     }
 
     protected void registerFunctionPackageAsRoot(Class target, Object o) {
@@ -720,14 +703,12 @@ public class GroupTemplate {
             String functionName = fw.functionName.replace("_root.", "");
             this.registerFunction(functionName, fw);
         }
-
     }
 
     /**
      * 注册一个自定义格式化函数
      */
     public void registerFormat(String name, Format format) {
-
         this.formatMap.put(name, format);
     }
 
@@ -771,21 +752,17 @@ public class GroupTemplate {
 
     public Format getDefaultFormat(Class type) {
         return this.defaultFormatMap.get(type);
-
     }
 
     public void registerVirtualAttributeEval(VirtualAttributeEval e) {
         virtualAttributeList.add(e);
-
     }
 
     public void registerVirtualAttributeClass(Class cls, VirtualClassAttribute virtual) {
         this.virtualClass.put(cls, virtual);
-
     }
 
     public VirtualClassAttribute getVirtualAttributeEval(Class c, String attributeName) {
-
         VirtualClassAttribute attr = virtualClass.get(c);
         if (attr != null) return attr;
 
@@ -817,7 +794,7 @@ public class GroupTemplate {
      */
     public Map<String, Object> getSharedVars() {
         if (sharedVars == null) {
-            sharedVars = new HashMap<String, Object>();
+            sharedVars = new HashMap<>();
         }
         return sharedVars;
     }
@@ -831,7 +808,6 @@ public class GroupTemplate {
         } else {
             this.sharedVars = vars;
         }
-
     }
 
     public void setErrorHandler(ErrorHandler errorHandler) {

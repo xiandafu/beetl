@@ -30,6 +30,7 @@ package org.beetl.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.beetl.core.cache.ContextBuffer;
 import org.beetl.core.tag.Tag;
 
 /**

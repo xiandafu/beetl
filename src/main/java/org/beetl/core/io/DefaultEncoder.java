@@ -8,7 +8,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.UnsupportedCharsetException;
 
-import org.beetl.core.ContextBuffer;
+import org.beetl.core.cache.ContextBuffer;
 
 public class DefaultEncoder {
 

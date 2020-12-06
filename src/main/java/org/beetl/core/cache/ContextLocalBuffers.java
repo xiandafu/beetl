@@ -1,4 +1,4 @@
-package org.beetl.core;
+package org.beetl.core.cache;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
