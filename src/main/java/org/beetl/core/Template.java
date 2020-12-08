@@ -33,6 +33,7 @@ import java.io.Writer;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.beetl.core.cache.ContextBuffer;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.io.ByteWriter_Byte;
 import org.beetl.core.io.ByteWriter_Char;

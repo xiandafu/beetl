@@ -44,7 +44,6 @@ public final class StaticTextByteASTNode extends Statement {
     public StaticTextByteASTNode(int textIndex, GrammarToken token) {
         super(token);
         this.textIndex = textIndex;
-        // TODO Auto-generated constructor stub
     }
 
     @Override

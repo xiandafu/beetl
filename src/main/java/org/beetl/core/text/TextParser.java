@@ -3,7 +3,7 @@ package org.beetl.core.text;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.config.BeetlConfig;
-import org.beetl.core.log.Log;
+import org.beetl.android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class TextParser {
     /** Log TAG */
     private static final String TAG = "TextParser";
 
-    Map<Integer, String> textVars = new HashMap<Integer, String>();
+    Map<Integer, String> textVars = new HashMap<>();
     int textNameSuffix = 0;
     PlaceHolderDelimeter pd;
     ScriptDelimeter sd;
@@ -42,34 +42,36 @@ public class TextParser {
 
     AttributeNameConvert attributeNameConvert;
 
-    public TextParser(GroupTemplate groupTemplate, Configuration.DelimeterHolder pdConfig, Configuration.DelimeterHolder sdConfig) {
-        if (groupTemplate == null) {
-            attributeNameConvert = new DefaultAttributeNameConvert();
-        } else {
-            attributeNameConvert = groupTemplate.getHtmlTagAttrNameConvert();
-        }
-
+    public TextParser(GroupTemplate groupTemplate,
+                      Configuration.DelimeterHolder pdConfig,
+                      Configuration.DelimeterHolder sdConfig) {
+        attributeNameConvert = (groupTemplate == null)
+                ? new DefaultAttributeNameConvert()
+                : groupTemplate.getHtmlTagAttrNameConvert();
         this.pd = pdConfig.createPhd();
         this.sd = sdConfig.createSd();
     }
 
-    public TextParser(GroupTemplate groupTemplate, Configuration.DelimeterHolder pdConfig, Configuration.DelimeterHolder sdConfig, Configuration.HtmlTagHolder tagConfig) {
+    public TextParser(GroupTemplate groupTemplate,
+                      Configuration.DelimeterHolder pdConfig,
+                      Configuration.DelimeterHolder sdConfig,
+                      Configuration.HtmlTagHolder tagConfig) {
         this(groupTemplate, pdConfig, sdConfig);
         if (tagConfig.isSupport()) {
             this.htmlTagConfig = tagConfig.create();
         }
     }
 
-    public TextParser(Configuration.DelimeterHolder pdConfig, Configuration.DelimeterHolder sdConfig, Configuration.HtmlTagHolder tagConfig) {
+    public TextParser(Configuration.DelimeterHolder pdConfig,
+                      Configuration.DelimeterHolder sdConfig,
+                      Configuration.HtmlTagHolder tagConfig) {
         this(null, pdConfig, sdConfig);
         if (tagConfig.isSupport()) {
             this.htmlTagConfig = tagConfig.create();
         }
-
     }
 
     public void doParse(Reader orginal) throws IOException {
-
         scan1(orginal);
         //合并
         sourceFragement.merge();
@@ -108,7 +110,6 @@ public class TextParser {
                 test = next;
             }
         }
-
     }
 
     public StringBuilder getScript() {

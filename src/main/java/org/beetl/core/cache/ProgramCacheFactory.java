@@ -29,7 +29,7 @@ package org.beetl.core.cache;
 
 import org.beetl.core.config.BeetlConfig;
 import org.beetl.core.fun.ObjectUtil;
-import org.beetl.core.log.Log;
+import org.beetl.android.util.Log;
 
 /**
  * 存储Program的缓存，默认是采用{@link LocalCache},可以通过设置

@@ -41,7 +41,6 @@ public class BeetlParserException extends BeetlException {
      */
     public BeetlParserException(@BeetlErrorCode String detailCode) {
         super(detailCode);
-        // TODO Auto-generated constructor stub
     }
 
     /**

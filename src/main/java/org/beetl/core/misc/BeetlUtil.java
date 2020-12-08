@@ -72,6 +72,7 @@ public class BeetlUtil {
 
     /** 部分中文、英文 Token 映射表 */
     static Map<String, String> zhEnTokenMap = new HashMap<>();
+
     static {
         zhEnTokenMap.put("，", ",");
         zhEnTokenMap.put("；", ";");

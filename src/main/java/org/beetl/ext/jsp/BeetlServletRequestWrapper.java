@@ -13,7 +13,6 @@ public class BeetlServletRequestWrapper extends HttpServletRequestWrapper {
     public BeetlServletRequestWrapper(HttpServletRequest request, Map paras) {
         super(request);
         this.paras = paras;
-        // TODO Auto-generated constructor stub
     }
 
     @Override

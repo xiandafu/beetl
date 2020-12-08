@@ -27,13 +27,15 @@
  */
 package org.beetl.core;
 
+import java.io.Closeable;
+
 /**
  * ResourceLoader 负责根据GroupTemplate提供的Key,来获取Resource，这些Resource可以是文件，
  * 字符串，加密的文本，以及数据库Blob字段等
  *
  * @author xiandafu
  */
-public interface ResourceLoader<T> {
+public interface ResourceLoader<T> extends Closeable {
 
     /**
      * 根据key获取Resource

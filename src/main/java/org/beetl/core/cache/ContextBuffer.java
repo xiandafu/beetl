@@ -1,4 +1,4 @@
-package org.beetl.core;
+package org.beetl.core.cache;
 
 /**
  * 一个缓存的字节和字符数组，用于减少beetl渲染各个过程中渲染字符数组

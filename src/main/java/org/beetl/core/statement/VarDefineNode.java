@@ -13,12 +13,10 @@ public class VarDefineNode extends Expression implements IVarIndex {
 
     public VarDefineNode(GrammarToken token) {
         super(token);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
     public Object evaluate(Context ctx) {
-        // TODO Auto-generated method stub
         return null;
     }
 
