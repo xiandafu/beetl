@@ -1,6 +1,1 @@
-<%
-var a =1;
-%>
-<#html:foreach items="${a}" var="data">
-${data}
-</#html:foreach>
+${_user}

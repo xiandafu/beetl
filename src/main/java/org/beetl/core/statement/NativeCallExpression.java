@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
 import org.beetl.core.Context;
+import org.beetl.core.NativeSecurityManager;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.exception.BeetlParserException;
 import org.beetl.core.misc.BeetlUtil;
@@ -192,7 +193,11 @@ public class NativeCallExpression extends Expression {
 
     private void checkPermit(Context ctx, Class targetCls, Object targetObj, String method) {
         if (targetCls == null) return;
-        if (!ctx.gt.getNativeSecurity().permit(ctx.template.program.res.getId(), targetCls, targetObj, method)) {
+		NativeSecurityManager securityManager = ctx.gt.getNativeSecurity();
+        if(securityManager==null){
+        	return ;
+		}
+        if (!securityManager.permit(ctx.template.program.res.getId(), targetCls, targetObj, method)) {
             BeetlException be = new BeetlException(BeetlException.NATIVE_SECUARITY_EXCEPTION);
             be.pushToken(GrammarToken.createToken(method, token.line));
             throw be;

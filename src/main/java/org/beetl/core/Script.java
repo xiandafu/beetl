@@ -45,11 +45,8 @@ import org.beetl.core.statement.Program;
  *
  * @author xiandafu
  */
-public class Script<T> {
-    protected Program program;
-    protected Configuration cf;
-    protected GroupTemplate gt;
-    protected Context ctx = null;
+public class Script<T>  extends Template{
+
     protected boolean success = false;
     protected Map result = null;
     protected ErrorInfo errorInfo = null;
@@ -57,10 +54,8 @@ public class Script<T> {
     private boolean done = false;
 
     protected Script(GroupTemplate gt, Program program, Configuration cf) {
-        this.program = program;
-        this.cf = cf;
-        this.gt = gt;
-        ctx = new Context(gt);
+    	super(gt,program,cf);
+    	this.ctx.template = this;
     }
 
     /**
@@ -137,7 +132,7 @@ public class Script<T> {
     /**
      * 获取模板输出的文本,输出到Writer里
      */
-    protected void renderTo(Writer writer) throws BeetlException {
+    public void renderTo(Writer writer) throws BeetlException {
         ByteWriter_Char byteWriter = new ByteWriter_Char(writer, cf.charset, ctx);
         this.renderTo(byteWriter);
 

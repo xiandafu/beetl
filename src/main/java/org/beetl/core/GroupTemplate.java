@@ -808,6 +808,10 @@ public class GroupTemplate {
         return nativeSecurity;
     }
 
+    public void setNativeSecurity(NativeSecurityManager nativeSecurity){
+    	this.nativeSecurity = nativeSecurity;
+	}
+
     public ErrorHandler getErrorHandler() {
         return errorHandler;
     }
