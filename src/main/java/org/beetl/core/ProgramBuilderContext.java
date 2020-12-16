@@ -1,6 +1,6 @@
 /*
  [The "BSD license"]
- Copyright (c) 2011-2019  闲大赋 (李家智)
+ Copyright (c) 2011-2020  闲大赋 (李家智)
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,7 @@ import org.beetl.core.statement.IVarIndex;
  * @author xiandafu
  */
 public class ProgramBuilderContext {
-    // 程序根
+    // 最顶层的变量,非全局变量
     BlockEnvContext root = new BlockEnvContext();
     // 当前block
     BlockEnvContext current = root;
@@ -130,6 +130,15 @@ public class ProgramBuilderContext {
         varDesc.setVarName(varName);
         this.current.getVars().put(varName, varDesc);
     }
+
+    public ASTNode contain(String varName){
+		VarDescrption varDesc = this.current.getVars().get(varName);
+		if(varDesc==null){
+			return null;
+		}else{
+			return varDesc.where.get(0);
+		}
+	}
 
     /**
      * 变量属性，展示没用上，本来想用在ide属性提示,但ide插件门槛太高了，搞不定

@@ -1,6 +1,6 @@
 /*
  [The "BSD license"]
- Copyright (c) 2011-2019  闲大赋 (李家智)
+ Copyright (c) 2011-2020  闲大赋 (李家智)
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -101,7 +101,7 @@ public class ObjectUtil {
     /**
      * 得到一个可供调用get属性的invoker,invoker用于封装对对象的属性读取
      *
-     * @see https://gitee.com/xiandafu/beetl/issues/I11WQV ，关于2.0兼容的一个bug修复
+     * @see "https://gitee.com/xiandafu/beetl/issues/I11WQV ，关于2.0兼容的一个bug修复"
      */
     public static MethodInvoker getInvokder(Class c, String name) {
 
@@ -435,7 +435,7 @@ public class ObjectUtil {
         try {
             return Class.forName(clsName, true, loader).newInstance();
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("使用 loader "+loader+" 未加载类 "+clsName+" 请设置classloader");
         }
     }
 

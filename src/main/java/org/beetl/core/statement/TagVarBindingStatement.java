@@ -8,6 +8,7 @@ import org.beetl.core.tag.HTMLTagVarBindingWrapper;
 import org.beetl.core.tag.Tag;
 
 public class TagVarBindingStatement extends TagStatement {
+
     VarDefineNode[] varIndexs;
 
     public TagVarBindingStatement(String tagName, Expression[] paras, Statement block, VarDefineNode[] varDefine,

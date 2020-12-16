@@ -8,7 +8,7 @@ import org.beetl.core.Function;
  * ${qmark(score&lt;60,"及格","不及格")}
  * </pre>
  *
- * @author 一颗草, (最早Beetl使用者提供功能的扩展 ， 其实当时3元表达式已经支持了, 留个纪念 ， 闲大赋予 ， 2019)
+ * @author 一颗草, (最早Beetl使用者提供功能的扩展 ， 其实当时3元表达式已经支持了, 留个纪念 ， 闲大赋予 ， 2020)
  */
 public class QuestionMark implements Function {
 

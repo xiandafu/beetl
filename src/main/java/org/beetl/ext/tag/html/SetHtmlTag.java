@@ -4,7 +4,7 @@ import org.beetl.core.tag.GeneralVarTagBinding;
 
 /**
  * <pre>
- *     <html:set value="${user.name}" export="name" ></html:set>
+ *     <#html:set value="${user.name}" export="name" ></#html:set>
  *
  * </pre>
  */

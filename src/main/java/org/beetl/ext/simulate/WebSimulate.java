@@ -130,7 +130,7 @@ public class WebSimulate extends BaseSimulate {
         }
         String path = this.getRenderPath(req);
         WebRender render = new WebRender(gt);
-        render.render(path, req, rsp, null);
+        render.render(path, req, rsp, new Object[0]);
     }
 
 }

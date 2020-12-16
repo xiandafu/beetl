@@ -26,14 +26,14 @@ public class Test {
 
         gt.registerFunctionPackageAsRoot(TestUser.class);
 
-        Template t = gt.getTemplate("/hello.txt");
-
-        for (int i = 0; i < 1; i++) {
-            t.binding("testUser", new MyTestObject("abc"));
-            if (DEBUG) {
-                Log.d(TAG, i + " " + t.render());
-            }
-        }
+        for (int i = 0; i < 100; i++) {
+			Template t = gt.getTemplate("/hello.txt");
+			t.binding("user", new MyTestObject("abc"));
+			t.binding("abc", 1234);
+			String str = t.render();
+			System.out.println(str);
+		}
+        int a =1;
 
     }
 

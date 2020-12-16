@@ -2,6 +2,7 @@ package org.beetl.core.lab;
 
 public class MyTestObject {
     String name;
+    int age =12;
 
     public MyTestObject() {
     }
@@ -19,7 +20,15 @@ public class MyTestObject {
 		this.name = name;
 	}
 
-    public MyTestObject self() {
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public MyTestObject self() {
         return this;
     }
 }

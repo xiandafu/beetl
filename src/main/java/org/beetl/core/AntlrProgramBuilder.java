@@ -1,6 +1,6 @@
 /*
  [The "BSD license"]
- Copyright (c) 2011-2019  闲大赋 (李家智)
+ Copyright (c) 2011-2020  闲大赋 (李家智)
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -658,30 +658,47 @@ public class AntlrProgramBuilder {
             Statement block = null;
             VarDefineNode[] varDefine = new VarDefineNode[vars.length];
             if (id.equals("htmltagRootExport")) {
+            	//自定在模板最上层定义的变量
                 for (int i = 0; i < vars.length; i++) {
-                    VarDefineNode varNode = new VarDefineNode(this.getBTToken(vars[i].trim(), line));
-                    boolean hasDefined = pbCtx.addRootVarAdnPosition(varNode);
-                    if (hasDefined) {
-                        String name = varNode.token.text;
-                        ASTNode node = pbCtx.searchVar(pbCtx.root, name);
-                        BeetlException ex = new BeetlException(BeetlException.VAR_ALREADY_DEFINED, "动态定义的模板顶级变量" + name + "已经定义在" + node.token.line + " 行");
-                        ex.pushToken(varNode.token);
-                        throw ex;
-                    }
-                    varDefine[i] = varNode;
+					//如果已经定义，忽略，比较符合html标签和jsp tag习惯
+                	String varName = vars[i].trim();
+					VarDescrption varDescrption = pbCtx.root.getVars().get(varName);
+					if(varDescrption==null){
+						VarDefineNode varNode = new VarDefineNode(this.getBTToken(vars[i].trim(), line));
+						pbCtx.addRootVarAdnPosition(varNode);
+						varDefine[i] = varNode;
+					}else{
+						ASTNode astNode = varDescrption.where.get(0);
+						if(!(astNode instanceof VarDefineNode)){
+							//不可能发生，先保留
+							BeetlException ex = new BeetlException(BeetlException.PARSER_HTML_TAG_ERROR,
+									"标签定义了一个全局变量 "+varName+" 但是此变量名在 "+astNode.token.line+" 使用了");
+							ex.pushToken(this.getBTToken(id, fc.functionNs().getStart().getLine()));
+						}
+						varDefine[i] = (VarDefineNode)varDescrption.where.get(0);
+					}
+
                 }
                 BlockContext blockCtx = fc.block();
                 block = parseBlock(blockCtx.statement(), blockCtx);
             } else {
+
                 if (id.equals("htmltagvar")) {
                     // htmltagvar定义的变量仅仅在标签体内可见,htmltagexport则跟随标签所在的范围
                     this.pbCtx.enterBlock();
                 }
 
                 for (int i = 0; i < vars.length; i++) {
-                    VarDefineNode varNode = new VarDefineNode(this.getBTToken(vars[i].trim(), line));
-                    this.pbCtx.addVarAndPostion(varNode);
-                    varDefine[i] = varNode;
+					String varName = vars[i].trim();
+					ASTNode astNode = pbCtx.contain(varName);
+					if(astNode==null){
+						VarDefineNode varNode = new VarDefineNode(this.getBTToken(vars[i].trim(), line));
+						this.pbCtx.addVarAndPostion(varNode);
+						varDefine[i] = varNode;
+					}else{
+						varDefine[i] = (VarDefineNode)astNode;
+					}
+
                 }
                 BlockContext blockCtx = fc.block();
                 block = parseBlock(blockCtx.statement(), blockCtx);
