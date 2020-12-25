@@ -219,6 +219,18 @@ public class Configuration {
 
     /**
      * 构造方法
+     * @see "issue: https://gitee.com/xiandafu/beetl/issues/I2AQXA"
+     *
+     * @param classLoader 使用指定的ClassLoader
+     * @throws IOException 文件不存在等情况
+     */
+    public Configuration(ClassLoader classLoader) throws IOException {
+        this.classLoader = classLoader;
+        initDefault();
+    }
+
+    /**
+     * 构造方法
      *
      * @param ps 配置文件
      * @throws IOException 文件不存在等情况
