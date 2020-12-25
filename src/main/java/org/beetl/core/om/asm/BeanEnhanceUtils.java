@@ -131,7 +131,7 @@ final class BeanEnhanceUtils {
 
     private static String getMethodDesc(Method readMethod) {
         String descriptor = Type.getMethodDescriptor(readMethod);
-        return descriptor.substring(descriptor.indexOf(PunctuationConstants.LEFT_BRACKET));
+        return descriptor.substring(descriptor.indexOf('('));
     }
 
     private static void buildFieldDescMapByAsm(ClassDescription classDescription, ClassNode cn) {
@@ -150,7 +150,7 @@ final class BeanEnhanceUtils {
             filedDesc = new FieldDescription(fieldNode.name, fieldNode.desc,
                     createGetterMethodName(classDescription, fieldNode.name), "()" + fieldNode.desc);
             fieldDescs.add(filedDesc);
-            if (TypeDescriptorConstants.BOOLEAN_.equals(filedDesc.desc) && filedDesc.name.startsWith("is")) {
+            if (Constants.TypeDescriptor.BOOLEAN.equals(filedDesc.desc) && filedDesc.name.startsWith("is")) {
                 fieldDescs.add(getBooleanFieldDescription(filedDesc));
             }
         }
@@ -172,10 +172,10 @@ final class BeanEnhanceUtils {
      */
     private static MethodDescription getGeneralGetMethodDescription(Class<?> target) {
         MethodDescription md = new MethodDescription();
-        md.name = BeanEnhanceConstants.GET_METHOD_NAME;
+        md.name = Constants.MethodName.GET;
         try {
             Method getMethod = target.getMethod(md.name, new Class[]{java.lang.Object.class});
-            md.parameterInternalName = BeanEnhanceConstants.OBJECT_INTERNAL_NAME;
+            md.parameterInternalName = Constants.InternalName.OBJECT;
             md.desc = getMethodDesc(getMethod);
             md.returnTypeInternalName = getInternalName(getMethod.getReturnType().getName());
             return md;
@@ -185,7 +185,7 @@ final class BeanEnhanceUtils {
 
         try {
             Method getMethod = target.getMethod(md.name, new Class[]{java.lang.String.class});
-            md.parameterInternalName = BeanEnhanceConstants.STRING_INTERNAL_NAME;
+            md.parameterInternalName = Constants.InternalName.STRING;
             md.desc = getMethodDesc(getMethod);
             md.returnTypeInternalName = getInternalName(getMethod.getReturnType().getName());
             return md;
@@ -210,11 +210,11 @@ final class BeanEnhanceUtils {
     }
 
     static String getSimpleClassName(String className) {
-        return className.substring(className.lastIndexOf(PunctuationConstants.PERIOD) + 1);
+        return className.substring(className.lastIndexOf(".") + 1);
     }
 
     static String getInternalName(final String className) {
-        return className.replace(PunctuationConstants.PERIOD_CHAR, PunctuationConstants.SLASH_CHAR);
+        return className.replace('.', '/');
     }
 
     static int[] convertIntegerToPrimitiveType(Integer[] source) {

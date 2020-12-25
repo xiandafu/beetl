@@ -84,33 +84,22 @@ import org.beetl.ow2.asm.Opcodes;
  */
 class EnhanceClassGenerator implements Opcodes {
 
-    /**
-     * 实例方法this变量位置
-     */
+    /** 实例方法this变量位置 */
     private static final int VAR_THIS_INDEX = 0;
-    /**
-     * 方法中第一个参数的位置
-     */
+    /** 方法中第一个参数的位置 */
     private static final int VAR_BEAN_INDEX = 1;
-    /**
-     * 方法中第二个参数的位置
-     */
+    /** 方法中第二个参数的位置 */
     private static final int VAR_ATTR_INDEX = 2;
-
-    /**
-     * 本地变量对应attrName的toString变量
-     */
+    /** 本地变量对应attrName的toString变量 */
     private static final int LOCAL_VAR_ATTR_STRING_INDEX = 3;
-
-    /**
-     * 本地变量hashCode位置
-     */
+    /** 本地变量hashCode位置 */
     private static final int LOCAL_VAR_HASH_CODE_INDEX = 4;
-    /**
-     * 本地变量innerClass类型变量的位置
-     */
+    /** 本地变量innerClass类型变量的位置 */
     private static final int LOCAL_VAR_INTERNAL_CLASS_INDEX = 5;
 
+    /**
+     * 私有构造方法
+     */
     private EnhanceClassGenerator() {
 
     }
@@ -128,7 +117,7 @@ class EnhanceClassGenerator implements Opcodes {
      * @param usePropertyDescriptor 是否使{@link java.beans.PropertyDescriptor}来生成属性描述
      */
     static byte[] generate(Class<?> beanClass, boolean usePropertyDescriptor) throws Exception {
-        return generate(beanClass, BeanEnhanceConstants.SUPER_CLASS_NAME, null, usePropertyDescriptor);
+        return generate(beanClass, Constants.InternalName.ATTRIBUTE_ACCESS, null, usePropertyDescriptor);
     }
 
     /**
@@ -169,7 +158,7 @@ class EnhanceClassGenerator implements Opcodes {
     }
 
     static String createGeneratedClassName(String className) {
-        return className + "$" + BeanEnhanceConstants.GENETRATED_CLASS_SUFFIX;
+        return className + "$" + Constants.GENETRATED_CLASS_SUFFIX;
     }
 
     static String createGeneratedClassName(Class<?> beanClass) {
@@ -182,8 +171,8 @@ class EnhanceClassGenerator implements Opcodes {
     private static void generateMethod(ClassWriter cw, Class<?> beanClass, boolean usePropertyDescriptor) {
         String internalClassName = BeanEnhanceUtils.getInternalName(beanClass.getName());
         ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(beanClass, usePropertyDescriptor);
-        MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, BeanEnhanceConstants.METHOD_TO_GENERATE,
-                BeanEnhanceConstants.METHOD_SIGNATURE, null, null);
+        MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, Constants.MethodName.VALUE,
+                Constants.METHOD_SIGNATURE, null, null);
 
         mv.visitCode();
 
@@ -202,14 +191,14 @@ class EnhanceClassGenerator implements Opcodes {
         Label toStringLabel = new Label();
         mv.visitLabel(toStringLabel);
         mv.visitVarInsn(ALOAD, VAR_ATTR_INDEX);
-        mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.OBJECT_INTERNAL_NAME,
-                BeanEnhanceConstants.TO_STRING_METHOD_NAME, BeanEnhanceConstants.TO_STRING_METHOD_DESCRIPTOR, false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, Constants.InternalName.OBJECT,
+                Constants.MethodName.TO_STRING, Constants.TO_STRING_METHOD_DESCRIPTOR, false);
         mv.visitVarInsn(ASTORE, LOCAL_VAR_ATTR_STRING_INDEX);// 对应attrName的toString变量
 
         Label hashCodeLabel = new Label();
         mv.visitLabel(hashCodeLabel);
         mv.visitVarInsn(ALOAD, LOCAL_VAR_ATTR_STRING_INDEX);// toString变量
-        mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.OBJECT_INTERNAL_NAME, "hashCode", "()I", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, Constants.InternalName.OBJECT, "hashCode", "()I", false);
         mv.visitVarInsn(ISTORE, LOCAL_VAR_HASH_CODE_INDEX);// hashCode
 
         Label castLabel = new Label();
@@ -236,7 +225,7 @@ class EnhanceClassGenerator implements Opcodes {
             mv.visitLabel(lookupSwitchLabels[i]);
             if (i == 0) {
                 mv.visitFrame(Opcodes.F_APPEND, 3,
-                        new Object[]{BeanEnhanceConstants.STRING_INTERNAL_NAME, Opcodes.INTEGER, internalClassName}, 0,
+                        new Object[]{Constants.InternalName.STRING, Opcodes.INTEGER, internalClassName}, 0,
                         null);
             } else {
                 mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
@@ -253,44 +242,44 @@ class EnhanceClassGenerator implements Opcodes {
             }
 
         }
-        if (classDescription.generalGetMethodDesc != null && BeanEnhanceConstants.OBJECT_INTERNAL_NAME
+        if (classDescription.generalGetMethodDesc != null && Constants.InternalName.OBJECT
                 .equals(classDescription.generalGetMethodDesc.parameterInternalName)) {
             // 是否有get(Object)方法
             mv.visitLabel(df);
             mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);
             mv.visitVarInsn(ALOAD, VAR_ATTR_INDEX);
-            mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, BeanEnhanceConstants.GET_METHOD_NAME,
+            mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, Constants.MethodName.GET,
                     classDescription.generalGetMethodDesc.desc, false);
             mv.visitInsn(ARETURN);
-        } else if (classDescription.generalGetMethodDesc != null && BeanEnhanceConstants.STRING_INTERNAL_NAME
+        } else if (classDescription.generalGetMethodDesc != null && Constants.InternalName.STRING
                 .equals(classDescription.generalGetMethodDesc.parameterInternalName)) {
             // 是否有get(String)方法
             mv.visitLabel(df);
             mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             mv.visitVarInsn(ALOAD, LOCAL_VAR_INTERNAL_CLASS_INDEX);
             mv.visitVarInsn(ALOAD, LOCAL_VAR_ATTR_STRING_INDEX);
-            mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, BeanEnhanceConstants.GET_METHOD_NAME,
+            mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, Constants.MethodName.GET,
                     classDescription.generalGetMethodDesc.desc, false);
             mv.visitInsn(ARETURN);
         } else {
             mv.visitLabel(df);
             mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
-            mv.visitTypeInsn(NEW, BeanEnhanceConstants.BEETL_EXCEPTION_INTERNAL_NAME);
+            mv.visitTypeInsn(NEW, Constants.InternalName.BEETL_EXCEPTION);
             mv.visitInsn(DUP);
             mv.visitLdcInsn("ATTRIBUTE_NOT_FOUND");
-            mv.visitTypeInsn(NEW, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME);
+            mv.visitTypeInsn(NEW, Constants.InternalName.STRING_BUILDER);
             mv.visitInsn(DUP);
             mv.visitLdcInsn("属性未找到(" + classDescription.target.getName() + ") : ");
-            mv.visitMethodInsn(INVOKESPECIAL, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME, "<init>",
+            mv.visitMethodInsn(INVOKESPECIAL, Constants.InternalName.STRING_BUILDER, "<init>",
                     "(Ljava/lang/String;)V", false);
             mv.visitVarInsn(ALOAD, LOCAL_VAR_ATTR_STRING_INDEX);
-            mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME, "append",
+            mv.visitMethodInsn(INVOKEVIRTUAL, Constants.InternalName.STRING_BUILDER, "append",
                     "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
-            mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME,
-                    BeanEnhanceConstants.TO_STRING_METHOD_NAME, BeanEnhanceConstants.TO_STRING_METHOD_DESCRIPTOR,
+            mv.visitMethodInsn(INVOKEVIRTUAL, Constants.InternalName.STRING_BUILDER,
+                    Constants.MethodName.TO_STRING, Constants.TO_STRING_METHOD_DESCRIPTOR,
                     false);
-            mv.visitMethodInsn(INVOKESPECIAL, BeanEnhanceConstants.BEETL_EXCEPTION_INTERNAL_NAME, "<init>",
+            mv.visitMethodInsn(INVOKESPECIAL, Constants.InternalName.BEETL_EXCEPTION, "<init>",
                     "(Ljava/lang/String;Ljava/lang/String;)V", false);
             mv.visitInsn(ATHROW);
         }
@@ -305,58 +294,58 @@ class EnhanceClassGenerator implements Opcodes {
         mv.visitTypeInsn(CHECKCAST, internalClassName);
         mv.visitVarInsn(ASTORE, 3);// 此时不需要转换String与计算hashCode，所以是第三个变量
         Label df = new Label();
-        if (classDescription.generalGetMethodDesc != null && BeanEnhanceConstants.OBJECT_INTERNAL_NAME
+        if (classDescription.generalGetMethodDesc != null && Constants.InternalName.OBJECT
                 .equals(classDescription.generalGetMethodDesc.parameterInternalName)) {
             mv.visitLabel(df);
             mv.visitFrame(Opcodes.F_APPEND, 1, new Object[]{internalClassName}, 0, null);
             mv.visitVarInsn(ALOAD, 3);
             mv.visitVarInsn(ALOAD, VAR_ATTR_INDEX);
-            mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, BeanEnhanceConstants.GET_METHOD_NAME,
+            mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, Constants.MethodName.GET,
                     classDescription.generalGetMethodDesc.desc, false);
             mv.visitInsn(ARETURN);
-        } else if (classDescription.generalGetMethodDesc != null && BeanEnhanceConstants.STRING_INTERNAL_NAME
+        } else if (classDescription.generalGetMethodDesc != null && Constants.InternalName.STRING
                 .equals(classDescription.generalGetMethodDesc.parameterInternalName)) {
             Label toStringLabel = new Label();
             mv.visitLabel(toStringLabel);
             mv.visitVarInsn(ALOAD, VAR_ATTR_INDEX);
-            mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.OBJECT_INTERNAL_NAME,
-                    BeanEnhanceConstants.TO_STRING_METHOD_NAME, BeanEnhanceConstants.TO_STRING_METHOD_DESCRIPTOR,
+            mv.visitMethodInsn(INVOKEVIRTUAL, Constants.InternalName.OBJECT,
+                    Constants.MethodName.TO_STRING, Constants.TO_STRING_METHOD_DESCRIPTOR,
                     false);
             mv.visitVarInsn(ASTORE, 4);// 对应attrName的toString变量
             mv.visitLabel(df);
             mv.visitFrame(Opcodes.F_APPEND, 2,
-                    new Object[]{internalClassName, BeanEnhanceConstants.STRING_INTERNAL_NAME}, 0, null);
+                    new Object[]{internalClassName, Constants.InternalName.STRING}, 0, null);
             mv.visitVarInsn(ALOAD, 3);// internalClassName
             mv.visitVarInsn(ALOAD, 4);// attrName.toString()
-            mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, BeanEnhanceConstants.GET_METHOD_NAME,
+            mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, Constants.MethodName.GET,
                     classDescription.generalGetMethodDesc.desc, false);
             mv.visitInsn(ARETURN);
         } else {
             Label toStringLabel = new Label();
             mv.visitLabel(toStringLabel);
             mv.visitVarInsn(ALOAD, VAR_ATTR_INDEX);
-            mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.OBJECT_INTERNAL_NAME,
-                    BeanEnhanceConstants.TO_STRING_METHOD_NAME, BeanEnhanceConstants.TO_STRING_METHOD_DESCRIPTOR,
+            mv.visitMethodInsn(INVOKEVIRTUAL, Constants.InternalName.OBJECT,
+                    Constants.MethodName.TO_STRING, Constants.TO_STRING_METHOD_DESCRIPTOR,
                     false);
             mv.visitVarInsn(ASTORE, 4);// 对应attrName的toString变量
             mv.visitLabel(df);
             mv.visitFrame(Opcodes.F_APPEND, 2,
-                    new Object[]{internalClassName, BeanEnhanceConstants.STRING_INTERNAL_NAME}, 0, null);
-            mv.visitTypeInsn(NEW, BeanEnhanceConstants.BEETL_EXCEPTION_INTERNAL_NAME);
+                    new Object[]{internalClassName, Constants.InternalName.STRING}, 0, null);
+            mv.visitTypeInsn(NEW, Constants.InternalName.BEETL_EXCEPTION);
             mv.visitInsn(DUP);
             mv.visitLdcInsn("ATTRIBUTE_NOT_FOUND");
-            mv.visitTypeInsn(NEW, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME);
+            mv.visitTypeInsn(NEW, Constants.InternalName.STRING_BUILDER);
             mv.visitInsn(DUP);
             mv.visitLdcInsn("attribute : ");
-            mv.visitMethodInsn(INVOKESPECIAL, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME, "<init>",
+            mv.visitMethodInsn(INVOKESPECIAL, Constants.InternalName.STRING_BUILDER, "<init>",
                     "(Ljava/lang/String;)V", false);
             mv.visitVarInsn(ALOAD, 4);
-            mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME, "append",
+            mv.visitMethodInsn(INVOKEVIRTUAL, Constants.InternalName.STRING_BUILDER, "append",
                     "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
-            mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.STRING_BUILDER_INTERNAL_NAME,
-                    BeanEnhanceConstants.TO_STRING_METHOD_NAME, BeanEnhanceConstants.TO_STRING_METHOD_DESCRIPTOR,
+            mv.visitMethodInsn(INVOKEVIRTUAL, Constants.InternalName.STRING_BUILDER,
+                    Constants.MethodName.TO_STRING, Constants.TO_STRING_METHOD_DESCRIPTOR,
                     false);
-            mv.visitMethodInsn(INVOKESPECIAL, BeanEnhanceConstants.BEETL_EXCEPTION_INTERNAL_NAME, "<init>",
+            mv.visitMethodInsn(INVOKESPECIAL, Constants.InternalName.BEETL_EXCEPTION, "<init>",
                     "(Ljava/lang/String;Ljava/lang/String;)V", false);
             mv.visitInsn(ATHROW);
         }
@@ -384,7 +373,7 @@ class EnhanceClassGenerator implements Opcodes {
             mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             mv.visitLdcInsn(curFieldDesc.name);
             mv.visitVarInsn(ALOAD, LOCAL_VAR_ATTR_STRING_INDEX);
-            mv.visitMethodInsn(INVOKEVIRTUAL, BeanEnhanceConstants.OBJECT_INTERNAL_NAME, "equals",
+            mv.visitMethodInsn(INVOKEVIRTUAL, Constants.InternalName.OBJECT, "equals",
                     "(Ljava/lang/Object;)Z", false);
             // 如果不相等，跳转到下一个if判断,都不相等跳转到default defaultLabel
             mv.visitJumpInsn(IFEQ, i + 1 == fieldSize ? defaultLabel : ifLabels[i + 1]);
@@ -400,36 +389,36 @@ class EnhanceClassGenerator implements Opcodes {
 
     private static void addInvokeValueOfToPrimitive(MethodVisitor mv, String returnTypeDesc) {
         switch (returnTypeDesc) {
-            case TypeDescriptorConstants.INT_:
-                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Integer", BeanEnhanceConstants.METHOD_VALUE_OF,
+            case Constants.TypeDescriptor.INT:
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Integer", Constants.MethodName.VALUE_OF,
                         "(I)Ljava/lang/Integer;", false);
                 break;
-            case TypeDescriptorConstants.BOOLEAN_:
-                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Boolean", BeanEnhanceConstants.METHOD_VALUE_OF,
+            case Constants.TypeDescriptor.BOOLEAN:
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Boolean", Constants.MethodName.VALUE_OF,
                         "(Z)Ljava/lang/Boolean;", false);
                 break;
-            case TypeDescriptorConstants.BYTE_:
-                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Byte", BeanEnhanceConstants.METHOD_VALUE_OF,
+            case Constants.TypeDescriptor.BYTE:
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Byte", Constants.MethodName.VALUE_OF,
                         "(B)Ljava/lang/Byte;", false);
                 break;
-            case TypeDescriptorConstants.CHARACTER_:
-                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Character", BeanEnhanceConstants.METHOD_VALUE_OF,
+            case Constants.TypeDescriptor.CHAR:
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Character", Constants.MethodName.VALUE_OF,
                         "(C)Ljava/lang/Character;", false);
                 break;
-            case TypeDescriptorConstants.SHORT_:
-                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Short", BeanEnhanceConstants.METHOD_VALUE_OF,
+            case Constants.TypeDescriptor.SHORT:
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Short", Constants.MethodName.VALUE_OF,
                         "(S)Ljava/lang/Short;", false);
                 break;
-            case TypeDescriptorConstants.DOUBLE_:
-                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Double", BeanEnhanceConstants.METHOD_VALUE_OF,
+            case Constants.TypeDescriptor.DOUBLE:
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Double", Constants.MethodName.VALUE_OF,
                         "(D)Ljava/lang/Double;", false);
                 break;
-            case TypeDescriptorConstants.FLOAT_:
-                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Float", BeanEnhanceConstants.METHOD_VALUE_OF,
+            case Constants.TypeDescriptor.FLOAT:
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Float", Constants.MethodName.VALUE_OF,
                         "(F)Ljava/lang/Float;", false);
                 break;
-            case TypeDescriptorConstants.LONG_:
-                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Long", BeanEnhanceConstants.METHOD_VALUE_OF,
+            case Constants.TypeDescriptor.LONG:
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Long", Constants.MethodName.VALUE_OF,
                         "(J)Ljava/lang/Long;", false);
                 break;
 
