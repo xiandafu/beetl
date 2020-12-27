@@ -26,16 +26,17 @@ import org.beetl.ow2.asm.tree.FieldNode;
  *
  * @author laozhaishaozuo@foxmail.com
  */
-final class BeanEnhanceUtils {
+final class BeanEnhanceUtils implements Constants {
 
     private BeanEnhanceUtils() {
 
     }
 
-    private static Set<String> ignoreSet = new HashSet<>();
+    /** 不获取的方法名，{@see #buildFieldDescMapByProperty} */
+    private static final Set<String> IGNORE_METHOD_NAME_SET = new HashSet<>();
 
     static {
-        ignoreSet.add("getClass");// 避免获取到java.lang.Object.getClass()方法
+        IGNORE_METHOD_NAME_SET.add("getClass");// 避免获取到java.lang.Object.getClass()方法
     }
 
     /**
@@ -89,18 +90,22 @@ final class BeanEnhanceUtils {
         for (PropertyDescriptor prop : propList) {
             curPropReadMethod = prop.getReadMethod();
 
-            if ((curPropReadMethod != null) && !ignoreSet.contains(curPropReadMethod.getName())) {
+            if ((curPropReadMethod != null) && !IGNORE_METHOD_NAME_SET.contains(curPropReadMethod.getName())) {
 
                 fieldDescs.add(new FieldDescription(
-                        prop.getName(), Type.getType(curPropReadMethod.getReturnType()).toString(),
-                        curPropReadMethod.getName(), getMethodDesc(curPropReadMethod)
+                        prop.getName(),
+                        Type.getType(curPropReadMethod.getReturnType()).toString(),
+                        curPropReadMethod.getName(),
+                        getMethodDesc(curPropReadMethod)
                 ));
 
                 // 2.x兼容,{@see ObjectUtil#getInvokder}
                 if (prop.getPropertyType() == Boolean.class || prop.getPropertyType() == boolean.class) {
                     fieldDescs.add(new FieldDescription(
-                            curPropReadMethod.getName(), Type.getType(curPropReadMethod.getReturnType()).toString(),
-                            curPropReadMethod.getName(), getMethodDesc(curPropReadMethod)
+                            curPropReadMethod.getName(),
+                            Type.getType(curPropReadMethod.getReturnType()).toString(),
+                            curPropReadMethod.getName(),
+                            getMethodDesc(curPropReadMethod)
                     ));
                 }
 
@@ -147,10 +152,14 @@ final class BeanEnhanceUtils {
         List<FieldDescription> fieldDescs = new ArrayList<>(fieldList.size() * 2);
         FieldDescription filedDesc = null;
         for (FieldNode fieldNode : fieldList) {
-            filedDesc = new FieldDescription(fieldNode.name, fieldNode.desc,
-                    createGetterMethodName(classDescription, fieldNode.name), "()" + fieldNode.desc);
+            filedDesc = new FieldDescription(
+                    fieldNode.name,
+                    fieldNode.desc,
+                    createGetterMethodName(classDescription, fieldNode.name),
+                    "()" + fieldNode.desc
+            );
             fieldDescs.add(filedDesc);
-            if (Constants.TypeDescriptor.BOOLEAN.equals(filedDesc.desc) && filedDesc.name.startsWith("is")) {
+            if (TypeDescriptor.BOOLEAN.equals(filedDesc.desc) && filedDesc.name.startsWith(MethodName.IS)) {
                 fieldDescs.add(getBooleanFieldDescription(filedDesc));
             }
         }
@@ -158,51 +167,69 @@ final class BeanEnhanceUtils {
     }
 
     private static FieldDescription getBooleanFieldDescription(FieldDescription curFiledDesc) {
-        FieldDescription booleanDesc = new FieldDescription();
-        String name = curFiledDesc.name.substring(2);
-        booleanDesc.name = name.substring(0, 1).toLowerCase() + name.substring(1);
-        booleanDesc.desc = curFiledDesc.desc;
-        booleanDesc.readMethodName = curFiledDesc.readMethodName;
-        booleanDesc.readMethodDesc = curFiledDesc.readMethodDesc;
-        return booleanDesc;
+        return new FieldDescription(
+                getFieldNameFromGetterMethod(curFiledDesc.name),
+                curFiledDesc.desc,
+                curFiledDesc.readMethodName,
+                curFiledDesc.readMethodDesc
+        );
     }
 
     /**
+     * 将 getter 方法转换为字段名称
      *
+     * @param getterMethodName getXXX 方法名称
+     * @return {@param getterMethodName} 对应的字段名称
+     */
+    private static String getFieldNameFromGetterMethod(String getterMethodName) {
+        String name = getterMethodName.replaceFirst(MethodName.GET, "");
+        return name.substring(0, 1).toLowerCase() + name.substring(1);
+    }
+
+    /**
+     * 生成 getter 方法的方法描述符
      */
     private static MethodDescription getGeneralGetMethodDescription(Class<?> target) {
-        MethodDescription md = new MethodDescription();
-        md.name = Constants.MethodName.GET;
+        String getStr = MethodName.GET;
         try {
-            Method getMethod = target.getMethod(md.name, new Class[]{java.lang.Object.class});
-            md.parameterInternalName = Constants.InternalName.OBJECT;
-            md.desc = getMethodDesc(getMethod);
-            md.returnTypeInternalName = getInternalName(getMethod.getReturnType().getName());
-            return md;
-        } catch (Exception ex) {
-            // ingnore
+            Method getMethod = target.getMethod(getStr, Object.class);
+            return new MethodDescription(
+                    getStr,
+                    getMethodDesc(getMethod),
+                    InternalName.OBJECT,
+                    getInternalName(getMethod.getReturnType().getName())
+            );
+        } catch (Exception ignored) {
         }
 
         try {
-            Method getMethod = target.getMethod(md.name, new Class[]{java.lang.String.class});
-            md.parameterInternalName = Constants.InternalName.STRING;
-            md.desc = getMethodDesc(getMethod);
-            md.returnTypeInternalName = getInternalName(getMethod.getReturnType().getName());
-            return md;
-        } catch (Exception ex) {
-            // ingnore
+            Method getMethod = target.getMethod(getStr, String.class);
+            return new MethodDescription(
+                    getStr,
+                    getMethodDesc(getMethod),
+                    InternalName.STRING,
+                    getInternalName(getMethod.getReturnType().getName())
+            );
+        } catch (Exception ignored) {
         }
 
         return null;
     }
 
+    /**
+     * 创建 getter 方法的方法名称
+     *
+     * @param classDescription 类描述符
+     * @param propertyName     属性名
+     * @return getter 方法的方法名称
+     */
     private static String createGetterMethodName(ClassDescription classDescription, String propertyName) {
         for (PropertyDescriptor ps : classDescription.propertyDescriptors) {
             if (ps.getName().equals(propertyName)) {
                 return ps.getReadMethod().getName();
             }
 
-            if (propertyName.startsWith("is") && ps.getReadMethod().getName().equals(propertyName)) {
+            if (propertyName.startsWith(MethodName.IS) && ps.getReadMethod().getName().equals(propertyName)) {
                 return ps.getReadMethod().getName();
             }
         }
@@ -217,6 +244,12 @@ final class BeanEnhanceUtils {
         return className.replace('.', '/');
     }
 
+    /**
+     * 将 Integer 数组转换为 int 数组
+     *
+     * @param source Integer 数组
+     * @return {@param source} 对应的 int 数组
+     */
     static int[] convertIntegerToPrimitiveType(Integer[] source) {
         int[] target = new int[source.length];
         for (int i = 0; i < source.length; i++) {

@@ -21,12 +21,12 @@ import org.beetl.core.om.ReflectBeanAA;
  * @author laozhaishaozuo@foxmail.com
  *
  */
-public class ASMBeanFactory {
+public class AsmBeanFactory {
 
     /** DEBUG flag */
     private static final boolean DEBUG = BeetlConfig.DEBUG;
     /** Log TAG */
-    private static final String TAG = "ASMBeanFactory";
+    private static final String TAG = "AsmBeanFactory";
 
     private final Map<Class<?>, AttributeAccess> beanMap = new ConcurrentHashMap<>();
     private final Map<ClassLoader, ByteClassLoader> classLoaders = new ConcurrentHashMap<>();
@@ -39,11 +39,11 @@ public class ASMBeanFactory {
 
     boolean usePropertyDescriptor;
 
-    public ASMBeanFactory() {
+    public AsmBeanFactory() {
         usePropertyDescriptor = false;
     }
 
-    public ASMBeanFactory(boolean usePropertyDescriptor) {
+    public AsmBeanFactory(boolean usePropertyDescriptor) {
         this.usePropertyDescriptor = usePropertyDescriptor;
     }
 
