@@ -1,25 +1,27 @@
 package org.beetl.core.om.asm;
 
+/**
+ * 字段描述信息
+ */
 class FieldDescription {
+
+    /** 字段名称 */
     String name;
-    /**
-     * The field's descriptor (see {@link org.objectweb.asm.Type}).
-     */
+    /** 字段描述符 */
     String desc;
-    /**
-     * getXXX
-     */
+    /** getXXX */
     String readMethodName;
-    /**
-     * 类似()I,(I)Ljava/lang/Integer;
-     *
-     * @see {@link org.objectweb.asm.Type}
-     */
+    /** 类似()I,(I)Ljava/lang/Integer; {@link org.beetl.ow2.asm.Type} */
     String readMethodDesc;
 
-    public FieldDescription() {
-    }
-
+    /**
+     * 构造方法
+     *
+     * @param name           字段名称
+     * @param desc           描述
+     * @param readMethodName getXXX 方法名称
+     * @param readMethodDesc getXXX 方法描述
+     */
     public FieldDescription(String name, String desc, String readMethodName, String readMethodDesc) {
         super();
         this.name = name;

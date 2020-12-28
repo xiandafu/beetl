@@ -8,7 +8,7 @@ import org.beetl.core.fun.ObjectUtil;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
-public class ASMBeanFactoryTest extends BasicTestCase {
+public class AsmBeanFactoryTest extends BasicTestCase {
 
 	static User user = new User();
 	static {
@@ -30,7 +30,7 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 	public void testAttrByAsm() throws Exception {
 		boolean usePropertyDescriptor = false;
 		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(User.class, usePropertyDescriptor);
-		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
+		AsmBeanFactory asmBeanFactory = new AsmBeanFactory();
 		asmBeanFactory.setUsePropertyDescriptor(usePropertyDescriptor);
 		for (List<FieldDescription> nodes : classDescription.fieldDescMap.values()) {
 			for (FieldDescription node : nodes) {
@@ -47,7 +47,7 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 	@Test
 	public void testByProp() throws Exception {
 		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(User.class, true);
-		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
+		AsmBeanFactory asmBeanFactory = new AsmBeanFactory();
 		asmBeanFactory.setUsePropertyDescriptor(true);
 		for (List<FieldDescription> nodes : classDescription.fieldDescMap.values()) {
 			for (FieldDescription node : nodes) {
@@ -65,7 +65,7 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 	@Test
 	public void testOnlyGet() throws Exception {
 		OnlyGet onlyGet = new OnlyGet();
-		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
+		AsmBeanFactory asmBeanFactory = new AsmBeanFactory();
 		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(onlyGet, "填写"));
 		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(onlyGet, "写"));
 		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(onlyGet, "填"));
@@ -74,7 +74,7 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 	@Test
 	public void testOnlyGetString() throws Exception {
 		OnlyGetString onlyGetStr = new OnlyGetString();
-		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
+		AsmBeanFactory asmBeanFactory = new AsmBeanFactory();
 		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(onlyGetStr, "填写"));
 		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(onlyGetStr, "写"));
 		AssertJUnit.assertEquals("哈哈是", asmBeanFactory.value(onlyGetStr, "cs"));
@@ -84,7 +84,7 @@ public class ASMBeanFactoryTest extends BasicTestCase {
 	public void testEmpty() throws Exception {
 		String name = "zhangsan";
 		TestObject empty = new TestObject(name);
-		ASMBeanFactory asmBeanFactory = new ASMBeanFactory();
+		AsmBeanFactory asmBeanFactory = new AsmBeanFactory();
 		try {
 			asmBeanFactory.value(empty, "ss");
 			AssertJUnit.fail();
