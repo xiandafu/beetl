@@ -16,14 +16,27 @@
 
 package org.beetl.android.util;
 
+import org.beetl.android.internal.util.ArrayUtils;
+import org.beetl.core.runtime.BeetlRuntime;
+
 /**
  * Class to configure several of the util classes.
  *
  * @hide
  */
 public class UtilConfig {
-    static boolean sThrowExceptionForUpperArrayOutOfBounds = true;
+    /**
+     * 表示数组越界时，是否抛出异常(默认应该为 true)，
+     * 创建出来的数组的长度可能会大于size，例如 {@link ArrayUtils#newUnpaddedIntArray(int)}
+     * 因此实际使用中可能并不会导致越界异常，但是 Debug 模式建议还是抛出异常
+     */
+    static boolean sThrowExceptionForUpperArrayOutOfBounds = BeetlRuntime.getConfigManager().isDebug();
 
+    /**
+     * 为 {@code android.util.*} 这些类设置是否在 {@code index > *.size} 时抛出越界异常
+     *
+     * @param check 是否抛出异常
+     */
     public static void setThrowExceptionForUpperArrayOutOfBounds(boolean check) {
         sThrowExceptionForUpperArrayOutOfBounds = check;
     }

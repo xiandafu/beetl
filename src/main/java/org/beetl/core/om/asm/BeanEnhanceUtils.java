@@ -22,14 +22,16 @@ import org.beetl.ow2.asm.tree.ClassNode;
 import org.beetl.ow2.asm.tree.FieldNode;
 
 /**
- * 工具类
+ * Bean 增强工具类
  *
  * @author laozhaishaozuo@foxmail.com
  */
 final class BeanEnhanceUtils implements Constants {
 
+    /**
+     * 不可实例化
+     */
     private BeanEnhanceUtils() {
-
     }
 
     /** 不获取的方法名，{@see #buildFieldDescMapByProperty} */
