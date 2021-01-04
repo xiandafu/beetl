@@ -42,13 +42,13 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
     }
 
     /** 缓存 {@link Map} 实例的数量上限 */
-    private static final int MAP_POOL_MAX_SIZE = 200;
+    public static final int sMapPoolMaxSize = 200;
     /** 缓存 {@link List} 实例的数量上限 */
-    private static final int LIST_POOL_MAX_SIZE = 200;
+    public static final int sListPoolMaxSize = 200;
     /** 缓存 {@link Set} 实例的数量上限 */
-    private static final int SET_POOL_MAX_SIZE = 200;
+    public static final int sSetPoolMaxSize = 200;
     /** 在每个LinkedList中缓存 {@link Clearable} 实例的数量上限 */
-    private static final int OBJECT_POOL_MAX_SIZE = 100;
+    public static final int sObjectPoolMaxSize = 100;
 
     /** 保存 Map 实例的缓存池 */
     private LinkedList<Map> mMapPool;
@@ -79,7 +79,7 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
         if (garbage == null) {
             return false;
         }
-        if (mMapPool.size() > MAP_POOL_MAX_SIZE) {
+        if (mMapPool.size() > sMapPoolMaxSize) {
             return false;
         }
         garbage.clear();
@@ -102,7 +102,7 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
         if (garbage == null) {
             return false;
         }
-        if (mSetPool.size() > SET_POOL_MAX_SIZE) {
+        if (mSetPool.size() > sSetPoolMaxSize) {
             return false;
         }
         garbage.clear();
@@ -125,7 +125,7 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
         if (garbage == null) {
             return false;
         }
-        if (mListPool.size() > LIST_POOL_MAX_SIZE) {
+        if (mListPool.size() > sListPoolMaxSize) {
             return false;
         }
         garbage.clear();
@@ -145,7 +145,7 @@ public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
         }
         int key = type.hashCode();
         LinkedList<Clearable> pool = mTypeObjectPoolMap.get(key, new LinkedList<>());
-        if (pool.size() > OBJECT_POOL_MAX_SIZE) {
+        if (pool.size() > sObjectPoolMaxSize) {
             return false;
         }
         garbage.clear();

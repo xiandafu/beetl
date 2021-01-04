@@ -17,6 +17,11 @@ public class BeetlRuntime {
         return DefaultBeetlConfigManager.get();
     }
 
+    /**
+     * 获取Beetl的运行时内存管理器
+     *
+     * @return Beetl的运行时内存管理器
+     */
     public static IBeetlMemoryManager getMemoryManager() {
         return DefaultBeetlMemoryManager.get();
     }
