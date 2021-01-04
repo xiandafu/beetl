@@ -157,15 +157,15 @@ class EnhanceClassGenerator implements Opcodes, Constants {
      */
     private static void generateMethod(ClassWriter cw, Class<?> beanClass, boolean usePropertyDescriptor) {
         String internalClassName = BeanEnhanceUtils.getInternalName(beanClass.getName());
-        ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(beanClass, usePropertyDescriptor);
+        ClassDesc classDesc = BeanEnhanceUtils.getClassDescription(beanClass, usePropertyDescriptor);
         MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, MethodName.VALUE, MethodDesc.VALUE, null, null);
         mv.visitCode();
 
         // 有属性，需要调用 getter 方法
-        if (classDescription.hasField) {
-            generateMethodWithFields(internalClassName, classDescription, mv);
+        if (classDesc.hasField) {
+            generateMethodWithFields(internalClassName, classDesc, mv);
         } else {
-            generateMethodWithNoField(mv, classDescription, internalClassName);
+            generateMethodWithNoField(mv, classDesc, internalClassName);
         }
 
         mv.visitEnd();
@@ -175,10 +175,10 @@ class EnhanceClassGenerator implements Opcodes, Constants {
      * 为字段生成相应的方法
      *
      * @param internalClassName 内部名
-     * @param classDescription  类描述
+     * @param classDesc  类描述
      * @param mv                asm 方法访问者
      */
-    private static void generateMethodWithFields(String internalClassName, ClassDescription classDescription,
+    private static void generateMethodWithFields(String internalClassName, ClassDesc classDesc,
                                                  MethodVisitor mv) {
         Label toStringLabel = new Label();
         mv.visitLabel(toStringLabel);
@@ -202,18 +202,18 @@ class EnhanceClassGenerator implements Opcodes, Constants {
         Label l2 = new Label();
         mv.visitLabel(l2);
         mv.visitVarInsn(ILOAD, VarIndex.LOCAL_HASH_CODE);
-        Label[] lookupSwitchLabels = new Label[classDescription.fieldDescMap.size()];
+        Label[] lookupSwitchLabels = new Label[classDesc.fieldDescMap.size()];
         int[] hashCodes = BeanEnhanceUtils
-                .convertIntegerToPrimitiveType(classDescription.fieldDescMap.keySet().toArray(new Integer[0]));
+                .convertIntegerToPrimitiveType(classDesc.fieldDescMap.keySet().toArray(new Integer[0]));
         for (int i = 0; i < lookupSwitchLabels.length; i++) {
             lookupSwitchLabels[i] = new Label();
         }
         Label df = new Label();
         mv.visitLookupSwitchInsn(df, hashCodes, lookupSwitchLabels);
-        List<FieldDescription> fieldDescs = null;
-        FieldDescription curFieldDesc = null;
+        List<FieldDesc> fieldDescs = null;
+        FieldDesc curFieldDesc = null;
         for (int i = 0; i < lookupSwitchLabels.length; i++) {
-            fieldDescs = classDescription.fieldDescMap.get(hashCodes[i]);
+            fieldDescs = classDesc.fieldDescMap.get(hashCodes[i]);
             mv.visitLabel(lookupSwitchLabels[i]);
             if (i == 0) {
                 Object[] locals = new Object[]{InternalName.STRING, Opcodes.INTEGER, internalClassName};
@@ -229,29 +229,29 @@ class EnhanceClassGenerator implements Opcodes, Constants {
                 addInvokeValueOfToPrimitive(mv, curFieldDesc.desc);
                 mv.visitInsn(ARETURN);
             } else {
-                handleSameHashAttr(classDescription, mv, fieldDescs, internalClassName, df);
+                handleSameHashAttr(classDesc, mv, fieldDescs, internalClassName, df);
             }
 
         }
-        if (classDescription.generalGetMethodDesc != null && InternalName.OBJECT
-                .equals(classDescription.generalGetMethodDesc.parameterInternalName)) {
+        if (classDesc.generalGetMethodDesc != null && InternalName.OBJECT
+                .equals(classDesc.generalGetMethodDesc.parameterInternalName)) {
             // 是否有get(Object)方法
             mv.visitLabel(df);
             mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             mv.visitVarInsn(ALOAD, VarIndex.LOCAL_INTERNAL_CLASS);
             mv.visitVarInsn(ALOAD, VarIndex.PARAM_ATTR);
             mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, MethodName.GET,
-                    classDescription.generalGetMethodDesc.desc, false);
+                    classDesc.generalGetMethodDesc.desc, false);
             mv.visitInsn(ARETURN);
-        } else if (classDescription.generalGetMethodDesc != null && InternalName.STRING
-                .equals(classDescription.generalGetMethodDesc.parameterInternalName)) {
+        } else if (classDesc.generalGetMethodDesc != null && InternalName.STRING
+                .equals(classDesc.generalGetMethodDesc.parameterInternalName)) {
             // 是否有get(String)方法
             mv.visitLabel(df);
             mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             mv.visitVarInsn(ALOAD, VarIndex.LOCAL_INTERNAL_CLASS);
             mv.visitVarInsn(ALOAD, VarIndex.LOCAL_ATTR_STRING);
             mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, MethodName.GET,
-                    classDescription.generalGetMethodDesc.desc, false);
+                    classDesc.generalGetMethodDesc.desc, false);
             mv.visitInsn(ARETURN);
         } else {
             mv.visitLabel(df);
@@ -261,7 +261,7 @@ class EnhanceClassGenerator implements Opcodes, Constants {
             mv.visitLdcInsn("ATTRIBUTE_NOT_FOUND");
             mv.visitTypeInsn(NEW, InternalName.STRING_BUILDER);
             mv.visitInsn(DUP);
-            mv.visitLdcInsn("属性未找到(" + classDescription.target.getName() + ") : ");
+            mv.visitLdcInsn("属性未找到(" + classDesc.target.getName() + ") : ");
             mv.visitMethodInsn(INVOKESPECIAL, InternalName.STRING_BUILDER, MethodName.CONSTRUCTOR,
                     MethodDesc.CONSTRUCTOR_STRING_BUILDER, false);
             mv.visitVarInsn(ALOAD, VarIndex.LOCAL_ATTR_STRING);
@@ -277,7 +277,7 @@ class EnhanceClassGenerator implements Opcodes, Constants {
         mv.visitMaxs(1, 6);
     }
 
-    private static void generateMethodWithNoField(MethodVisitor mv, ClassDescription classDescription,
+    private static void generateMethodWithNoField(MethodVisitor mv, ClassDesc classDesc,
                                                   String internalClassName) {
         Label castLabel = new Label();
         mv.visitLabel(castLabel);
@@ -285,17 +285,17 @@ class EnhanceClassGenerator implements Opcodes, Constants {
         mv.visitTypeInsn(CHECKCAST, internalClassName);
         mv.visitVarInsn(ASTORE, 3);// 此时不需要转换String与计算hashCode，所以是第三个变量
         Label df = new Label();
-        if (classDescription.generalGetMethodDesc != null && InternalName.OBJECT
-                .equals(classDescription.generalGetMethodDesc.parameterInternalName)) {
+        if (classDesc.generalGetMethodDesc != null && InternalName.OBJECT
+                .equals(classDesc.generalGetMethodDesc.parameterInternalName)) {
             mv.visitLabel(df);
             mv.visitFrame(Opcodes.F_APPEND, 1, new Object[]{internalClassName}, 0, null);
             mv.visitVarInsn(ALOAD, 3);
             mv.visitVarInsn(ALOAD, VarIndex.PARAM_ATTR);
             mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, MethodName.GET,
-                    classDescription.generalGetMethodDesc.desc, false);
+                    classDesc.generalGetMethodDesc.desc, false);
             mv.visitInsn(ARETURN);
-        } else if (classDescription.generalGetMethodDesc != null && InternalName.STRING
-                .equals(classDescription.generalGetMethodDesc.parameterInternalName)) {
+        } else if (classDesc.generalGetMethodDesc != null && InternalName.STRING
+                .equals(classDesc.generalGetMethodDesc.parameterInternalName)) {
             Label toStringLabel = new Label();
             mv.visitLabel(toStringLabel);
             mv.visitVarInsn(ALOAD, VarIndex.PARAM_ATTR);
@@ -309,7 +309,7 @@ class EnhanceClassGenerator implements Opcodes, Constants {
             mv.visitVarInsn(ALOAD, 3);// internalClassName
             mv.visitVarInsn(ALOAD, 4);// attrName.toString()
             mv.visitMethodInsn(INVOKEVIRTUAL, internalClassName, MethodName.GET,
-                    classDescription.generalGetMethodDesc.desc, false);
+                    classDesc.generalGetMethodDesc.desc, false);
             mv.visitInsn(ARETURN);
         } else {
             Label toStringLabel = new Label();
@@ -344,8 +344,8 @@ class EnhanceClassGenerator implements Opcodes, Constants {
         mv.visitMaxs(1, 4);
     }
 
-    private static void handleSameHashAttr(ClassDescription classDescription, MethodVisitor mv,
-                                           List<FieldDescription> fieldDescs, String internalClassName, Label defaultLabel) {
+    private static void handleSameHashAttr(ClassDesc classDesc, MethodVisitor mv,
+                                           List<FieldDesc> fieldDescs, String internalClassName, Label defaultLabel) {
         int fieldSize = fieldDescs.size();
         // 用于if跳转的Label
         Label[] ifLabels = new Label[fieldSize];
@@ -355,7 +355,7 @@ class EnhanceClassGenerator implements Opcodes, Constants {
             invokeLabels[i] = new Label();
         }
 
-        FieldDescription curFieldDesc = null;
+        FieldDesc curFieldDesc = null;
         for (int i = 0; i < fieldSize; i++) {
             // 第一个if不需要使用Label
             if (i != 0) {
