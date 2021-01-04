@@ -8,76 +8,76 @@ import org.beetl.ow2.asm.MethodVisitor;
 import org.beetl.ow2.asm.Opcodes;
 
 /**
- * 通过ASM生成{@link org.beetl.core.om.AttributeAccess}的子类，
- * 假设类名称User，则为生成的类为：User$AttributeAccess
- * 实现   {@link org.beetl.core.om.AttributeAccess#value(Object, Object)}方法。
- * <p/>
- * <h3>Bean中没有get(String)或get(Object)方法:</h3>
+ * 通过ASM生成{@link org.beetl.core.om.AttributeAccess}的子类
+ *
  * <pre>
- * public Object value(Object bean, Object attr) {
- * String attrStr = attr.toString();
- * int hash = attrStr.hashCode();
- * User user = (User) bean;
- * switch (hash) {
- * case 1:
- * return user.getName();
- * case 2:
- * return user.getAddress();
- * case 3:
- * if("numbers".equals(attrStr)){
- * return user.getNumbers();
- * }
- * if("birthDate".equals(attrStr)){
- * return user.getBirthDate();
- * }
- * }
- * throw new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND, "attribute : " + attrStr);
- * }
- * </pre>
- * <h3>Bean中有get(String)方法:</h3>
- * <pre>
- * public Object value(Object bean, Object attr) {
- * String attrStr = attr.toString();
- * int hash = attrStr.hashCode();
- * User user = (User) bean;
- * switch (hash) {
- * case 1:
- * return user.getName();
- * case 2:
- * return user.getAddress();
- * case 3:
- * if("numbers".equals(attrStr)){
- * return user.getNumbers();
- * }
- * if("birthDate".equals(attrStr)){
- * return user.getBirthDate();
- * }
- * }
- * return user.get(attrStr);
- * }
- * </pre>
- * </pre>
- * <h3>Bean中有get(Object)方法:</h3>
- * <pre>
- * public Object value(Object bean, Object attr) {
- * String attrStr = attr.toString();
- * int hash = attrStr.hashCode();
- * User user = (User) bean;
- * switch (hash) {
- * case 1:
- * return user.getName();
- * case 2:
- * return user.getAddress();
- * case 3:
- * if("numbers".equals(attrStr)){
- * return user.getNumbers();
- * }
- * if("birthDate".equals(attrStr)){
- * return user.getBirthDate();
- * }
- * }
- * return user.get(attr);
- * }
+ *     假设 Bean 的类名为 User，则为生成的类为：User$AttributeAccess
+ *     并为其实现 {@link org.beetl.core.om.AttributeAccess#value(Object, Object)} 方法
+ *     以下是三种情况，以及示例
+ *
+ *          // (1) Bean 中没有 get(String) 或 get(Object) 方法
+ *          public Object value(Object bean, Object attr) {
+ *              String attrStr = attr.toString();
+ *              int hash = attrStr.hashCode();
+ *              User user = (User) bean;
+ *              switch (hash) {
+ *                  case 1:
+ *                      return user.getName();
+ *                  case 2:
+ *                      return user.getAddress();
+ *                  case 3:
+ *                      if("numbers".equals(attrStr)){
+ *                          return user.getNumbers();
+ *                      }
+ *                      if("birthDate".equals(attrStr)){
+ *                          return user.getBirthDate();
+ *                      }
+ *              }
+ *              throw new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND, "attribute : " + attrStr);
+ *          }
+ *
+ *          // (2) Bean中有 get(String) 方法
+ *          public Object value(Object bean, Object attr) {
+ *              String attrStr = attr.toString();
+ *              int hash = attrStr.hashCode();
+ *              User user = (User) bean;
+ *              switch (hash) {
+ *                  case 1:
+ *                      return user.getName();
+ *                  case 2:
+ *                      return user.getAddress();
+ *                  case 3:
+ *                      if("numbers".equals(attrStr)){
+ *                          return user.getNumbers();
+ *                      }
+ *                      if("birthDate".equals(attrStr)){
+ *                          return user.getBirthDate();
+ *                      }
+ *              }
+ *              return user.get(attrStr);
+ *          }
+ *
+ *          // (3) Bean中有 get(Object) 方法
+ *          public Object value(Object bean, Object attr) {
+ *              String attrStr = attr.toString();
+ *              int hash = attrStr.hashCode();
+ *              User user = (User) bean;
+ *              switch (hash) {
+ *                  case 1:
+ *                      return user.getName();
+ *                  case 2:
+ *                      return user.getAddress();
+ *                  case 3:
+ *                      if("numbers".equals(attrStr)){
+ *                          return user.getNumbers();
+ *                      }
+ *                      if("birthDate".equals(attrStr)){
+ *                          return user.getBirthDate();
+ *                      }
+ *              }
+ *              return user.get(attr);
+ *          }
+ *
  * </pre>
  *
  * @author laozhaishaozuo@foxmail.com
@@ -392,7 +392,7 @@ class EnhanceClassGenerator implements Opcodes, Constants {
     /**
      * 根据指定返回类型描述，添加 static 修饰的 'valueOf' 方法
      *
-     * @param mv             asm 方法访问者
+     * @param mv             asm 方法访问者，执行 {@code invokestatic owner name desc} 字节指令
      * @param returnTypeDesc 返回类型描述 {@see Constants.TypeDescriptor}
      */
     private static void addInvokeValueOfToPrimitive(MethodVisitor mv, String returnTypeDesc) {
