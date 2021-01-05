@@ -9,7 +9,7 @@ import java.util.Map;
  *
  * @author laozhaishaozuo@foxmail.com
  */
-class ClassDescription {
+class ClassDesc {
 
     Class<?> target = null;
 
@@ -18,9 +18,9 @@ class ClassDescription {
     /**
      * get(Object)或get(String)或null
      */
-    MethodDescription generalGetMethodDesc;
+    MethodDesc generalGetMethodDesc;
 
-    Map<Integer, List<FieldDescription>> fieldDescMap;
+    Map<Integer, List<FieldDesc>> fieldDescMap;
 
     boolean hasField = true;
 }

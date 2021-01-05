@@ -30,6 +30,7 @@ package org.beetl.core.om;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.beetl.android.util.Pair;
 import org.beetl.core.exception.BeetlException;
 
 /**
@@ -41,18 +42,11 @@ public class ListAA extends AttributeAccess {
 
     @Override
     public Object value(Object o, Object attr) {
-        if (attr instanceof Integer
-                || attr instanceof Long
-                || attr instanceof Short
-                || attr instanceof Byte
-                || attr instanceof BigDecimal) {
-            int index = ((Number) attr).intValue();
-            if (index < 0) {
-                throw new BeetlException(BeetlException.ARRAY_INDEX_ERROR, "索引必须大于或者等于");
-            }
-            return ((List) o).get(index);
+        Pair<Boolean, Integer> indexCheckResult = checkAndGetIndex(attr);
+        if (indexCheckResult.first) {
+            return ((List) o).get(indexCheckResult.second);
         }
-        throw new BeetlException(BeetlException.ARRAY_INDEX_ERROR, "期望是整形或者是BigDecimal类型");
+        throw new BeetlException(BeetlException.ARRAY_INDEX_ERROR, "期望是整型或者是BigDecimal类型");
     }
 
 }

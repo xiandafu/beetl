@@ -4,7 +4,7 @@ package org.beetl.core.om.asm;
  * 对于public Object get(Object key)方法
  *
  * <pre>
- * MethodDescription md = new MethodDescription();
+ * MethodDesc md = new MethodDesc();
  * md.name = "get";
  * md.desc = "(Ljava/lang/Object;)Ljava/lang/Object;";
  * md.returnTypeInternalName = "java/lang/Object";
@@ -13,7 +13,7 @@ package org.beetl.core.om.asm;
  *
  * @author laozhaishaozuo@foxmail.com
  */
-class MethodDescription {
+class MethodDesc {
 
     /** 方法名称 */
     String name;
@@ -32,7 +32,7 @@ class MethodDescription {
      * @param parameterInternalName  方法入参的内部名，例如 {@code java/lang/Object}
      * @param returnTypeInternalName 返回值的内部名，例如 {@code java/lang/Object}
      */
-    MethodDescription(String name, String desc, String parameterInternalName, String returnTypeInternalName) {
+    MethodDesc(String name, String desc, String parameterInternalName, String returnTypeInternalName) {
         this.name = name;
         this.desc = desc;
         this.parameterInternalName = parameterInternalName;

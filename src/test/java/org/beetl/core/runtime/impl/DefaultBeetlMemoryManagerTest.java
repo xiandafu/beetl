@@ -73,12 +73,12 @@ public class DefaultBeetlMemoryManagerTest {
         }
 
         long time1 = System.nanoTime();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) { // 耗时: 578ms
             List list = BeetlRuntime.getMemoryManager().takeList(); // 获取引用，没有则创建
             opList(list); // List 的数据操作
         }
         long time2 = System.nanoTime();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) { // 耗时: 1058ms
             List list = new ArrayList(); // 常规场景创建 List 的实例
             opList(list); // List 的数据操作
         }

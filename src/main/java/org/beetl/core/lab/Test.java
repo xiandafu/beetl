@@ -27,11 +27,14 @@ public class Test {
         gt.registerFunctionPackageAsRoot(TestUser.class);
 
         for (int i = 0; i < 100; i++) {
-			Template t = gt.getTemplate("/hello.txt");
-			t.binding("user", new MyTestObject("abc"));
-			t.binding("abc", 1234);
+            Template t = gt.getTemplate("/hello.txt");
+            MyTestObject obj = new MyTestObject("abc");
+            t.binding("user", obj);
+            t.binding("abc", 1234);
 			String str = t.render();
-			System.out.println(str);
+			// 调试时输入：
+            // ((AsmAAFactory) AABuilder.defalutAAFactory).asmBeanFactory.beanMap.get(MyTestObject.class)
+            System.out.println(str);
 		}
         int a =1;
 

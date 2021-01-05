@@ -3,7 +3,7 @@ package org.beetl.core.om.asm;
 /**
  * 字段描述信息
  */
-class FieldDescription {
+class FieldDesc {
 
     /** 字段名称 */
     String name;
@@ -22,7 +22,7 @@ class FieldDescription {
      * @param readMethodName getXXX 方法名称
      * @param readMethodDesc getXXX 方法描述
      */
-    public FieldDescription(String name, String desc, String readMethodName, String readMethodDesc) {
+    public FieldDesc(String name, String desc, String readMethodName, String readMethodDesc) {
         super();
         this.name = name;
         this.desc = desc;

@@ -22,14 +22,16 @@ import org.beetl.ow2.asm.tree.ClassNode;
 import org.beetl.ow2.asm.tree.FieldNode;
 
 /**
- * 工具类
+ * Bean 增强工具类
  *
  * @author laozhaishaozuo@foxmail.com
  */
 final class BeanEnhanceUtils implements Constants {
 
+    /**
+     * 不可实例化
+     */
     private BeanEnhanceUtils() {
-
     }
 
     /** 不获取的方法名，{@see #buildFieldDescMapByProperty} */
@@ -42,23 +44,23 @@ final class BeanEnhanceUtils implements Constants {
     /**
      * 注意，使用propertyDescriptor获取的属性，与字段名称可能不一致
      */
-    static ClassDescription getClassDescription(Class<?> beanClass, boolean usePropertyDescriptor) {
-        ClassDescription classDescription = new ClassDescription();
+    static ClassDesc getClassDescription(Class<?> beanClass, boolean usePropertyDescriptor) {
+        ClassDesc classDesc = new ClassDesc();
         InputStream in = null;
         try {
-            setPropertyDescriptors(classDescription, beanClass);
+            setPropertyDescriptors(classDesc, beanClass);
             if (usePropertyDescriptor) {
-                buildFieldDescMapByProperty(classDescription);
+                buildFieldDescMapByProperty(classDesc);
             } else {
                 in = beanClass.getClassLoader().getResourceAsStream(getInternalName(beanClass.getName()) + ".class");
                 ClassReader reader = new ClassReader(in);
                 ClassNode cn = new ClassNode();
                 reader.accept(cn, 0);
-                buildFieldDescMapByAsm(classDescription, cn);
+                buildFieldDescMapByAsm(classDesc, cn);
             }
-            classDescription.target = beanClass;
-            classDescription.generalGetMethodDesc = getGeneralGetMethodDescription(beanClass);
-            classDescription.hasField = !classDescription.fieldDescMap.isEmpty();
+            classDesc.target = beanClass;
+            classDesc.generalGetMethodDesc = getGeneralGetMethodDescription(beanClass);
+            classDesc.hasField = !classDesc.fieldDescMap.isEmpty();
         } catch (IOException | IntrospectionException e) {
             throw new BeetlException(BeetlException.ERROR, "ASM增强功能，生成类:" + beanClass.getName() + "时发生错误", e);
         } finally {
@@ -70,21 +72,21 @@ final class BeanEnhanceUtils implements Constants {
                 // ignore
             }
         }
-        return classDescription;
+        return classDesc;
     }
 
-    private static void setPropertyDescriptors(ClassDescription classDescription, Class<?> beanClass)
+    private static void setPropertyDescriptors(ClassDesc classDesc, Class<?> beanClass)
             throws IntrospectionException {
         PropertyDescriptor[] propDescriptors = Introspector.getBeanInfo(beanClass).getPropertyDescriptors();
         List<PropertyDescriptor> propList = new ArrayList<>(propDescriptors.length);
         propList.addAll(Arrays.asList(propDescriptors));
-        classDescription.propertyDescriptors = propList;
+        classDesc.propertyDescriptors = propList;
     }
 
-    private static void buildFieldDescMapByProperty(ClassDescription classDescription) {
-        List<PropertyDescriptor> propList = classDescription.propertyDescriptors;
+    private static void buildFieldDescMapByProperty(ClassDesc classDesc) {
+        List<PropertyDescriptor> propList = classDesc.propertyDescriptors;
 
-        List<FieldDescription> fieldDescs = new ArrayList<>(propList.size() << 1);
+        List<FieldDesc> fieldDescs = new ArrayList<>(propList.size() << 1);
         Method curPropReadMethod;
 
         for (PropertyDescriptor prop : propList) {
@@ -92,7 +94,7 @@ final class BeanEnhanceUtils implements Constants {
 
             if ((curPropReadMethod != null) && !IGNORE_METHOD_NAME_SET.contains(curPropReadMethod.getName())) {
 
-                fieldDescs.add(new FieldDescription(
+                fieldDescs.add(new FieldDesc(
                         prop.getName(),
                         Type.getType(curPropReadMethod.getReturnType()).toString(),
                         curPropReadMethod.getName(),
@@ -101,7 +103,7 @@ final class BeanEnhanceUtils implements Constants {
 
                 // 2.x兼容,{@see ObjectUtil#getInvokder}
                 if (prop.getPropertyType() == Boolean.class || prop.getPropertyType() == boolean.class) {
-                    fieldDescs.add(new FieldDescription(
+                    fieldDescs.add(new FieldDesc(
                             curPropReadMethod.getName(),
                             Type.getType(curPropReadMethod.getReturnType()).toString(),
                             curPropReadMethod.getName(),
@@ -112,17 +114,17 @@ final class BeanEnhanceUtils implements Constants {
             }
         }
 
-        buildFieldDescMap(classDescription, fieldDescs);
+        buildFieldDescMap(classDesc, fieldDescs);
     }
 
-    private static void buildFieldDescMap(ClassDescription classDescription, List<FieldDescription> allFieldDescs) {
+    private static void buildFieldDescMap(ClassDesc classDesc, List<FieldDesc> allFieldDescs) {
         // 先对其按照hashCode进行排序，方便后续生产代码
         allFieldDescs.sort(Comparator.comparingInt(p -> p.name.hashCode()));
 
-        Map<Integer, List<FieldDescription>> filedDescMap = new LinkedHashMap<>();
+        Map<Integer, List<FieldDesc>> filedDescMap = new LinkedHashMap<>();
         int hashCode = 0;
-        List<FieldDescription> filedDescs = null;
-        for (FieldDescription fieldDesc : allFieldDescs) {
+        List<FieldDesc> filedDescs = null;
+        for (FieldDesc fieldDesc : allFieldDescs) {
             hashCode = fieldDesc.name.hashCode();
             filedDescs = filedDescMap.get(hashCode);
             if (filedDescs == null) {
@@ -131,7 +133,7 @@ final class BeanEnhanceUtils implements Constants {
             filedDescs.add(fieldDesc);
             filedDescMap.put(hashCode, filedDescs);
         }
-        classDescription.fieldDescMap = filedDescMap;
+        classDesc.fieldDescMap = filedDescMap;
     }
 
     private static String getMethodDesc(Method readMethod) {
@@ -139,23 +141,23 @@ final class BeanEnhanceUtils implements Constants {
         return descriptor.substring(descriptor.indexOf('('));
     }
 
-    private static void buildFieldDescMapByAsm(ClassDescription classDescription, ClassNode cn) {
+    private static void buildFieldDescMapByAsm(ClassDesc classDesc, ClassNode cn) {
         @SuppressWarnings("unchecked")
         List<FieldNode> fieldList = cn.fields;
 
-        List<FieldDescription> allFiledDescs = convertFieldNodeToFieldDesc(classDescription, fieldList);
-        buildFieldDescMap(classDescription, allFiledDescs);
+        List<FieldDesc> allFiledDescs = convertFieldNodeToFieldDesc(classDesc, fieldList);
+        buildFieldDescMap(classDesc, allFiledDescs);
     }
 
-    private static List<FieldDescription> convertFieldNodeToFieldDesc(ClassDescription classDescription,
-                                                                      List<FieldNode> fieldList) {
-        List<FieldDescription> fieldDescs = new ArrayList<>(fieldList.size() * 2);
-        FieldDescription filedDesc = null;
+    private static List<FieldDesc> convertFieldNodeToFieldDesc(ClassDesc classDesc,
+                                                               List<FieldNode> fieldList) {
+        List<FieldDesc> fieldDescs = new ArrayList<>(fieldList.size() * 2);
+        FieldDesc filedDesc = null;
         for (FieldNode fieldNode : fieldList) {
-            filedDesc = new FieldDescription(
+            filedDesc = new FieldDesc(
                     fieldNode.name,
                     fieldNode.desc,
-                    createGetterMethodName(classDescription, fieldNode.name),
+                    createGetterMethodName(classDesc, fieldNode.name),
                     "()" + fieldNode.desc
             );
             fieldDescs.add(filedDesc);
@@ -166,8 +168,8 @@ final class BeanEnhanceUtils implements Constants {
         return fieldDescs;
     }
 
-    private static FieldDescription getBooleanFieldDescription(FieldDescription curFiledDesc) {
-        return new FieldDescription(
+    private static FieldDesc getBooleanFieldDescription(FieldDesc curFiledDesc) {
+        return new FieldDesc(
                 getFieldNameFromGetterMethod(curFiledDesc.name),
                 curFiledDesc.desc,
                 curFiledDesc.readMethodName,
@@ -189,11 +191,11 @@ final class BeanEnhanceUtils implements Constants {
     /**
      * 生成 getter 方法的方法描述符
      */
-    private static MethodDescription getGeneralGetMethodDescription(Class<?> target) {
+    private static org.beetl.core.om.asm.MethodDesc getGeneralGetMethodDescription(Class<?> target) {
         String getStr = MethodName.GET;
         try {
             Method getMethod = target.getMethod(getStr, Object.class);
-            return new MethodDescription(
+            return new org.beetl.core.om.asm.MethodDesc(
                     getStr,
                     getMethodDesc(getMethod),
                     InternalName.OBJECT,
@@ -204,7 +206,7 @@ final class BeanEnhanceUtils implements Constants {
 
         try {
             Method getMethod = target.getMethod(getStr, String.class);
-            return new MethodDescription(
+            return new org.beetl.core.om.asm.MethodDesc(
                     getStr,
                     getMethodDesc(getMethod),
                     InternalName.STRING,
@@ -219,12 +221,12 @@ final class BeanEnhanceUtils implements Constants {
     /**
      * 创建 getter 方法的方法名称
      *
-     * @param classDescription 类描述符
+     * @param classDesc 类描述符
      * @param propertyName     属性名
      * @return getter 方法的方法名称
      */
-    private static String createGetterMethodName(ClassDescription classDescription, String propertyName) {
-        for (PropertyDescriptor ps : classDescription.propertyDescriptors) {
+    private static String createGetterMethodName(ClassDesc classDesc, String propertyName) {
+        for (PropertyDescriptor ps : classDesc.propertyDescriptors) {
             if (ps.getName().equals(propertyName)) {
                 return ps.getReadMethod().getName();
             }

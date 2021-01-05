@@ -78,7 +78,7 @@ public class AsmBeanFactory {
             Object obj = loadContextClassLoader(code, generatedBeanName);
             if (obj != null) {
                 beanMap.put(beanClass, (AttributeAccess) obj);
-                return beanMap.get(beanClass);
+                return (AttributeAccess) obj;
             }
             //使用加载Bean的classloader，https://gitee.com/xiandafu/beetl/issues/IWLSS
             ByteClassLoader byteLoader = classLoaders.get(beanClassLoader);
@@ -91,7 +91,7 @@ public class AsmBeanFactory {
                 enhanceClass = byteLoader.defineClass(generatedBeanName, code);
             }
             // writeClassToFile(code, beanClass, generatedBeanName);
-            obj = obj = enhanceClass.newInstance();
+            obj = enhanceClass.newInstance();
             beanMap.put(beanClass, (AttributeAccess) obj);
             return beanMap.get(beanClass);
 

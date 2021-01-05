@@ -27,11 +27,14 @@
  */
 package org.beetl.core.om;
 
+import org.beetl.android.util.Pair;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.fun.MethodInvoker;
 import org.beetl.core.fun.ObjectUtil;
 import org.beetl.core.misc.PrimitiveArrayUtil;
+import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +57,8 @@ public abstract class AttributeAccess implements java.io.Serializable {
      * @param o 将被修改的对象
      * @param k 键
      * @param v 值
+     * @throws BeetlException 数组越界异常、属性私有、属性找不到
+     * @throws ClassCastException 目标无法强转成 java.util.List 或数组的组件类型
      */
     private static void updateValue(Object o, Object k, Object v) {
         if (o instanceof Map) { // Map
@@ -88,6 +93,29 @@ public abstract class AttributeAccess implements java.io.Serializable {
                         : BeetlException.ATTRIBUTE_NOT_FOUND, keyStr);
             }
         }
+    }
+
+    /**
+     * 检查一个对象是否为索引
+     *
+     * @param attr 表示索引的引用
+     * @return true 表示检查并校验通过，Integer 值为索引值；false 表示数据类型不对，此时 Integer 值为 null
+     * @throws BeetlException 如果索引值小于0，会抛出该异常
+     */
+    @NotNull
+    static Pair<Boolean, Integer> checkAndGetIndex(Object attr) {
+        if (attr instanceof Integer
+                || attr instanceof Long
+                || attr instanceof Short
+                || attr instanceof Byte
+                || attr instanceof BigDecimal) {
+            int index = ((Number) attr).intValue();
+            if (index < 0) {
+                throw new BeetlException(BeetlException.ARRAY_INDEX_ERROR, "索引必须大于或者等于");
+            }
+            return new Pair<>(true, index);
+        }
+        return new Pair<>(false, null);
     }
 
 }

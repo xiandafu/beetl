@@ -29,11 +29,11 @@ public class AsmBeanFactoryTest extends BasicTestCase {
 	@Test
 	public void testAttrByAsm() throws Exception {
 		boolean usePropertyDescriptor = false;
-		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(User.class, usePropertyDescriptor);
+		ClassDesc classDesc = BeanEnhanceUtils.getClassDescription(User.class, usePropertyDescriptor);
 		AsmBeanFactory asmBeanFactory = new AsmBeanFactory();
 		asmBeanFactory.setUsePropertyDescriptor(usePropertyDescriptor);
-		for (List<FieldDescription> nodes : classDescription.fieldDescMap.values()) {
-			for (FieldDescription node : nodes) {
+		for (List<FieldDesc> nodes : classDesc.fieldDescMap.values()) {
+			for (FieldDesc node : nodes) {
 				System.out.println(node.name + ":" + asmBeanFactory.value(user, node.name));
 				AssertJUnit.assertEquals(ObjectUtil.getInvokder(User.class, node.name).get(user),
 						asmBeanFactory.value(user, node.name));
@@ -46,11 +46,11 @@ public class AsmBeanFactoryTest extends BasicTestCase {
 
 	@Test
 	public void testByProp() throws Exception {
-		ClassDescription classDescription = BeanEnhanceUtils.getClassDescription(User.class, true);
+		ClassDesc classDesc = BeanEnhanceUtils.getClassDescription(User.class, true);
 		AsmBeanFactory asmBeanFactory = new AsmBeanFactory();
 		asmBeanFactory.setUsePropertyDescriptor(true);
-		for (List<FieldDescription> nodes : classDescription.fieldDescMap.values()) {
-			for (FieldDescription node : nodes) {
+		for (List<FieldDesc> nodes : classDesc.fieldDescMap.values()) {
+			for (FieldDesc node : nodes) {
 				System.out.println(node.name + ":" + node.name.hashCode());
 				System.out.println(node.name + ":" + asmBeanFactory.value(user, node.name));
 				AssertJUnit.assertEquals(ObjectUtil.getInvokder(User.class, node.name).get(user),
