@@ -1,38 +1,33 @@
 package org.beetl.core.cache;
 
+import org.beetl.core.annotation.NonThreadSafety;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * 一个缓存的字节和字符数组，用于减少beetl渲染各个过程中渲染字符数组
  *
  * @author xiandafu
  */
+@NonThreadSafety
 public class ContextBuffer {
+    /** 空字符数组 */
+    private static final char[] EMPTY_CHAR_ARRAY = new char[0];
+    /** 空字节数组 */
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+    /** 扩容倍数 */
+    private static final float RESIZE_FACTOR = 1.2F;
+    /** 初始容量 */
+    private static final int DEFAULT_SIZE = 256;
 
-    public static int minSize = 256;
-    /**
-     * 初始化的字符数组大小
-     */
-    public static int charBufferSize = minSize;
-
-    /**
-     * 初始化的字节大小
-     */
-    public static int byteBufferSize = minSize;
-
-    /*没有空间时候返回*/
-    private static char[] EMPTY_CHAR_ARRAY = new char[0];
-    private static byte[] EMPTY_BYTE_ARRAY = new byte[0];
-
-    /**
-     * 最大空间
-     */
+    /** 最大空间 */
     int maxSize = 0;
-    /**
-     * 是否是个临时buffer，如果是，不能保存在ContextLocalBuffers
-     */
+    /** 是否是个临时buffer，如果是，不能保存在ContextLocalBuffers */
     boolean inner = true;
 
-    private char[] charBuffer = new char[charBufferSize];
-    private byte[] byteBuffer = new byte[byteBufferSize];
+    /** 字符数组缓存 */
+    private char[] charBuffer = new char[DEFAULT_SIZE];
+    /** 字节数组缓存 */
+    private byte[] byteBuffer = new byte[DEFAULT_SIZE];
 
     public ContextBuffer(int maxSize, boolean inner) {
         this(maxSize);
@@ -40,8 +35,8 @@ public class ContextBuffer {
     }
 
     public ContextBuffer(int maxSize) {
-        if (maxSize < minSize) {
-            throw new IllegalArgumentException("buffer期望设置需要大于 " + minSize);
+        if (maxSize < DEFAULT_SIZE) {
+            throw new IllegalArgumentException("buffer期望设置需要大于 " + DEFAULT_SIZE);
         }
         this.maxSize = maxSize;
     }
@@ -57,32 +52,30 @@ public class ContextBuffer {
     /**
      * 得到一个期望长度的buffer,调用者应该检测是否返回null，表示
      */
+    @NotNull
     public char[] getCharBuffer(int expected) {
         if (this.charBuffer.length >= expected) {
             return charBuffer;
         } else if (expected < maxSize) {
-            // ?预先设置多一点
-            this.charBuffer = new char[(int) (expected * 1.2)];
-        } else {
-            return EMPTY_CHAR_ARRAY;
+            this.charBuffer = new char[(int) (expected * RESIZE_FACTOR)]; // 预先设置多一点
+            return charBuffer;
         }
-        return this.charBuffer;
+        return EMPTY_CHAR_ARRAY;
     }
 
     /**
      * 得到期望字节数组大小
      */
+    @NotNull
     public byte[] getByteBuffer(int expected) {
         if (this.byteBuffer.length >= expected) {
             return byteBuffer;
         } else if (expected < maxSize) {
             // 预先设置多一点
-            byteBuffer = new byte[(int) (expected * 1.2)];
+            byteBuffer = new byte[(int) (expected * RESIZE_FACTOR)];
             return byteBuffer;
-        } else {
-            return EMPTY_BYTE_ARRAY;
         }
-
+        return EMPTY_BYTE_ARRAY;
     }
 
 }
