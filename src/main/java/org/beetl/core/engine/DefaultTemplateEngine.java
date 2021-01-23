@@ -26,6 +26,7 @@ import org.beetl.core.statement.ProgramMetaData;
  * 默认的视图引擎
  */
 public class DefaultTemplateEngine implements TemplateEngine, IGrammarConstants {
+
     /** ANTLR 错误策略 */
     protected BeetlAntlrErrorStrategy antlrErrorStrategy = new BeetlAntlrErrorStrategy();
     /** 语法错误监听器 */
@@ -121,6 +122,12 @@ public class DefaultTemplateEngine implements TemplateEngine, IGrammarConstants 
         return result;
     }
 
+    /**
+     * 严格MVC下，添加禁用语法的集合
+     *
+     * @param grammarCreator 语法创建者
+     * @param groupTemplate  组模板
+     */
     protected void setStrictDisableGrammars(GrammarCreator grammarCreator, GroupTemplate groupTemplate) {
         if (groupTemplate.getConf().isStrict()) {
             for (String disableGrammar : STRICT_DISABLE_GRAMMARS) {

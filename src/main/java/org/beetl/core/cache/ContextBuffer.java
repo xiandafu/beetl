@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @NonThreadSafety
 public class ContextBuffer {
+
     /** 空字符数组 */
     private static final char[] EMPTY_CHAR_ARRAY = new char[0];
     /** 空字节数组 */
@@ -29,22 +30,46 @@ public class ContextBuffer {
     /** 字节数组缓存 */
     private byte[] byteBuffer = new byte[DEFAULT_SIZE];
 
+    /**
+     * 构造方法
+     *
+     * @param maxSize 最大容量
+     * @param inner   是否为临时 buffer
+     */
     public ContextBuffer(int maxSize, boolean inner) {
         this(maxSize);
         this.inner = inner;
     }
 
+    /**
+     * 构造方法
+     *
+     * @param maxSize 最大容量
+     */
     public ContextBuffer(int maxSize) {
         if (maxSize < DEFAULT_SIZE) {
+            // TODO: DEBUG 环境才抛出异常，非DEBUG环境，设置为默认值
             throw new IllegalArgumentException("buffer期望设置需要大于 " + DEFAULT_SIZE);
         }
         this.maxSize = maxSize;
     }
 
+    /**
+     * 获取字符数组缓存
+     *
+     * @return 上下文中缓存的字符数组
+     */
+    @NotNull
     public char[] getCharBuffer() {
         return this.charBuffer;
     }
 
+    /**
+     * 获取字节数组缓存
+     *
+     * @return 上下文中缓存的字节数组
+     */
+    @NotNull
     public byte[] getByteBuffer() {
         return this.byteBuffer;
     }

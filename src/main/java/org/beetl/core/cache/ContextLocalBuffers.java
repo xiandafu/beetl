@@ -1,6 +1,7 @@
 package org.beetl.core.cache;
 
 import org.beetl.core.annotation.NonThreadSafety;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -31,11 +32,22 @@ public class ContextLocalBuffers {
         }
     }
 
+    /**
+     * 获取一个 ContextBuffer 实例
+     *
+     * @return 从队列中返回一个实例，如果没有则创建一个
+     */
+    @NotNull
     public ContextBuffer getContextLocalBuffer() {
         ContextBuffer buffer = queue.poll();
         return buffer == null ? new ContextBuffer(bufferMax, false) : buffer;
     }
 
+    /**
+     * 将一个 ContextBuffer 实例回收到队列中
+     *
+     * @param buffer 一个 ContextBuffer 实例
+     */
     public void putContextLocalBuffer(ContextBuffer buffer) {
         if (!buffer.inner) {
             // 放弃，这是临时生成的
