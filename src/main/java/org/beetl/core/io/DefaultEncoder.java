@@ -36,25 +36,18 @@ public class DefaultEncoder {
     }
 
     public void write(final char[] chars, final int len, final OutputStream out) throws IOException {
-        if (chars != null && len != 0) {
-
-            final CharsetEncoder encoder;
-            final ByteBuffer bb;
-            byte[] buffer = this.localBuffer.getByteBuffer((int) (len * this.expansionFactor));
-            if (buffer.length != 0) {
-                (encoder = this.charsetEncoder).reset().encode(CharBuffer.wrap(chars, 0, len),
-                        bb = ByteBuffer.wrap(buffer), true);
-                encoder.flush(bb);
-                out.write(buffer, 0, bb.position());
-            } else {
-                buffer = new byte[(int) (len * this.expansionFactor)];
-                (encoder = this.charsetEncoder).reset().encode(CharBuffer.wrap(chars, 0, len),
-                        bb = ByteBuffer.wrap(buffer), true);
-                encoder.flush(bb);
-                out.write(buffer, 0, bb.position());
-            }
-
+        if (chars == null || len == 0) {
+            return;
         }
+        final ByteBuffer bb;
+        byte[] buffer = this.localBuffer.getByteBuffer((int) (len * this.expansionFactor));
+        if (buffer.length == 0) {
+            buffer = new byte[(int) (len * this.expansionFactor)];
+        }
+        final CharsetEncoder encoder = this.charsetEncoder;
+        encoder.reset().encode(CharBuffer.wrap(chars, 0, len), bb = ByteBuffer.wrap(buffer), true);
+        encoder.flush(bb);
+        out.write(buffer, 0, bb.position());
     }
 
     private static CharsetEncoder newEncoder(String csn) throws UnsupportedCharsetException {

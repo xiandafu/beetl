@@ -42,7 +42,7 @@ import java.util.function.Function;
 public class LocalCache implements Cache {
 
     /** 线程安全的缓存 */
-    private final Map<Object,Object> threadSafeCache = new ConcurrentHashMap<>();
+    private final Map<Object, Object> threadSafeCache = new ConcurrentHashMap<>();
 
     @Override
     public Object get(Object key) {

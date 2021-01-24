@@ -40,11 +40,12 @@ public class ByteWriter_Byte extends ByteWriter {
     protected String cs;
     DefaultEncoder encode = null;
 
-    //	protected Charset charset = null;
-    //	CharsetEncoder encoder = null;
-    //	ByteBuffer byteBuffer = null;
-    //	byte[] bs = new byte[256];
-
+    /**
+     * 构造方法
+     * @param os 输出流
+     * @param cs
+     * @param ctx
+     */
     public ByteWriter_Byte(OutputStream os, String cs, Context ctx) {
         super(ctx);
         this.os = os;
@@ -60,7 +61,7 @@ public class ByteWriter_Byte extends ByteWriter {
     @Override
     public final void write(final char[] cbuf) throws IOException {
         this.write(cbuf, cbuf.length);
-        //todo:性能如何？
+        // TODO:性能如何？
     }
 
     @Override
@@ -76,13 +77,11 @@ public class ByteWriter_Byte extends ByteWriter {
 
     public void write(byte[] bs, int count) throws IOException {
         os.write(bs, 0, count);
-
     }
 
     public void writeString(String str) throws IOException {
         if (str != null) {
             encode.write(str, os);
-            //			os.write(str.getBytes(cs));
         }
     }
 
@@ -93,24 +92,23 @@ public class ByteWriter_Byte extends ByteWriter {
 
     @Override
     public void flush() throws IOException {
-        if (parent != null)
+        if (parent != null) {
             parent.flush();
+        }
         this.os.flush();
-
     }
 
     @Override
     public void fill(ByteWriter bw) throws IOException {
         ByteWriter_Byte bwb = (ByteWriter_Byte) bw;
         NoLockByteArrayOutputStream byteArray = (NoLockByteArrayOutputStream) bwb.os;
-        this.write(byteArray.buf, byteArray.count);
-
+        this.write(byteArray.buf, byteArray.pos);
     }
 
     @Override
-    public BodyContent getTempConent() {
+    public BodyContent getTempContent() {
         NoLockByteArrayOutputStream byteArray = (NoLockByteArrayOutputStream) this.os;
-        return new ByteBodyContent(byteArray.buf, byteArray.count, this.cs);
+        return new ByteBodyContent(byteArray.buf, byteArray.pos, this.cs);
     }
 
     public OutputStream getOs() {

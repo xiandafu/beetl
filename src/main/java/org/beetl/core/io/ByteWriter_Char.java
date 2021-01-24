@@ -44,18 +44,15 @@ public final class ByteWriter_Char extends ByteWriter {
     @Override
     public final void write(char[] cbuf) throws IOException {
         w.write(cbuf);
-
     }
 
     @Override
     public void write(char[] cbuf, int len) throws IOException {
         w.write(cbuf, 0, len);
-
     }
 
     @Override
     public void writeString(String str) throws IOException {
-
         if (str != null) {
             int len = str.length();
             char[] buf = localBuffer.getCharBuffer(len);
@@ -65,21 +62,17 @@ public final class ByteWriter_Char extends ByteWriter {
             } else {
                 w.write(str);
             }
-
         }
-
     }
 
     @Override
     public final void write(byte[] bs) throws IOException {
         this.writeString(new String(bs, cs));
-
     }
 
     @Override
     public final void write(byte[] bs, int count) throws IOException {
         this.writeString(new String(bs, 0, count, cs));
-
     }
 
     @Override
@@ -89,8 +82,9 @@ public final class ByteWriter_Char extends ByteWriter {
 
     @Override
     public void flush() throws IOException {
-        if (parent != null)
+        if (parent != null) {
             parent.flush();
+        }
         this.w.flush();
 
     }
@@ -104,14 +98,13 @@ public final class ByteWriter_Char extends ByteWriter {
     public void fill(ByteWriter bw) throws IOException {
         NoLockStringWriter blw = ((NoLockStringWriter) ((ByteWriter_Char) bw).w);
         char[] buf = blw.buf;
-        this.write(buf, blw.count);
-
+        this.write(buf, blw.pos);
     }
 
     @Override
-    public BodyContent getTempConent() {
+    public BodyContent getTempContent() {
         NoLockStringWriter blw = (NoLockStringWriter) w;
-        return new StringBodyContent(blw.buf, blw.count);
+        return new StringBodyContent(blw.buf, blw.pos);
     }
 
     public Writer getW() {
@@ -133,6 +126,5 @@ public final class ByteWriter_Char extends ByteWriter {
     @Override
     public void writeNumberChars(char[] chars, int len) throws IOException {
         this.w.write(chars, 0, len);
-
     }
 }

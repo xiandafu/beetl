@@ -68,7 +68,7 @@ public abstract class ByteWriter {
 
     public abstract ByteWriter getTempWriter(ByteWriter parent);
 
-    public abstract BodyContent getTempConent();
+    public abstract BodyContent getTempContent();
 
     /**
      * 将内容填充到bw里
