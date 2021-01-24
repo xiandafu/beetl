@@ -33,6 +33,7 @@ package org.beetl.core.exception;
  * @author xiandafu
  */
 public class HTMLTagParserException extends BeetlException {
+
     /** 行号 */
     public int line = 0;
 

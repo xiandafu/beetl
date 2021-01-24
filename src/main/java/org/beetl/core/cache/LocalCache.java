@@ -27,6 +27,8 @@
  */
 package org.beetl.core.cache;
 
+import org.beetl.core.annotation.ThreadSafety;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -36,6 +38,7 @@ import java.util.function.Function;
  *
  * @author xiandafu
  */
+@ThreadSafety
 public class LocalCache implements Cache {
 
     /** 线程安全的缓存 */

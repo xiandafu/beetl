@@ -33,6 +33,7 @@ import java.util.Map;
 
 import org.beetl.core.Resource;
 import org.beetl.core.statement.GrammarToken;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * 将BeetlException表达成ErrorInfo
@@ -40,15 +41,27 @@ import org.beetl.core.statement.GrammarToken;
  * @author xiandafu
  */
 public class ErrorInfo {
-    String type = "";
-    String errorTokenText = "";
-    int errorTokenLine = 0;
-    String msg;
-    Throwable cause;
+
+    /** {@link GrammarToken#text} */
+    public String errorTokenText = "";
+    /** {@link GrammarToken#line} */
+    public int errorTokenLine = 0;
+    /** {@link BeetlException#getMessage()} */
+    public String msg;
+    /** {@link BeetlException#getCause()} */
+    public Throwable cause;
+    /** {@link BeetlException#errorResourceStack} */
+    public List<Resource> resourceCallStack = null;
+    /** {@link BeetlException#errorTokenStack} */
+    public List<GrammarToken> tokenCallStack = null;
+
+    /** 错误码 */
     @BeetlException.BeetlErrorCode
-    String errorCode = null;
-    List<Resource> resourceCallStack = null;
-    List<GrammarToken> tokenCallStack = null;
+    public String errorCode = null;
+    /** 错误类型 */
+    public String type = "";
+
+    /** errCode 与 type 的映射 */
     public static Map<String, String> errorLocalMap = new HashMap<>();
 
     static {
@@ -97,10 +110,23 @@ public class ErrorInfo {
         errorLocalMap.put(BeetlException.AJAX_PROPERTY_ERROR, concat("Ajax 属性设置错误", BeetlException.AJAX_PROPERTY_ERROR));
     }
 
+    /**
+     * 将入参拼接成字符串
+     *
+     * @param info 错误信息
+     * @param code 错误码
+     * @return {@link #type}
+     */
+    @NotNull
     private static String concat(String info, @BeetlException.BeetlErrorCode String code) {
         return info + "(" + code + ")";
     }
 
+    /**
+     * 构造方法
+     *
+     * @param ex Beetl异常
+     */
     public ErrorInfo(BeetlException ex) {
         cause = ex.getCause();
         errorCode = ex.detailCode;
@@ -134,90 +160,12 @@ public class ErrorInfo {
     }
 
     /**
-     * 错误的简单信息
+     * 调用栈的大小是否大于1
+     *
+     * @return true 表示调用栈的大小大于1
      */
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    /**
-     * 错误节点
-     */
-    public String getErrorTokenText() {
-        return errorTokenText;
-    }
-
-    public void setErrorTokenText(String errorTokenText) {
-        this.errorTokenText = errorTokenText;
-    }
-
-    /**
-     * 错误行数
-     */
-    public int getErrorTokenLine() {
-        return errorTokenLine;
-    }
-
-    public void setErrorTokenLine(int errorTokenLine) {
-        this.errorTokenLine = errorTokenLine;
-    }
-
-    /**
-     * 错误具体描述
-     */
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    /**
-     * 错误编码
-     */
-    @BeetlException.BeetlErrorCode
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    /**
-     * 错误栈，有可能没有
-     */
-    public Throwable getCause() {
-        return cause;
-    }
-
-    public void setCause(Throwable cause) {
-        this.cause = cause;
-    }
-
     public boolean hasCallStack() {
         return resourceCallStack.size() > 1;
-    }
-
-    public List<Resource> getResourceCallStack() {
-        return resourceCallStack;
-    }
-
-    public void setResourceCallStack(List<Resource> resourceCallStack) {
-        this.resourceCallStack = resourceCallStack;
-    }
-
-    public List<GrammarToken> getTokenCallStack() {
-        return tokenCallStack;
-    }
-
-    public void setTokenCallStack(List<GrammarToken> tokenCallStack) {
-        this.tokenCallStack = tokenCallStack;
     }
 
     @Override

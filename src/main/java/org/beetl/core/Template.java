@@ -192,7 +192,7 @@ public class Template {
             }  // do nothing ,just ignore
         } finally {
             if (isRoot) {
-                this.ctx.destory();
+                this.ctx.destroy();
             }
 
         }

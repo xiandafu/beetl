@@ -50,35 +50,28 @@ public class ByteWriter_Byte extends ByteWriter {
         this.os = os;
         this.cs = cs;
         encode = new DefaultEncoder(cs, this.localBuffer);
-
     }
 
     public ByteWriter_Byte(OutputStream os, String cs, Context ctx, ByteWriter parent) {
         this(os, cs, ctx);
         this.parent = parent;
-
     }
 
     @Override
     public final void write(final char[] cbuf) throws IOException {
         this.write(cbuf, cbuf.length);
-
         //todo:性能如何？
-
     }
 
     @Override
     public final void write(final char[] cbuf, final int len) throws IOException {
         byte[] bs = new String(cbuf, 0, len).getBytes(cs);
         write(bs);
-
     }
 
     @Override
     public final void write(final byte[] bs) throws IOException {
-
         os.write(bs);
-
     }
 
     public void write(byte[] bs, int count) throws IOException {
@@ -87,12 +80,10 @@ public class ByteWriter_Byte extends ByteWriter {
     }
 
     public void writeString(String str) throws IOException {
-
         if (str != null) {
             encode.write(str, os);
             //			os.write(str.getBytes(cs));
         }
-
     }
 
     @Override
@@ -140,14 +131,10 @@ public class ByteWriter_Byte extends ByteWriter {
 
     @Override
     public void writeNumberChars(char[] chars, int len) throws IOException {
-
         byte[] bs = ctx.localBuffer.getByteBuffer(len);
         for (int i = 0; i < len; i++) {
-
             bs[i] = (byte) chars[i];
-
         }
         this.os.write(bs, 0, len);
-
     }
 }

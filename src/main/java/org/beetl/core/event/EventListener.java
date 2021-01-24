@@ -4,6 +4,7 @@ package org.beetl.core.event;
  * 事件监听器
  */
 public interface EventListener {
+
     /**
      * 回调 {@code event} 中设置的动作
      *

@@ -48,10 +48,10 @@ public class ConsoleErrorHandler implements ErrorHandler {
 
         ErrorInfo error = new ErrorInfo(ex);
 
-        if (error.getErrorCode().equals(BeetlException.CLIENT_IO_ERROR_ERROR)) {
+        if (error.errorCode.equals(BeetlException.CLIENT_IO_ERROR_ERROR)) {
             //不输出详细提示信息
             if (!ex.gt.conf.isIgnoreClientIOError) {
-                println(writer, "客户端IO异常:" + getResourceName(ex.resource.id) + ":" + error.getMsg());
+                println(writer, "客户端IO异常:" + getResourceName(ex.resource.id) + ":" + error.msg);
                 if (ex.getCause() != null) {
                     this.printThrowable(writer, ex.getCause());
                 }
@@ -61,15 +61,15 @@ public class ConsoleErrorHandler implements ErrorHandler {
 
         }
 
-        int line = error.getErrorTokenLine();
+        int line = error.errorTokenLine;
 
-        StringBuilder sb = new StringBuilder(">>").append(this.getDateTime()).append(":").append(error.getType())
-                .append(":").append(error.getErrorTokenText()).append(" 位于").append(line != 0 ? line + "行" : "").append(" 资源:")
+        StringBuilder sb = new StringBuilder(">>").append(this.getDateTime()).append(":").append(error.type)
+                .append(":").append(error.errorTokenText).append(" 位于").append(line != 0 ? line + "行" : "").append(" 资源:")
                 .append(getResourceName(ex.resource.id));
 
-        if (error.getErrorCode().equals(BeetlException.TEMPLATE_LOAD_ERROR)) {
-            if (error.getMsg() != null)
-                sb.append(error.getMsg());
+        if (error.errorCode.equals(BeetlException.TEMPLATE_LOAD_ERROR)) {
+            if (error.msg != null)
+                sb.append(error.msg);
             println(writer, sb.toString());
             println(writer, ex.gt.getResourceLoader().getInfo());
             return;
@@ -110,9 +110,9 @@ public class ConsoleErrorHandler implements ErrorHandler {
         if (error.hasCallStack()) {
             println(writer, "  ========================");
             println(writer, "  调用栈:");
-            for (int i = 0; i < error.getResourceCallStack().size(); i++) {
-                println(writer, "  " + error.getResourceCallStack().get(i) + " 行："
-                        + error.getTokenCallStack().get(i).line);
+            for (int i = 0; i < error.resourceCallStack.size(); i++) {
+                println(writer, "  " + error.resourceCallStack.get(i) + " 行："
+                        + error.tokenCallStack.get(i).line);
             }
         }
 
@@ -125,7 +125,7 @@ public class ConsoleErrorHandler implements ErrorHandler {
     }
 
     protected void printCause(ErrorInfo error, Writer writer) {
-        Throwable t = error.getCause();
+        Throwable t = error.cause;
         if (t != null) {
             printThrowable(writer, t);
         }
