@@ -511,9 +511,7 @@ public class GroupTemplate {
             return ep;
         } catch (IOException e) {
             ErrorGrammarProgram ep = new ErrorGrammarProgram(res, this, String.valueOf(text.cr1));
-            BeetlException ex = new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR);
-            ex.pushResource(res);
-            ep.setException(ex);
+            ep.setException(new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR).pushResource(res));
             return ep;
         } catch (BeetlException ex) {
             ErrorGrammarProgram ep = new ErrorGrammarProgram(res, this, text.systemCrStr);

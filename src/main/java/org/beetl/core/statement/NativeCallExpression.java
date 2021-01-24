@@ -55,11 +55,9 @@ public class NativeCallExpression extends Expression {
             lastNode = insNode;
         } else {
             targetCls = ctx.gt.loadClassBySimpleName(this.clsNode.clazz);
-
             if (targetCls == null) {
-                BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "该类不存在");
-                be.pushToken(GrammarToken.createToken(clsNode.clazz, token.line));
-                throw be;
+                throw new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "该类不存在")
+                        .pushToken(GrammarToken.createToken(clsNode.clazz, token.line));
             }
             lastNode = clsNode;
 
@@ -77,44 +75,33 @@ public class NativeCallExpression extends Expression {
                     }
                     targetObj = f.get(targetObj);
                     targetCls = f.getType();
-
                 } catch (SecurityException e) {
-                    BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "不能调用属性", e);
-                    be.pushToken(GrammarToken.createToken(attr, token.line));
-                    throw be;
+                    throw new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "不能调用属性", e)
+                            .pushToken(GrammarToken.createToken(attr, token.line));
                 } catch (NoSuchFieldException e) {
-                    BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "无此属性", e);
-                    be.pushToken(GrammarToken.createToken(attr, token.line));
-                    throw be;
+                    throw new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "无此属性", e)
+                            .pushToken(GrammarToken.createToken(attr, token.line));
                 } catch (IllegalArgumentException | IllegalAccessException e) {
-                    BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "访问属性出错", e);
-                    be.pushToken(GrammarToken.createToken(attr, token.line));
-                    throw be;
+                    throw new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "访问属性出错", e)
+                            .pushToken(GrammarToken.createToken(attr, token.line));
                 }
 
             } else if (node instanceof NativeArrayNode) {
                 checkNull(targetCls, lastNode);
                 if (!targetCls.isArray()) {
-                    BeetlException be = new BeetlException(BeetlException.ARRAY_TYPE_ERROR);
                     // 最好是把上一个字符显示出来
-                    be.pushToken(GrammarToken.createToken("[]", token.line));
-                    throw be;
+                    throw new BeetlException(BeetlException.ARRAY_TYPE_ERROR)
+                            .pushToken(GrammarToken.createToken("[]", token.line));
                 }
                 Expression exp = ((NativeArrayNode) node).exp;
                 Object value = exp.evaluate(ctx);
                 if (value instanceof Number) {
                     int index = ((Number) value).intValue();
                     targetObj = ((Object[]) targetObj)[index];
-                    if (targetObj != null) {
-                        targetCls = targetObj.getClass();
-                    } else {
-                        // todo or component of array
-                        targetCls = null;
-                    }
+                    targetCls = targetObj == null ? null : targetObj.getClass(); // todo or component of array
                 } else {
-                    BeetlException be = new BeetlException(BeetlException.ARRAY_INDEX_ERROR, "数组指针必须是Number类型");
-                    be.pushToken(GrammarToken.createToken("[]", token.line));
-                    throw be;
+                    throw new BeetlException(BeetlException.ARRAY_INDEX_ERROR, "数组指针必须是Number类型")
+                            .pushToken(GrammarToken.createToken("[]", token.line));
                 }
             } else if (node instanceof NativeMethodNode) {
                 NativeMethodNode methodNode = (NativeMethodNode) node;
@@ -127,50 +114,35 @@ public class NativeCallExpression extends Expression {
                 for (int i = 0; i < expList.length; i++) {
                     args[i] = expList[i].evaluate(ctx);
                     parameterType[i] = args[i] == null ? null : args[i].getClass();
-
                 }
                 this.checkNull(targetCls, lastNode);
                 ObjectMethodMatchConf mf = ObjectUtil.findMethod(targetCls, method, parameterType);
                 if (mf == null) {
-                    BeetlException ex = new BeetlException(BeetlParserException.NATIVE_CALL_INVALID,
-                            "根据参数未找到匹配的方法" + method + BeetlUtil.getParameterDescription(parameterType));
-                    ex.pushToken(GrammarToken.createToken(token.text, token.line));
-                    throw ex;
+                    throw new BeetlException(BeetlParserException.NATIVE_CALL_INVALID,
+                            "根据参数未找到匹配的方法" + method + BeetlUtil.getParameterDescription(parameterType))
+                            .pushToken(GrammarToken.createToken(token.text, token.line));
                 }
 
                 if (targetObj == null && !Modifier.isStatic(mf.method.getModifiers())) {
-                    BeetlException ex = new BeetlException(BeetlException.NULL);
-                    ex.pushToken(GrammarToken.createToken(token.text, token.line));
-                    throw ex;
+                    throw new BeetlException(BeetlException.NULL)
+                            .pushToken(GrammarToken.createToken(token.text, token.line));
                 }
 
                 try {
-
                     targetObj = ObjectUtil.invoke(targetObj, mf, args);
-
-                    if (targetObj != null) {
-                        targetCls = targetObj.getClass();
-                    } else {
-                        targetCls = null;
-                    }
-
+                    targetCls = targetObj == null ? null : targetObj.getClass();
                 } catch (SecurityException e) {
-                    BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "不能调用方法", e);
-                    be.pushToken(GrammarToken.createToken(method, token.line));
-                    throw be;
+                    throw new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "不能调用方法", e)
+                            .pushToken(GrammarToken.createToken(method, token.line));
                 } catch (IllegalArgumentException e) {
-                    BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "错误的参数", e);
-                    be.pushToken(GrammarToken.createToken(method, token.line));
-                    throw be;
+                    throw new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "错误的参数", e)
+                            .pushToken(GrammarToken.createToken(method, token.line));
                 } catch (IllegalAccessException e) {
-                    BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "无法访问方法", e);
-                    be.pushToken(GrammarToken.createToken(method, token.line));
-                    throw be;
+                    throw new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "无法访问方法", e)
+                            .pushToken(GrammarToken.createToken(method, token.line));
                 } catch (InvocationTargetException e) {
-                    BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "内部调用报错",
-                            e.getTargetException());
-                    be.pushToken(GrammarToken.createToken(method, token.line));
-                    throw be;
+                    throw new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "内部调用报错", e.getTargetException())
+                            .pushToken(GrammarToken.createToken(method, token.line));
                 }
 
             }
@@ -183,24 +155,22 @@ public class NativeCallExpression extends Expression {
 
     private void checkNull(Object o, NativeNode node) {
         if (o == null) {
-
-            BeetlException be = new BeetlException(BeetlException.NULL);
-            be.pushToken(GrammarToken.createToken(node.getName(), token.line));
-            throw be;
-
+            throw new BeetlException(BeetlException.NULL)
+                    .pushToken(GrammarToken.createToken(node.getName(), token.line));
         }
     }
 
     private void checkPermit(Context ctx, Class targetCls, Object targetObj, String method) {
-        if (targetCls == null) return;
-		NativeSecurityManager securityManager = ctx.gt.getNativeSecurity();
-        if(securityManager==null){
-        	return ;
-		}
+        if (targetCls == null) {
+            return;
+        }
+        NativeSecurityManager securityManager = ctx.gt.getNativeSecurity();
+        if (securityManager == null) {
+            return;
+        }
         if (!securityManager.permit(ctx.template.program.res.getId(), targetCls, targetObj, method)) {
-            BeetlException be = new BeetlException(BeetlException.NATIVE_SECUARITY_EXCEPTION);
-            be.pushToken(GrammarToken.createToken(method, token.line));
-            throw be;
+            throw new BeetlException(BeetlException.NATIVE_SECUARITY_EXCEPTION)
+                    .pushToken(GrammarToken.createToken(method, token.line));
         }
     }
 }

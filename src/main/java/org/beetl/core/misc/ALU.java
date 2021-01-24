@@ -459,9 +459,7 @@ public class ALU {
                 case SHORT:
                     double c = ((Number) o2).doubleValue();
                     if (c == 0) {
-                        BeetlException ex = new BeetlException(BeetlException.DIV_ZERO_ERROR);
-                        ex.pushToken(node2.token);
-                        throw ex;
+                        throw new BeetlException(BeetlException.DIV_ZERO_ERROR).pushToken(node2.token);
                     }
                     double a = ((Number) o1).doubleValue() / ((Number) o2).doubleValue();
                     return trim(a, (Number) o1, (Number) o2);
@@ -610,10 +608,11 @@ public class ALU {
                     return b1.compareTo(b2) > 0;
                 default:
                     int result = compareObject(o1, o2, node1, node2, ">");
-                    if (result == -2)
+                    if (result == -2) {
                         throw UnsupportedTypeException(o1, o2, node1, node2, ">");
-                    else
+                    } else {
                         return result > 0;
+                    }
             }
         } else {
             throw valueIsNullException(o1, o2, node1, node2);
@@ -645,10 +644,11 @@ public class ALU {
                     return b1.compareTo(b2) >= 0;
                 default:
                     int result = compareObject(o1, o2, node1, node2, ">=");
-                    if (result == -2)
+                    if (result == -2) {
                         throw UnsupportedTypeException(o1, o2, node1, node2, ">=");
-                    else
+                    } else {
                         return result >= 0;
+                    }
             }
         } else {
             throw valueIsNullException(o1, o2, node1, node2);
@@ -680,10 +680,11 @@ public class ALU {
                     return b1.compareTo(b2) < 0;
                 default:
                     int result = compareObject(o1, o2, node1, node2, "<");
-                    if (result == -2)
+                    if (result == -2) {
                         throw UnsupportedTypeException(o1, o2, node1, node2, "<");
-                    else
+                    } else {
                         return result < 0;
+                    }
             }
         } else {
             throw valueIsNullException(o1, o2, node1, node2);
@@ -715,10 +716,11 @@ public class ALU {
                     return b1.compareTo(b2) <= 0;
                 default:
                     int result = compareObject(o1, o2, node1, node2, "<=");
-                    if (result == -2)
+                    if (result == -2) {
                         throw UnsupportedTypeException(o1, o2, node1, node2, "<=");
-                    else
+                    } else {
                         return result <= 0;
+                    }
             }
         } else {
             throw valueIsNullException(o1, o2, node1, node2);
@@ -732,19 +734,17 @@ public class ALU {
             Comparable ac = (Comparable) a;
             try {
                 int result = ac.compareTo(b);
-                if (result > 0)
+                if (result > 0) {
                     return 1;
-                else if (result < 0)
+                } else if (result < 0) {
                     return -1;
+                }
                 return result;
             } catch (RuntimeException e) {
-                BeetlException ex = new BeetlException(BeetlException.EXPRESSION_NOT_COMPATIBLE, e);
-                GrammarToken token = GrammarToken.createToken(node1.token.text + " " + node2.token.text,
-                        node1.token.line);
-                ex.pushToken(token);
-                throw ex;
+                throw new BeetlException(BeetlException.EXPRESSION_NOT_COMPATIBLE, e)
+                        .pushToken(GrammarToken.createToken(node1.token.text + " " + node2.token.text,
+                                node1.token.line));
             }
-
         } else {
             return -2;
         }
@@ -752,57 +752,36 @@ public class ALU {
 
     private static RuntimeException UnsupportedTypeException(final Object o1, final Object o2, final ASTNode node1,
                                                              final ASTNode node2, String type) {
-        BeetlException ex = new BeetlException(BeetlException.EXPRESSION_NOT_COMPATIBLE, o1.getClass() + type
-                + o2.getClass());
-        GrammarToken token = GrammarToken.createToken(node1.token.text + type + node2.token.text, node1.token.line);
-        ex.pushToken(token);
-        throw ex;
+        String tagName = node1.token.text + type + node2.token.text;
+        throw new BeetlException(BeetlException.EXPRESSION_NOT_COMPATIBLE, o1.getClass() + type + o2.getClass())
+                .pushToken(GrammarToken.createToken(tagName, node1.token.line));
     }
 
     private static RuntimeException numberExpectedException(final Object o1, ASTNode node1) {
-        BeetlException ex = new BeetlException(BeetlException.NUMBER_EXPECTED_ERROR);
-        ex.pushToken(node1.token);
-
-        throw ex;
+        throw new BeetlException(BeetlException.NUMBER_EXPECTED_ERROR).pushToken(node1.token);
     }
 
     private static RuntimeException valueIsNullException(final Object o1, ASTNode node1) {
-        BeetlException ex = new BeetlException(BeetlException.NULL);
-        ex.pushToken(node1.token);
-        throw ex;
+        throw new BeetlException(BeetlException.NULL).pushToken(node1.token);
     }
 
-    private static BeetlException valueIsNullException(final Object o1, final Object o2, final ASTNode node1,
-                                                       final ASTNode node2) {
-        BeetlException ex = null;
-        if (o1 == null) {
-            ex = new BeetlException(BeetlException.NULL);
-            ex.pushToken(node1.token);
-        } else {
-            ex = new BeetlException(BeetlException.NULL);
-            ex.pushToken(node2.token);
-        }
-        throw ex;
-
+    private static BeetlException valueIsNullException(final Object o1, final Object o2,
+                                                       final ASTNode node1, final ASTNode node2) {
+        throw o1 == null
+                ? new BeetlException(BeetlException.NULL).pushToken(node1.token)
+                : new BeetlException(BeetlException.NULL).pushToken(node2.token);
     }
 
     private static BigDecimal getBigDecimal(Object o) {
-        if (o instanceof BigDecimal) {
-            return (BigDecimal) o;
-        } else {
-            return new BigDecimal(o.toString());
-        }
+        return o instanceof BigDecimal ? (BigDecimal) o : new BigDecimal(String.valueOf(o));
     }
 
     /**
      *
      */
     public static Boolean isTrue(final Object o, ASTNode node) {
-
         if (o == null) {
-            BeetlException be = new BeetlException(BeetlException.NULL);
-            be.pushToken(node.token);
-            throw be;
+            throw new BeetlException(BeetlException.NULL).pushToken(node.token);
         }
 
         if (Boolean.TRUE == o) {
@@ -812,9 +791,8 @@ public class ALU {
         } else if (o instanceof Boolean) {
             return ((Boolean) o);
         } else {
-            BeetlException ex = new BeetlException(BeetlException.BOOLEAN_EXPECTED_ERROR, o.getClass().toString());
-            ex.pushToken(node.token);
-            throw ex;
+            throw new BeetlException(BeetlException.BOOLEAN_EXPECTED_ERROR, o.getClass().toString())
+                    .pushToken(node.token);
         }
     }
 }

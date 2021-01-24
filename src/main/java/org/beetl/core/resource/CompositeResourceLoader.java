@@ -97,8 +97,9 @@ public class CompositeResourceLoader implements ResourceLoader<String> {
     @Override
     public boolean exist(String key) {
         ResourceLoaderKeyEntry rlke = this.match(key);
-        if (rlke == null)
+        if (rlke == null) {
             return false;
+        }
         return rlke.getResourceLoader().exist(rlke.getNewKey());
     }
 
@@ -170,22 +171,21 @@ public class CompositeResourceLoader implements ResourceLoader<String> {
 
         @Override
         public Reader openReader() {
-            BeetlException be = new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR, "复合资源加载器未匹配路径:" + this.id);
-            be.pushResource(this);
-            throw be;
+            throw new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR, "复合资源加载器未匹配路径:" + this.id)
+                    .pushResource(this);
         }
 
         @Override
         public boolean isModified() {
-
             return true;
         }
     }
 
     @Override
     public String getResourceId(Resource resource, String id) {
-        if (resource == null)
+        if (resource == null) {
             return id;
+        }
         //判断如果是同一前缀，则需要考虑相对路径
         ResourceLoaderKeyEntry rlke = this.match(id);
         return (resource.getResourceLoader() == rlke.getResourceLoader())

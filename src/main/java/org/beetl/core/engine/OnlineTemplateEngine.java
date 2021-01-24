@@ -151,9 +151,7 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
                         break;
                     }
                 } else {
-                    BeetlException be = new BeetlException(BeetlException.BOOLEAN_EXPECTED_ERROR);
-                    be.token = exp.token;
-                    throw be;
+                    throw new BeetlException(BeetlException.BOOLEAN_EXPECTED_ERROR).setToken(exp.token);
                 }
                 i++;
             }

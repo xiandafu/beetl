@@ -36,9 +36,7 @@ public class MapResourceLoader extends HashMap<String, String> implements Resour
             public Reader openReader() {
                 String val = get(key);
                 if (val == null) {
-                    BeetlException ex = new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR);
-                    ex.pushResource(this);
-                    throw ex;
+                    throw new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR).pushResource(this);
                 }
                 return new StringReader(val);
             }

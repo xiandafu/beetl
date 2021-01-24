@@ -58,7 +58,6 @@ public class VarRef extends Expression implements IVarIndex {
         this.safe = safe;
         this.hasSafe = hasSafe;
         this.firstToken = firstToken;
-
     }
 
     @Override
@@ -83,28 +82,17 @@ public class VarRef extends Expression implements IVarIndex {
                 if (hasSafe || ctx.safeOutput) {
                     return safe == null ? null : safe.evaluate(ctx);
                 } else {
-                    BeetlException be = new BeetlException(BeetlException.NULL, "空指针");
-                    if (i == 0) {
-                        be.pushToken(this.firstToken);
-                    } else {
-                        be.pushToken(attributes[i - 1].token);
-                    }
-
-                    throw be;
+                    throw new BeetlException(BeetlException.NULL, "空指针")
+                            .pushToken(i == 0 ? this.firstToken : attributes[i - 1].token);
                 }
-
             }
 
             try {
                 value = attr.evaluate(ctx, value);
             } catch (BeetlException ex) {
-                ex.pushToken(attr.token);
-                throw ex;
-
+                throw ex.pushToken(attr.token);
             } catch (RuntimeException ex) {
-                BeetlException be = new BeetlException(BeetlException.ATTRIBUTE_INVALID, "属性访问出错", ex);
-                be.pushToken(attr.token);
-                throw be;
+                throw new BeetlException(BeetlException.ATTRIBUTE_INVALID, "属性访问出错", ex).pushToken(attr.token);
             }
 
         }
@@ -145,10 +133,8 @@ public class VarRef extends Expression implements IVarIndex {
                     if (hasSafe || ctx.safeOutput) {
                         return new Result(safe == null ? null : safe.evaluate(ctx), true);
                     } else {
-                        BeetlException be = new BeetlException(BeetlException.NULL,
-                                "_root为空指针，无" + this.firstToken.text + "值");
-                        be.pushToken(this.firstToken);
-                        throw be;
+                        throw new BeetlException(BeetlException.NULL, "_root为空指针，无" + this.firstToken.text + "值")
+                                .pushToken(this.firstToken);
                     }
 
                 }
@@ -157,10 +143,9 @@ public class VarRef extends Expression implements IVarIndex {
                 try {
                     value = aa.value(root, attr);
                 } catch (RuntimeException e) {
-                    BeetlException ex = new BeetlException(BeetlException.ATTRIBUTE_INVALID,
-                            "访问 _root " + root.getClass() + "." + attr + " 属性访问错误");
-                    ex.pushToken(this.firstToken);
-                    throw ex;
+                    throw new BeetlException(BeetlException.ATTRIBUTE_INVALID,
+                            "访问 _root " + root.getClass() + "." + attr + " 属性访问错误")
+                            .pushToken(this.firstToken);
                 }
 
                 ctx.vars[varIndex] = value;
@@ -210,37 +195,21 @@ public class VarRef extends Expression implements IVarIndex {
         Result ret = this.getValue(ctx);
         Object value = ret.value;
         if (value == null) {
-            BeetlException ex = new BeetlException(BeetlException.NULL);
-            ex.pushToken(this.firstToken);
-            throw ex;
+            throw new BeetlException(BeetlException.NULL).pushToken(this.firstToken);
         }
 
         for (int i = 0; i < attributes.length - 1; i++) {
-
             VarAttribute attr = attributes[i];
             if (value == null) {
-
-                BeetlException be = new BeetlException(BeetlException.NULL, "空指针");
-                if (i == 0) {
-                    be.pushToken(this.firstToken);
-                } else {
-                    be.pushToken(attributes[i - 1].token);
-                }
-
-                throw be;
-
+                throw new BeetlException(BeetlException.NULL, "空指针")
+                        .pushToken(i == 0 ? this.firstToken : attributes[i - 1].token);
             }
-
             try {
                 value = attr.evaluate(ctx, value);
             } catch (BeetlException ex) {
-                ex.pushToken(attr.token);
-                throw ex;
-
+                throw ex.pushToken(attr.token);
             } catch (RuntimeException ex) {
-                BeetlException be = new BeetlException(BeetlException.ATTRIBUTE_INVALID, "属性访问出错", ex);
-                be.pushToken(attr.token);
-                throw be;
+                throw new BeetlException(BeetlException.ATTRIBUTE_INVALID, "属性访问出错", ex).pushToken(attr.token);
             }
 
         }

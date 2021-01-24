@@ -10,10 +10,7 @@ import org.beetl.core.statement.GrammarToken;
 public class SyntaxErrorListener extends BaseErrorListener {
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine,
                             String msg, RecognitionException e) {
-
-        BeetlException be = new BeetlException(BeetlException.TOKEN_ERROR);
-        be.token = new GrammarToken(BeetlUtil.reportChineseTokenError(msg), line, charPositionInLine);
-        throw be;
-
+        throw new BeetlException(BeetlException.TOKEN_ERROR)
+                .setToken(new GrammarToken(BeetlUtil.reportChineseTokenError(msg), line, charPositionInLine));
     }
 }
