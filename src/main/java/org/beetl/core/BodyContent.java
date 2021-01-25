@@ -35,6 +35,7 @@ import java.io.IOException;
  * @author xiandafu
  */
 public interface BodyContent {
+
     /**
      * 获取模板或者标签的内容
      *

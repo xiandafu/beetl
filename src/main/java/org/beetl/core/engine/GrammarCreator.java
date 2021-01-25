@@ -124,10 +124,11 @@ public class GrammarCreator implements IGrammarConstants {
         return new ForStatement(forVar, exp, hasSafe, forPart, elseForPart, forVar.token);
     }
 
-    public GeneralForStatement createFor(VarAssignSeqStatement varAssignSeq, Expression[] expInit, Expression condtion,
-                                         Expression[] expUpdate, Statement forPart, Statement elseforPart, GrammarToken token) {
+    public GeneralForStatement createFor(VarAssignSeqStatement varAssignSeq, Expression[] expInit, Expression condition,
+                                         Expression[] expUpdate, Statement forPart, Statement elseforPart,
+                                         GrammarToken token) {
         disableSyntaxCheck(For);
-        return new GeneralForStatement(varAssignSeq, expInit, condtion, expUpdate, forPart, elseforPart, token);
+        return new GeneralForStatement(varAssignSeq, expInit, condition, expUpdate, forPart, elseforPart, token);
     }
 
     public WhileStatement createWhile(Expression exp, Statement whileBody, GrammarToken token) {

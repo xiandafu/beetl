@@ -70,9 +70,7 @@ public final class ForStatement extends Statement implements IGoto {
         ILoopStatus it = null;
         if (collection == null) {
             if (!(this.hasSafe || ctx.safeOutput)) {
-                BeetlException ex = new BeetlException(BeetlException.NULL);
-                ex.pushToken(exp.token);
-                throw ex;
+                throw new BeetlException(BeetlException.NULL).pushToken(exp.token);
             } else {
                 it = new GeneralLoopStatus(Collections.EMPTY_LIST);
             }
@@ -80,10 +78,9 @@ public final class ForStatement extends Statement implements IGoto {
         } else {
             it = GeneralLoopStatus.getIteratorStatus(collection);
             if (it == null) {
-                BeetlParserException ex = new BeetlParserException(BeetlParserException.COLLECTION_EXPECTED_ERROR,
-                        "实际类型是:" + collection.getClass());
-                ex.pushToken(exp.token);
-                throw ex;
+                throw new BeetlParserException(BeetlParserException.COLLECTION_EXPECTED_ERROR,
+                        "实际类型是:" + collection.getClass())
+                        .pushToken(exp.token);
             }
         }
 
@@ -112,7 +109,9 @@ public final class ForStatement extends Statement implements IGoto {
             }
 
             if (!it.hasData()) {
-                if (elseforPart != null) elseforPart.execute(ctx);
+                if (elseforPart != null) {
+                    elseforPart.execute(ctx);
+                }
             }
             return;
 
@@ -123,7 +122,9 @@ public final class ForStatement extends Statement implements IGoto {
 
             }
             if (!it.hasData()) {
-                if (elseforPart != null) elseforPart.execute(ctx);
+                if (elseforPart != null) {
+                    elseforPart.execute(ctx);
+                }
             }
 
         }

@@ -46,7 +46,7 @@ public class SingleFunctionWrapper extends FunctionWrapper {
         this.target = target;
         this.cls = cls;
         this.m = m;
-        this.requiredContext = this.checkContextRequried(m.getParameterTypes());
+        this.requiredContext = this.checkContextRequired(m.getParameterTypes());
 
     }
 

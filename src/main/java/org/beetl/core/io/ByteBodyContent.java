@@ -47,17 +47,18 @@ public class ByteBodyContent implements BodyContent {
         this.bs = bs;
         this.charset = charset;
         this.count = count;
-
     }
 
     public String getBody() {
         return this.toString();
     }
 
+    @Override
     public String toString() {
         try {
             return new String(bs, 0, count, charset);
         } catch (UnsupportedEncodingException e) {
+            // TODO: DEBUG 环境才抛异常，非DEBUG环境返回""等字符串
             throw new RuntimeException(e);
         }
     }
@@ -65,6 +66,5 @@ public class ByteBodyContent implements BodyContent {
     @Override
     public void fill(ByteWriter bw) throws IOException {
         bw.write(bs, count);
-
     }
 }

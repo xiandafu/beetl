@@ -60,7 +60,6 @@ public class VarRefAssignExpress extends Expression implements IVarIndex {
     public Object evaluate(Context ctx) {
         Object value = exp.evaluate(ctx);
         if (lastVarAttribute == null) {
-
             ctx.vars[varIndex] = value;
             return value;
         }
@@ -74,29 +73,18 @@ public class VarRefAssignExpress extends Expression implements IVarIndex {
         }
 
         if (obj == null) {
-            BeetlException bx = new BeetlException(BeetlException.NULL);
-            bx.pushToken(varRef.token);
-            throw bx;
+            throw new BeetlException(BeetlException.NULL).pushToken(varRef.token);
         }
 
         try {
-
             AttributeAccess aa = AABuilder.buildFiledAccessor(obj.getClass());
             aa.setValue(obj, key, value);
-
             return value;
-
         } catch (ClassCastException ex) {
-            BeetlException bx = new BeetlException(BeetlException.ATTRIBUTE_INVALID, ex);
-            bx.pushToken(lastVarAttribute.token);
-            throw bx;
+            throw new BeetlException(BeetlException.ATTRIBUTE_INVALID, ex).pushToken(lastVarAttribute.token);
         } catch (BeetlException be) {
-            be.pushToken(lastVarAttribute.token);
-            throw be;
+            throw be.pushToken(lastVarAttribute.token);
         }
-
-//		return value;
-
     }
 
     @Override
