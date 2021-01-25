@@ -82,7 +82,7 @@ public abstract class Tag {
         ctx.byteWriter = tempWriter;
         doBodyRender();
         ctx.byteWriter = writer;
-        return tempWriter.getTempConent();
+        return tempWriter.getTempContent();
     }
 
     public abstract void render();
