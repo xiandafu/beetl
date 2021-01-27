@@ -25,7 +25,7 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.beetl.core.cache;
+package org.beetl.core.runtime;
 
 import java.util.function.Function;
 
@@ -34,7 +34,7 @@ import java.util.function.Function;
  *
  * @author xiandafu
  */
-public interface Cache {
+public interface IBeetlCache {
     /**
      * 通过 {@param key} 从缓存中获取对应的 value
      *

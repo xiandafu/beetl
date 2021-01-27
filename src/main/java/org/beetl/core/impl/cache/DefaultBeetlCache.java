@@ -25,9 +25,10 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.beetl.core.cache;
+package org.beetl.core.impl.cache;
 
 import org.beetl.core.annotation.ThreadSafety;
+import org.beetl.core.runtime.IBeetlCache;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,7 +40,7 @@ import java.util.function.Function;
  * @author xiandafu
  */
 @ThreadSafety
-public class DefaultLocalCache implements Cache {
+public class DefaultBeetlCache implements IBeetlCache {
 
     /** 线程安全的缓存 */
     private final Map<Object, Object> threadSafeCache = new ConcurrentHashMap<>();

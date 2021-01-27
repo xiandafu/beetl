@@ -25,56 +25,64 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.beetl.core.cache;
+package org.beetl.core.impl.cache;
 
 import org.beetl.core.config.BeetlConfig;
 import org.beetl.core.fun.ObjectUtil;
 import org.beetl.android.util.Log;
+import org.beetl.core.runtime.IBeetlCache;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * 存储Program的缓存，默认是采用{@link DefaultLocalCache},可以通过设置 {@link Cache} 属性来设置新的缓存对象
+ * 存储Program的缓存，默认是采用{@link DefaultBeetlCache},可以通过设置 {@link IBeetlCache} 属性来设置新的缓存对象
  *
  * @author xiandafu
  */
-public class ProgramCacheFactory {
+public class DefaultBeetlCacheFactory {
 
     /** DEBUG flag */
     private static final boolean DEBUG = BeetlConfig.DEBUG;
     /** Log TAG */
     private static final String TAG = "ProgramCacheFactory";
+
     /** 缓存实现类的类名 */
-    public static final String DEFAULT_CACHE_CLASS_NAME = "org.beetl.core.cache.DefaultLocalCache";
+    public static final String DEFAULT_CACHE_CLASS_NAME = "org.beetl.core.impl.cache.DefaultBeetlCache";
+
+    /**
+     * 不允许实例化
+     */
+    private DefaultBeetlCacheFactory() {
+    }
 
     /**
      * 默认的缓存实现
      *
-     * @return 如果通过 {@link #DEFAULT_CACHE_CLASS_NAME} 获取缓存实例失败，则返回一个 {@link DefaultLocalCache} 类型的新实例
+     * @return 如果通过 {@link #DEFAULT_CACHE_CLASS_NAME} 获取缓存实例失败，则返回一个 {@link DefaultBeetlCache} 类型的新实例
      */
     @NotNull
-    public static Cache defaultCache() {
+    public static IBeetlCache defaultCache() {
         return loadCache(DEFAULT_CACHE_CLASS_NAME);
     }
 
     /**
      * 默认的缓存实现
      *
-     * @return 如果通过 {@link #DEFAULT_CACHE_CLASS_NAME} 获取缓存实例失败，则返回一个 {@link DefaultLocalCache} 类型的新实例
+     * @return 如果通过 {@link #DEFAULT_CACHE_CLASS_NAME} 获取缓存实例失败，则返回一个 {@link DefaultBeetlCache} 类型的新实例
      */
     @NotNull
-    public static Cache loadCache(String className) {
+    public static IBeetlCache loadCache(String className) {
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         if (loader == null) {
-            loader = ProgramCacheFactory.class.getClassLoader();
+            loader = DefaultBeetlCacheFactory.class.getClassLoader();
         }
         try {
-            return (Cache) ObjectUtil.instance(className, loader);
+            return (IBeetlCache) ObjectUtil.instance(className, loader);
         } catch (Exception ex) {
             if (DEBUG) {
                 Log.d(TAG, "#loadCache fail."
                         + " className=" + className + " classLoader=" + loader + " ex=\n" + ex.toString());
             }
-            return new DefaultLocalCache();
+            return new DefaultBeetlCache();
         }
     }
 

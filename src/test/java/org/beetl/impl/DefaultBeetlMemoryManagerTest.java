@@ -1,4 +1,4 @@
-package org.beetl.core.runtime.impl;
+package org.beetl.impl;
 
 import org.beetl.core.runtime.BeetlRuntime;
 import org.testng.Assert;
