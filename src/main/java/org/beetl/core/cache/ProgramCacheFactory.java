@@ -33,8 +33,7 @@ import org.beetl.android.util.Log;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * 存储Program的缓存，默认是采用{@link LocalCache},可以通过设置
- * {@link Cache} 属性来设置新的缓存对象
+ * 存储Program的缓存，默认是采用{@link DefaultLocalCache},可以通过设置 {@link Cache} 属性来设置新的缓存对象
  *
  * @author xiandafu
  */
@@ -45,26 +44,38 @@ public class ProgramCacheFactory {
     /** Log TAG */
     private static final String TAG = "ProgramCacheFactory";
     /** 缓存实现类的类名 */
-    public static String sCache = "org.beetl.core.cache.LocalCache";
+    public static final String DEFAULT_CACHE_CLASS_NAME = "org.beetl.core.cache.DefaultLocalCache";
 
     /**
      * 默认的缓存实现
      *
-     * @return 如果通过 {@link #sCache} 获取缓存实例失败，则返回一个 {@link LocalCache} 类型的新实例
+     * @return 如果通过 {@link #DEFAULT_CACHE_CLASS_NAME} 获取缓存实例失败，则返回一个 {@link DefaultLocalCache} 类型的新实例
      */
     @NotNull
     public static Cache defaultCache() {
+        return loadCache(DEFAULT_CACHE_CLASS_NAME);
+    }
+
+    /**
+     * 默认的缓存实现
+     *
+     * @return 如果通过 {@link #DEFAULT_CACHE_CLASS_NAME} 获取缓存实例失败，则返回一个 {@link DefaultLocalCache} 类型的新实例
+     */
+    @NotNull
+    public static Cache loadCache(String className) {
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         if (loader == null) {
             loader = ProgramCacheFactory.class.getClassLoader();
         }
         try {
-            return (Cache) ObjectUtil.instance(sCache, loader);
+            return (Cache) ObjectUtil.instance(className, loader);
         } catch (Exception ex) {
             if (DEBUG) {
-                Log.d(TAG, "load " + sCache + " by " + loader + " error ,instead local\n" + ex.toString());
+                Log.d(TAG, "#loadCache fail."
+                        + " className=" + className + " classLoader=" + loader + " ex=\n" + ex.toString());
             }
-            return new LocalCache();
+            return new DefaultLocalCache();
         }
     }
+
 }

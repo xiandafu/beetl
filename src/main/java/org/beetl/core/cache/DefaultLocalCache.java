@@ -39,7 +39,7 @@ import java.util.function.Function;
  * @author xiandafu
  */
 @ThreadSafety
-public class LocalCache implements Cache {
+public class DefaultLocalCache implements Cache {
 
     /** 线程安全的缓存 */
     private final Map<Object, Object> threadSafeCache = new ConcurrentHashMap<>();
