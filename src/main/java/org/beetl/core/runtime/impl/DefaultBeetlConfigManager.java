@@ -34,6 +34,11 @@ public class DefaultBeetlConfigManager implements IBeetlConfigManager {
 
     @Override
     public boolean isRelease() {
-        return !isDebug();
+        return false;
+    }
+
+    @Override
+    public String getBeetlVersion() {
+        return "3.3.2";
     }
 }
