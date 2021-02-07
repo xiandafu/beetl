@@ -10,7 +10,7 @@ import org.beetl.core.resource.ClasspathResourceLoader;
 /**
  * @author xiandafu
  */
-public class Test {
+class Test {
 
     /** DEBUG flag */
     private static final boolean DEBUG = BeetlConfig.DEBUG;

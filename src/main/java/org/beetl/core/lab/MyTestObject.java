@@ -1,6 +1,6 @@
 package org.beetl.core.lab;
 
-public class MyTestObject {
+class MyTestObject {
     String name;
     int age =12;
 

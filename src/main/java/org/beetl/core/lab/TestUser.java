@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * @author 所有测试类采用的Pojo类
  */
-public class TestUser implements BaseEntity {
+class TestUser implements BaseEntity {
 
     /** Log TAG */
     private static final String TAG = "org.beetl.core.lab.TestUser";
