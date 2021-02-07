@@ -31,12 +31,12 @@ class Test {
             MyTestObject obj = new MyTestObject("abc");
             t.binding("user", obj);
             t.binding("abc", 1234);
-			String str = t.render();
-			// 调试时输入：
+            String str = t.render();
+            // 调试时输入：
             // ((AsmAAFactory) AABuilder.defalutAAFactory).asmBeanFactory.beanMap.get(MyTestObject.class)
             System.out.println(str);
-		}
-        int a =1;
+        }
+        int a = 1;
 
     }
 

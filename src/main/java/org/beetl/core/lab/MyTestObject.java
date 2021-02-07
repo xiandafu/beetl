@@ -2,7 +2,7 @@ package org.beetl.core.lab;
 
 class MyTestObject {
     String name;
-    int age =12;
+    int age = 12;
 
     public MyTestObject() {
     }
@@ -12,23 +12,23 @@ class MyTestObject {
         this.name = name;
     }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public int getAge() {
-		return age;
-	}
+    public int getAge() {
+        return age;
+    }
 
-	public void setAge(int age) {
-		this.age = age;
-	}
+    public void setAge(int age) {
+        this.age = age;
+    }
 
-	public MyTestObject self() {
+    public MyTestObject self() {
         return this;
     }
 }
