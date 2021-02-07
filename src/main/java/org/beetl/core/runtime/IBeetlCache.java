@@ -25,48 +25,51 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.beetl.core.cache;
+package org.beetl.core.runtime;
 
-import org.beetl.core.annotation.ThreadSafety;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
- * 本地的一个实现，采用ConcurrentHashMap
+ * 缓存的标准接口，每个方法都必须线程安全
  *
  * @author xiandafu
  */
-@ThreadSafety
-public class LocalCache implements Cache {
+public interface IBeetlCache {
+    /**
+     * 通过 {@param key} 从缓存中获取对应的 value
+     *
+     * @param key 键，有可能为 null
+     * @return 返回缓存中 {@param key} 所对应的 value，有可能为 null
+     */
+    Object get(Object key);
 
-    /** 线程安全的缓存 */
-    private final Map<Object, Object> threadSafeCache = new ConcurrentHashMap<>();
+    /**
+     * 通过 {@param key} 从缓存中获取对应的 value；
+     * 如果获取的value为null，则将 {@param function#apply} 方法的返回值作为newValue，添加到缓存中，并返回
+     *
+     * @param key      键，有可能为 null
+     * @param function 函数，在通过key获取value为null时，将执行 {@param function#apply} 方法
+     * @return 如果获取的value为null，则将 {@param function#apply} 方法的返回值作为newValue，添加到缓存中，并返回
+     */
+    Object get(Object key, Function function);
 
-    @Override
-    public Object get(Object key) {
-        return threadSafeCache.get(key);
-    }
+    /**
+     * 移除缓存中 {@param key} 所对应的 value
+     *
+     * @param key 键，有可能为null
+     */
+    void remove(Object key);
 
-    @Override
-    public Object get(Object key, Function function) {
-        return threadSafeCache.computeIfAbsent(key, function);
-    }
+    /**
+     * 设置缓存中的键值对，如果key已存在，则更新value
+     *
+     * @param key   键
+     * @param value 新值
+     */
+    void set(Object key, Object value);
 
-    @Override
-    public void remove(Object key) {
-        threadSafeCache.remove(key);
-    }
-
-    @Override
-    public void set(Object key, Object value) {
-        threadSafeCache.put(key, value);
-    }
-
-    @Override
-    public void clearAll() {
-        threadSafeCache.clear();
-    }
-
+    /**
+     * 清理缓存
+     */
+    void clearAll();
 }

@@ -1,7 +1,8 @@
 package org.beetl.core.runtime;
 
-import org.beetl.core.runtime.impl.DefaultBeetlConfigManager;
-import org.beetl.core.runtime.impl.DefaultBeetlMemoryManager;
+import org.beetl.core.impl.cache.DefaultBeetlCacheFactory;
+import org.beetl.core.impl.DefaultBeetlConfigManager;
+import org.beetl.core.impl.DefaultBeetlMemoryManager;
 
 /**
  * Beetl运行时，用于获取各种运行时
@@ -24,6 +25,25 @@ public class BeetlRuntime {
      */
     public static IBeetlMemoryManager getMemoryManager() {
         return DefaultBeetlMemoryManager.get();
+    }
+
+    /**
+     * 获取缓存实例
+     *
+     * @return 返回一个默认的实现
+     */
+    public static IBeetlCache getCache() {
+        return DefaultBeetlCacheFactory.defaultCache();
+    }
+
+    /**
+     * 获取缓存实例
+     *
+     * @param className 全限定类名
+     * @return 根据类名加载缓存类，返回其实例
+     */
+    public static IBeetlCache getCache(String className) {
+        return DefaultBeetlCacheFactory.loadCache(className);
     }
 
 }

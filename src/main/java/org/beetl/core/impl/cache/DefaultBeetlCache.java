@@ -25,46 +25,49 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.beetl.core.cache;
+package org.beetl.core.impl.cache;
 
-import org.beetl.core.config.BeetlConfig;
-import org.beetl.core.fun.ObjectUtil;
-import org.beetl.android.util.Log;
-import org.jetbrains.annotations.NotNull;
+import org.beetl.core.annotation.ThreadSafety;
+import org.beetl.core.runtime.IBeetlCache;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
- * 存储Program的缓存，默认是采用{@link LocalCache},可以通过设置
- * {@link Cache} 属性来设置新的缓存对象
+ * 本地的一个实现，采用ConcurrentHashMap
  *
  * @author xiandafu
  */
-public class ProgramCacheFactory {
+@ThreadSafety
+public class DefaultBeetlCache implements IBeetlCache {
 
-    /** DEBUG flag */
-    private static final boolean DEBUG = BeetlConfig.DEBUG;
-    /** Log TAG */
-    private static final String TAG = "ProgramCacheFactory";
-    /** 缓存实现类的类名 */
-    public static String sCache = "org.beetl.core.cache.LocalCache";
+    /** 线程安全的缓存 */
+    private final Map<Object, Object> threadSafeCache = new ConcurrentHashMap<>();
 
-    /**
-     * 默认的缓存实现
-     *
-     * @return 如果通过 {@link #sCache} 获取缓存实例失败，则返回一个 {@link LocalCache} 类型的新实例
-     */
-    @NotNull
-    public static Cache defaultCache() {
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        if (loader == null) {
-            loader = ProgramCacheFactory.class.getClassLoader();
-        }
-        try {
-            return (Cache) ObjectUtil.instance(sCache, loader);
-        } catch (Exception ex) {
-            if (DEBUG) {
-                Log.d(TAG, "load " + sCache + " by " + loader + " error ,instead local\n" + ex.toString());
-            }
-            return new LocalCache();
-        }
+    @Override
+    public Object get(Object key) {
+        return threadSafeCache.get(key);
     }
+
+    @Override
+    public Object get(Object key, Function function) {
+        return threadSafeCache.computeIfAbsent(key, function);
+    }
+
+    @Override
+    public void remove(Object key) {
+        threadSafeCache.remove(key);
+    }
+
+    @Override
+    public void set(Object key, Object value) {
+        threadSafeCache.put(key, value);
+    }
+
+    @Override
+    public void clearAll() {
+        threadSafeCache.clear();
+    }
+
 }

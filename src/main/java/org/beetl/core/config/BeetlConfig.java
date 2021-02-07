@@ -14,5 +14,7 @@ public class BeetlConfig {
     public static final boolean DEBUG = BeetlRuntime.getConfigManager().isDebug();
     /** RELEASE flag */
     public static final boolean RELEASE = BeetlRuntime.getConfigManager().isRelease();
+    /** Beetl 版本号 */
+    public static final String BEETL_VERSION = BeetlRuntime.getConfigManager().getBeetlVersion();
 
 }

@@ -18,4 +18,11 @@ public interface IBeetlConfigManager {
      * @return true表示为发行环境，false表示不为发行环境
      */
     boolean isRelease();
+
+    /**
+     * 获取 Beetl 版本号
+     *
+     * @return x.x.x
+     */
+    String getBeetlVersion();
 }

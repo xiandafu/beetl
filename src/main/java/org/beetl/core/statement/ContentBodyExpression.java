@@ -50,7 +50,7 @@ public class ContentBodyExpression extends Expression {
         ctx.byteWriter = temp;
         block.execute(ctx);
         ctx.byteWriter = real;
-        return temp.getTempConent();
+        return temp.getTempContent();
 
     }
 
