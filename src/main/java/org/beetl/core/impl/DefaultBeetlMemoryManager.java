@@ -1,4 +1,4 @@
-package org.beetl.core.runtime.impl;
+package org.beetl.core.impl;
 
 import org.beetl.core.runtime.IBeetlMemoryManager;
 

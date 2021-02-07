@@ -40,10 +40,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.beetl.core.cache.Cache;
+import org.beetl.core.runtime.BeetlRuntime;
+import org.beetl.core.runtime.IBeetlCache;
 import org.beetl.core.cache.ContextBuffer;
 import org.beetl.core.cache.ContextLocalBuffers;
-import org.beetl.core.cache.ProgramCacheFactory;
 import org.beetl.core.event.Event;
 import org.beetl.core.event.EventListener;
 import org.beetl.core.exception.BeetlException;
@@ -77,7 +77,7 @@ public class GroupTemplate {
     ResourceLoader resourceLoader = null;
     Configuration conf = null;
     TemplateEngine engine = null;
-    Cache programCache = ProgramCacheFactory.defaultCache();
+    IBeetlCache programCache = BeetlRuntime.getCache();
 
     /** 事件监听器列表 */
     List<EventListener> events = new ArrayList<>();
@@ -575,7 +575,7 @@ public class GroupTemplate {
         this.events.add(eventListener);
     }
 
-    public Cache getProgramCache() {
+    public IBeetlCache getProgramCache() {
         return programCache;
     }
 
