@@ -122,14 +122,9 @@ public class HtmlTagStartFragment extends ScriptFragment {
         try {
             html.parser();
         } catch (RuntimeException ex) {
-            BeetlException exception = new BeetlException(BeetlException.PARSER_HTML_TAG_ERROR, ex.getMessage(), ex);
-            String tagName = "<>";
-            if (html.tagName != null) {
-                tagName = "<" + html.tagName + ">";
-            }
-            GrammarToken grammarToken = GrammarToken.createToken(tagName, source.curLine + 1);
-            exception.pushToken(grammarToken);
-            throw exception;
+            String tagName = html.tagName == null ? "<>" : "<" + html.tagName + ">";
+            throw new BeetlException(BeetlException.PARSER_HTML_TAG_ERROR, ex.getMessage(), ex)
+                    .pushToken(GrammarToken.createToken(tagName, source.curLine + 1));
         }
 
         source.move(html.index);
@@ -148,14 +143,11 @@ public class HtmlTagStartFragment extends ScriptFragment {
         int end = 0;
         int index = -1;
         while ((index = attr.indexOf(phStart, start)) != -1) {
-
             int holdStart = index;
-
             while ((end = attr.indexOf(phEnd, holdStart)) != -1) {
                 if (attr.charAt(end - 1) == '\\') {
                     // 非占位结束符号
                     holdStart = end + 1;
-                    continue;
                 } else {
                     break;
                 }
@@ -194,7 +186,6 @@ public class HtmlTagStartFragment extends ScriptFragment {
 
     public void appendCr() {
         appendCr = true;
-
     }
 
 }

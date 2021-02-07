@@ -25,9 +25,9 @@ import org.beetl.core.statement.WhileStatement;
 public class OnlineTemplateEngine extends DefaultTemplateEngine {
 
     /** 最大循环次数 */
-    public static int MAX_NUM_LOOP = 5;
+    public static int sMaxNumLoop = 5;
     /** 错误信息 */
-    public static String MAX_NUM_LOOP_ERROR = "错误:在线引擎不允许循环次数超过  " + MAX_NUM_LOOP;
+    public static String sMaxNumLoopError = "错误:在线引擎不允许循环次数超过  " + sMaxNumLoop;
 
     @Override
     public Program createProgram(Resource rs, Reader reader, Map<Integer, String> textMap, String cr,
@@ -94,7 +94,7 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
             }
 
             int i = 0;
-            for (; i < MAX_NUM_LOOP; i++) {
+            for (; i < sMaxNumLoop; i++) {
                 boolean bool = (Boolean) condition.evaluate(ctx);
                 if (bool) {
                     forPart.execute(ctx);
@@ -122,9 +122,9 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
 
             }
 
-            if (i >= MAX_NUM_LOOP) {
+            if (i >= sMaxNumLoop) {
                 try {
-                    ctx.byteWriter.writeString(MAX_NUM_LOOP_ERROR);
+                    ctx.byteWriter.writeString(sMaxNumLoopError);
                     ctx.byteWriter.flush();
                 } catch (IOException ignored) {
                 }
@@ -142,29 +142,24 @@ public class OnlineTemplateEngine extends DefaultTemplateEngine {
         @Override
         public void execute(Context ctx) {
             int i = 0;
-            while (i < MAX_NUM_LOOP) {
+            while (i < sMaxNumLoop) {
                 Object result = exp.evaluate(ctx);
                 if (result instanceof Boolean) {
                     if ((Boolean) result) {
                         whileBody.execute(ctx);
-
                     } else {
                         break;
                     }
-
                 } else {
-                    BeetlException be = new BeetlException(BeetlException.BOOLEAN_EXPECTED_ERROR);
-                    be.token = exp.token;
-                    throw be;
+                    throw new BeetlException(BeetlException.BOOLEAN_EXPECTED_ERROR).setToken(exp.token);
                 }
                 i++;
             }
 
-            if (i >= MAX_NUM_LOOP) {
+            if (i >= sMaxNumLoop) {
                 try {
-                    ctx.byteWriter.writeString(MAX_NUM_LOOP_ERROR);
+                    ctx.byteWriter.writeString(sMaxNumLoopError);
                 } catch (IOException ignored) {
-
                 }
             }
         }

@@ -73,9 +73,7 @@ public class TryCatchStatement extends Statement {
                 if (ex instanceof BeetlException) {
                     throw (BeetlException) ex;
                 } else {
-                    BeetlException be = new BeetlException(BeetlException.ERROR, ex.getMessage(), ex);
-                    be.pushToken(tryPart.token);
-                    throw be;
+                    throw new BeetlException(BeetlException.ERROR, ex.getMessage(), ex).pushToken(tryPart.token);
                 }
             }
         }

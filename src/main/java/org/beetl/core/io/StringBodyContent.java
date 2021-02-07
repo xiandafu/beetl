@@ -38,8 +38,12 @@ import org.beetl.core.ByteWriter;
  * @author xiandafu
  */
 public class StringBodyContent implements BodyContent {
+
+    /** 表示缓存的字符数组 */
     char[] buf;
+    /** 记录缓存的长度 */
     int count;
+    /** 缓存 toString 方法的结果 */
     String str = null;
 
     public StringBodyContent(char[] buf, int count) {
@@ -47,6 +51,7 @@ public class StringBodyContent implements BodyContent {
         this.count = count;
     }
 
+    @Override
     public String toString() {
         if (str == null) {
             str = new String(buf, 0, count);
@@ -63,6 +68,5 @@ public class StringBodyContent implements BodyContent {
     @Override
     public void fill(ByteWriter bw) throws IOException {
         bw.write(this.buf, count);
-
     }
 }

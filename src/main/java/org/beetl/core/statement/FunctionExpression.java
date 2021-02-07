@@ -64,13 +64,10 @@ public class FunctionExpression extends Expression {
             // 检查html实现
             Resource resource = getResource(ctx.gt, name);
 
-            if (resource!=null&&resource.getResourceLoader().exist(resource.getId())) {
+            if (resource != null && resource.getResourceLoader().exist(resource.getId())) {
                 fn = new FileFunctionWrapper(resource.getId().toString());
-
             } else {
-                BeetlException ex = new BeetlException(BeetlException.FUNCTION_NOT_FOUND);
-                ex.pushToken(token);
-                throw ex;
+                throw new BeetlException(BeetlException.FUNCTION_NOT_FOUND).pushToken(token);
             }
 
         }
@@ -83,53 +80,38 @@ public class FunctionExpression extends Expression {
         try {
             value = fn.call(paras, ctx);
         } catch (BeetlException ex) {
-            ex.pushToken(token);
-            throw ex;
+            throw ex.pushToken(token);
         } catch (RuntimeException ex) {
-            BeetlException be = new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 " + name, ex);
-            be.pushToken(this.token);
-            throw be;
+            throw new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 " + name, ex)
+                    .pushToken(this.token);
         }
 
-        Object ret = null;
-
-        if (vas == null) {
-            ret = value;
-        } else {
-
+        if (vas != null) {
             for (VarAttribute attr : vas) {
 
                 try {
                     value = attr.evaluate(ctx, value);
                 } catch (BeetlException ex) {
-                    ex.pushToken(attr.token);
-                    throw ex;
-
+                    throw ex.pushToken(attr.token);
                 } catch (RuntimeException ex) {
-                    BeetlException be = new BeetlException(BeetlException.ATTRIBUTE_INVALID, "属性访问出错", ex);
-                    be.pushToken(attr.token);
-                    throw be;
+                    throw new BeetlException(BeetlException.ATTRIBUTE_INVALID, "属性访问出错", ex).pushToken(attr.token);
                 }
 
                 if (value == null) {
                     if (hasSafe) {
                         return safeExp == null ? null : safeExp.evaluate(ctx);
                     } else {
-                        BeetlException be = new BeetlException(BeetlException.ERROR, "空指针 ");
-                        be.pushToken(attr.token);
-                        throw be;
+                        throw new BeetlException(BeetlException.ERROR, "空指针 ").pushToken(attr.token);
                     }
-
                 }
 
             }
-            ret = value;
         }
 
-        if (ret == null && hasSafe) {
+        if (value == null && hasSafe) {
             return safeExp == null ? null : safeExp.evaluate(ctx);
         } else {
-            return ret;
+            return value;
         }
 
     }
@@ -140,7 +122,6 @@ public class FunctionExpression extends Expression {
         String functionRoot = resourceMap.get("functionRoot");
         String path = name.replace(".", "/");
         return gt.getResourceLoader().getResource(functionRoot + "/" + path + "." + functionSuffix);
-
     }
 
 }

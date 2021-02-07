@@ -33,12 +33,24 @@ package org.beetl.core.event;
  * @author xiandafu
  */
 public class Event {
+
+    /** 表示一个事件 */
     final Object event;
 
+    /**
+     * 构造方法
+     *
+     * @param eventTarget 事件
+     */
     public Event(Object eventTarget) {
         this.event = eventTarget;
     }
 
+    /**
+     * 获取事件
+     *
+     * @return 返回一个事件
+     */
     public Object getEvent() {
         return event;
     }

@@ -486,9 +486,7 @@ public class AntlrProgramBuilder {
                 registerVar(vas);
                 return vas;
             } else {
-                BeetlException ex = new BeetlException(BeetlException.VAR_NOT_DEFINED);
-                ex.pushToken(this.getBTToken(token));
-                throw ex;
+                throw new BeetlException(BeetlException.VAR_NOT_DEFINED).pushToken(this.getBTToken(token));
             }
 
         }
@@ -526,9 +524,7 @@ public class AntlrProgramBuilder {
                 registerVar(vas);
                 return vas;
             } else {
-                BeetlException ex = new BeetlException(BeetlException.VAR_NOT_DEFINED);
-                ex.pushToken(this.getBTToken(token));
-                throw ex;
+                throw new BeetlException(BeetlException.VAR_NOT_DEFINED).pushToken(this.getBTToken(token));
             }
 
         }
@@ -540,9 +536,8 @@ public class AntlrProgramBuilder {
     protected void registerNewVar(ASTNode vas) {
         if (pbCtx.hasDefined(vas.token.text) != null) {
             GrammarToken token = pbCtx.hasDefined(vas.token.text);
-            BeetlException ex = new BeetlException(BeetlException.VAR_ALREADY_DEFINED, "已经在第" + token.line + "行定义");
-            ex.pushToken(vas.token);
-            throw ex;
+            throw new BeetlException(BeetlException.VAR_ALREADY_DEFINED, "已经在第" + token.line + "行定义")
+                    .pushToken(vas.token);
         }
         pbCtx.addVar(vas.token.text);
         pbCtx.setVarPosition(vas.token.text, vas);
@@ -658,25 +653,25 @@ public class AntlrProgramBuilder {
             Statement block = null;
             VarDefineNode[] varDefine = new VarDefineNode[vars.length];
             if (id.equals("htmltagRootExport")) {
-            	//自定在模板最上层定义的变量
+                //自定在模板最上层定义的变量
                 for (int i = 0; i < vars.length; i++) {
-					//如果已经定义，忽略，比较符合html标签和jsp tag习惯
-                	String varName = vars[i].trim();
-					VarDescrption varDescrption = pbCtx.root.getVars().get(varName);
-					if(varDescrption==null){
-						VarDefineNode varNode = new VarDefineNode(this.getBTToken(vars[i].trim(), line));
-						pbCtx.addRootVarAdnPosition(varNode);
-						varDefine[i] = varNode;
-					}else{
-						ASTNode astNode = varDescrption.where.get(0);
-						if(!(astNode instanceof VarDefineNode)){
-							//不可能发生，先保留
-							BeetlException ex = new BeetlException(BeetlException.PARSER_HTML_TAG_ERROR,
-									"标签定义了一个全局变量 "+varName+" 但是此变量名在 "+astNode.token.line+" 使用了");
-							ex.pushToken(this.getBTToken(id, fc.functionNs().getStart().getLine()));
-						}
-						varDefine[i] = (VarDefineNode)varDescrption.where.get(0);
-					}
+                    //如果已经定义，忽略，比较符合html标签和jsp tag习惯
+                    String varName = vars[i].trim();
+                    VarDescrption varDescrption = pbCtx.root.getVars().get(varName);
+                    if (varDescrption == null) {
+                        VarDefineNode varNode = new VarDefineNode(this.getBTToken(vars[i].trim(), line));
+                        pbCtx.addRootVarAdnPosition(varNode);
+                        varDefine[i] = varNode;
+                    } else {
+                        ASTNode astNode = varDescrption.where.get(0);
+                        if (!(astNode instanceof VarDefineNode)) {
+                            //不可能发生，先保留
+                            BeetlException ex = new BeetlException(BeetlException.PARSER_HTML_TAG_ERROR,
+                                    "标签定义了一个全局变量 " + varName + " 但是此变量名在 " + astNode.token.line + " 使用了");
+                            ex.pushToken(this.getBTToken(id, fc.functionNs().getStart().getLine()));
+                        }
+                        varDefine[i] = (VarDefineNode) varDescrption.where.get(0);
+                    }
 
                 }
                 BlockContext blockCtx = fc.block();
@@ -689,15 +684,15 @@ public class AntlrProgramBuilder {
                 }
 
                 for (int i = 0; i < vars.length; i++) {
-					String varName = vars[i].trim();
-					ASTNode astNode = pbCtx.contain(varName);
-					if(astNode==null){
-						VarDefineNode varNode = new VarDefineNode(this.getBTToken(vars[i].trim(), line));
-						this.pbCtx.addVarAndPostion(varNode);
-						varDefine[i] = varNode;
-					}else{
-						varDefine[i] = (VarDefineNode)astNode;
-					}
+                    String varName = vars[i].trim();
+                    ASTNode astNode = pbCtx.contain(varName);
+                    if (astNode == null) {
+                        VarDefineNode varNode = new VarDefineNode(this.getBTToken(vars[i].trim(), line));
+                        this.pbCtx.addVarAndPostion(varNode);
+                        varDefine[i] = varNode;
+                    } else {
+                        varDefine[i] = (VarDefineNode) astNode;
+                    }
 
                 }
                 BlockContext blockCtx = fc.block();
@@ -709,26 +704,21 @@ public class AntlrProgramBuilder {
 
             TagFactory tf = this.gt.getTagFactory(id);
             if (tf == null) {
-                BeetlException ex = new BeetlException(BeetlException.TAG_NOT_FOUND);
-                ex.pushToken(this.getBTToken(id, fc.functionNs().getStart().getLine()));
-                throw ex;
+                throw new BeetlException(BeetlException.TAG_NOT_FOUND)
+                        .pushToken(this.getBTToken(id, fc.functionNs().getStart().getLine()));
             }
-            TagStatement tag = gc.createVarTag(id, expList, block, varDefine, this.getBTToken(id, line));
-
-            return tag;
+            return gc.createVarTag(id, expList, block, varDefine, this.getBTToken(id, line));
         } else {
             BlockContext blockCtx = fc.block();
             Statement block = parseBlock(blockCtx.statement(), blockCtx);
             TagFactory tf = this.gt.getTagFactory(id);
             if (tf == null) {
-                BeetlException ex = new BeetlException(BeetlException.TAG_NOT_FOUND);
-                ex.pushToken(this.getBTToken(id, fc.functionNs().getStart().getLine()));
-                throw ex;
+                throw new BeetlException(BeetlException.TAG_NOT_FOUND)
+                        .pushToken(this.getBTToken(id, fc.functionNs().getStart().getLine()));
             }
 
-            TagStatement tag = gc.createTag(id, expList, block,
+            return gc.createTag(id, expList, block,
                     this.getBTToken(id, fc.functionNs().getStart().getLine()));
-            return tag;
         }
 
     }
@@ -900,7 +890,9 @@ public class AntlrProgramBuilder {
 
     protected Expression[] getExprssionList(ExpressionListContext expListCtx) {
 
-        if (expListCtx == null) return EMPTY_EXPRESSION;
+        if (expListCtx == null) {
+            return EMPTY_EXPRESSION;
+        }
         List<ExpressionContext> ecList = expListCtx.expression();
         Expression[] exps = new Expression[ecList.size()];
         for (int i = 0; i < ecList.size(); i++) {
@@ -1121,7 +1113,9 @@ public class AntlrProgramBuilder {
     }
 
     protected Expression parseExpress(ExpressionContext ctx) {
-        if (ctx == null) return null;
+        if (ctx == null) {
+            return null;
+        }
 
         if (ctx instanceof LiteralExpContext) {
             return parseLiteralExpress(((LiteralExpContext) ctx).literal());
@@ -1550,7 +1544,6 @@ public class AntlrProgramBuilder {
         Safe_outputContext soctx = varRef.safe_output();
         if (soctx != null) {
             throw new BeetlException(BeetlException.ERROR, "语法错,赋值表达式不能使用安全输出");
-
         }
 
         List<VarAttributeContext> list = varRef.varAttribute();
@@ -1561,7 +1554,6 @@ public class AntlrProgramBuilder {
             if (!(first instanceof VarSquareAttribute || first instanceof VarVirtualAttribute)) {
                 pbCtx.setVarAttr(varRef.Identifier().getText(), first.token.text);
             }
-
         }
 
         VarRef var = new VarRef(vas, false, null,

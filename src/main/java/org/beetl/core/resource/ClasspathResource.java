@@ -65,23 +65,17 @@ public class ClasspathResource extends Resource<String> {
         }
 
         if (url == null) {
-            BeetlException be = new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR);
-            be.pushResource(this);
-            throw be;
+            throw new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR).pushResource(this);
         }
         InputStream is;
         try {
             is = url.openStream();
         } catch (IOException e1) {
-            BeetlException be = new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR);
-            be.pushResource(this);
-            throw be;
+            throw new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR).pushResource(this);
         }
 
         if (is == null) {
-            BeetlException be = new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR);
-            be.pushResource(this);
-            throw be;
+            throw new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR).pushResource(this);
         }
 
         if (url.getProtocol().equals("file")) {

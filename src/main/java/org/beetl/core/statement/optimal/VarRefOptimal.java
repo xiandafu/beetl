@@ -48,20 +48,16 @@ public class VarRefOptimal extends VarRef {
                          GrammarToken firstToken) {
         super(null, false, null, token, firstToken);
         this.attribute = attribute;
-
     }
 
     @Override
     public Object evaluate(Context ctx) {
-
         Object value = this.getRefValue(ctx);
         if (value == null) {
             if (this.hasSafe || ctx.safeOutput) {
                 return null;
             }
-            BeetlException be = new BeetlException(BeetlException.NULL, "空指针");
-            be.pushToken(this.token);
-            throw be;
+            throw new BeetlException(BeetlException.NULL, "空指针").pushToken(this.token);
         }
 
         try {
@@ -77,9 +73,7 @@ public class VarRefOptimal extends VarRef {
             throw ex;
 
         } catch (RuntimeException ex) {
-            BeetlException be = new BeetlException(BeetlException.ATTRIBUTE_INVALID, "属性访问出错", ex);
-            be.pushToken(attribute.token);
-            throw be;
+            throw new BeetlException(BeetlException.ATTRIBUTE_INVALID, "属性访问出错", ex).pushToken(attribute.token);
         }
 
         return value;
@@ -89,41 +83,34 @@ public class VarRefOptimal extends VarRef {
     private Object getRefValue(Context ctx) {
 
         Object value = ctx.vars[varIndex];
-        if (value == Context.NOT_EXIST_OBJECT) {
-            if (ctx.globalVar != null && ctx.globalVar.containsKey("_root")) {
-                // 如果有一个根对象
-                Object root = ctx.getGlobal("_root");
-
-                if (root == null) {
-                    return null;
-                }
-                String attr = this.firstToken.text;
-                AttributeAccess aa = AABuilder.buildFiledAccessor(root.getClass());
-                try {
-                    value = aa.value(root, attr);
-                } catch (RuntimeException e) {
-                    BeetlException ex = new BeetlException(BeetlException.ATTRIBUTE_INVALID,
-                            "_root " + root.getClass() + " 属性访问错误");
-                    ex.pushToken(this.firstToken);
-                    throw ex;
-                }
-
-                return value;
-
-            } else {
-                return null;
-            }
-
-        } else {
+        if (value != Context.NOT_EXIST_OBJECT) {
             return value;
         }
 
+        if (ctx.globalVar == null || !ctx.globalVar.containsKey("_root")) {
+            return null;
+        }
+
+        // 如果有一个根对象
+        Object root = ctx.getGlobal("_root");
+        if (root == null) {
+            return null;
+        }
+        String attr = this.firstToken.text;
+        AttributeAccess aa = AABuilder.buildFiledAccessor(root.getClass());
+        try {
+            value = aa.value(root, attr);
+        } catch (RuntimeException e) {
+            throw new BeetlException(BeetlException.ATTRIBUTE_INVALID, "_root " + root.getClass() + " 属性访问错误")
+                    .pushToken(this.firstToken);
+        }
+
+        return value;
     }
 
     @Override
     public void setVarIndex(int index) {
         this.varIndex = index;
-
     }
 
     @Override

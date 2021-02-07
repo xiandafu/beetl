@@ -31,54 +31,83 @@ import java.io.OutputStream;
 
 public class NoLockByteArrayOutputStream extends OutputStream {
 
-    protected byte buf[];
+    /** 默认的缓存大小 */
+    private static final int DEFAULT_BUFFER_SIZE = 32;
+    /** 缓存 */
+    protected byte[] buf;
+    /** 缓存中的位置 */
+    protected int pos;
 
-    protected int count;
-
+    /**
+     * 构造方法
+     */
     public NoLockByteArrayOutputStream() {
-        this(32);
+        this(DEFAULT_BUFFER_SIZE);
     }
 
+    /**
+     * 构造方法
+     *
+     * @param size 缓存大小
+     */
     public NoLockByteArrayOutputStream(int size) {
-
         buf = new byte[size];
     }
 
-    public void write(int b) {
-        int newcount = count + 1;
-        if (newcount > buf.length) {
-            buf = copyOf(buf, Math.max(buf.length << 1, newcount));
+    /**
+     * 向流中写入一个字节
+     *
+     * @param src 字节来源
+     */
+    public void write(int src) {
+        int newPos = pos + 1;
+        if (newPos > buf.length) { // 扩容
+            buf = IOUtil.copyOf(buf, Math.max(buf.length << 1, newPos));
         }
-        buf[count] = (byte) b;
-        count = newcount;
+        buf[pos] = (byte) src;
+        pos = newPos;
     }
 
-    public void write(byte b[], int off, int len) {
-
-        int newcount = count + len;
-        if (newcount > buf.length) {
-            buf = copyOf(buf, Math.max(buf.length << 1, newcount));
+    /**
+     * 向流中写入一个字节数组
+     *
+     * @param src 字节数组
+     * @param off 在 {@param src} 中的起始下标
+     * @param len 在 {@param src} 中的长度
+     */
+    public void write(byte[] src, int off, int len) {
+        int newPos = pos + len;
+        if (newPos > buf.length) {
+            buf = IOUtil.copyOf(buf, Math.max(buf.length << 1, newPos));
         }
-        System.arraycopy(b, off, buf, count, len);
-        count = newcount;
+        System.arraycopy(src, off, buf, pos, len);
+        pos = newPos;
     }
 
-    public static byte[] copyOf(byte[] original, int newLength) {
-        byte[] copy = new byte[newLength];
-        System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength));
-        return copy;
-    }
-
+    /**
+     * 重置
+     */
     public void reset() {
-        count = 0;
+        pos = 0;
     }
 
-    public byte toByteArray()[] {
-        return copyOf(this.buf, count);
+    /**
+     * 转成字节数组
+     *
+     * @return 新的字节数组实例
+     */
+    public byte[] toByteArray() {
+        return IOUtil.copyOf(this.buf, pos);
     }
 
+    /**
+     * 获取已写入的大小
+     *
+     * @return 已写入的大小
+     */
     public int size() {
-        return count;
+        return pos;
     }
+
 
 }

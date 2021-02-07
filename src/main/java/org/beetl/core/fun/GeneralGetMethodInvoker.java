@@ -21,10 +21,8 @@ public class GeneralGetMethodInvoker implements MethodInvoker {
             return method.invoke(o, name);
         } catch (IllegalArgumentException e) {
             throw new BeetlException(BeetlException.ATTRIBUTE_INVALID, "错误参数", e);
-
         } catch (IllegalAccessException e) {
             throw new BeetlException(BeetlException.ATTRIBUTE_INVALID, "无法访问", e);
-
         } catch (InvocationTargetException e) {
             Throwable target = e.getTargetException();
             if (target instanceof BeetlException) {

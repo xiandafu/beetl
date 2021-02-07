@@ -27,35 +27,38 @@
  */
 package org.beetl.core.io;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.io.Writer;
 
 public class NoLockStringWriter extends Writer {
 
-    //todo reuse parent writer buf??
-    protected char buf[];
-    protected int count;
+    /** 默认的缓存长度 */
+    private static final int DEFAULT_BUFFER_SIZE = 64;
 
+    // todo reuse parent writer buf??
+    protected char[] buf;
+    protected int pos;
+
+    /**
+     * 构造方法
+     */
     public NoLockStringWriter() {
-        this.buf = new char[64];
+        this.buf = new char[DEFAULT_BUFFER_SIZE];
     }
 
     @Override
-    public void write(char[] cbuf, int off, int len) throws IOException {
-        int newcount = count + len;
-        if (newcount > buf.length) {
-            buf = copyOf(buf, Math.max(buf.length << 1, newcount));
+    public void write(char[] src, int off, int len) throws IOException {
+        int newPos = pos + len;
+        if (newPos > buf.length) {
+            buf = IOUtil.copyOf(buf, Math.max(buf.length << 1, newPos));
         }
-        System.arraycopy(cbuf, off, buf, count, len);
-        count = newcount;
+        System.arraycopy(src, off, buf, pos, len);
+        pos = newPos;
     }
 
-    public static char[] copyOf(char[] original, int newLength) {
-        char[] copy = new char[newLength];
-        System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength));
-        return copy;
-    }
-
+    @Override
     public void write(String str) throws IOException {
         if (str != null) {
             this.write(str.toCharArray());
@@ -70,11 +73,11 @@ public class NoLockStringWriter extends Writer {
     @Override
     public void close() throws IOException {
         // TODO Auto-generated method stub
-
     }
 
+    @Override
     public String toString() {
-        return new String(buf, 0, count);
+        return new String(buf, 0, pos);
     }
 
 }

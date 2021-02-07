@@ -39,7 +39,8 @@ import org.beetl.core.exception.BeetlException;
  */
 public class FileFunctionWrapper implements Function {
 
-    String resourceId = null;
+    /** 资源文件名称 */
+    private final String resourceId;
 
     /**
      * 模板文件的资源标示
@@ -63,14 +64,8 @@ public class FileFunctionWrapper implements Function {
             template.renderTo(ctx.byteWriter);
             Object[] vars = template.getCtx().vars;
             Object o = vars[vars.length - 1];
-            if (o != Context.NOT_EXIST_OBJECT) {
-                return o;
-            } else {
-                return null;
-            }
-
+            return o != Context.NOT_EXIST_OBJECT ? o : null;
         } catch (BeetlException ex) {
-
             throw ex;
         } catch (Exception ex) {
             throw new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 " + this.resourceId, ex);

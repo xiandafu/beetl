@@ -170,10 +170,9 @@ public class Transformator {
             String tagName = (String) htmlTagStack.peek();
             GrammarToken token = GrammarToken.createToken(tagName, this.totalLineCount + 1);
 
-            HTMLTagParserException ex = new HTMLTagParserException("解析html tag 标签出错,未找到匹配结束标签 " + tagName);
-
+            HTMLTagParserException ex = new HTMLTagParserException("解析html tag 标签出错,未找到匹配结束标签 " + tagName)
+                    .setLine(totalLineCount + 1);
             ex.pushToken(token);
-            ex.line = totalLineCount + 1;
             this.clear();
             throw ex;
         }

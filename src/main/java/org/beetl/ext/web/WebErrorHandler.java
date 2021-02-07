@@ -60,7 +60,7 @@ public class WebErrorHandler extends ConsoleErrorHandler {
         StringBuilder title = new StringBuilder();
         StringBuilder msg = new StringBuilder();
 
-        if (error.getErrorCode().equals(BeetlException.CLIENT_IO_ERROR_ERROR)) {
+        if (error.errorCode.equals(BeetlException.CLIENT_IO_ERROR_ERROR)) {
             //不输出详细提示信息
             title = new StringBuilder(">>").append("客户端IO异常:").append(e.resource.getId());
             if (e.getCause() != null) {
@@ -70,14 +70,14 @@ public class WebErrorHandler extends ConsoleErrorHandler {
             return;
         }
 
-        int line = error.getErrorTokenLine();
+        int line = error.errorTokenLine;
 
-        title = new StringBuilder(">>").append(error.getType()).append(":").append(error.getErrorTokenText())
+        title = new StringBuilder(">>").append(error.type).append(":").append(error.errorTokenText)
                 .append(" 位于").append(line).append("行").append(" 资源:").append(e.resource.getId());
 
-        if (error.getErrorCode().equals(BeetlException.TEMPLATE_LOAD_ERROR)) {
-            if (error.getMsg() != null)
-                msg.append(error.getMsg());
+        if (error.errorCode.equals(BeetlException.TEMPLATE_LOAD_ERROR)) {
+            if (error.msg != null)
+                msg.append(error.msg);
             render(writer, title.toString(), msg.toString());
             return;
         }
@@ -108,11 +108,11 @@ public class WebErrorHandler extends ConsoleErrorHandler {
         if (error.hasCallStack()) {
             msg.append("  ========================").append("\n");
             msg.append("  调用栈:").append("\n");
-            for (int i = 0; i < error.getResourceCallStack().size(); i++) {
-                msg.append("  ").append(error.getResourceCallStack().get(i)).append(" 行：")
-                        .append(error.getTokenCallStack().get(i).line).append("\n");
+            for (int i = 0; i < error.resourceCallStack.size(); i++) {
+                msg.append("  ").append(error.resourceCallStack.get(i)).append(" 行：")
+                        .append(error.tokenCallStack.get(i).line).append("\n");
             }
-            Throwable t = error.getCause();
+            Throwable t = error.cause;
             if (t != null) {
                 msg.append(t.toString()).append("\n");
             }

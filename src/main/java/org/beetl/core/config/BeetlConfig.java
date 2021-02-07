@@ -9,6 +9,7 @@ import org.beetl.core.runtime.BeetlRuntime;
  * @since 2020-09-21
  */
 public class BeetlConfig {
+
     /** DEBUG flag */
     public static final boolean DEBUG = BeetlRuntime.getConfigManager().isDebug();
     /** RELEASE flag */

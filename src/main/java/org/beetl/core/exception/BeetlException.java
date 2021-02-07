@@ -228,7 +228,7 @@ public class BeetlException extends RuntimeException {
      *
      * @param resource 资源
      */
-    public void pushResource(Resource resource) {
+    public BeetlException pushResource(Resource resource) {
         if (this.inTagBody) {
             /*
              如果当前渲染的是html标签，则出错资源应该使用该html标签的页面，而不是渲染改标签的页面
@@ -242,12 +242,13 @@ public class BeetlException extends RuntimeException {
              2018-9-9
              */
             this.inTagBody = false;
-            return;
+            return this;
         }
         if (this.resource == null) {
             this.resource = resource;
         }
         this.errorResourceStack.add(resource);
+        return this;
     }
 
     /**
@@ -255,12 +256,25 @@ public class BeetlException extends RuntimeException {
      *
      * @param token 语法单词
      */
-    public void pushToken(GrammarToken token) {
+    public BeetlException pushToken(GrammarToken token) {
         if (this.token == null) {
             this.token = token;
         }
         this.errorTokenStack.add(token);
+        return this;
     }
+
+    /**
+     * 设置Token的内容
+     *
+     * @param newToken 新的Token
+     * @return 本身
+     */
+    public BeetlException setToken(GrammarToken newToken) {
+        this.token = newToken;
+        return this;
+    }
+
 
     /**
      * 返回一个错误描述信息

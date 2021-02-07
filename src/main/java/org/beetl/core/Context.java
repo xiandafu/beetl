@@ -168,7 +168,7 @@ public class Context {
         return (Tag) map.get("$parentTag");
     }
 
-    public void destory() {
+    public void destroy() {
         this.gt.buffers.putContextLocalBuffer(this.localBuffer);
     }
 }
