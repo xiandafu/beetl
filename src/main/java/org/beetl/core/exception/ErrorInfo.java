@@ -89,7 +89,7 @@ public class ErrorInfo {
         errorLocalMap.put(BeetlException.PARSER_PREDICATE_ERROR, concat("语法错误", BeetlException.PARSER_PREDICATE_ERROR));
         errorLocalMap.put(BeetlException.TYPE_SEARCH_ERROR, concat("未找到指定类型，请配置类搜索路径或者增加类包名", BeetlException.TYPE_SEARCH_ERROR));
         errorLocalMap.put(BeetlException.PARSER_NATIVE_ERROR, concat("本地调用格式出错，不允许此格式", BeetlException.PARSER_NATIVE_ERROR));
-        errorLocalMap.put(BeetlException.TEMPLATE_LOAD_ERROR, concat("错找不到指定模板或者加载错", BeetlException.TEMPLATE_LOAD_ERROR));
+        errorLocalMap.put(BeetlException.TEMPLATE_LOAD_ERROR, concat("找不到指定模板或者加载模板错", BeetlException.TEMPLATE_LOAD_ERROR));
         errorLocalMap.put(BeetlException.CLIENT_IO_ERROR_ERROR, concat("客户端IO出错", BeetlException.CLIENT_IO_ERROR_ERROR));
         errorLocalMap.put(BeetlException.EXPRESSION_NOT_COMPATIBLE, concat("表达式类型不一致，无法运算", BeetlException.EXPRESSION_NOT_COMPATIBLE));
         errorLocalMap.put(BeetlException.AJAX_ALREADY_DEFINED, concat("Ajax 锚点已经定义", BeetlException.AJAX_ALREADY_DEFINED));

@@ -1,6 +1,4 @@
-
 <#html:set value="${user.name}" export="name" />
-
 <#html:set value="${user.age}" export="name" />
 
 ${name}
