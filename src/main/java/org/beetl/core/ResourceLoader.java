@@ -34,6 +34,23 @@ import java.io.Closeable;
  * 字符串，加密的文本，以及数据库Blob字段等
  *
  * @author xiandafu
+ *
+ * @see org.beetl.core.resource.ClasspathResource
+ * @see org.beetl.core.resource.ClasspathResourceLoader 类路径资源加载器
+ *
+ * @see org.beetl.core.resource.StringTemplateResource
+ * @see org.beetl.core.resource.StringTemplateResourceLoader 字符串模板资源加载器
+ *
+ * @see org.beetl.core.resource.FileResource
+ * @see org.beetl.core.resource.FileResourceLoader 文件资源加载器
+ * @see org.beetl.core.resource.WebAppResourceLoader web应用资源加载器
+ *
+ * @see org.beetl.core.resource.Matcher
+ * @see org.beetl.core.resource.AllowAllMatcher
+ * @see org.beetl.core.resource.StartsWithMatcher
+ * @see org.beetl.core.resource.CompositeResourceLoader 混合形式的资源加载器
+ *
+ * @see org.beetl.core.resource.MapResourceLoader 映射形式的资源加载器
  */
 public interface ResourceLoader<T> extends Closeable {
 

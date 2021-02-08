@@ -33,6 +33,9 @@ import java.io.StringReader;
 import org.beetl.core.Resource;
 import org.beetl.core.ResourceLoader;
 
+/**
+ * 字符模板资源
+ */
 public class StringTemplateResource extends Resource<String> {
 
     public StringTemplateResource(String template, ResourceLoader resourceLoader) {

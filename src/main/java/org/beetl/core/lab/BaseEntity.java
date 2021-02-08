@@ -1,6 +1,6 @@
 package org.beetl.core.lab;
 
-public interface BaseEntity {
+interface BaseEntity {
     default int getPage() {
         return 1;
     }
