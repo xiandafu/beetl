@@ -75,11 +75,11 @@ public class AsmBeanFactory {
             byte[] code = EnhanceClassGenerator.generate(beanClass, this.usePropertyDescriptor);
             String generatedBeanName = EnhanceClassGenerator.createGeneratedClassName(beanClass);
 
-            Object obj = loadContextClassLoader(code, generatedBeanName);
-            if (obj != null) {
-                beanMap.put(beanClass, (AttributeAccess) obj);
-                return (AttributeAccess) obj;
-            }
+//            Object obj = loadContextClassLoader(code, generatedBeanName);
+//            if (obj != null) {
+//                beanMap.put(beanClass, (AttributeAccess) obj);
+//                return (AttributeAccess) obj;
+//            }
             //使用加载Bean的classloader，https://gitee.com/xiandafu/beetl/issues/IWLSS
             ByteClassLoader byteLoader = classLoaders.get(beanClassLoader);
             if (byteLoader == null) {
@@ -91,7 +91,7 @@ public class AsmBeanFactory {
                 enhanceClass = byteLoader.defineClass(generatedBeanName, code);
             }
             // writeClassToFile(code, beanClass, generatedBeanName);
-            obj = enhanceClass.newInstance();
+            Object obj = enhanceClass.newInstance();
             beanMap.put(beanClass, (AttributeAccess) obj);
             return beanMap.get(beanClass);
 

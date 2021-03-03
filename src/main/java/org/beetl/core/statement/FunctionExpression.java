@@ -69,7 +69,6 @@ public class FunctionExpression extends Expression {
             } else {
                 throw new BeetlException(BeetlException.FUNCTION_NOT_FOUND).pushToken(token);
             }
-
         }
 
         Object[] paras = new Object[exps.length];

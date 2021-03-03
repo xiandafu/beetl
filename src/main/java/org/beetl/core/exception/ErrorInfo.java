@@ -33,7 +33,7 @@ import java.util.Map;
 
 import org.beetl.core.Resource;
 import org.beetl.core.statement.GrammarToken;
-import org.jetbrains.annotations.NotNull;
+
 
 /**
  * 将BeetlException表达成ErrorInfo
@@ -117,7 +117,6 @@ public class ErrorInfo {
      * @param code 错误码
      * @return {@link #type}
      */
-    @NotNull
     private static String concat(String info, @BeetlException.BeetlErrorCode String code) {
         return info + "(" + code + ")";
     }
@@ -178,4 +177,60 @@ public class ErrorInfo {
                 ", errorCode='" + errorCode + '\'' +
                 '}';
     }
+    //兼容以前版本
+	public String getErrorTokenText() {
+		return errorTokenText;
+	}
+
+	public void setErrorTokenText(String errorTokenText) {
+		this.errorTokenText = errorTokenText;
+	}
+
+	public int getErrorTokenLine() {
+		return errorTokenLine;
+	}
+
+	public void setErrorTokenLine(int errorTokenLine) {
+		this.errorTokenLine = errorTokenLine;
+	}
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+
+	public Throwable getCause() {
+		return cause;
+	}
+
+	public void setCause(Throwable cause) {
+		this.cause = cause;
+	}
+
+	public List<Resource> getResourceCallStack() {
+		return resourceCallStack;
+	}
+
+	public void setResourceCallStack(List<Resource> resourceCallStack) {
+		this.resourceCallStack = resourceCallStack;
+	}
+
+	public List<GrammarToken> getTokenCallStack() {
+		return tokenCallStack;
+	}
+
+	public void setTokenCallStack(List<GrammarToken> tokenCallStack) {
+		this.tokenCallStack = tokenCallStack;
+	}
+
+	public String getErrorCode() {
+		return errorCode;
+	}
+
+	public void setErrorCode(String errorCode) {
+		this.errorCode = errorCode;
+	}
 }
