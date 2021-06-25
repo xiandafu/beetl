@@ -71,7 +71,7 @@ public class ClassSearch {
      *
      * @return 返回 {@param name} 的类型，如果不成功会返回 null
      */
-    public Class getClassByName(String name) {
+    public Class<?> getClassByName(String name) {
         ClassLoader classLoader = gt.getClassLoader();
 
         // 如果类名是带包名，则直接用当前classloader加载
@@ -84,7 +84,7 @@ public class ClassSearch {
         }
 
         // 如果仅是类名，先尝试从缓存中取
-        Class cls = nameClassCache.get(name);
+        Class<?> cls = nameClassCache.get(name);
         if (cls != null) {
             return cls;
         }

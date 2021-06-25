@@ -9,6 +9,7 @@ import java.nio.charset.CharsetEncoder;
 import java.nio.charset.UnsupportedCharsetException;
 
 import org.beetl.core.cache.ContextBuffer;
+import org.jetbrains.annotations.NotNull;
 
 public class DefaultEncoder {
 
@@ -21,7 +22,7 @@ public class DefaultEncoder {
         this.localBuffer = localBuffer;
     }
 
-    public void write(final String str, final OutputStream out) throws IOException {
+    public void write(@NotNull final String str, @NotNull final OutputStream out) throws IOException {
 
         int len = str.length();
         char[] buffer = this.localBuffer.getCharBuffer(len);

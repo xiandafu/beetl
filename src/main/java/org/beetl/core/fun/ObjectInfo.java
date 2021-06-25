@@ -40,11 +40,11 @@ import java.util.Map;
  * @author xiandafu
  */
 public class ObjectInfo {
-    Map<String, List<Method>> map = new HashMap<String, List<Method>>();
-    List<Method> allMethod = new ArrayList<Method>();
-    Class c = null;
+    Map<String, List<Method>> map = new HashMap<>();
+    List<Method> allMethod = new ArrayList<>();
+    Class<?> c;
 
-    public ObjectInfo(Class c) {
+    public ObjectInfo(Class<?> c) {
         this.c = c;
         init();
     }
@@ -70,12 +70,7 @@ public class ObjectInfo {
                     continue;
                 }
                 String name = m.getName();
-                List<Method> list = map.get(name);
-                if (list == null) {
-                    list = new ArrayList<Method>(1);
-                    map.put(name, list);
-
-                }
+                List<Method> list = map.computeIfAbsent(name, k -> new ArrayList<>(1));
                 list.add(m);
                 allMethod.add(m);
             }

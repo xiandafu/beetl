@@ -21,7 +21,7 @@ public class ContextBuffer {
     private static final int DEFAULT_SIZE = 256;
 
     /** 最大空间 */
-    int maxSize = 0;
+    int maxSize;
     /** 是否是个临时buffer，如果是，不能保存在ContextLocalBuffers */
     boolean inner = true;
 

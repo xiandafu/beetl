@@ -33,7 +33,7 @@ public class GeneralGetMethodInvoker implements MethodInvoker {
     }
 
     @Override
-    public Class getReturnType() {
+    public Class<?> getReturnType() {
         return method.getReturnType();
     }
 

@@ -48,7 +48,7 @@ public class MutipleFunctionWrapper extends FunctionWrapper {
     String methodName = null;
     MethodContext[] mcs = null;
 
-    public MutipleFunctionWrapper(String funName, Class cls, Object target, Method[] ms) {
+    public MutipleFunctionWrapper(String funName, Class<?> cls, Object target, Method[] ms) {
         super(funName);
         this.ms = ms;
         this.target = target;
@@ -59,9 +59,9 @@ public class MutipleFunctionWrapper extends FunctionWrapper {
         } else {
             methodName = functionName;
         }
-        List<MethodContext> list = new ArrayList<MethodContext>();
+        List<MethodContext> list = new ArrayList<>();
         for (Method m : ms) {
-            Class[] paraType = m.getParameterTypes();
+            Class<?>[] paraType = m.getParameterTypes();
             MethodContext mc = new MethodContext();
             mc.m = m;
             mc.parasType = paraType;
@@ -74,7 +74,7 @@ public class MutipleFunctionWrapper extends FunctionWrapper {
             list.add(mc);
 
         }
-        mcs = (MethodContext[]) list.toArray(new MethodContext[0]);
+        mcs = list.toArray(new MethodContext[0]);
 
     }
 

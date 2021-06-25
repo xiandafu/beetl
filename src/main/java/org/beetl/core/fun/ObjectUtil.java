@@ -400,12 +400,9 @@ public class ObjectUtil {
         Method temp = null;
         for (int i = 0; i < ms.size(); i++) {
             temp = ms.get(i);
-
             ObjectMethodMatchConf selfMc = match(temp, parameterType);
             if (selfMc != null) {
-
                 return selfMc;
-
             }
 
         }
@@ -453,7 +450,7 @@ public class ObjectUtil {
     /**
      * 获取一个ObjectInfo
      */
-    public static ObjectInfo getObjectInfo(Class c) {
+    public static ObjectInfo getObjectInfo(Class<?> c) {
         ObjectInfo info = cachedClassInfoMap.get(c);
         if (info == null) {
             synchronized (c) {
