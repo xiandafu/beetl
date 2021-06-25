@@ -47,7 +47,7 @@ public class PojoMethodInvoker implements MethodInvoker {
     }
 
     @Override
-    public Class getReturnType() {
+    public Class<?> getReturnType() {
         return pd.getPropertyType();
     }
 

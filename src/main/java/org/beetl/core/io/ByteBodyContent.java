@@ -41,7 +41,7 @@ import org.beetl.core.ByteWriter;
 public class ByteBodyContent implements BodyContent {
     byte[] bs;
     int count;
-    String charset = null;
+    String charset;
 
     public ByteBodyContent(byte[] bs, int count, String charset) {
         this.bs = bs;

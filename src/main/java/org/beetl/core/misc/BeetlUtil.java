@@ -97,12 +97,14 @@ public class BeetlUtil {
      * 判断一个路径是否指到外部了，比如../../test.txt就指到外部
      */
     public static boolean isOutsideOfRoot(String child) {
-        if (child == null)
+        if (child == null) {
             return true;
+        }
         char[] array = child.toCharArray();
         int root = 0;
-        if (array.length == 0)
+        if (array.length == 0) {
             return true;
+        }
         int start = 0;
         if (array[0] == '/' || array[0] == '\\') {
             start = 1;

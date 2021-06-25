@@ -37,7 +37,7 @@ public class NumberUtil {
 
     static {
         for (int i = 0; i < INTEGER.length; i++) {
-            INTEGER[i] = new Integer(i);
+            INTEGER[i] = i;
         }
     }
 
@@ -45,7 +45,7 @@ public class NumberUtil {
         if (i >= 0 && i < INTEGER.length) {
             return INTEGER[i];
         } else {
-            return new Integer(i);
+            return i;
         }
     }
 

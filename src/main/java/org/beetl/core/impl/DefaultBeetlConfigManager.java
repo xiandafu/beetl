@@ -14,7 +14,7 @@ public class DefaultBeetlConfigManager implements IBeetlConfigManager {
     /** 单例模式 - 通过内部类初始化，保证实例的线程安全 */
     private static class Holder {
         /** 单例模式 - DefaultBeetlConfigManager 的实例 */
-        private static final IBeetlConfigManager INSTANCE = new DefaultBeetlConfigManager();
+        private static IBeetlConfigManager sInstance = new DefaultBeetlConfigManager();
     }
 
     /**
@@ -23,7 +23,7 @@ public class DefaultBeetlConfigManager implements IBeetlConfigManager {
      * @return 进程内唯一的实例
      */
     public static IBeetlConfigManager get() {
-        return Holder.INSTANCE;
+        return Holder.sInstance;
     }
 
     @Override
@@ -39,6 +39,6 @@ public class DefaultBeetlConfigManager implements IBeetlConfigManager {
 
     @Override
     public String getBeetlVersion() {
-        return "3.3.2";
+        return "3.3.3";
     }
 }

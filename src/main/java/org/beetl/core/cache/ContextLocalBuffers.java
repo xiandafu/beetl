@@ -48,7 +48,7 @@ public class ContextLocalBuffers {
      *
      * @param buffer 一个 ContextBuffer 实例
      */
-    public void putContextLocalBuffer(ContextBuffer buffer) {
+    public void putContextLocalBuffer(@NotNull ContextBuffer buffer) {
         if (!buffer.inner) {
             // 放弃，这是临时生成的
             return;

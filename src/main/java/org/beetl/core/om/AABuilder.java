@@ -43,7 +43,7 @@ public class AABuilder {
     /** 可以重新设置，做一些扩展点 */
     public static DefaultAAFactory defalutAAFactory = new DefaultAAFactory();
 
-    public static AttributeAccess buildFiledAccessor(Class c) {
+    public static AttributeAccess buildFiledAccessor(Class<?> c) {
         return defalutAAFactory.buildFiledAccessor(c);
     }
 

@@ -17,7 +17,7 @@ public interface MethodInvoker {
     /**
      * @return 改调用预期的返回类型
      */
-    Class getReturnType();
+    Class<?> getReturnType();
 
     Method getMethod();
 

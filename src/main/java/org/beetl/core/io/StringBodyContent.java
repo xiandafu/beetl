@@ -62,7 +62,6 @@ public class StringBodyContent implements BodyContent {
     @Override
     public String getBody() {
         return this.toString();
-
     }
 
     @Override

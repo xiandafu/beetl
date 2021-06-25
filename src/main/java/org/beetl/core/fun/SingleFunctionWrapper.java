@@ -41,38 +41,23 @@ import org.beetl.core.exception.BeetlException;
 public class SingleFunctionWrapper extends FunctionWrapper {
     Method m;
 
-    public SingleFunctionWrapper(String funName, Class cls, Object target, Method m) {
+    public SingleFunctionWrapper(String funName, Class<?> cls, Object target, Method m) {
         super(funName);
         this.target = target;
         this.cls = cls;
         this.m = m;
         this.requiredContext = this.checkContextRequired(m.getParameterTypes());
-
     }
 
     @Override
     public Object call(Object[] paras, Context ctx) {
         try {
-            if (!this.requiredContext) {
-                if (target != null) {
-                    return ObjectUtil.invokeObject(this.target, m.getName(), paras);
-
-                } else {
-                    return ObjectUtil.invokeStatic(this.cls, m.getName(), paras);
-                }
-
+            Object[] newParas = this.requiredContext ? getContextParas(paras, ctx) : paras;
+            if (target == null) {
+                return ObjectUtil.invokeStatic(this.cls, m.getName(), newParas);
             } else {
-
-                Object[] newParas = getContextParas(paras, ctx);
-                if (target != null) {
-                    return ObjectUtil.invokeObject(this.target, m.getName(), newParas);
-
-                } else {
-                    return ObjectUtil.invokeStatic(this.cls, m.getName(), newParas);
-                }
-
+                return ObjectUtil.invokeObject(this.target, m.getName(), newParas);
             }
-
         } catch (InvocationTargetException ex) {
             Throwable t = ex.getTargetException();
             if (t instanceof BeetlException) {
@@ -85,10 +70,9 @@ public class SingleFunctionWrapper extends FunctionWrapper {
         } catch (Exception ex) {
             throw new BeetlException(BeetlException.NATIVE_CALL_EXCEPTION, "调用方法出错 " + this.functionName, ex);
         }
-
     }
 
-    public Class getReturnType() {
+    public Class<?> getReturnType() {
         return m.getReturnType();
     }
 

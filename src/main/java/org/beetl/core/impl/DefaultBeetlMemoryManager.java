@@ -56,7 +56,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
 
     /** 单例模式 - DefaultBeetlMemoryManager 的实例 */
-    private static IBeetlMemoryManager sInstance;
+    private static volatile IBeetlMemoryManager sInstance;
 
     /** 单例模式 - 不可获取实例 */
     private DefaultBeetlMemoryManager() {
