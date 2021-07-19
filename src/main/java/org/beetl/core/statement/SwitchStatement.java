@@ -40,7 +40,7 @@ import org.beetl.core.misc.ALU;
  */
 public class SwitchStatement extends Statement {
     public Expression value;
-    LinkedHashMap<Expression, BlockStatement> map;
+	protected LinkedHashMap<Expression, BlockStatement> map;
     // 为了类型推测方便，实际上只要map就可以了
     public Expression[] condtionsList;
     public BlockStatement[] blocks;

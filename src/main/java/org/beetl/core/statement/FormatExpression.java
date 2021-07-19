@@ -38,8 +38,8 @@ import org.beetl.core.exception.BeetlException;
  * @author xiandafu
  */
 public class FormatExpression extends Expression {
-    String name;
-    String pattern;
+	protected String name;
+	protected String pattern;
 
     /**
      * ${date,name=pattern}

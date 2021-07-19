@@ -40,7 +40,7 @@ import org.beetl.core.Context;
  */
 public class JsonMapExpression extends Expression {
 
-    Map<String, Expression> map;
+	protected Map<String, Expression> map;
     public Expression[] array;
 
     public JsonMapExpression(Map<String, Expression> map, GrammarToken token) {

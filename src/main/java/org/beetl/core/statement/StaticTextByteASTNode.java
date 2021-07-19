@@ -37,9 +37,9 @@ import org.beetl.core.exception.BeetlException;
  *
  * @author xiandafu
  */
-public final class StaticTextByteASTNode extends Statement {
+public  class StaticTextByteASTNode extends Statement {
 
-    int textIndex;
+    protected  int textIndex;
 
     public StaticTextByteASTNode(int textIndex, GrammarToken token) {
         super(token);

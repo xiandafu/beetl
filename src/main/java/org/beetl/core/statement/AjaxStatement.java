@@ -38,9 +38,9 @@ public class AjaxStatement extends Statement {
 
     public BlockStatement block;
     // ajax 片段是否默认被渲染出来
-    boolean defaultRender = true;
-    String ajaxId = null;
-    ProgramMetaData localProgramMetaData = null;
+	protected boolean defaultRender = true;
+	protected String ajaxId = null;
+	protected ProgramMetaData localProgramMetaData = null;
 
     public AjaxStatement(BlockStatement block, GrammarToken token, boolean defaultRender) {
         super(token);

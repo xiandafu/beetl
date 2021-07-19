@@ -40,7 +40,7 @@ import org.beetl.core.exception.BeetlParserException;
  *
  * @author xiandafu
  */
-public final class ForStatement extends Statement implements IGoto {
+public  class ForStatement extends Statement implements IGoto {
     public Expression idNode;
     public Expression exp;
     public Statement forPart;

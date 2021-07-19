@@ -39,7 +39,7 @@ import org.beetl.core.om.AABuilder;
  */
 public class VarAttribute extends Expression {
     public int aaIndex = -1;
-    String name = null;
+	protected String name = null;
 
     public VarAttribute(GrammarToken token) {
         super(token);

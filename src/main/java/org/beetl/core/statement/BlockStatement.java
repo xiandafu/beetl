@@ -37,7 +37,7 @@ import org.beetl.core.Context;
 public class BlockStatement extends Statement implements IGoto {
 
     public Statement[] nodes = null;
-    boolean hasGoto = false;
+	protected boolean hasGoto = false;
 
     public BlockStatement(Statement[] nodes, GrammarToken token) {
         super(token);

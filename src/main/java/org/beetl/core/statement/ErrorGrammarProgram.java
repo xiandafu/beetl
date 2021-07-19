@@ -40,7 +40,7 @@ import org.beetl.core.exception.BeetlException;
  */
 
 public class ErrorGrammarProgram extends Program {
-    BeetlException exception = null;
+	protected BeetlException exception = null;
 
     public ErrorGrammarProgram(Resource res, GroupTemplate gt, String cr) {
         super();

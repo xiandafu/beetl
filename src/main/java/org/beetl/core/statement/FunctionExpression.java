@@ -42,11 +42,11 @@ import org.beetl.core.fun.FileFunctionWrapper;
  * @author xiandafu
  */
 public class FunctionExpression extends Expression {
-    String name;
+	protected String name;
     public Expression[] exps;
     public VarAttribute[] vas;
     public Expression safeExp;
-    boolean hasSafe = false;
+	protected boolean hasSafe = false;
 
     public FunctionExpression(String name, Expression[] exps, VarAttribute[] vas, boolean hasSafe, Expression safeExp,
                               GrammarToken token) {

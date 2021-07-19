@@ -26,9 +26,9 @@ import org.beetl.core.statement.nat.NativeNode;
  */
 public class NativeCallExpression extends Expression {
 
-    InstanceNode insNode;
-    ClassNode clsNode;
-    NativeNode[] chain;
+	protected InstanceNode insNode;
+	protected ClassNode clsNode;
+	protected NativeNode[] chain;
 
     public NativeCallExpression(InstanceNode insNode, NativeNode[] chain, GrammarToken token) {
         super(token);

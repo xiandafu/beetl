@@ -36,8 +36,8 @@ import org.beetl.core.misc.ALU;
  * @author xiandafu
  */
 public class IncDecExpression extends Expression implements IVarIndex {
-    boolean isInc, returnOrginal;
-    int index;
+	protected  boolean isInc, returnOrginal;
+	protected int index;
 
     public IncDecExpression(boolean isInc, boolean returnOrginal, GrammarToken token) {
         super(token);

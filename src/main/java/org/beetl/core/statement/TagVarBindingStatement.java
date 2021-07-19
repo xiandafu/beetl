@@ -9,7 +9,7 @@ import org.beetl.core.tag.Tag;
 
 public class TagVarBindingStatement extends TagStatement {
 
-    VarDefineNode[] varIndexs;
+	protected VarDefineNode[] varIndexs;
 
     public TagVarBindingStatement(String tagName, Expression[] paras, Statement block, VarDefineNode[] varDefine,
                                   GrammarToken token) {

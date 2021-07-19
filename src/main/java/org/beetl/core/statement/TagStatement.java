@@ -45,7 +45,7 @@ import org.beetl.core.tag.TagFactory;
  */
 public class TagStatement extends Statement {
 
-    String tagName;
+	protected String tagName;
     public Expression[] paras;
     public Statement block;
 

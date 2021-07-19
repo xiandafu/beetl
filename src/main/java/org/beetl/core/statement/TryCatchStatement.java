@@ -39,9 +39,9 @@ import org.beetl.core.exception.BeetlException;
  */
 public class TryCatchStatement extends Statement {
 
-    BlockStatement tryPart;
-    BlockStatement catchPart;
-    VarDefineNode error;
+	protected BlockStatement tryPart;
+	protected BlockStatement catchPart;
+	protected VarDefineNode error;
 
     public TryCatchStatement(BlockStatement tryPart, BlockStatement catchPart, VarDefineNode error,
                              GrammarToken token) {

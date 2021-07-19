@@ -9,7 +9,7 @@ import org.beetl.core.Context;
  */
 public class VarDefineNode extends Expression implements IVarIndex {
 
-    int varIndex = 0;
+	protected int varIndex = 0;
 
     public VarDefineNode(GrammarToken token) {
         super(token);
