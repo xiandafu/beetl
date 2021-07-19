@@ -233,4 +233,12 @@ public class ErrorInfo {
 	public void setErrorCode(String errorCode) {
 		this.errorCode = errorCode;
 	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }
