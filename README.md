@@ -15,7 +15,9 @@ typora-root-url: ../beetl3.0
 
 ## Beetl3 高速模板引擎
 
-[iBeetl.com](iBeetl.com) © 2011 ~ 2019，国内流行模板引擎
+[iBeetl.com](iBeetl.com) © 2011 ~ 2021，国内流行模板引擎
+
+[![Maven Central](https://img.shields.io/maven-central/v/com.ibeetl/beetl.svg)](https://mvnrepository.com/search?q=g:com.ibeetl%20AND%20beetl)
 
 #### 功能 
 
