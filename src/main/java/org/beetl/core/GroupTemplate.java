@@ -107,6 +107,8 @@ public class GroupTemplate {
     /** 用于解析html tag得属性，转化为符合js变量名字 */
     AttributeNameConvert htmlTagAttrNameConvert = null;
 
+    DelimeterConfig delimeterConfig = null;
+
     /**
      * 使用默认的配置和默认的模板资源加载器{@link ClasspathResourceLoader}，
      */
@@ -191,6 +193,13 @@ public class GroupTemplate {
         }
 
         htmlTagAttrNameConvert = (AttributeNameConvert) ObjectUtil.instance(conf.htmlTagAttributeConvert, classLoader);
+
+        if(conf.delimeterClass!=null){
+        	this.delimeterConfig = (DelimeterConfig)ObjectUtil.instance(conf.delimeterClass,classLoader);
+		}else{
+			this.delimeterConfig = new DelimeterConfig.DefaultDelimeterConfig(conf);
+		}
+
     }
 
     protected void initFunction() {
@@ -498,7 +507,7 @@ public class GroupTemplate {
         TextParser text = null;
         try {
             Reader reader = res.openReader();
-            text = new TextParser(this, conf.getPlaceHolderDelimeter(), conf.getScriptDelimeter(), conf.getTagConf());
+            text = new TextParser(this,delimeterConfig.getPlaceHolder(res.id), delimeterConfig.getStatement(res.id), conf.getTagConf());
             text.doParse(reader);
 
             Reader scriptReader = new StringReader(text.getScript().toString());

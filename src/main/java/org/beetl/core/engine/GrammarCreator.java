@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.beetl.core.Resource;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.statement.AjaxStatement;
 import org.beetl.core.statement.AndExpression;
@@ -293,5 +294,23 @@ public class GrammarCreator implements IGrammarConstants {
             throw new BeetlException(BeetlException.GRAMMAR_NOT_ALLOWED, "语法 " + ast + "不允许");
         }
     }
+
+	/**
+	 * 模板解析之前可以手工增加一个beetl语句
+	 * @param resource
+	 * @return
+	 */
+	public  Statement first(Resource resource){
+    	return null;
+	}
+
+	/**
+	 * 模板解析完毕后可以增加一个语句
+	 * @param resource
+	 * @return
+	 */
+	public  Statement last(Resource resource){
+		return null;
+	}
 
 }

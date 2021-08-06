@@ -216,17 +216,27 @@ public class AntlrProgramBuilder {
     /**
      * 通过Antlr的ParseTree生成Beetl的ProgramMetaData
      */
-    public ProgramMetaData build(ParseTree tree) {
+    public ProgramMetaData build(ParseTree tree,Resource resource) {
 
         int size = tree.getChildCount() - 1;
-        List<Statement> ls = new ArrayList<Statement>(size);
+        List<Statement> ls = new ArrayList<Statement>(size+2);
+		Statement firstStatement =  gc.first(resource);
+		if(firstStatement!=null){
+			ls.add(firstStatement);
+		}
+
         for (int i = 0; i < size; i++) {
             Statement st = parseStatment((ParserRuleContext) tree.getChild(i));
             if (st != null) {
                 ls.add(st);
             }
-
         }
+
+		Statement lastStatement =  gc.last(resource);
+		if(lastStatement!=null){
+			ls.add(lastStatement);
+		}
+
 
         if (pbCtx.current.gotoValue == IGoto.RETURN || pbCtx.current.gotoValue == IGoto.BREAK) {
             // 如果顶级scope也有return 和break，则检测

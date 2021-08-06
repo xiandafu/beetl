@@ -141,6 +141,8 @@ public class Configuration {
 
     /** 模板是否整体使用安全输出功能，如果是，则不存在的值返回空，而不是报错 */
     boolean safeOutput = false;
+	/** 使用类来动态决定定界符，而不是通过配置『DELIMITER_PLACEHOLDER_START』*/
+    String delimeterClass = null;
 
     public static final String DELIMITER_PLACEHOLDER_START = "DELIMITER_PLACEHOLDER_START";
     public static final String DELIMITER_PLACEHOLDER_END = "DELIMITER_PLACEHOLDER_END";
@@ -169,6 +171,7 @@ public class Configuration {
     public static final String BUFFER_SIZE = "buffer.maxSize";
     public static final String BUFFER_NUM = "buffer.num";
     public static final String SAFE_OUTPUT = "SAFE_OUTPUT";
+    public static final String DELIMETER_CONFIG = "DELIMETER_CONFIG";
 
     /** 配置文件的key */
     @MagicConstant(stringValues = {
@@ -181,7 +184,7 @@ public class Configuration {
             ERROR_HANDLER, MVC_STRICT, WEBAPP_EXT,
             HTML_TAG_SUPPORT, HTML_TAG_FLAG, HTML_TAG_ATTR_CONVERT, HTML_TAG_BINDING_ATTRIBUTE,
             IMPORT_PACKAGE, ENGINE, NATIVE_SECUARTY_MANAGER, RESOURCE_LOADER,
-            BUFFER_SIZE, BUFFER_NUM, SAFE_OUTPUT
+            BUFFER_SIZE, BUFFER_NUM, SAFE_OUTPUT,DELIMETER_CONFIG
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface PropertiesKey {
@@ -331,7 +334,10 @@ public class Configuration {
     protected void setValue(String key, String value) {
         if (key.equalsIgnoreCase(TEMPLATE_CHARSET)) {
             this.charset = value;
-        } else if (key.equalsIgnoreCase(DELIMITER_PLACEHOLDER_START)) {
+        }else if(key.equalsIgnoreCase(DELIMETER_CONFIG)){
+        	this.delimeterClass = value;
+		}
+        else if (key.equalsIgnoreCase(DELIMITER_PLACEHOLDER_START)) {
             this.placeholderStart = value;
         } else if (key.equalsIgnoreCase(DELIMITER_PLACEHOLDER_END)) {
             this.placeholderEnd = value;
@@ -768,7 +774,15 @@ public class Configuration {
         this.safeOutput = safeOutput;
     }
 
-    public static class HtmlTagHolder {
+	public String getDelimeterClass() {
+		return delimeterClass;
+	}
+
+	public void setDelimeterClass(String delimeterClass) {
+		this.delimeterClass = delimeterClass;
+	}
+
+	public static class HtmlTagHolder {
         String htmlTagStart = "<#";
         String htmlTagEnd = "</#";
         String htmlTagBindingAttribute = "var";
