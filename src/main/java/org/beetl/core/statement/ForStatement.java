@@ -63,7 +63,7 @@ public  class ForStatement extends Statement implements IGoto {
 
     }
 
-    public final void execute(Context ctx) {
+    public  void execute(Context ctx) {
         // idNode 是其后设置的
         int varIndex = ((IVarIndex) idNode).getVarIndex();
         Object collection = exp.evaluate(ctx);

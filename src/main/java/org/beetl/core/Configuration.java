@@ -33,12 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 import org.beetl.android.text.TextUtils;
 import org.beetl.core.text.HtmlTagConfig;
@@ -143,6 +138,8 @@ public class Configuration {
     boolean safeOutput = false;
 	/** 使用类来动态决定定界符，而不是通过配置『DELIMITER_PLACEHOLDER_START』*/
     String delimeterClass = null;
+    /*保存模板编译结果的缓存*/
+    String cacheClass = "org.beetl.core.impl.cache.DefaultBeetlCache";
 
     public static final String DELIMITER_PLACEHOLDER_START = "DELIMITER_PLACEHOLDER_START";
     public static final String DELIMITER_PLACEHOLDER_END = "DELIMITER_PLACEHOLDER_END";
@@ -172,6 +169,7 @@ public class Configuration {
     public static final String BUFFER_NUM = "buffer.num";
     public static final String SAFE_OUTPUT = "SAFE_OUTPUT";
     public static final String DELIMETER_CONFIG = "DELIMETER_CONFIG";
+    public static final String CACHE = "CACHE";
 
     /** 配置文件的key */
     @MagicConstant(stringValues = {
@@ -184,7 +182,7 @@ public class Configuration {
             ERROR_HANDLER, MVC_STRICT, WEBAPP_EXT,
             HTML_TAG_SUPPORT, HTML_TAG_FLAG, HTML_TAG_ATTR_CONVERT, HTML_TAG_BINDING_ATTRIBUTE,
             IMPORT_PACKAGE, ENGINE, NATIVE_SECUARTY_MANAGER, RESOURCE_LOADER,
-            BUFFER_SIZE, BUFFER_NUM, SAFE_OUTPUT,DELIMETER_CONFIG
+            BUFFER_SIZE, BUFFER_NUM, SAFE_OUTPUT,DELIMETER_CONFIG,CACHE
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface PropertiesKey {
@@ -434,7 +432,9 @@ public class Configuration {
                 this.tagFactoryMap.put(getExtName(key), value);
             } else if (key.startsWith("resource.") || key.startsWith("RESOURCE.")) {
                 this.resourceMap.put(getExtName(key), value);
-            }
+            }else if (key.equalsIgnoreCase(CACHE)) {
+				this.cacheClass = value;
+			}
         }
 
     }
@@ -742,6 +742,17 @@ public class Configuration {
         return this.ps.getProperty(name);
     }
 
+	public int getIntProperty(String name,int defaultValue) {
+		String value =  this.ps.getProperty(name.toUpperCase());
+		if(value==null){
+			value = this.ps.getProperty(name.toLowerCase());
+		}
+		if(value==null){
+			return defaultValue;
+		}
+		return Integer.parseInt(value.trim());
+	}
+
     public String getResourceLoader() {
         return resourceLoader;
     }
@@ -780,6 +791,14 @@ public class Configuration {
 
 	public void setDelimeterClass(String delimeterClass) {
 		this.delimeterClass = delimeterClass;
+	}
+
+	public String getCacheClass() {
+		return cacheClass;
+	}
+
+	public void setCacheClass(String cacheClass) {
+		this.cacheClass = cacheClass;
 	}
 
 	public static class HtmlTagHolder {

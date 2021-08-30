@@ -27,6 +27,8 @@
  */
 package org.beetl.core.runtime;
 
+import org.beetl.core.Configuration;
+
 import java.util.function.Function;
 
 /**
@@ -35,6 +37,9 @@ import java.util.function.Function;
  * @author xiandafu
  */
 public interface IBeetlCache {
+
+	void init(Configuration configuration);
+
     /**
      * 通过 {@param key} 从缓存中获取对应的 value
      *
@@ -72,4 +77,7 @@ public interface IBeetlCache {
      * 清理缓存
      */
     void clearAll();
+
+
+    long size();
 }

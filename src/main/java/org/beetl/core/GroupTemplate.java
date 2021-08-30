@@ -77,7 +77,7 @@ public class GroupTemplate {
     ResourceLoader resourceLoader = null;
     Configuration conf = null;
     TemplateEngine engine = null;
-    IBeetlCache programCache = BeetlRuntime.getCache();
+    IBeetlCache programCache ;
 
     /** 事件监听器列表 */
     List<EventListener> events = new ArrayList<>();
@@ -178,6 +178,7 @@ public class GroupTemplate {
     protected void init() {
         conf.build();
         engine = (TemplateEngine) ObjectUtil.instance(conf.getEngine(), classLoader);
+        this.initCache();
         this.initFunction();
         this.initFormatter();
         this.initTag();
@@ -201,6 +202,12 @@ public class GroupTemplate {
 		}
 
     }
+
+    protected  void initCache(){
+    	String cacheClass = conf.getCacheClass();
+		IBeetlCache cache = this.programCache = BeetlRuntime.getCache(cacheClass);
+		cache.init(conf);
+	}
 
     protected void initFunction() {
         Map<String, String> fnMap = this.conf.fnMap;

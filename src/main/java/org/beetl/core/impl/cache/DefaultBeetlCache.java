@@ -27,6 +27,7 @@
  */
 package org.beetl.core.impl.cache;
 
+import org.beetl.core.Configuration;
 import org.beetl.core.annotation.ThreadSafety;
 import org.beetl.core.runtime.IBeetlCache;
 
@@ -45,7 +46,12 @@ public class DefaultBeetlCache implements IBeetlCache {
     /** 线程安全的缓存 */
     private final Map<Object, Object> threadSafeCache = new ConcurrentHashMap<>();
 
-    @Override
+	@Override
+	public void init(Configuration configuration) {
+
+	}
+
+	@Override
     public Object get(Object key) {
         return threadSafeCache.get(key);
     }
@@ -69,5 +75,10 @@ public class DefaultBeetlCache implements IBeetlCache {
     public void clearAll() {
         threadSafeCache.clear();
     }
+
+	@Override
+	public long size() {
+		return threadSafeCache.size();
+	}
 
 }

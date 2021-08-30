@@ -46,7 +46,7 @@ public class DefaultBeetlCacheFactory {
     private static final String TAG = "ProgramCacheFactory";
 
     /** 缓存实现类的类名 */
-    public static  String DEFAULT_CACHE_CLASS_NAME = "org.beetl.core.impl.cache.DefaultBeetlCache";
+    static  String DEFAULT_CACHE_CLASS_NAME = "org.beetl.core.impl.cache.DefaultBeetlCache";
 
     /**
      * 不允许实例化
