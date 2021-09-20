@@ -39,9 +39,9 @@ import org.beetl.core.exception.BeetlException;
 public class ReThrowConsoleErrorHandler extends ConsoleErrorHandler {
 
     @Override
-    public void processExcption(BeetlException ex, Writer writer) {
+    public void processException(BeetlException ex, GroupTemplate groupTemplate,Writer writer) {
 
-        super.processExcption(ex, writer);
+        super.processException(ex, groupTemplate,writer);
         throw ex;
 
     }

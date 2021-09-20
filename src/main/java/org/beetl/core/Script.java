@@ -53,8 +53,8 @@ public class Script<T>  extends Template{
     protected BeetlException ex = null;
     private boolean done = false;
 
-    protected Script(GroupTemplate gt, Program program, Configuration cf) {
-    	super(gt,program,cf);
+    protected Script(GroupTemplate gt, Program program, Resource resource,Configuration cf) {
+    	super(gt,program,resource,cf);
     	this.ctx.template = this;
     }
 
@@ -151,11 +151,10 @@ public class Script<T>  extends Template{
 
         } catch (BeetlException e) {
             if (!(program instanceof ErrorGrammarProgram)) {
-                e.pushResource(this.program.res);
+                e.pushResource(this.resource);
             }
             Writer w = BeetlUtil.getWriterByByteWriter(ctx.byteWriter);
 
-            e.gt = this.program.gt;
             e.cr = this.program.metaData.lineSeparator;
             throw e;
 

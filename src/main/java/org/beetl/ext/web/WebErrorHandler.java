@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import org.beetl.core.ConsoleErrorHandler;
+import org.beetl.core.GroupTemplate;
 import org.beetl.core.Resource;
 import org.beetl.core.ResourceLoader;
 import org.beetl.core.exception.BeetlException;
@@ -51,13 +52,13 @@ public class WebErrorHandler extends ConsoleErrorHandler {
             + VERSION + "</h3><div></body></html>";
 
     @Override
-    public void processExcption(BeetlException e, Writer writer) {
+    public void processException(BeetlException e, GroupTemplate groupTemplate,Writer writer) {
         //判断是不是开发者模式,如果不是调用父类方法(默认输出控制台)
-        if (!Boolean.parseBoolean(e.gt.getConf().getProperty("RESOURCE.autoCheck"))) {
-            super.processExcption(e, writer);
+        if (!Boolean.parseBoolean(groupTemplate.getConf().getProperty("RESOURCE.autoCheck"))) {
+            super.processException(e, groupTemplate,writer);
         }
         ErrorInfo error = new ErrorInfo(e);
-        StringBuilder title = new StringBuilder();
+        StringBuilder title = null;
         StringBuilder msg = new StringBuilder();
 
         if (error.errorCode.equals(BeetlException.CLIENT_IO_ERROR_ERROR)) {
@@ -86,7 +87,7 @@ public class WebErrorHandler extends ConsoleErrorHandler {
             msg.append(e.getMessage()).append("\n");
         }
 
-        ResourceLoader resLoader = e.gt.getResourceLoader();
+        ResourceLoader resLoader = groupTemplate.getResourceLoader();
         //潜在问题，此时可能得到是一个新的模板，不过可能性很小，忽略！
         String content = null;
         Resource res = e.resource;

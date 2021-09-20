@@ -169,8 +169,6 @@ public class BeetlException extends RuntimeException {
 
     public boolean inTagBody = false;
 
-    /** GroupTemplate */
-    public GroupTemplate gt = null;
     /** 模板换行符 */
     public String cr = null;
 

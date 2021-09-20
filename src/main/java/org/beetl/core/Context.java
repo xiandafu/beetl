@@ -140,14 +140,14 @@ public class Context {
     }
 
     public Object getResourceId() {
-        return this.template.program.res.getId();
+        return this.template.resource.getId();
     }
 
     /**
      * 当前处于哪个Resource
      */
     public Resource getResource() {
-        return this.template.program.res;
+        return this.template.resource;
     }
 
     public void setCurrentTag(Tag tag) {

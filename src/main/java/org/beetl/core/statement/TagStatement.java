@@ -95,7 +95,7 @@ public class TagStatement extends Statement {
             tag.render();
             tag.afterRender();
         } catch (BeetlException ex) {
-            // BeetlException异常时不要设置token，因为抛出的地方已经设置了
+            // BeetlException异常时不要设置token，以抛出的地方已经设置了，更精确
             throw ex;
         } catch (RuntimeException ex) {
             BeetlException be = new BeetlException(BeetlException.ERROR, "tag执行抛错", ex);

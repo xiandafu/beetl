@@ -44,13 +44,13 @@ import org.beetl.core.exception.ErrorInfo;
 public class ConsoleErrorHandler implements ErrorHandler {
 
     @Override
-    public void processExcption(BeetlException ex, Writer writer) {
+    public void processException(BeetlException ex,GroupTemplate groupTemplate, Writer writer) {
 
         ErrorInfo error = new ErrorInfo(ex);
 
         if (error.errorCode.equals(BeetlException.CLIENT_IO_ERROR_ERROR)) {
             //不输出详细提示信息
-            if (!ex.gt.conf.isIgnoreClientIOError) {
+            if (!groupTemplate.conf.isIgnoreClientIOError) {
                 println(writer, "客户端IO异常:" + getResourceName(ex.resource.id) + ":" + error.msg);
                 if (ex.getCause() != null) {
                     this.printThrowable(writer, ex.getCause());
@@ -71,7 +71,7 @@ public class ConsoleErrorHandler implements ErrorHandler {
             if (error.msg != null)
                 sb.append(error.msg);
             println(writer, sb.toString());
-            println(writer, ex.gt.getResourceLoader().getInfo());
+            println(writer, groupTemplate.getResourceLoader().getInfo());
             return;
         }
 
@@ -80,7 +80,7 @@ public class ConsoleErrorHandler implements ErrorHandler {
             println(writer, ex.getMessage());
         }
 
-        ResourceLoader resLoader = ex.gt.getResourceLoader();
+        ResourceLoader resLoader = groupTemplate.getResourceLoader();
         //潜在问题，此时可能得到是一个新的模板（开发模式下），不过可能性很小，忽略！
 
         String content = null;

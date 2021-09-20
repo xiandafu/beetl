@@ -25,7 +25,7 @@ public class TemplateProxy extends Template {
     ThreadLocal<Template> local = new ThreadLocal<>();
 
     public TemplateProxy(Template template) {
-        super(template.gt, template.program, template.cf);
+        super(template.gt, template.program, template.resource,template.cf);
 
     }
 
@@ -60,7 +60,7 @@ public class TemplateProxy extends Template {
             return template;
         }
 
-        template = new Template(this.gt, this.program, this.cf);
+        template = new Template(this.gt, this.program, this.resource,this.cf);
         local.set(template);
         return template;
 

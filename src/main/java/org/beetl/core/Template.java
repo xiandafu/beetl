@@ -52,9 +52,10 @@ public class Template {
     public GroupTemplate gt;
     public boolean isRoot = true;
     public String ajaxId = null;
-    Context ctx = null;
+	public Context ctx = null;
+	public  Resource resource = null;
 
-    protected Template(GroupTemplate gt, Program program, Configuration cf) {
+    protected Template(GroupTemplate gt, Program program,Resource resource, Configuration cf) {
         this.program = program;
         this.cf = cf;
         this.gt = gt;
@@ -62,9 +63,10 @@ public class Template {
         if (cf.safeOutput) {
             ctx.safeOutput = true;
         }
+        this.resource = resource;
     }
 
-    protected Template(GroupTemplate gt, Program program, Configuration cf, ContextBuffer buffer) {
+    protected Template(GroupTemplate gt, Program program, Resource resource,Configuration cf, ContextBuffer buffer) {
         this.program = program;
         this.cf = cf;
         this.gt = gt;
@@ -126,8 +128,7 @@ public class Template {
                     localMetaData.initContext(ctx);
                     Program ajaxProgram = new Program();
                     ajaxProgram.metaData = localMetaData;
-                    ajaxProgram.res = this.program.res;
-                    ajaxProgram.gt = this.gt;
+                    ajaxProgram.resourceId = this.program.resourceId;
                     ajaxProgram.execute(ctx);
                 } else {
                     //语法错误的模板
@@ -145,7 +146,7 @@ public class Template {
             }
         } catch (BeetlException e) {
             if (!(program instanceof ErrorGrammarProgram)) {
-                e.pushResource(this.program.res);
+                e.pushResource(this.resource);
             }
 
             // 是否打印异常，只有根模板才能打印异常
@@ -157,14 +158,13 @@ public class Template {
 
             Writer w = BeetlUtil.getWriterByByteWriter(ctx.byteWriter);
 
-            e.gt = this.program.gt;
             e.cr = this.program.metaData.lineSeparator;
             ErrorHandler errorHandler = this.gt.getErrorHandler();
 
             if (errorHandler == null) {
                 throw e;
             }
-            errorHandler.processExcption(e, w);
+            errorHandler.processException(e, gt,w);
             try {
                 ctx.byteWriter.flush();
             } catch (IOException e1) {
@@ -175,15 +175,15 @@ public class Template {
             if (!ctx.gt.conf.isIgnoreClientIOError) {
 
                 BeetlException be = new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR, e.getMessage(), e);
-                be.pushResource(this.program.res);
-                be.pushToken(new GrammarToken(this.program.res.id.toString(), 0, 0));
+                be.pushResource(this.resource);
+                be.pushToken(new GrammarToken(this.resource.id.toString(), 0, 0));
                 ErrorHandler errorHandler = this.gt.getErrorHandler();
 
                 if (errorHandler == null) {
                     throw be;
                 }
                 Writer w = BeetlUtil.getWriterByByteWriter(ctx.byteWriter);
-                errorHandler.processExcption(be, w);
+                errorHandler.processException(be,gt,w);
                 try {
                     ctx.byteWriter.flush();
                 } catch (IOException e1) {

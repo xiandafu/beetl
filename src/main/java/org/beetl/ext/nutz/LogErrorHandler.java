@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import org.beetl.core.ConsoleErrorHandler;
+import org.beetl.core.GroupTemplate;
 import org.beetl.core.exception.BeetlException;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
@@ -19,7 +20,7 @@ public class LogErrorHandler extends ConsoleErrorHandler {
     private static final Log log = Logs.get();
     protected ThreadLocal<StringBuilder> sb = new ThreadLocal<StringBuilder>();
 
-    public void processExcption(BeetlException ex, Writer writer) {
+    public void processException(BeetlException ex, GroupTemplate groupTemplate,Writer writer) {
         StringBuilder _sb = new StringBuilder();
         try {
             sb.set(_sb);
@@ -27,7 +28,7 @@ public class LogErrorHandler extends ConsoleErrorHandler {
                 _sb.append(ex.getMessage()).append("\n");
                 ex.printStackTrace();
             }
-            super.processExcption(ex, writer);
+            super.processException(ex,groupTemplate, writer);
             log.debug(_sb);
         } finally {
             sb.set(null);

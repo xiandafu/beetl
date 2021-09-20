@@ -1,4 +1,4 @@
-package org.beetl.core.lab;
+package org.beetl.lab;
 
 import java.util.HashMap;
 import java.util.Map;

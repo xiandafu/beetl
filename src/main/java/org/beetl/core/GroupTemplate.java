@@ -402,14 +402,14 @@ public class GroupTemplate {
     }
 
     private Script loadScriptTemplate(Object key, ResourceLoader loader) {
-        Program program = (Program) this.programCache.get(key, k -> this.loadScript(loader.getResource(key)));
+    	Resource resource = loader.getResource(key);
+        Program program = (Program) this.programCache.get(key, k -> this.loadScript(resource));
 
-        if (resourceLoader.isModified(program.res)) {
-            Resource resource = loader.getResource(key);
+        if (resourceLoader.isModified(resource)) {
             program = this.loadScript(resource);
             this.programCache.set(key, program);
         }
-        return new Script(this, program, this.conf);
+        return new Script(this, program,resource, this.conf);
     }
 
     /**
@@ -476,17 +476,17 @@ public class GroupTemplate {
     }
 
     private Template getTemplateByLoader(Object key, ResourceLoader loader, ContextBuffer buffers) {
-        Program program = (Program) this.programCache.get(key, k -> this.loadTemplate(loader.getResource(key)));
+		Resource resource = loader.getResource(key);
+        Program program = (Program) this.programCache.get(key, k -> this.loadTemplate(resource));
 
-        if (resourceLoader.isModified(program.res)) {
-            Resource resource = loader.getResource(key);
+        if (resourceLoader.isModified(resource)) {
             program = this.loadTemplate(resource);
             this.programCache.set(key, program);
         }
 
         return buffers == null
-                ? new Template(this, program, this.conf)
-                : new Template(this, program, this.conf, buffers);
+                ? new Template(this, program,resource, this.conf)
+                : new Template(this, program, resource,this.conf, buffers);
     }
 
     public Program getProgram(String key) {
@@ -521,16 +521,16 @@ public class GroupTemplate {
             return engine.createProgram(res, scriptReader, text.getTextVars(), text.getTextCr(), this);
 
         } catch (HTMLTagParserException e) {
-            ErrorGrammarProgram ep = new ErrorGrammarProgram(res, this, text.systemCrStr);
+            ErrorGrammarProgram ep = new ErrorGrammarProgram(res, text.systemCrStr);
             ep.setException(e);
             e.pushResource(res);
             return ep;
         } catch (IOException e) {
-            ErrorGrammarProgram ep = new ErrorGrammarProgram(res, this, String.valueOf(text.cr1));
+            ErrorGrammarProgram ep = new ErrorGrammarProgram(res, String.valueOf(text.cr1));
             ep.setException(new BeetlException(BeetlException.TEMPLATE_LOAD_ERROR).pushResource(res));
             return ep;
         } catch (BeetlException ex) {
-            ErrorGrammarProgram ep = new ErrorGrammarProgram(res, this, text.systemCrStr);
+            ErrorGrammarProgram ep = new ErrorGrammarProgram(res, text.systemCrStr);
             ex.pushResource(res);
             ep.setException(ex);
             return ep;
@@ -545,7 +545,7 @@ public class GroupTemplate {
             return engine.createProgram(res, scriptReader, Collections.EMPTY_MAP,
                     System.getProperty("line.separator"), this);
         } catch (BeetlException ex) {
-            ErrorGrammarProgram ep = new ErrorGrammarProgram(res, this, System.getProperty("line.separator"));
+            ErrorGrammarProgram ep = new ErrorGrammarProgram(res, System.getProperty("line.separator"));
             ex.pushResource(res);
             ep.setException(ex);
             return ep;

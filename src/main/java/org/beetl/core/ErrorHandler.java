@@ -45,6 +45,6 @@ public interface ErrorHandler {
      * @param beeException 异常信息
      * @param writer        异常信息通过 {@param writer} 输出
      */
-    void processExcption(BeetlException beeException, Writer writer);
+    void processException(BeetlException beeException, GroupTemplate groupTemplate,Writer writer);
 
 }

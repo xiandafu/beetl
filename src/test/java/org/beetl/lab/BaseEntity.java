@@ -1,4 +1,4 @@
-package org.beetl.core.lab;
+package org.beetl.lab;
 
 interface BaseEntity {
     default int getPage() {

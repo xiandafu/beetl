@@ -1,8 +1,8 @@
-package org.beetl.core.lab;
+package org.beetl.lab;
 
 import org.beetl.android.util.Log;
 
-import java.util.*;
+import java.util.Arrays;
 
 /**
  * @author 所有测试类采用的Pojo类

@@ -33,8 +33,10 @@ import org.beetl.core.GroupTemplate;
 import org.beetl.core.Resource;
 import org.beetl.core.exception.BeetlException;
 
+import java.util.ArrayList;
+
 /**
- * 语法错的时候处理错误
+ * 语法错的时候处理错误,避免同一个模板重复执行错误
  *
  * @author xiandafu
  */
@@ -42,10 +44,9 @@ import org.beetl.core.exception.BeetlException;
 public class ErrorGrammarProgram extends Program {
 	protected BeetlException exception = null;
 
-    public ErrorGrammarProgram(Resource res, GroupTemplate gt, String cr) {
+    public ErrorGrammarProgram(Resource res, String cr) {
         super();
-        this.res = res;
-        this.gt = gt;
+        this.resourceId = res.getId();
         this.metaData = new ProgramMetaData() {
             public void initContext(Context ctx) {
                 // do nothing;
@@ -69,21 +70,27 @@ public class ErrorGrammarProgram extends Program {
     }
 
     public void execute(Context ctx) {
-        ErrorHandler errorHandler = this.gt.getErrorHandler();
-        if (errorHandler == null) throw exception;
-        // Writer w = BeetlUtil.getWriterByByteWriter(ctx.byteWriter);
-        // errorHandler.processExcption(exception, w);
-        throw exception;
+		BeetlException copy =   clone(this.exception);
+		throw copy;
     }
 
+    protected  BeetlException clone(BeetlException source){
+		BeetlException target = new BeetlException(source.detailCode,source.getCause());
+		target.setToken(source.token);
+		target.resource = source.resource;
+		target.inTagBody = source.inTagBody;
+		target.cr = source.cr;
+		target.errorTokenStack = new ArrayList(source.errorTokenStack);
+		target.errorResourceStack = new ArrayList(source.errorResourceStack);
+		return target;
+
+	}
     public BeetlException getException() {
-        return exception;
+        return clone(exception);
     }
 
     public void setException(BeetlException exception) {
         this.exception = exception;
-        this.exception.gt = this.gt;
-        // this.exception.pushResource(this.id);
         this.exception.cr = this.metaData.lineSeparator;
     }
 

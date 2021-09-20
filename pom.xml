@@ -4,7 +4,7 @@
 
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl</artifactId>
-	<version>3.6.1.RELEASE</version>
+	<version>3.7.0.RELEASE</version>
 	<packaging>jar</packaging>
 	<name>com.ibeetl:beetl</name>
 	<description>java template language</description>
@@ -200,9 +200,6 @@
 					<source>1.8</source>
 					<target>1.8</target>
 					<encoding>UTF-8</encoding>
-					 <excludes>
-	                    <exclude>org/beetl/core/lab/**</exclude>
-	                </excludes>
 				</configuration>
 			</plugin>
 			<plugin>

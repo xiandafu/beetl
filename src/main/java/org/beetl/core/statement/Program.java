@@ -32,15 +32,14 @@ import org.beetl.core.GroupTemplate;
 import org.beetl.core.Resource;
 
 /**
- * 脚本运行程序
+ * 脚本运行程序,代表了模板转化为beetl脚本语言
  *
  * @author xiandafu
  */
-public class Program {
+public class Program implements  java.io.Serializable {
     // 模板的所有脚本语句
     public ProgramMetaData metaData = null;
-    public Resource res = null;
-    public GroupTemplate gt = null;
+    public Object resourceId = null;
 
     public Program() {
 

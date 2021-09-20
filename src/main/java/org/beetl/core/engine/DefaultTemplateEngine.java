@@ -60,8 +60,7 @@ public class DefaultTemplateEngine implements TemplateEngine, IGrammarConstants 
 
         // 创建脚本运行程序
         Program program = new Program();
-        program.res = resource;
-        program.gt = gt;
+        program.resourceId = resource.getId();
         program.metaData = getAntlrBuilder(gt).build(tree,resource);
         program.metaData.lineSeparator = cr;
         program.metaData.staticTextArray = new Object[textMap.size()];

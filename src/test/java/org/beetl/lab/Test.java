@@ -1,11 +1,16 @@
-package org.beetl.core.lab;
+package org.beetl.lab;
 
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.config.BeetlConfig;
-import org.beetl.android.util.Log;
 import org.beetl.core.resource.ClasspathResourceLoader;
+import org.beetl.core.statement.Program;
+import org.beetl.core.statement.ProgramMetaData;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.ObjectOutputStream;
 
 /**
  * @author xiandafu
@@ -26,15 +31,14 @@ class Test {
 
         gt.registerFunctionPackageAsRoot(TestUser.class);
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 3; i++) {
             Template t = gt.getTemplate("/hello.txt");
-            MyTestObject obj = new MyTestObject("abc");
-            t.binding("user", obj);
-            t.binding("abc", 1234);
-            String str = t.render();
-            // 调试时输入：
-            // ((AsmAAFactory) AABuilder.defalutAAFactory).asmBeanFactory.beanMap.get(MyTestObject.class)
-            System.out.println(str);
+			ProgramMetaData programMetaData = t.program.metaData;
+			ByteArrayOutputStream  bs  = new ByteArrayOutputStream();
+			ObjectOutputStream os = new ObjectOutputStream(bs);
+			os.writeObject(programMetaData);
+			System.out.println(bs.size());
+
         }
         int a = 1;
 
