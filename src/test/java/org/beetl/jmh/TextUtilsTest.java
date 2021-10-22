@@ -1,6 +1,6 @@
 package org.beetl.jmh;
 
-import org.beetl.android.text.TextUtils;
+import org.beetl.core.util.TextUtils;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Param;
 

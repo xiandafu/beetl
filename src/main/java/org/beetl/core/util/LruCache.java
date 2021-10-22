@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.beetl.android.util;
+package org.beetl.core.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

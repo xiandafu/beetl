@@ -1,4 +1,4 @@
-package org.beetl.android.text;
+package org.beetl.core.util;
 
 import org.testng.annotations.Test;
 

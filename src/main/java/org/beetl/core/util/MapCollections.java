@@ -1,4 +1,4 @@
-package org.beetl.android.util;
+package org.beetl.core.util;
 
 /*
  * Copyright (C) 2013 The Android Open Source Project

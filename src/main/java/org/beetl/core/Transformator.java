@@ -41,7 +41,7 @@ import java.util.TreeMap;
 import org.beetl.core.config.BeetlConfig;
 import org.beetl.core.exception.HTMLTagParserException;
 import org.beetl.core.exception.TextParserException;
-import org.beetl.android.util.Log;
+import org.beetl.core.util.Log;
 import org.beetl.core.statement.GrammarToken;
 
 /**

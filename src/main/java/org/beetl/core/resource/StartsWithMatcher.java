@@ -27,7 +27,7 @@
  */
 package org.beetl.core.resource;
 
-import org.beetl.android.util.Log;
+import org.beetl.core.util.Log;
 
 /**
  * 检查key以给定的字符串开头的匹配器

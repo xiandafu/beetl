@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 The Android Open Source Project
+ * Copyright (C) 2006 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package org.beetl.android.util;
-
-import org.beetl.android.internal.util.ArrayUtils;
-import org.beetl.android.internal.util.EmptyArray;
-import org.beetl.android.internal.util.GrowingArrayUtils;
+package org.beetl.core.util;
 
 /**
- * SparseLongArray 的内部是通过两个数组对数据进行存储的， key 为 int 数组， value 为 long 数组
+ * SparseBooleanArray 的内部是通过两个数组对数据进行存储的， key 为 int 数组， value 为 boolean 数组
  *
- * SparseLongArrays map integers to longs.  Unlike a normal array of longs,
+ * SparseBooleanArrays map integers to booleans.
+ * Unlike a normal array of booleans
  * there can be gaps in the indices.  It is intended to be more memory efficient
- * than using a HashMap to map Integers to Longs, both because it avoids
+ * than using a HashMap to map Integers to Booleans, both because it avoids
  * auto-boxing keys and values and its data structure doesn't rely on an extra entry object
  * for each mapping.
  *
@@ -43,41 +40,45 @@ import org.beetl.android.internal.util.GrowingArrayUtils;
  * keys in ascending order, or the values corresponding to the keys in ascending
  * order in the case of <code>valueAt(int)</code>.</p>
  */
-public class SparseLongArray implements Cloneable {
+public class SparseBooleanArray implements Cloneable {
+
+    // Use keyAt(int)
     private int[] mKeys;
-    private long[] mValues;
+    // Use valueAt(int), setValueAt(int, boolean)
+    private boolean[] mValues;
+    // Use size()
     private int mSize;
 
     /**
-     * Creates a new SparseLongArray containing no mappings.
+     * Creates a new SparseBooleanArray containing no mappings.
      */
-    public SparseLongArray() {
+    public SparseBooleanArray() {
         this(10);
     }
 
     /**
-     * Creates a new SparseLongArray containing no mappings that will not
+     * Creates a new SparseBooleanArray containing no mappings that will not
      * require any additional memory allocation to store the specified
      * number of mappings.  If you supply an initial capacity of 0, the
      * sparse array will be initialized with a light-weight representation
      * not requiring any additional array allocations.
      */
-    public SparseLongArray(int initialCapacity) {
+    public SparseBooleanArray(int initialCapacity) {
         if (initialCapacity == 0) {
             mKeys = EmptyArray.INT;
-            mValues = EmptyArray.LONG;
+            mValues = EmptyArray.BOOLEAN;
         } else {
-            mValues = ArrayUtils.newUnpaddedLongArray(initialCapacity);
-            mKeys = new int[mValues.length];
+            mKeys = ArrayUtils.newUnpaddedIntArray(initialCapacity);
+            mValues = new boolean[mKeys.length];
         }
         mSize = 0;
     }
 
     @Override
-    public SparseLongArray clone() {
-        SparseLongArray clone = null;
+    public SparseBooleanArray clone() {
+        SparseBooleanArray clone = null;
         try {
-            clone = (SparseLongArray) super.clone();
+            clone = (SparseBooleanArray) super.clone();
             clone.mKeys = mKeys.clone();
             clone.mValues = mValues.clone();
         } catch (CloneNotSupportedException cnse) {
@@ -87,18 +88,18 @@ public class SparseLongArray implements Cloneable {
     }
 
     /**
-     * Gets the long mapped from the specified key, or <code>0</code>
+     * Gets the boolean mapped from the specified key, or <code>false</code>
      * if no such mapping has been made.
      */
-    public long get(int key) {
-        return get(key, 0);
+    public boolean get(int key) {
+        return get(key, false);
     }
 
     /**
-     * Gets the long mapped from the specified key, or the specified value
+     * Gets the boolean mapped from the specified key, or the specified value
      * if no such mapping has been made.
      */
-    public long get(int key, long valueIfKeyNotFound) {
+    public boolean get(int key, boolean valueIfKeyNotFound) {
         int i = ContainerHelpers.binarySearch(mKeys, mSize, key);
 
         if (i < 0) {
@@ -115,29 +116,16 @@ public class SparseLongArray implements Cloneable {
         int i = ContainerHelpers.binarySearch(mKeys, mSize, key);
 
         if (i >= 0) {
-            removeAt(i);
+            System.arraycopy(mKeys, i + 1, mKeys, i, mSize - (i + 1));
+            System.arraycopy(mValues, i + 1, mValues, i, mSize - (i + 1));
+            mSize--;
         }
     }
 
     /**
-     * @hide
-     * Remove a range of mappings as a batch.
-     *
-     * @param index Index to begin at
-     * @param size Number of mappings to remove
-     *
-     * <p>For indices outside of the range <code>0...size()-1</code>,
-     * the behavior is undefined.</p>
-     */
-    public void removeAtRange(int index, int size) {
-        size = Math.min(size, mSize - index);
-        System.arraycopy(mKeys, index + size, mKeys, index, mSize - (index + size));
-        System.arraycopy(mValues, index + size, mValues, index, mSize - (index + size));
-        mSize -= size;
-    }
-
-    /**
-     * Removes the mapping at the given index.
+     * Removes the mapping at the specified index.
+     * <p>
+     * For indices outside of the range {@code 0...size()-1}, the behavior is undefined.
      */
     public void removeAt(int index) {
         System.arraycopy(mKeys, index + 1, mKeys, index, mSize - (index + 1));
@@ -150,7 +138,7 @@ public class SparseLongArray implements Cloneable {
      * replacing the previous mapping from the specified key if there
      * was one.
      */
-    public void put(int key, long value) {
+    public void put(int key, boolean value) {
         int i = ContainerHelpers.binarySearch(mKeys, mSize, key);
 
         if (i >= 0) {
@@ -165,7 +153,7 @@ public class SparseLongArray implements Cloneable {
     }
 
     /**
-     * Returns the number of key-value mappings that this SparseIntArray
+     * Returns the number of key-value mappings that this SparseBooleanArray
      * currently stores.
      */
     public int size() {
@@ -175,7 +163,7 @@ public class SparseLongArray implements Cloneable {
     /**
      * Given an index in the range <code>0...size()-1</code>, returns
      * the key from the <code>index</code>th key-value mapping that this
-     * SparseLongArray stores.
+     * SparseBooleanArray stores.
      *
      * <p>The keys corresponding to indices in ascending order are guaranteed to
      * be in ascending order, e.g., <code>keyAt(0)</code> will return the
@@ -194,7 +182,7 @@ public class SparseLongArray implements Cloneable {
     /**
      * Given an index in the range <code>0...size()-1</code>, returns
      * the value from the <code>index</code>th key-value mapping that this
-     * SparseLongArray stores.
+     * SparseBooleanArray stores.
      *
      * <p>The values corresponding to indices in ascending order are guaranteed
      * to be associated with keys in ascending order, e.g.,
@@ -202,13 +190,34 @@ public class SparseLongArray implements Cloneable {
      * smallest key and <code>valueAt(size()-1)</code> will return the value
      * associated with the largest key.</p>
      */
-    public long valueAt(int index) {
+    public boolean valueAt(int index) {
         if (index >= mSize && UtilConfig.sThrowExceptionForUpperArrayOutOfBounds) {
             // The array might be slightly bigger than mSize, in which case, indexing won't fail.
             // Check if exception should be thrown outside of the critical path.
             throw new ArrayIndexOutOfBoundsException(index);
         }
         return mValues[index];
+    }
+
+    /**
+     * Directly set the value at a particular index.
+     */
+    public void setValueAt(int index, boolean value) {
+        if (index >= mSize && UtilConfig.sThrowExceptionForUpperArrayOutOfBounds) {
+            // The array might be slightly bigger than mSize, in which case, indexing won't fail.
+            // Check if exception should be thrown outside of the critical path.
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+        mValues[index] = value;
+    }
+
+    /** @hide */
+    public void setKeyAt(int index, int key) {
+        if (index >= mSize) {
+            // The array might be slightly bigger than mSize, in which case, indexing won't fail.
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+        mKeys[index] = key;
     }
 
     /**
@@ -228,7 +237,7 @@ public class SparseLongArray implements Cloneable {
      * and that multiple keys can map to the same value and this will
      * find only one of them.
      */
-    public int indexOfValue(long value) {
+    public int indexOfValue(boolean value) {
         for (int i = 0; i < mSize; i++)
             if (mValues[i] == value)
                 return i;
@@ -237,7 +246,7 @@ public class SparseLongArray implements Cloneable {
     }
 
     /**
-     * Removes all key-value mappings from this SparseIntArray.
+     * Removes all key-value mappings from this SparseBooleanArray.
      */
     public void clear() {
         mSize = 0;
@@ -247,7 +256,7 @@ public class SparseLongArray implements Cloneable {
      * Puts a key/value pair into the array, optimizing for the case where
      * the key is greater than all existing keys in the array.
      */
-    public void append(int key, long value) {
+    public void append(int key, boolean value) {
         if (mSize != 0 && key <= mKeys[mSize - 1]) {
             put(key, value);
             return;
@@ -256,6 +265,41 @@ public class SparseLongArray implements Cloneable {
         mKeys = GrowingArrayUtils.append(mKeys, mSize, key);
         mValues = GrowingArrayUtils.append(mValues, mSize, value);
         mSize++;
+    }
+
+    @Override
+    public int hashCode() {
+        int hashCode = mSize;
+        for (int i = 0; i < mSize; i++) {
+            hashCode = 31 * hashCode + mKeys[i] | (mValues[i] ? 1 : 0);
+        }
+        return hashCode;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+
+        if (!(that instanceof SparseBooleanArray)) {
+            return false;
+        }
+
+        SparseBooleanArray other = (SparseBooleanArray) that;
+        if (mSize != other.mSize) {
+            return false;
+        }
+
+        for (int i = 0; i < mSize; i++) {
+            if (mKeys[i] != other.mKeys[i]) {
+                return false;
+            }
+            if (mValues[i] != other.mValues[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -278,7 +322,7 @@ public class SparseLongArray implements Cloneable {
             int key = keyAt(i);
             buffer.append(key);
             buffer.append('=');
-            long value = valueAt(i);
+            boolean value = valueAt(i);
             buffer.append(value);
         }
         buffer.append('}');

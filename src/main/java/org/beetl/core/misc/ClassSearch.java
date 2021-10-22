@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.beetl.android.util.Log;
+import org.beetl.core.util.Log;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.config.BeetlConfig;
 

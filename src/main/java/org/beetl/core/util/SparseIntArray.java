@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 
-package org.beetl.android.util;
-
-import org.beetl.android.internal.util.ArrayUtils;
-import org.beetl.android.internal.util.EmptyArray;
-import org.beetl.android.internal.util.GrowingArrayUtils;
+package org.beetl.core.util;
 
 import java.util.Arrays;
 

@@ -35,7 +35,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.*;
 
-import org.beetl.android.text.TextUtils;
+import org.beetl.core.util.TextUtils;
 import org.beetl.core.text.HtmlTagConfig;
 import org.beetl.core.text.PlaceHolderDelimeter;
 import org.beetl.core.text.ScriptDelimeter;

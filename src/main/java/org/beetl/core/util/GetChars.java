@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.beetl.android.text;
+package org.beetl.core.util;
 
 /**
  * Please implement this interface if your CharSequence has a
@@ -27,5 +27,5 @@ public interface GetChars extends CharSequence {
      * through <code>end - 1</code> from this CharSequence into <code>dest</code>
      * beginning at offset <code>destoff</code>.
      */
-    public void getChars(int start, int end, char[] dest, int destoff);
+    void getChars(int start, int end, char[] dest, int destoff);
 }

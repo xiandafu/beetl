@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package org.beetl.android.util;
+package org.beetl.core.util;
 
-import org.beetl.android.internal.util.ArrayUtils;
 import org.beetl.core.runtime.BeetlRuntime;
 
 /**

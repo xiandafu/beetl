@@ -1,6 +1,6 @@
 package org.beetl.lab;
 
-import org.beetl.android.util.Log;
+import org.beetl.core.util.Log;
 
 import java.util.Arrays;
 
