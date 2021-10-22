@@ -27,7 +27,7 @@
  */
 package org.beetl.core.om;
 
-import org.beetl.android.util.Pair;
+import org.beetl.core.util.Pair;
 import org.beetl.core.exception.BeetlException;
 import org.beetl.core.fun.MethodInvoker;
 import org.beetl.core.fun.ObjectUtil;

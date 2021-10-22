@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package org.beetl.android.text;
+package org.beetl.core.util;
 
 
-import org.beetl.android.internal.util.ArrayUtils;
-import org.beetl.android.internal.util.EmptyArray;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;

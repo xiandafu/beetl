@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package org.beetl.android.internal.util;
-
-import org.beetl.android.internal.util.ArrayUtils;
+package org.beetl.core.util;
 
 /**
  * A helper class that aims to provide comparable growth performance to ArrayList, but on primitive

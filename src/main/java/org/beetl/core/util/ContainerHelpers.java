@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.beetl.android.util;
+package org.beetl.core.util;
 
 class ContainerHelpers {
 

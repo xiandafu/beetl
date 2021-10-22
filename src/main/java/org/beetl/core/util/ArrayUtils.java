@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-package org.beetl.android.internal.util;
+package org.beetl.core.util;
 
-import org.beetl.android.util.ArraySet;
-import org.beetl.core.runtime.BeetlRuntime;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

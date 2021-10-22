@@ -1,4 +1,4 @@
-package org.beetl.android.internal.util;
+package org.beetl.core.util;
 
 /**
  * 保留了各种类型的空数组的引用，以避免申请多余的内存空间

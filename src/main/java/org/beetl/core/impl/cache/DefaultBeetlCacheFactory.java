@@ -29,7 +29,7 @@ package org.beetl.core.impl.cache;
 
 import org.beetl.core.config.BeetlConfig;
 import org.beetl.core.fun.ObjectUtil;
-import org.beetl.android.util.Log;
+import org.beetl.core.util.Log;
 import org.beetl.core.runtime.IBeetlCache;
 import org.jetbrains.annotations.NotNull;
 

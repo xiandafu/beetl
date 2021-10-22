@@ -3,7 +3,7 @@ package org.beetl.core.text;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.config.BeetlConfig;
-import org.beetl.android.util.Log;
+import org.beetl.core.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;

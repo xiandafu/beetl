@@ -28,7 +28,6 @@
 package org.beetl.core;
 
 import org.beetl.core.config.BeetlConfig;
-import org.beetl.android.util.Log;
 
 import java.util.*;
 

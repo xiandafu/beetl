@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.beetl.android.util;
+package org.beetl.core.util;
 
 import org.intellij.lang.annotations.MagicConstant;
 
@@ -206,12 +206,34 @@ public final class Log {
     }
 
     /**
+     * 提供给外部的实现
+     */
+    public interface IPrintlnLog {
+        int println(@LogLevelId int priority, String tag, String msg);
+    }
+
+    /** 打印日志的实现 */
+    private static IPrintlnLog sPrintlnLogImpl;
+
+    /**
+     * 设置打印日志的实现
+     *
+     * @param printlnLogImpl 实现类
+     */
+    public static void setPrintlnLogImpl(IPrintlnLog printlnLogImpl) {
+        sPrintlnLogImpl = printlnLogImpl;
+    }
+
+    /**
      * 打印一行日志消息
      *
      * @param tag 标签
      * @param msg 日志消息
      */
     public static int println(@LogLevelId int priority, String tag, String msg) {
+        if (sPrintlnLogImpl != null) {
+            return sPrintlnLogImpl.println(priority, tag, msg);
+        }
         String priorityText;
         switch (priority) {
             case DEBUG: {
@@ -238,4 +260,6 @@ public final class Log {
         System.out.println(priorityText + "/" + tag + ": " + msg);
         return 0;
     }
+
+
 }

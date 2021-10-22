@@ -27,7 +27,7 @@
  */
 package org.beetl.core.text;
 
-import org.beetl.android.util.Log;
+import org.beetl.core.util.Log;
 
 import java.util.*;
 

@@ -27,10 +27,9 @@
  */
 package org.beetl.core.om;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-import org.beetl.android.util.Pair;
+import org.beetl.core.util.Pair;
 import org.beetl.core.exception.BeetlException;
 
 /**
