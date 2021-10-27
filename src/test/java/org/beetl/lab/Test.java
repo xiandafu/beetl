@@ -29,15 +29,12 @@ class Test {
 
         GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
 
-        gt.registerFunctionPackageAsRoot(TestUser.class);
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 1; i++) {
             Template t = gt.getTemplate("/hello.txt");
-			ProgramMetaData programMetaData = t.program.metaData;
-			ByteArrayOutputStream  bs  = new ByteArrayOutputStream();
-			ObjectOutputStream os = new ObjectOutputStream(bs);
-			os.writeObject(programMetaData);
-			System.out.println(bs.size());
+			t.binding("a",new TestUser());
+			String str = t.render();
+			System.out.println(str);
 
         }
         int a = 1;

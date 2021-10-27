@@ -21,8 +21,9 @@ class TestUser implements BaseEntity {
         return name;
     }
 
-    public void setName(String name) {
+    public TestUser setName(String name) {
         this.name = name;
+        return this;
     }
 
     public boolean isSuccess() {

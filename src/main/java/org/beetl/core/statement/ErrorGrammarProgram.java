@@ -75,13 +75,14 @@ public class ErrorGrammarProgram extends Program {
     }
 
     protected  BeetlException clone(BeetlException source){
-		BeetlException target = new BeetlException(source.detailCode,source.getCause());
+		BeetlException target = new BeetlException(source.detailCode,source.getMessage(),source.getCause());
 		target.setToken(source.token);
 		target.resource = source.resource;
 		target.inTagBody = source.inTagBody;
 		target.cr = source.cr;
 		target.errorTokenStack = new ArrayList(source.errorTokenStack);
 		target.errorResourceStack = new ArrayList(source.errorResourceStack);
+
 		return target;
 
 	}

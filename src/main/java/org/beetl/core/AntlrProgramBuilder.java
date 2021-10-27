@@ -196,11 +196,11 @@ public class AntlrProgramBuilder {
     protected Expression[] EMPTY_EXPRESSION = new Expression[0];
     protected GroupTemplate gt;
     // 多余分号
-    static EndStatement endStatment = new EndStatement();
+    static EndStatement endStatement = new EndStatement();
     public static Set<String> safeParameters = new HashSet<String>();
 
     static {
-        // 可以对参数增强安全输出，比如isEmpty(a)，实际调用是改写成isEmpty(a!)
+        // 可以对参数增强安全输出，比如isEmpty(a)，实际调用是改写成isEmpty(a!),方法也可以实现Function.ForceSafe来实现
         safeParameters.add("isEmpty");
         safeParameters.add("isNotEmpty");
     }
@@ -354,7 +354,7 @@ public class AntlrProgramBuilder {
         } else if (node instanceof AjaxStContext) {
             return this.parseAjax((AjaxStContext) node);
         } else if (node instanceof EndContext) {
-            return endStatment;
+            return endStatement;
         } else {
             throw new UnsupportedOperationException("未识别，确认模板书写是否正确");
         }
@@ -796,50 +796,16 @@ public class AntlrProgramBuilder {
         List<TerminalNode> idList = ctx.functionNs().Identifier();
 
         String nsId = this.getID(idList);
+        Function function = gt.getFunction(nsId);
+
         GrammarToken btToken = new org.beetl.core.statement.GrammarToken(nsId, ctx.start.getLine(), 0);
         // 需要做些特殊处理的函数
-        if (safeParameters.contains(nsId)) {
-
-            if (exps.length != 0) {
-                for (Expression one : exps) {
-                    if (one instanceof VarRef) {
-                        // 强制为变量引用增加一个安全输出
-                        VarRef ref = (VarRef) one;
-                        if (!ref.hasSafe) {
-                            ref.hasSafe = true;
-                            ref.safe = null;
-                        }
-                    }
-                }
-
-            }
-
-        } else if (nsId.equals("has")) {
-            if (exps.length != 0) {
-                for (int i = 0; i < exps.length; i++) {
-                    Expression one = exps[i];
-                    if (one instanceof VarRef) {
-                        VarRef ref = (VarRef) one;
-                        if (ref.attributes.length != 0) {
-                            BeetlException ex = new BeetlException(BeetlException.HAS_CALL_ILLEGAL,
-                                    "has函数用于判断全局变量是否存在，不能判断其属性是否有值，可以使用安全输出符号或者isEmpty函数");
-                            ex.pushToken(ref.token);
-                            throw ex;
-                        }
-                        String name = ref.token.text;
-                        Literal newExp = gc.createLiteral(name, ref.token);
-                        // 将变量名引用转化为字符串
-                        exps[i] = newExp;
-                    } else {
-                        BeetlException ex = new BeetlException(BeetlException.HAS_CALL_ILLEGAL,
-                                "has函数用于判断全局变量是否存在,请传入一个全局变量名");
-                        ex.pushToken(exps[i].token);
-                        throw ex;
-                    }
-                }
-
-            }
-        } else if (nsId.equals("debug")) {
+        if (safeParameters.contains(nsId)||function instanceof  Function.ForceSafe) {
+			addSafe(exps);
+        } else if (function instanceof Function.ChangeInput) {
+           exps = ((Function.ChangeInput)function).update(gc,exps,gt);
+        }
+        else if (function instanceof  Function.LineAware) {
             // debug函数传递额外的行数
             Literal l = gc.createLiteral(btToken.line, btToken);
             Expression[] newExps = new Expression[exps.length + 2];
@@ -897,6 +863,28 @@ public class AntlrProgramBuilder {
         sb.setLength(sb.length() - 1);
         return sb.toString();
     }
+
+	/**
+	 * 为表达式强制增加安全输出符号
+	 * @param exps
+	 */
+	protected void addSafe(Expression[] exps){
+		if (exps.length == 0) {
+			return;
+		}
+		for (Expression one : exps) {
+			if (one instanceof VarRef) {
+				// 强制为变量引用增加一个安全输出
+				VarRef ref = (VarRef) one;
+				if (!ref.hasSafe) {
+					ref.hasSafe = true;
+					ref.safe = null;
+				}
+			}
+		}
+
+
+	}
 
     protected Expression[] getExprssionList(ExpressionListContext expListCtx) {
 

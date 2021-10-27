@@ -60,7 +60,11 @@ public class PojoMethodInvoker implements MethodInvoker {
     public void set(Object ins, Object value) {
 
         try {
-            pd.getWriteMethod().invoke(ins, value);
+			Method method = pd.getWriteMethod();
+			if(method==null){
+				throw new BeetlException(BeetlException.ATTRIBUTE_NOT_FOUND, "找不到相应的set方法，确保方法符合JavaBean规范 " + pd);
+			}
+			method.invoke(ins, value);
         } catch (IllegalAccessException e) {
             throw new BeetlException(BeetlException.ATTRIBUTE_INVALID, "无法访问 " + pd, e);
         } catch (IllegalArgumentException e) {

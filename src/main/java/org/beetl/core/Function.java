@@ -27,6 +27,10 @@
  */
 package org.beetl.core;
 
+import org.beetl.core.engine.GrammarCreator;
+import org.beetl.core.statement.Expression;
+
+
 /**
  * Beetl 的函数接口，用户可以通过实现此接口来自定一方法
  *
@@ -56,4 +60,25 @@ public interface Function {
      */
     Object call(Object[] paras, Context ctx);
 
+	/**
+	 * 如果Function实现了此接口，则会添加额当前外行参
+	 * @see org.beetl.ext.fn.DebugFunction
+	 */
+	static interface LineAware{}
+
+	/**
+	 * 如果Function还实现了此接口，则此函数参数将使用安全输出符号
+	 * @see org.beetl.ext.fn.IsNotEmptyExpressionFunction
+	 */
+	static  interface ForceSafe{}
+
+	/**
+	 * 如果Function实现了此接口，则入参会在解析的时候修改
+	 * @see org.beetl.ext.fn.CheckExistFunction
+	 *
+	 */
+	static interface  ChangeInput{
+		public Expression[] update(GrammarCreator creator,Expression[] exps,GroupTemplate gt);
+	}
 }
+

@@ -43,7 +43,7 @@ import org.beetl.core.Function;
  *
  * @author xiandafu
  */
-public class DebugFunction implements Function {
+public class DebugFunction implements Function,Function.LineAware {
 
     public static boolean enable = true;
 
