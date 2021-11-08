@@ -74,6 +74,7 @@ public class Template {
         if (cf.safeOutput) {
             ctx.safeOutput = true;
         }
+        this.resource = resource;
     }
 
     /**
