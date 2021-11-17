@@ -57,6 +57,12 @@ public class DateFormat implements Format {
             Date date = new Date((Long) data);
             SimpleDateFormat sdf = pattern == null ? getDateFormat(DEFAULT_KEY) : getDateFormat(pattern);
             return sdf.format(date);
+        } else if (data instanceof LocalDateTime) {
+            if (StringUtils.isEmpty(pattern)) {
+                return data;
+            }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+            return ((LocalDateTime) data).format(formatter);
         } else {
             throw new RuntimeException("参数错误，输入为日期或者Long:" + data.getClass());
         }
