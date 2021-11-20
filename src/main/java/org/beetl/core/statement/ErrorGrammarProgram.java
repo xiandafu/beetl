@@ -46,7 +46,7 @@ public class ErrorGrammarProgram extends Program {
 
     public ErrorGrammarProgram(Resource res, String cr) {
         super();
-        this.resourceId = res.getId();
+        this.res = res;
         this.metaData = new ProgramMetaData() {
             public void initContext(Context ctx) {
                 // do nothing;

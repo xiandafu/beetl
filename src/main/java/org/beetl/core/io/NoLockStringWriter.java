@@ -48,6 +48,10 @@ public class NoLockStringWriter extends Writer {
         this.buf = new char[DEFAULT_BUFFER_SIZE];
     }
 
+	public NoLockStringWriter(int size) {
+		this.buf = new char[size];
+	}
+
     @Override
     public void write(char[] src, int off, int len) throws IOException {
         int newPos = pos + len;

@@ -476,9 +476,10 @@ public class GroupTemplate {
     }
 
     private Template getTemplateByLoader(Object key, ResourceLoader loader, ContextBuffer buffers) {
-		Resource resource = loader.getResource(key);
-        Program program = (Program) this.programCache.get(key, k -> this.loadTemplate(resource));
-
+		Resource templateResource = loader.getResource(key);
+		//取缓存，如果不存在，创建Program
+        Program program = (Program) this.programCache.get(key, k -> this.loadTemplate(templateResource));
+		Resource resource  = program.res;
         if (resourceLoader.isModified(resource)) {
             program = this.loadTemplate(resource);
             this.programCache.set(key, program);

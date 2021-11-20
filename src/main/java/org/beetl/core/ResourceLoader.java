@@ -52,7 +52,7 @@ import java.io.Closeable;
  *
  * @see org.beetl.core.resource.MapResourceLoader 映射形式的资源加载器
  */
-public interface ResourceLoader<T> extends Closeable {
+public interface ResourceLoader<T> extends Closeable ,java.io.Serializable  {
 
     /**
      * 根据key获取Resource

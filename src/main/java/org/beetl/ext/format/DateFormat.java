@@ -28,6 +28,8 @@
 package org.beetl.ext.format;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +60,7 @@ public class DateFormat implements Format {
             SimpleDateFormat sdf = pattern == null ? getDateFormat(DEFAULT_KEY) : getDateFormat(pattern);
             return sdf.format(date);
         } else if (data instanceof LocalDateTime) {
-            if (StringUtils.isEmpty(pattern)) {
+            if (pattern==null||pattern.length()==0) {
                 return data;
             }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);

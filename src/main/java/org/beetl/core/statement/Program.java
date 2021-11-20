@@ -39,7 +39,13 @@ import org.beetl.core.Resource;
 public class Program implements  java.io.Serializable {
     // 模板的所有脚本语句
     public ProgramMetaData metaData = null;
-    public Object resourceId = null;
+
+    /*分布式缓存需要考虑如下
+    * res字段设置为transient，避免序列化此字段， IbeetlCache的分布式实现(比如redis）
+    * 必须在加载Program后，需要设置res
+    * @see IBeetlCache.getKey
+    */
+	transient  public Resource res = null;
 
     public Program() {
 

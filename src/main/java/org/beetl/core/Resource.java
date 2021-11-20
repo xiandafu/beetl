@@ -36,7 +36,7 @@ import java.io.Reader;
  *
  * @author xiandafu
  */
-public abstract class Resource<T>  {
+public abstract class Resource<T>  implements  java.io.Serializable {
 
     protected ResourceLoader resourceLoader = null;
     protected T id = null;
