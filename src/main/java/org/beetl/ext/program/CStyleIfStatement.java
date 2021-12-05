@@ -1,6 +1,7 @@
 package org.beetl.ext.program;
 
 import org.beetl.core.Context;
+import org.beetl.core.misc.ALU;
 import org.beetl.core.statement.Expression;
 import org.beetl.core.statement.GrammarToken;
 import org.beetl.core.statement.IfStatement;
@@ -21,14 +22,15 @@ public class CStyleIfStatement extends IfStatement {
 	@Override
 	public void execute(Context ctx) {
 		Object value = condition.evaluate(ctx);
-		if(isSuccess(value)){
+		if (isSuccess(value)) {
 			ifStatement.execute(ctx);
-		}else{
+		} else {
 			if (elseStatement != null) {
 				elseStatement.execute(ctx);
 			}
 		}
 	}
+
 
 	protected boolean isSuccess(Object value){
 		if(value==null){
