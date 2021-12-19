@@ -91,6 +91,7 @@ public abstract class Resource<T>  implements  java.io.Serializable {
                 }
             }
         }
+		reader.close();
         return sb.toString();
 
     }
