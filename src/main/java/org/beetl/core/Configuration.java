@@ -377,8 +377,7 @@ public class Configuration {
         } else if (key.equalsIgnoreCase(HTML_TAG_BINDING_ATTRIBUTE)) {
             this.htmlTagBindingAttribute = value;
         } else if (key.equalsIgnoreCase(IMPORT_PACKAGE)) {
-            String[] strs = value.split(";");
-            this.pkgList.addAll(Arrays.asList(TextUtils.split(value, ",")));
+            this.pkgList.addAll(Arrays.asList(TextUtils.split(value, ",|;")));
         } else if (key.equalsIgnoreCase(ENGINE)) {
             this.engine = value;
         } else if (key.equalsIgnoreCase(NATIVE_SECUARTY_MANAGER)) {
