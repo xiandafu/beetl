@@ -64,6 +64,7 @@ public class Template {
             ctx.safeOutput = true;
         }
         this.resource = resource;
+        program.res = resource;
     }
 
     protected Template(GroupTemplate gt, Program program, Resource resource,Configuration cf, ContextBuffer buffer) {
@@ -75,6 +76,7 @@ public class Template {
             ctx.safeOutput = true;
         }
         this.resource = resource;
+		program.res = resource;
     }
 
     /**
@@ -85,6 +87,8 @@ public class Template {
         renderTo(sw);
         return sw.toString();
     }
+
+
 
     /**
      * 获取模板输出的文本,输出到Writer里.可以使用{@code CachedStringWriter}来提高极限性能
@@ -129,7 +133,7 @@ public class Template {
                     localMetaData.initContext(ctx);
                     Program ajaxProgram = new Program();
                     ajaxProgram.metaData = localMetaData;
-                    ajaxProgram.resourceId = this.program.resourceId;
+                    ajaxProgram.res = this.program.res;
                     ajaxProgram.execute(ctx);
                 } else {
                     //语法错误的模板

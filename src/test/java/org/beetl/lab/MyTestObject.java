@@ -4,6 +4,10 @@ class MyTestObject {
     String name;
     int age = 12;
 
+    public static String getHello(){
+    	return "hello";
+	}
+
     public MyTestObject() {
     }
 

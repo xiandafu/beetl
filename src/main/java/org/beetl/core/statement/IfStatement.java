@@ -37,29 +37,32 @@ import org.beetl.core.misc.ALU;
  */
 public class IfStatement extends Statement {
 
-    public Expression condtion;
+    public Expression condition;
     public Statement ifStatement;
     public Statement elseStatement;
 
-    public IfStatement(Expression condtion, Statement ifStatement, Statement elseStatement, GrammarToken token) {
+    public IfStatement(Expression condition, Statement ifStatement, Statement elseStatement, GrammarToken token) {
         super(token);
-        this.condtion = condtion;
+        this.condition = condition;
         this.ifStatement = ifStatement;
         this.elseStatement = elseStatement;
     }
 
     @Override
     public void execute(Context ctx) {
-        Object value = condtion.evaluate(ctx);
-
-        if (ALU.isTrue(value, this)) {
+        Object value = condition.evaluate(ctx);
+        if (isSuccess(value)) {
             ifStatement.execute(ctx);
         } else {
             if (elseStatement != null) {
                 elseStatement.execute(ctx);
             }
         }
-
     }
+	protected boolean isSuccess(Object value){
+		return ALU.isTrue(value, this);
+	}
+
+
 
 }

@@ -476,9 +476,10 @@ public class GroupTemplate {
     }
 
     private Template getTemplateByLoader(Object key, ResourceLoader loader, ContextBuffer buffers) {
-		Resource resource = loader.getResource(key);
-        Program program = (Program) this.programCache.get(key, k -> this.loadTemplate(resource));
-
+		Resource templateResource = loader.getResource(key);
+		//取缓存，如果不存在，创建Program
+        Program program = (Program) this.programCache.get(key, k -> this.loadTemplate(templateResource));
+		Resource resource  = program.res;
         if (resourceLoader.isModified(resource)) {
             program = this.loadTemplate(resource);
             this.programCache.set(key, program);
@@ -512,11 +513,9 @@ public class GroupTemplate {
 
     private Program loadTemplate(Resource res) {
         TextParser text = null;
-        try {
-            Reader reader = res.openReader();
+        try( Reader reader = res.openReader()) {
             text = new TextParser(this,delimeterConfig.getPlaceHolder(res.id), delimeterConfig.getStatement(res.id), conf.getTagConf());
             text.doParse(reader);
-
             Reader scriptReader = new StringReader(text.getScript().toString());
             return engine.createProgram(res, scriptReader, text.getTextVars(), text.getTextCr(), this);
 
@@ -538,10 +537,10 @@ public class GroupTemplate {
 
     }
 
-    private Program loadScript(Resource res) {
-
+    private Program loadScript(Resource res)  {
+		Reader scriptReader = res.openReader();
         try {
-            Reader scriptReader = res.openReader();
+
             return engine.createProgram(res, scriptReader, Collections.EMPTY_MAP,
                     System.getProperty("line.separator"), this);
         } catch (BeetlException ex) {
@@ -549,7 +548,13 @@ public class GroupTemplate {
             ex.pushResource(res);
             ep.setException(ex);
             return ep;
-        }
+        }finally {
+			try {
+				scriptReader.close();
+			} catch (IOException ioException) {
+				//忽略这个异常处理，交给用户
+			}
+		}
 
     }
 

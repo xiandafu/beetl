@@ -105,4 +105,6 @@ public class ClasspathResource extends Resource<String> {
         return id;
     }
 
+
+
 }

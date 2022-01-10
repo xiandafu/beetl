@@ -21,7 +21,7 @@ typora-root-url: ../beetl3.0
 
 #### 功能 
 
-[http://ibeetl.com/guide/#beetl](http://ibeetl.com/guide/#beetl)
+[https://www.kancloud.cn/xiandafu/beetl3_guide](https://www.kancloud.cn/xiandafu/beetl3_guide)
 
 - 动态页面生成
 - 静态页面生成
@@ -60,17 +60,27 @@ Beetl 的成长离不开以下人员的帮助（排名不分先后）：
 - [zqq](javascript:;)
 - [ 醉引花眠](javascript:;)
 
-QQ交流群：636321496,219324263
+QQ交流群：636321496(满),219324263(满),252010126
 
 Beetl 官网：[ibeetl.com](ibeetl.com) 
 
-Beetl 社区：[bbs.ibeetl.com](http://42.96.162.109/bbs/bbs/index/1.html)
+Beetl 社区(已作废，搞社区太难了)：[bbs.ibeetl.com](http://42.96.162.109/bbs/bbs/index/1.html)
 
 #### 性能
 
-<https://github.com/fizzed/template-benchmark>
+<https://gitee.com/xiandafu/template-benchmark>
 
-![p1](/doc/resources/p1.png) 
+```
+Benchmark              Mode  Cnt      Score      Error  Units
+Beetl.benchmark       thrpt    5  81446.018 ± 3137.904  ops/s
+Enjoy.benchmark       thrpt    5  71620.894 ± 1376.091  ops/s
+Freemarker.benchmark  thrpt    5  22133.302 ±  711.310  ops/s
+Handlebars.benchmark  thrpt    5  19266.315 ± 2265.902  ops/s
+Rocker.benchmark      thrpt    5  46474.477 ± 2004.701  ops/s
+Thymeleaf.benchmark   thrpt    5   6694.076 ±  275.879  ops/s
+Velocity.benchmark    thrpt    5   6427.251 ± 2541.788  ops/s
+```
+
 
 #### 支持
 

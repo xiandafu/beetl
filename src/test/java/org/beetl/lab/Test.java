@@ -4,6 +4,7 @@ import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.config.BeetlConfig;
+import org.beetl.core.io.SoftReferenceWriter;
 import org.beetl.core.resource.ClasspathResourceLoader;
 import org.beetl.core.statement.Program;
 import org.beetl.core.statement.ProgramMetaData;
@@ -30,11 +31,16 @@ class Test {
         GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
 
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 2; i++) {
             Template t = gt.getTemplate("/hello.txt");
 			t.binding("a",new TestUser());
-			String str = t.render();
-			System.out.println(str);
+
+			try(SoftReferenceWriter sw = SoftReferenceWriter.local()){
+				t.renderTo(sw);
+				String str = sw.toString();
+				System.out.println(str);
+			}
+
 
         }
         int a = 1;
