@@ -1,7 +1,10 @@
 <%
 
-a.name =1
-
-
+var<User,UserKey> user = a;
+cc = [1,2,3];
+for(var<int> c in cc){
+print(c);
+}
 %>
+
 

@@ -34,4 +34,15 @@ public class LayoutTagTest extends BasicTestCase
 
 	}
 
+
+	@Test
+	public void testLayoutReal() throws Exception
+	{
+
+		Template t = gt.getTemplate("/tag/layout_rel_template.html");
+		String str = t.render();
+		AssertJUnit.assertEquals(this.getFileContent("/tag/layout_rel_expected.html"), str);
+
+	}
+
 }
