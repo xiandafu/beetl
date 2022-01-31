@@ -133,19 +133,19 @@ public class TextParser {
     }
 
     public static void main(String[] args) throws IOException {
-        Configuration.DelimeterHolder pd = new Configuration.DelimeterHolder("{{".toCharArray(), "}}".toCharArray(), "{".toCharArray(),
+        Configuration.DelimeterHolder pd = new Configuration.DelimeterHolder("${".toCharArray(), "}".toCharArray(), "#{".toCharArray(),
                 "}".toCharArray());
         Configuration.DelimeterHolder sd = new Configuration.DelimeterHolder("@".toCharArray(), null, "<%".toCharArray(), "%>".toCharArray());
 
         Configuration.HtmlTagHolder htmlConfig = new Configuration.HtmlTagHolder();
-        String text = "{d},{{n}}";
+        String text = "h#{b}";
 
         StringReader str = new StringReader(text);
         TextParser textParser = new TextParser(null, pd, sd, htmlConfig);
         textParser.doParse(str);
         Log.i(TAG, textParser.getTextVars().toString());
-
-        BufferedReader reader = new BufferedReader(new StringReader(textParser.getScript().toString()));
+		String script = textParser.getScript().toString();
+        BufferedReader reader = new BufferedReader(new StringReader(script));
         Log.i(TAG, "==============================");
         for (String line = reader.readLine(); line != null; line = reader.readLine()) {
             Log.i(TAG, line);

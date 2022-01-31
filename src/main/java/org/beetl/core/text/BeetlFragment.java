@@ -4,6 +4,9 @@ package org.beetl.core.text;
  * 定界符或者占位符里的Beetl脚本
  */
 public abstract class BeetlFragment extends Fragment {
+
+
+
     /*script 脚本*/
     protected StringBuilder script = new StringBuilder();
 

@@ -13,7 +13,7 @@ public class CRFragment extends Fragment {
     public StringBuilder getScript() {
         StringBuilder script = new StringBuilder();
         Integer varName = source.getParser().getRandomeTextVarName();
-        script.append("<$" + varName + ">>");
+        script.append(TEXT_START).append(varName).append(RIGHT_END);
         script.append(cr);
 
         // 添加一个静态变量

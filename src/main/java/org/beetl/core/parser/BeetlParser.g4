@@ -31,7 +31,7 @@ statement
     |   Return expression? END  #returnSt
     |   Break END   #breakSt
     |   Continue END    #continueSt
-    |   Var(typeComment)? varDeclareList END  #varSt
+    |   Var varDeclareList END  #varSt
     |   Directive  directiveExp #directiveSt 
     |   assignMent END  #assignSt
     |   functionTagCall #functionTagSt 
@@ -84,10 +84,10 @@ forControl
     |    generalForControl
     ;
    
-forInControl: (Var(typeComment)?)?   Identifier FOR_IN expression ;
+forInControl: Var?   Identifier FOR_IN expression ;
 generalForControl:forInit? ';' expression? ';' forUpdate?;
 forInit
-    :   Var(typeComment)? varDeclareList
+    :   Var varDeclareList
     |   expressionList
     ;
 forUpdate
@@ -210,6 +210,3 @@ arguments
     ;
 
 
-//辅助说明变量类型，类似泛型
-typeComment : LESS  Identifier (COMMA Identifier)? LARGE
-;

@@ -171,39 +171,15 @@ JavaIDDigit
        '\u1040'..'\u1049'
    ;
  
-WS  :   [ \r\t\u000C\n]+ -> channel(HIDDEN)
+WS  :   [ \r\t\u000C\n]+ -> skip
     ;
+
 
 LINE_COMMENT
-    : '//' ~[\r\n]* ('\r'?'\n'|EOF) -> channel(HIDDEN)
+    : '//' ~[\r\n]* ('\r'?'\n'|EOF) -> skip
     ;
 
-
-COMMENT_OPEN
-    :   '/*'    ->pushMode(MODE_COMMENT),channel(HIDDEN) 
+COMMENT
+    :   '/*' .*? '*/' -> skip
     ;
-mode MODE_COMMENT;
-
-COMMENT_TAG:TYPE_CHAR ->pushMode(MODE_COMMENT_TYPE)  ;
-
-COMMENT_END: COMMENT_END_CHAR  -> popMode,channel(HIDDEN)
-;
-
-fragment
-    COMMENT_END_CHAR:'*/';
-fragment
-    TYPE_CHAR:'@type';
-
-ALL_COMMENT_CHAR:.->channel(HIDDEN);
-
-mode MODE_COMMENT_TYPE;
-Identifier1:Identifier;
-PERIOD1:'.';
-LEFT_PAR1:'(';
-RIGHT_PAR1:')' -> popMode ;
-COMMA1:','; 
-LEFT_ANGULAR:'<';
-RIGHT_ANGULAR:'>';
-WS1  :   [ \r\t\u000C]+ -> channel(HIDDEN);
-TYPE_END: [\r\n]  -> popMode,channel(HIDDEN)        ;
 

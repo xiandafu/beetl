@@ -2,7 +2,6 @@ package org.beetl.core.text;
 
 public class TextFragment extends Fragment {
     StringBuilder text = new StringBuilder();
-    boolean hasText = false;
     int crCount = 0;
 
     public TextFragment(Source source) {
@@ -30,7 +29,7 @@ public class TextFragment extends Fragment {
             return script;
         }
         Integer varName = source.getParser().getRandomeTextVarName();
-        script.append("<$").append(varName).append(">>");
+		script.append(TEXT_START).append(varName).append(RIGHT_END);
         for (int i = 0; i < crCount; i++) {
             script.append(TextParser.cr1);
         }

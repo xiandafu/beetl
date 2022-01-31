@@ -1,7 +1,12 @@
 package org.beetl.core.text;
 
 public abstract class Fragment {
+	public static  final String RIGHT_END =">>";
+	public static  final String PS_START_1 ="<<";
+	public static  final String PS_START_2 ="<#";
+	public static  final String TEXT_START ="<$";
 
+	
     protected Source source;
     protected int startLine;
     protected int endLine;
