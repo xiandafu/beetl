@@ -60,7 +60,7 @@ import org.beetl.core.parser.BeetlParser.BlockContext;
 import org.beetl.core.parser.BeetlParser.BlockStContext;
 import org.beetl.core.parser.BeetlParser.BooleanLiteralContext;
 import org.beetl.core.parser.BeetlParser.BreakStContext;
-import org.beetl.core.parser.BeetlParser.CommentTagStContext;
+
 import org.beetl.core.parser.BeetlParser.CompareExpContext;
 import org.beetl.core.parser.BeetlParser.ConstantsTextStatmentContext;
 import org.beetl.core.parser.BeetlParser.ContinueStContext;
@@ -326,12 +326,7 @@ public class AntlrProgramBuilder {
             return new StatementExpression(this.parseExpress(sec.expression()), null);
         } else if (node instanceof DirectiveStContext) {
             return parseDirectiveStatement((DirectiveStContext) node);
-        } else if (node instanceof CommentTagStContext) {
-            //兼容2.x版本
-            return null;
-
         } else if (node instanceof TryStContext) {
-
             return parseTryCatch((TryStContext) node);
         } else if (node instanceof FunctionTagStContext) {
             FunctionTagStContext fc = (FunctionTagStContext) node;

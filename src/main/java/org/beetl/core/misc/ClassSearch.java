@@ -97,9 +97,9 @@ public class ClassSearch {
                 nameClassCache.put(name, cls); // 缓存起来
                 return cls;
             } catch (Exception ex) {
-                if (DEBUG) {
-                    Log.d(TAG, ex.toString());
-                }
+//                if (DEBUG) {
+//                    Log.d(TAG, ex.toString());
+//                }
             }
         }
 

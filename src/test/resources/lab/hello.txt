@@ -1,1 +1,4 @@
-${@MyTestObject.getHello()}
+<%
+var<String,Map<String,String>> c =1;
+%>
+${c}

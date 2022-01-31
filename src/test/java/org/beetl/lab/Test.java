@@ -34,7 +34,6 @@ class Test {
         for (int i = 0; i < 2; i++) {
             Template t = gt.getTemplate("/hello.txt");
 			t.binding("a",new TestUser());
-
 			try(SoftReferenceWriter sw = SoftReferenceWriter.local()){
 				t.renderTo(sw);
 				String str = sw.toString();
