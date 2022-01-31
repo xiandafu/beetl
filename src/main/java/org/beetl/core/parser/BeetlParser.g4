@@ -22,7 +22,6 @@ statement
     :   block   #blockSt
     |   textStatment    #textOutputSt
     |   constantsTextStatment #staticOutputSt
-    |   COMMENT_TAG commentTypeTag  #commentTagSt
     |   If parExpression statement (Else statement)? #ifSt
     |   For LEFT_PAR forControl RIGHT_PAR statement  ( Elsefor statement)?  #forSt
     |   While parExpression statement   #whileSt
@@ -32,7 +31,7 @@ statement
     |   Return expression? END  #returnSt
     |   Break END   #breakSt
     |   Continue END    #continueSt
-    |   Var varDeclareList END  #varSt
+    |   Var(typeComment)? varDeclareList END  #varSt
     |   Directive  directiveExp #directiveSt 
     |   assignMent END  #assignSt
     |   functionTagCall #functionTagSt 
@@ -40,17 +39,6 @@ statement
     |   (Ajax|Fragment) Identifier Identifier? COLON block   #ajaxSt 
     |   END   #end
       
-    ;
-//注解:@type User user,List<User> userList
-commentTypeTag: LEFT_PAR1 commentTypeItemTag (COMMA1 commentTypeItemTag)* RIGHT_PAR1;
-commentTypeItemTag:    classOrInterfaceType   Identifier1    
-                  ;
-classOrInterfaceType: Identifier1 (PERIOD1 Identifier1 )* typeArguments?;
-typeArguments
-    :   LEFT_ANGULAR typeArgument (COMMA1 typeArgument)* RIGHT_ANGULAR
-    ;
-typeArgument
-    :   classOrInterfaceType 
     ;
 
 //指令  directive object xx,xx,xx                 
@@ -96,10 +84,10 @@ forControl
     |    generalForControl
     ;
    
-forInControl: Var?   Identifier FOR_IN expression ;
+forInControl: (Var(typeComment)?)?   Identifier FOR_IN expression ;
 generalForControl:forInit? ';' expression? ';' forUpdate?;
 forInit
-    :   Var varDeclareList
+    :   Var(typeComment)? varDeclareList
     |   expressionList
     ;
 forUpdate
@@ -222,3 +210,6 @@ arguments
     ;
 
 
+//辅助说明变量类型，类似泛型
+typeComment : LESS  Identifier (COMMA Identifier)? LARGE
+;
