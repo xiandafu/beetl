@@ -31,7 +31,7 @@ statement
     |   Return expression? END  #returnSt
     |   Break END   #breakSt
     |   Continue END    #continueSt
-    |   Var varDeclareList END  #varSt
+    |   Var typeArgs? varDeclareList END  #varSt
     |   Directive  directiveExp #directiveSt 
     |   assignMent END  #assignSt
     |   functionTagCall #functionTagSt 
@@ -84,10 +84,10 @@ forControl
     |    generalForControl
     ;
    
-forInControl: Var?   Identifier FOR_IN expression ;
+forInControl: (Var typeArgs?)?   Identifier FOR_IN expression ;
 generalForControl:forInit? ';' expression? ';' forUpdate?;
 forInit
-    :   Var varDeclareList
+    :   Var typeArgs? varDeclareList
     |   expressionList
     ;
 forUpdate
@@ -209,4 +209,13 @@ arguments
     :   LEFT_PAR expressionList? RIGHT_PAR
     ;
 
+typeArgs
+    :   LESS typeArg LARGE
+    ;
+typeArg
+    : classType (COMMA classType)*
+    ;
 
+classType
+    :  Identifier ( PERIOD Identifier)* typeArgs?
+    ;

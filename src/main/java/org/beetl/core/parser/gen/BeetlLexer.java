@@ -1,5 +1,4 @@
-// Generated from BeetlLexer.g4 by ANTLR 4.9.2
-package org.beetl.core.parser;
+// Generated from /Users/lijiazhi/git/beetl/src/main/java/org/beetl/core/parser/BeetlLexer.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

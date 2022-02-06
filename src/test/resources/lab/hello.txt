@@ -1,4 +1,6 @@
 <%
-var c =1;
+var c = {"a":{"b":1}};
+for( var<tt> t in [1,2,3]){
+println(t);
+}
 %>
-hello,${c}
