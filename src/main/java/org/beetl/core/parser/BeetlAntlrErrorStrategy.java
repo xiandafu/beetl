@@ -179,7 +179,7 @@ public class BeetlAntlrErrorStrategy extends DefaultErrorStrategy {
         if (expects.containsKey(expect)) {
             expect = expects.get(expect);
         }
-        if (expect.equals("'>>'")) {
+        if (expect.equals("'~>'")) {
             expect = "'模板的占位结束符号'";
         }
 
@@ -210,7 +210,7 @@ public class BeetlAntlrErrorStrategy extends DefaultErrorStrategy {
     }
 
     protected String getErrorKey(String key) {
-        if (key.equals("'>>'")) {
+        if (key.equals("'~>'")) {
             return "占位结束符号";
         }
         return key;

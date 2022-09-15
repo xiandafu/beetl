@@ -12,6 +12,7 @@ import org.beetl.core.statement.ProgramMetaData;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.ObjectOutputStream;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author xiandafu
@@ -29,7 +30,6 @@ class Test {
         Configuration cfg = Configuration.defaultConfiguration();
 
         GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
-
 
         for (int i = 0; i < 2; i++) {
             Template t = gt.getTemplate("/hello.txt");
