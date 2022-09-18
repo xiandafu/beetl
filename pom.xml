@@ -3,17 +3,19 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.ibeetl</groupId>
-	<artifactId>beetl</artifactId>
-	<version>3.10.0.RELEASE</version>
+	<artifactId>beetl-parent</artifactId>
+	<version>3.11.0.RELEASE</version>
 	<name>com.ibeetl:beetl</name>
 	<description>java template language</description>
 	<url>ibeetl.com</url>
 	<packaging>pom</packaging>
 	<modules>
 		<module>core</module>
+        <module>beetl</module>
+        <module>beetl-4.5-support</module>
 		<module>antlr4.9-support</module>
 		<module>antlr4.5-support</module>
-		<module>antlr4.11-support</module>
+<!--		<module>antlr4.11-support</module>-->
 	</modules>
 
 	<licenses>

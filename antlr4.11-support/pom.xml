@@ -6,13 +6,13 @@
 
     <parent>
         <groupId>com.ibeetl</groupId>
-        <artifactId>beetl</artifactId>
-        <version>3.10.0.RELEASE</version>
+        <artifactId>beetl-parent</artifactId>
+        <version>3.11.0.RELEASE</version>
     </parent>
 
     <groupId>com.ibeetl</groupId>
     <artifactId>antlr4.11-suport</artifactId>
-    <version>3.10.0.RELEASE</version>
+    <version>3.11.0.RELEASE</version>
 
     <dependencies>
         <dependency>
@@ -24,8 +24,6 @@
 
 
     </dependencies>
-
-
 
     <build>
         <plugins>

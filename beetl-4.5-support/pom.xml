@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ibeetl</groupId>
+        <artifactId>beetl-parent</artifactId>
+        <version>3.11.0.RELEASE</version>
+    </parent>
+
+    <groupId>com.ibeetl</groupId>
+    <artifactId>beetl-4.5-support</artifactId>
+    <version>3.11.0.RELEASE</version>
+    <dependencies>
+        <dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>antlr4.5-suport</artifactId>
+            <version>3.11.0.RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>core</artifactId>
+            <version>3.11.0.RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.ibeetl</groupId>
+                    <artifactId>antlr4.9-suport</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+    </dependencies>
+
+</project>

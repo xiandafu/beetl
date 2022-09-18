@@ -1,5 +1,6 @@
 package org.beetl.core.resourceloader;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 

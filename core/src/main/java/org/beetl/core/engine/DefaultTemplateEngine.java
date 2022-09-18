@@ -2,6 +2,7 @@ package org.beetl.core.engine;
 
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -35,31 +36,57 @@ public class DefaultTemplateEngine implements TemplateEngine, IGrammarConstants 
             VarRefAssign, VarRefAssignExp,
     };
 
+    static Method antlrParserMethod ;
+    static  Object parserBuilder;
+    static {
+		ininAntlrRuntime();
+	}
+
+
+
+	/**
+	 * 得到一个适合当前的antlr版本的parser
+	 * @return
+	 */
+	static void ininAntlrRuntime()  {
+
+		ClassLoader classLoader = DefaultTemplateEngine.class.getClassLoader();
+		Field field = null;
+		String version;
+		try {
+			field = RuntimeMetaData.class.getField("VERSION");
+			version = (String)field.get(null);
+		} catch (NoSuchFieldException|IllegalAccessException e) {
+			throw new IllegalArgumentException("不支持的antlr版本",e);
+		}
+
+		try{
+			if(version.startsWith("4.10")||version.startsWith("4.11")||version.startsWith("4.12")){
+				parserBuilder  = ObjectUtil.tryInstance("org.beetl.core.engine.BeetlAntlrParser411",classLoader);
+			}else if(version.startsWith("4.9")||version.startsWith("4.8")||version.startsWith("4.7")){
+				parserBuilder  = ObjectUtil.tryInstance("org.beetl.core.engine.BeetlAntlrParser49",classLoader);
+			}else if(version.startsWith("4.5")||version.startsWith("4.6")) {
+				parserBuilder  = ObjectUtil.tryInstance("org.beetl.core.engine.BeetlAntlrParser45",classLoader);
+			}
+			if(parserBuilder==null){
+				throw new IllegalArgumentException("不支持的antlr版本:"+version+"，联系xiandafu@126.con 定制，或者参考源码antlr4.5-support");
+			}
+			antlrParserMethod = parserBuilder.getClass().getMethod("execute",new Class[]{Reader.class, DefaultErrorStrategy.class, BaseErrorListener.class});
+
+		}catch(NoSuchMethodException | SecurityException ex){
+			throw new IllegalStateException(ex);
+		}
+
+	}
 
     @Override
     public Program createProgram(Resource resource, Reader reader, Map<Integer, String> textMap, String cr,
                                  GroupTemplate gt) {
         BeetlParser parser = null;
         try {
-            Object parserBuilder = null;
-            if(RuntimeMetaData.VERSION.startsWith("4.9")){
-                parserBuilder  = ObjectUtil.tryInstance("org.beetl.core.engine.BeetlAntlrParser49",gt.getClassLoader());
-            }else if ( RuntimeMetaData.VERSION.startsWith("4.5")){
-                parserBuilder  = ObjectUtil.tryInstance("org.beetl.core.engine.BeetlAntlrParser45",gt.getClassLoader());
-            }else if ( RuntimeMetaData.VERSION.startsWith("4.11")){
-                parserBuilder  = ObjectUtil.tryInstance("org.beetl.core.engine.BeetlAntlrParser411",gt.getClassLoader());
-            }
-            else{
-                throw new UnsupportedOperationException(RuntimeMetaData.VERSION);
-            }
-
-            if(parserBuilder==null){
-                throw new IllegalArgumentException("未找到 org.beetl.core.engine.BeetlAntlrParser49 ");
-            }
-            Method method = parserBuilder.getClass().getMethod("execute",new Class[]{Reader.class, DefaultErrorStrategy.class, BaseErrorListener.class});
-            parser = (BeetlParser)method.invoke(parserBuilder,new Object[]{reader,antlrErrorStrategy,syntaxError});
+        	//see getRuntimeMethod
+             parser = (BeetlParser)antlrParserMethod.invoke(parserBuilder,new Object[]{reader,antlrErrorStrategy,syntaxError});
         } catch (InvocationTargetException e) {
-
            throw new IllegalStateException(e.getTargetException());
         }catch(Exception ex){
             throw new IllegalStateException(ex);

@@ -6,13 +6,13 @@
 
     <parent>
         <groupId>com.ibeetl</groupId>
-        <artifactId>beetl</artifactId>
-        <version>3.10.0.RELEASE</version>
+        <artifactId>beetl-parent</artifactId>
+        <version>3.11.0.RELEASE</version>
     </parent>
 
     <groupId>com.ibeetl</groupId>
     <artifactId>antlr4.5-suport</artifactId>
-    <version>3.10.0.RELEASE</version>
+    <version>3.11.0.RELEASE</version>
 
     <dependencies>
         <dependency>
@@ -25,6 +25,14 @@
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4-maven-plugin</artifactId>
