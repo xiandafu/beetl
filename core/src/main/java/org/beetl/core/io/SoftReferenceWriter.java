@@ -21,6 +21,8 @@ public class SoftReferenceWriter extends  NoLockStringWriter{
 	//当分配内存过大，是否要回收
 	public static boolean FIX_SIZE =  false;
 
+	boolean  used = false;
+
 	static ThreadLocal<SoftReference<SoftReferenceWriter>> cache = new ThreadLocal<SoftReference<SoftReferenceWriter>>(){
 		@Override protected SoftReference<SoftReferenceWriter> initialValue() {
 			return new  SoftReference(new SoftReferenceWriter(INIT_SIZE));
@@ -31,9 +33,20 @@ public class SoftReferenceWriter extends  NoLockStringWriter{
 		SoftReferenceWriter writer = softReference.get();
 		if(writer==null){
 			writer =  new SoftReferenceWriter(INIT_SIZE);
+			writer.used = true;
 			cache.set(new SoftReference<>(writer));
+			return writer;
+		}else if(writer.used){
+			//返回要给新的。一个线程调用了俩次此方法，后面的线程使用新的writer
+			return  new SoftReferenceWriter(INIT_SIZE);
 		}
-		return writer;
+		else{
+			writer.used = true;
+			return writer;
+		}
+
+
+
 	}
 
 	public SoftReferenceWriter(int size){
@@ -54,9 +67,14 @@ public class SoftReferenceWriter extends  NoLockStringWriter{
 	}
 
 	protected  void clearCache(){
-		pos = 0;
-		if(FIX_SIZE&&buf.length>MAX_SIZE){
-			this.buf = new char[INIT_SIZE];
+		if(used){
+			pos = 0;
+			used = false;
+			if(FIX_SIZE&&buf.length>MAX_SIZE){
+				this.buf = new char[INIT_SIZE];
+			}
+
 		}
+
 	}
 }

@@ -1,1 +1,7 @@
 hell,go ${user}
+<%
+layout("/layout.btl"){
+%>
+content
+<%}%>
+end hello
