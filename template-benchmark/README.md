@@ -25,7 +25,7 @@
 ## 目前结果（2022-9-18）越高越好
 ```
 Benchmark              Mode  Cnt      Score      Error  Units
-org.beetl.express.Beetl.benchmark       thrpt    5  87990.586 ± 1809.284  ops/s
+Beetl.benchmark       thrpt    5  87990.586 ± 1809.284  ops/s
 Enjoy.benchmark       thrpt    5  75279.986 ± 1094.466  ops/s
 Freemarker.benchmark  thrpt    5  23879.653 ±  554.552  ops/s
 Handlebars.benchmark  thrpt    5  21257.271 ±  386.994  ops/s
