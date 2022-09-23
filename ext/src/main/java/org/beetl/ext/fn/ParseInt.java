@@ -27,59 +27,58 @@
  */
 package org.beetl.ext.fn;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.beetl.core.Context;
 import org.beetl.core.Function;
-import org.beetl.core.misc.ALU;
-import org.beetl.core.statement.ExpressionRuntime.ExpressionRuntimeObject;
 
 /**
- * if else 函数的简单实现
- * ${decode(a,1,"a=1",2,"a=2","不知道了")}
- * 如果a是1，这decode输出"a=1",如果a是2，则输出"a==2",
- * 如果是其他值，则输出"不知道了"
- *
- * @author xiandafu
+ * @author 张健川 dlut.zjc@gmail.com
  */
-public class DecodeFunction implements Function {
+public class ParseInt implements Function {
 
+    @Override
     public Object call(Object[] paras, Context ctx) {
-
-        Object ret = null;
-        try {
-            Object o = paras[0];
-            int i = 1;
-            while (true) {
-                if (same(o, paras[i], ctx)) {
-                    ret = paras[i + 1];
-                    break;
-                } else {
-                    if (paras.length - 1 == i + 2) {
-                        //default
-                        ret = paras[i + 2];
-                        break;
-                    } else {
-                        i = i + 2;
-                    }
-                }
-            }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-
-            throw new RuntimeException("decode函数使用错误:DECODE(value, if1, then1, if2,then2, if3,then3, . . . else )");
+        Object o = paras[0];
+        String str = "";
+        int result;
+        if (o == null) {
+            throw new NullPointerException("Error:parseInt(null)");
         }
-        return unwrap(ret, ctx);
-
+        if (o instanceof Number) {
+            long n = ((Number) o).longValue();
+            str = String.valueOf(n);
+        } else {
+            str = o.toString();
+        }
+        if (str.contains(".")) {
+            str = str.split("\\.")[0];
+        }
+        Pattern pattern = Pattern.compile("-?[0-9]*");
+        Matcher isNum = pattern.matcher(str);
+        if (o.equals("") || !isNum.matches()) {
+            throw new RuntimeException("无法正确转换至int格式");
+        }
+        try {
+            result = Integer.parseInt(str);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("超出int范围");
+        }
+        return result;
     }
 
-    private boolean same(Object a, Object b, Context ctx) {
-        Object real = unwrap(b, ctx);
-        return ALU.equals(a, real);
-
-    }
-
-    private Object unwrap(Object b, Context ctx) {
-        return b instanceof ExpressionRuntimeObject
-                ? ((ExpressionRuntimeObject) b).get(ctx)
-                : b;
-    }
-
+    //	public static void main(String[] args)
+    //	{
+    //		ParseInt pInt = new ParseInt();
+    //		Context ctx = new Context();
+    //		System.out.println(pInt.call(new Object[]
+    //		{ -0.23232 }, ctx));
+    //		System.out.println(pInt.call(new Object[]
+    //		{ 2332.23213 }, ctx));
+    //		System.out.println(pInt.call(new Object[]
+    //		{ "-1.023" }, ctx));
+    //		System.out.println(pInt.call(new Object[]
+    //		{ "abcd" }, ctx));
+    //	}
 }

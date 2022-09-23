@@ -29,57 +29,30 @@ package org.beetl.ext.fn;
 
 import org.beetl.core.Context;
 import org.beetl.core.Function;
-import org.beetl.core.misc.ALU;
-import org.beetl.core.statement.ExpressionRuntime.ExpressionRuntimeObject;
 
 /**
- * if else 函数的简单实现
- * ${decode(a,1,"a=1",2,"a=2","不知道了")}
- * 如果a是1，这decode输出"a=1",如果a是2，则输出"a==2",
- * 如果是其他值，则输出"不知道了"
- *
- * @author xiandafu
+ * @author 张健川 dlut.zjc@gmail.com ,xiandafu
  */
-public class DecodeFunction implements Function {
+public class ParseDouble implements Function {
 
+    @Override
     public Object call(Object[] paras, Context ctx) {
-
-        Object ret = null;
-        try {
-            Object o = paras[0];
-            int i = 1;
-            while (true) {
-                if (same(o, paras[i], ctx)) {
-                    ret = paras[i + 1];
-                    break;
-                } else {
-                    if (paras.length - 1 == i + 2) {
-                        //default
-                        ret = paras[i + 2];
-                        break;
-                    } else {
-                        i = i + 2;
-                    }
-                }
-            }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-
-            throw new RuntimeException("decode函数使用错误:DECODE(value, if1, then1, if2,then2, if3,then3, . . . else )");
+        Object o = paras[0];
+        if (o == null) throw new NullPointerException("Error:parseDouble(null)");
+        String str = "";
+        double result;
+        if (o instanceof Number) {
+            return ((Number) o).doubleValue();
+        } else {
+            str = o.toString();
         }
-        return unwrap(ret, ctx);
+        try {
+            result = Double.parseDouble(str);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("不能转化" + str, e);
+        }
 
-    }
-
-    private boolean same(Object a, Object b, Context ctx) {
-        Object real = unwrap(b, ctx);
-        return ALU.equals(a, real);
-
-    }
-
-    private Object unwrap(Object b, Context ctx) {
-        return b instanceof ExpressionRuntimeObject
-                ? ((ExpressionRuntimeObject) b).get(ctx)
-                : b;
+        return result;
     }
 
 }

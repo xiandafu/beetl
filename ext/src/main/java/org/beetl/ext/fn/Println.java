@@ -27,59 +27,39 @@
  */
 package org.beetl.ext.fn;
 
+import java.io.IOException;
+
+import org.beetl.core.ByteWriter;
 import org.beetl.core.Context;
 import org.beetl.core.Function;
-import org.beetl.core.misc.ALU;
-import org.beetl.core.statement.ExpressionRuntime.ExpressionRuntimeObject;
+import org.beetl.core.exception.BeetlException;
 
 /**
- * if else 函数的简单实现
- * ${decode(a,1,"a=1",2,"a=2","不知道了")}
- * 如果a是1，这decode输出"a=1",如果a是2，则输出"a==2",
- * 如果是其他值，则输出"不知道了"
+ * &lt;% println("hello") % &gt;
  *
  * @author xiandafu
  */
-public class DecodeFunction implements Function {
+public class Println implements Function {
 
-    public Object call(Object[] paras, Context ctx) {
-
-        Object ret = null;
+    public String call(Object[] paras, Context ctx) {
         try {
-            Object o = paras[0];
-            int i = 1;
-            while (true) {
-                if (same(o, paras[i], ctx)) {
-                    ret = paras[i + 1];
-                    break;
-                } else {
-                    if (paras.length - 1 == i + 2) {
-                        //default
-                        ret = paras[i + 2];
-                        break;
-                    } else {
-                        i = i + 2;
-                    }
-                }
+            ByteWriter w = ctx.byteWriter;
+            if (paras.length == 0) {
+                w.writeString(ctx.template.program.metaData.lineSeparator);
+                return "";
             }
-        } catch (ArrayIndexOutOfBoundsException ex) {
+            Object o = paras[0];
 
-            throw new RuntimeException("decode函数使用错误:DECODE(value, if1, then1, if2,then2, if3,then3, . . . else )");
+            if (o != null) {
+
+                w.writeString(o.toString());
+                w.writeString(ctx.template.program.metaData.lineSeparator);
+            }
+
+        } catch (IOException e) {
+            throw new BeetlException(BeetlException.CLIENT_IO_ERROR_ERROR);
         }
-        return unwrap(ret, ctx);
+        return "";
 
     }
-
-    private boolean same(Object a, Object b, Context ctx) {
-        Object real = unwrap(b, ctx);
-        return ALU.equals(a, real);
-
-    }
-
-    private Object unwrap(Object b, Context ctx) {
-        return b instanceof ExpressionRuntimeObject
-                ? ((ExpressionRuntimeObject) b).get(ctx)
-                : b;
-    }
-
 }

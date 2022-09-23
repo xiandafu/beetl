@@ -21,15 +21,13 @@
             <version>3.11.0.RELEASE</version>
             <scope>compile</scope>
         </dependency>
-        <!-- 一下都是选配 -->
+
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
             <version>2.9.2</version>
             <scope>provided</scope>
         </dependency>
-
-
 
         <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
         <dependency>

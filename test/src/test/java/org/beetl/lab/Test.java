@@ -1,11 +1,13 @@
 package org.beetl.lab;
 
 import org.beetl.core.Configuration;
+import org.beetl.core.Function;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.config.BeetlConfig;
 import org.beetl.core.io.SoftReferenceWriter;
 import org.beetl.core.resource.ClasspathResourceLoader;
+import org.beetl.ext.fn.Print;
 
 /**
  * @author xiandafu
@@ -18,7 +20,7 @@ class Test {
     private static final String TAG = "org.beetl.core.lab.Test";
 
     public static void main(String[] args) throws Exception {
-
+        Function fn = (Function)Test.class.getClassLoader().loadClass("org.beetl.ext.fn.Println").newInstance();
         ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("lab/");
         Configuration cfg = Configuration.defaultConfiguration();
 
