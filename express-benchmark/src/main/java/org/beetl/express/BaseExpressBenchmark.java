@@ -1,10 +1,7 @@
 package org.beetl.express;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.*;
@@ -24,6 +21,9 @@ public abstract  class BaseExpressBenchmark {
 
 
 	public abstract  Object simpleExpress();
+	public  Set reflect(){
+		throw new UnsupportedOperationException();
+	}
 
 //	public abstract  Object callFunction();
 //	public abstract  Object complexCondition();
