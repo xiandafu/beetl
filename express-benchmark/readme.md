@@ -4,6 +4,16 @@ Beetl 内核是脚本引擎，Beetl模板会被解析成脚本引擎执行渲染
 
 测试内容有一个简单的求值计算，和一个if语句(spel 不支持if，所以使用了三元表达式)
 
+* Aviator https://gitee.com/mirrors/aviator
+* Beetl https://gitee.com/xiandafu/beetl
+* Groovy http://www.groovy-lang.org/
+* JfireEL https://gitee.com/eric_ds/jfireEL
+* Spel https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/expressions.html
+* Nashorn https://github.com/openjdk/nashorn
+
+测试项目
+* simpleExpress ,一个简单的求值表达式 arg.age+(12+arg.pay)
+* ifExpresss 一个if语句.(Spel和JfireEL 不支持，使用了三元表达式代替)
 
 ```
 Benchmark               Mode  Cnt        Score       Error  Units
@@ -14,13 +24,23 @@ Beetl.ifExpresss       thrpt    5  4773559.740 ± 39440.129  ops/s
 Beetl.simpleExpress    thrpt    5  4577262.922 ± 71660.094  ops/s
 Groovy.ifExpresss      thrpt    5   147872.132 ±  8210.101  ops/s
 Groovy.simpleExpress   thrpt    5   140936.790 ± 10458.662  ops/s
+JfireEL.ifExpresss     thrpt    5  27463485.905 ± 2816210.125  ops/s
+JfireEL.simpleExpress  thrpt    5  19379443.545 ±  640533.096  ops/s
 Nashorn.ifExpresss     thrpt    5    10414.081 ±  1203.854  ops/s
 Nashorn.simpleExpress  thrpt    5     9972.630 ±  1621.798  ops/s
 Spel.ifExpresss        thrpt    5   847461.241 ± 18546.745  ops/s
 Spel.simpleExpress     thrpt    5   668638.399 ± 14497.212  ops/s
 
-
 ```
 
 > score越大越快
+
+# 测试结果
+
+JfireEL>> Aviator=Beetl >>Spel>>Groovy>>Nashorn
+
+> Spel和JfireEL是纯表达式引擎，Beetl,Groovy,Nashorn，Aviator则是脚本引擎
+
+
+
 
