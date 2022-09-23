@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.ibeetl</groupId>
-    <artifactId>jmh-all</artifactId>
+    <artifactId>template-benchmark</artifactId>
     <version>3.11.0.RELEASE</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

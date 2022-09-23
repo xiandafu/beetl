@@ -10,7 +10,7 @@ typora-root-url: ../beetl3.0
  _| |__) || \__.,| \__.,  _| |_    _| |__/ | 
 |_______/  '.__.' '.__.' |_____|  |________| 
 
-                                  Beetl 3.0
+                                  org.beetl.express.Beetl 3.0
 ```
 
 ## Beetl3 高速模板引擎
@@ -33,9 +33,9 @@ typora-root-url: ../beetl3.0
 
 #### 介绍
 
-Beetl  ['biːtl]  3.0，从 [https://github.com/javamonkey/beetl2.0/](https://github.com/javamonkey/beetl2.0/) 迁移过来
+org.beetl.express.Beetl  ['biːtl]  3.0，从 [https://github.com/javamonkey/beetl2.0/](https://github.com/javamonkey/beetl2.0/) 迁移过来
 
-Beetl 的成长离不开以下人员的帮助（排名不分先后）：
+org.beetl.express.Beetl 的成长离不开以下人员的帮助（排名不分先后）：
 
 - [作死模式](javascript:;)
 - [一粟蜉蝣](javascript:;)
@@ -62,9 +62,9 @@ Beetl 的成长离不开以下人员的帮助（排名不分先后）：
 
 QQ交流群：636321496(满),219324263(满),252010126
 
-Beetl 官网：[ibeetl.com](ibeetl.com) 
+org.beetl.express.Beetl 官网：[ibeetl.com](ibeetl.com) 
 
-Beetl 社区(已作废，搞社区太难了)：[bbs.ibeetl.com](http://42.96.162.109/bbs/bbs/index/1.html)
+org.beetl.express.Beetl 社区(已作废，搞社区太难了)：[bbs.ibeetl.com](http://42.96.162.109/bbs/bbs/index/1.html)
 
 #### 性能
 
@@ -72,7 +72,7 @@ Beetl 社区(已作废，搞社区太难了)：[bbs.ibeetl.com](http://42.96.162
 
 ```
 Benchmark              Mode  Cnt      Score      Error  Units
-Beetl.benchmark       thrpt    5  81446.018 ± 3137.904  ops/s
+org.beetl.express.Beetl.benchmark       thrpt    5  81446.018 ± 3137.904  ops/s
 Enjoy.benchmark       thrpt    5  71620.894 ± 1376.091  ops/s
 Freemarker.benchmark  thrpt    5  22133.302 ±  711.310  ops/s
 Handlebars.benchmark  thrpt    5  19266.315 ± 2265.902  ops/s
@@ -144,7 +144,7 @@ public interface Cache {
 
 ```shell
 # git commit 信息应该包含 [发行版本号] + [模块] + [提交信息]
-# 例如当前 Beetl 是 3.2.0，修改的内容是"语法树结点的注释"，则 commit 信息为：
-git commit -m '【Sprint3.3.0】【Beetl】语法树结点的注释'
+# 例如当前 org.beetl.express.Beetl 是 3.2.0，修改的内容是"语法树结点的注释"，则 commit 信息为：
+git commit -m '【Sprint3.3.0】【org.beetl.express.Beetl】语法树结点的注释'
 ```
 

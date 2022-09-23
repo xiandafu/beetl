@@ -17,7 +17,8 @@
         <module>beetl-4.5-support</module>
 		<module>antlr4.9-support</module>
 		<module>antlr4.5-support</module>
-		<module>jmh-all</module>
+		<module>template-benchmark</module>
+		<module>express-benchmark</module>
 <!--		<module>antlr4.11-support</module>-->
 	</modules>
 
@@ -41,6 +42,26 @@
 		<url>https://github.com/javamonkey/beetl2.0.git</url>
 	</scm>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <doclint>none</doclint>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 
 

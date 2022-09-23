@@ -8,7 +8,7 @@ Beetl目前版本是2.7.3,相对于其他java模板引擎，具有功能齐全�
 
 -   功能完备：作为主流模板引擎，Beetl具有相当多的功能和其他模板引擎不具备的功能。适用于*各种应用场景*，从对响应速度有很高要求的大网站到功能繁多的CMS管理系统都适合。Beetl本身还具有很多独特功能来完成模板编写和维护，这是其他模板引擎所不具有的。
 -   非常简单：类似Javascript语法和习俗，只要半小时就能通过半学半猜完全掌握用法。拒绝其他模板引擎那种非人性化的语法和习俗。同时也能支持html 标签，使得开发CMS系统比较容易
--   超高的性能：Beetl 远超过主流java模板引擎性能(引擎性能5-6倍与freemaker，2倍于JSP。参考附录），而且消耗较低的CPU。
+-   超高的性能：org.beetl.express.Beetl 远超过主流java模板引擎性能(引擎性能5-6倍与freemaker，2倍于JSP。参考附录），而且消耗较低的CPU。
 -   易于整合：Beetl能很容易的与各种web框架整合，如Spring MVC，JFinal，Struts，Nutz，Jodd，Servlet等。
 -   支持模板单独开发和测试，即在MVC架构中，即使没有M和C部分，也能开发和测试模板。
 -   扩展和个性化：Beetl支持自定义方法，格式化函数，虚拟属性，标签，和HTML标签. 同时Beetl也支持自定义占位符和控制语句起始符号也支持使用者完全可以打造适合自己的工具包。
@@ -87,7 +87,7 @@ Beetl的核心是GroupTemplate，创建GroupTemplate需要俩个参数，一个�
 -   MapResourceLoader : 可以动态存入模板
 -   CompositeResourceLoader 混合使用多种加载方式
 
-代码第5行将变量name传入模板里，其值是“Beetl”。 代码第6行是渲染模板，得到输出，template提供了多种获得渲染输出的方法，如下
+代码第5行将变量name传入模板里，其值是“org.beetl.express.Beetl”。 代码第6行是渲染模板，得到输出，template提供了多种获得渲染输出的方法，如下
 
 -   tempalte.render() 返回渲染结果，如本例所示
 -   template.renderTo(Writer) 渲染结果输出到Writer里
@@ -423,7 +423,7 @@ var content = {
 3.  如果模板变量是Map类，这可以通过[]来访问，如${map[“name”]},如果key值是字符串类型，也可以使用${map.name}.但不建议这么使用，因为会让模板阅读者误以为是一个Pojo对象
 4.  Beetl也支持Generic Get方式，即如果对象有一个public Object get(String key)方法，可以通过”.”号或者[]来访问，譬如 ${activityRecord.name}或者${activityRecord[“name”] }都将调用activityRecord的 get(String key)方法。如果对象既有具体属性，又有Generic get（这种模型设计方式是不值得鼓励），则以具体属性优先级高.
 5.  Beetl也可以通过[]来引用属性，如${user[“name”]} 相当于${user.name}.这跟javascript保持一致。但建议不这么做，因为容易让阅读模板的人误认为这是一个Map类型
-6.  Beetl 还可以定位额外的对象属性，而无需更改java对象，这叫着虚拟属性，如，对于所有集合，数组，都有共同的虚拟熟悉size.虚拟属性是“.~”+虚拟1属性名
+6.  org.beetl.express.Beetl 还可以定位额外的对象属性，而无需更改java对象，这叫着虚拟属性，如，对于所有集合，数组，都有共同的虚拟熟悉size.虚拟属性是“.~”+虚拟1属性名
 
 ```javascript
 template.binding("list",service.getUserList());
@@ -976,7 +976,7 @@ public class CompressTag extends Tag{
 
 #### 2.23. HTML标签
 
-Beetl 也支持HTML tag形式的标签， 区分beetl的html tag 与 标准html tag。如设定HTML_TAG_FLAG=#，则如下html tag将被beetl解析
+org.beetl.express.Beetl 也支持HTML tag形式的标签， 区分beetl的html tag 与 标准html tag。如设定HTML_TAG_FLAG=#，则如下html tag将被beetl解析
 
 ```xml
 <#footer style=”simple”/>
@@ -1139,7 +1139,7 @@ DYNAMIC 通常用在组件模板里，因为组件模板可以接收任何类型
 
 #### 2.28. 类型声明
 
-Beetl 本质上还是强类型的模板引擎，即模板每个变量类型是特定的，在模板运行过程中，beetl 会根据全局变量自动推测出模板中各种变量和表达式类型。 也可以通过类型申明来说明beetl全局变量的类型，如下格式
+org.beetl.express.Beetl 本质上还是强类型的模板引擎，即模板每个变量类型是特定的，在模板运行过程中，beetl 会根据全局变量自动推测出模板中各种变量和表达式类型。 也可以通过类型申明来说明beetl全局变量的类型，如下格式
 
 ```javascript
 <%
@@ -2621,7 +2621,7 @@ public Context withContext() {
 ```xml
 <html>
 <head>
-<title>Beetl&Nutz</title>
+<title>org.beetl.express.Beetl&Nutz</title>
 </head>
 <body>
 <p>总共 ${list.~size}<p/>
@@ -2801,7 +2801,7 @@ ajax 片段渲染也支持默认情况下不渲染，仅仅做为一个片段使
 >   -   从后台性能看，将模型序列化成json性能会比渲染模板性能更好，但是，json还需要前端重新解析生成最终html dom节点，这可能会延迟最终数据的现实效果。而返回的html片段就是已经生成好的dom
 >   -   从网络传入来看，json无疑更好的，html片段会有额外的html标记，css属性，以及有可能的js调用。传入流量有可能增加50%到100%。但是，对于web应用类，这些额外数据，并不算多。
 >   -   从开发效率来讲，返回html片段的开发效率更高一些，因为渲染在后台操作，可以随心所欲的用模板语言来渲染，来取得后台数据，完成复杂渲染，而json就比较困难，可以说所有的json lib都没有完美的解决办法。
->   -   从用户体验上来讲，Beetl 采用ajax标记，混合了传统的模板渲染和ajax加载。用户进入页面即能看到数据，而经典的ajax json方式还需要异步加载，显示延迟。另外如果页面同时有多个ajax加载，则会对服务器造成很大的压力。
+>   -   从用户体验上来讲，org.beetl.express.Beetl 采用ajax标记，混合了传统的模板渲染和ajax加载。用户进入页面即能看到数据，而经典的ajax json方式还需要异步加载，显示延迟。另外如果页面同时有多个ajax加载，则会对服务器造成很大的压力。
 >   -   关心服务器cpu消耗？ 模板方式消耗更多的cpu，json方式则少点。但是俩者差距并不大。而且更多的web网站面临的情况是有富余的服务器CPU能力
 >   -   关心客户端CPU消耗？ 过多的js无疑是客户端运行慢的主要原因。如果采用经典的json方式，返回的json数据必然还需要经过js的计算和渲染。会影响客户机器cpu。
 
@@ -3151,15 +3151,15 @@ Beetl2.0目前只完成了解释引擎，使用解释引擎好处是可以适用
 -   encode优化，对于number类型，输出通常是.toString 转化成String，然后encode输出，这中间浪费了大量的资源，Beetl实现了encode，输出一步到位
 -   Context 采用一维数组，语言里的Context通常采用Map实现，每次进入{} ，就新增一个child Map，尽管map很快，但不够快。也有其他模板语言采用二位数组提高性能，Beetl是通过固定大小一维数组来维护模板的Context，因此访问更快，也避免了Map和二维素组的频繁创建。其实除了此处，beetl很多地方都不采用Map来维护key-value, 而都采用数组索引，以追求性能极限
 -   字节码访问属性，通过反射获取性能比较慢，就算JVM有优化，但优化效果也不确定。Beetl通过字节码生成了属性访问类，从而将属性访问速度提高了一个数量级
--   类型推测：Beetl 是强制类型的，因此预先知道类型，可以对模板做一些优化而省去了动态判断类型的时间
+-   类型推测：org.beetl.express.Beetl 是强制类型的，因此预先知道类型，可以对模板做一些优化而省去了动态判断类型的时间
 -   使用数组Buffer，避免频繁创建和销毁数组
 -   编译引擎将模板编译成类，会产生大量的类，虚拟机很难对这些做优化。而解释引擎只有几十个固定的类，虚拟机容易优化
 
 >   #### 相关文章
 >
 >   -   为什么JSP会比Beetl慢 [http://my.oschina.net/xiandafu/blog/475740](http://my.oschina.net/xiandafu/blog/475740)
->   -   Beetl 性能揭秘 2 ：语言如何存取变量 [http://my.oschina.net/xiandafu/blog/293167](http://my.oschina.net/xiandafu/blog/293167)
->   -   Beetl 性能揭秘 1 ：如何输出一个整型变量 [http://my.oschina.net/xiandafu/blog/284823](http://my.oschina.net/xiandafu/blog/284823)
+>   -   org.beetl.express.Beetl 性能揭秘 2 ：语言如何存取变量 [http://my.oschina.net/xiandafu/blog/293167](http://my.oschina.net/xiandafu/blog/293167)
+>   -   org.beetl.express.Beetl 性能揭秘 1 ：如何输出一个整型变量 [http://my.oschina.net/xiandafu/blog/284823](http://my.oschina.net/xiandafu/blog/284823)
 
 
 
@@ -3179,7 +3179,7 @@ Beetl2.0目前只完成了解释引擎，使用解释引擎好处是可以适用
 
 | Benchmark      | version | Threads | Samples | Score            | Score Error (99.9%) | Unit  |
 | -------------- | ------- | ------- | ------- | ---------------- | ------------------- | ----- |
-| **Beetl**      | 2.7     | 1       | 50      | **42125.112914** | 3512.147131         | ops/s |
+| **org.beetl.express.Beetl**      | 2.7     | 1       | 50      | **42125.112914** | 3512.147131         | ops/s |
 | **Freemarker** | 2.3     | 1       | 50      | **13099.139808** | 339.612022          | ops/s |
 | **Handlebars** | 4.0     | 1       | 50      | **15808.044125** | 235.109622          | ops/s |
 | **Mustache**   | 0.9     | 1       | 50      | **17961.391809** | 158.524109          | ops/s |
@@ -3192,7 +3192,7 @@ Beetl2.0目前只完成了解释引擎，使用解释引擎好处是可以适用
 >
 >   这个性能测试基本上结合了国内外的模板引擎，随着JDK版本的升级，JDK8提高了反射能力，减少了和Freemarker等模板引擎的性能差距，但Beetl依旧以3倍以上的性能优势秒杀Freemarker。
 
-#### 5.6. Beetl 开发团队
+#### 5.6. org.beetl.express.Beetl 开发团队
 
 作者
 
