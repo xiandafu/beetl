@@ -17,9 +17,9 @@ public class SoftReferenceWriter extends  NoLockStringWriter{
 
 	public static int INIT_SIZE = 128;
 	//最大值，buf长度超过此，恢复长度到	INIT_SIZE
-	public static int MAX_SIZE = 512;
+	public static int MAX_SIZE = 1024*8;
 	//当分配内存过大，是否要回收
-	public static boolean FIX_SIZE =  false;
+	public static boolean FIX_SIZE =  true;
 
 	boolean  used = false;
 
@@ -37,7 +37,7 @@ public class SoftReferenceWriter extends  NoLockStringWriter{
 			cache.set(new SoftReference<>(writer));
 			return writer;
 		}else if(writer.used){
-			//返回要给新的。一个线程调用了俩次此方法，后面的线程使用新的writer
+			//返回要给新的。一个模板渲染内调用了俩次此方法，后面的线程使用新的writer
 			return  new SoftReferenceWriter(INIT_SIZE);
 		}
 		else{

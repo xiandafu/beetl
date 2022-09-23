@@ -11,10 +11,13 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>core</module>
+		<module>ext</module>
+		<module>test</module>
         <module>beetl</module>
         <module>beetl-4.5-support</module>
 		<module>antlr4.9-support</module>
 		<module>antlr4.5-support</module>
+		<module>jmh-all</module>
 <!--		<module>antlr4.11-support</module>-->
 	</modules>
 

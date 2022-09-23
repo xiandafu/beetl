@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Stock Prices</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta http-equiv="Content-Script-Type" content="text/javascript" />
+	<link rel="shortcut icon" href="/images/favicon.ico" />
+	<link rel="stylesheet" type="text/css" href="/css/style.css" media="all" />
+	<script type="text/javascript" src="/js/util.js"></script>
+	<style type="text/css">
+		/*<![CDATA[*/
+		body {
+			color: #333333;
+			line-height: 150%;
+		}
+
+		thead {
+			font-weight: bold;
+			background-color: #CCCCCC;
+		}
+
+		.odd {
+			background-color: #FFCCCC;
+		}
+
+		.even {
+			background-color: #CCCCFF;
+		}
+
+		.minus {
+			color: #FF0000;
+		}
+
+		/*]]>*/
+	</style>
+
+</head>
+
+<body>
+
+	<h1>Stock Prices</h1>
+
+	<table>
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>symbol</th>
+				<th>name</th>
+				<th>price</th>
+				<th>change</th>
+				<th>ratio</th>
+			</tr>
+		</thead>
+		<tbody>
+<!--/* Note that itemStat.odd works with index (starting with 0) whereas itemStat.count is starting with 1 */-->
+			<tr th:each="item: ${items}"
+				th:class="${itemStat.odd}? 'even' : 'odd'">
+				<td th:utext="${itemStat.count}"></td>
+				<td><a th:href="${'/stocks/' + item.symbol}"
+					th:utext="${item.symbol}"></a></td>
+				<td><a th:href="${item.url}" th:utext="${item.name}"></a></td>
+				<td><strong th:utext="${item.price}"></strong></td>
+				<td th:utext="${item.change}"
+					th:class="${item.change lt 0} ? 'minus'"></td>
+				<td th:utext="${item.ratio}"
+					th:class="${item.change lt 0} ? 'minus'"></td>
+			</tr>
+		</tbody>
+	</table>
+
+</body>
+</html>

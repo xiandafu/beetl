@@ -19,6 +19,11 @@
             <artifactId>core</artifactId>
             <version>3.11.0.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>ext</artifactId>
+            <version>3.11.0.RELEASE</version>
+        </dependency>
     </dependencies>
 
 </project>
