@@ -1,5 +1,7 @@
 package org.beetl.express;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,18 +17,25 @@ import org.openjdk.jmh.annotations.*;
 @State(Scope.Benchmark)
 
 public abstract  class BaseExpressBenchmark {
+
+	Arg arg = new Arg();
+	List args = Arrays.asList(arg);
+
+
+
 	public abstract  Object simpleExpress();
+
 //	public abstract  Object callFunction();
 //	public abstract  Object complexCondition();
 
 	public abstract  Object ifExpresss();
-
-	protected  int getAddValue(){
-		return 12;
+	public abstract  Object forExpresss();
+	protected  Arg getArg(){
+		return arg;
 	}
 
-	protected  int getAddValue2(){
-		return 89;
+	protected  List<Arg> argList(){
+		return args;
 	}
 
 

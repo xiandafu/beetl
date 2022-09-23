@@ -1,13 +1,17 @@
 package org.beetl.express;
 
 import jdk.nashorn.api.scripting.NashornScriptEngine;
+import org.codehaus.groovy.jsr223.GroovyScriptEngineImpl;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
 
-import javax.script.*;
+import javax.script.Bindings;
+import javax.script.CompiledScript;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
-public class Nashorn extends BaseExpressBenchmark{
-	NashornScriptEngine engine= (NashornScriptEngine) new ScriptEngineManager().getEngineByName("Nashorn");
+public class Groovy extends BaseExpressBenchmark{
+	GroovyScriptEngineImpl engine= null;
 	String  addJs2="arg.age+(arg.pay+12);";
 	String ifJs = "if(arg.age==10)  true ; else  false;";
 
@@ -49,17 +53,15 @@ public class Nashorn extends BaseExpressBenchmark{
 
 	@Setup
 	public void init() throws ScriptException {
+		engine = new GroovyScriptEngineImpl();
 		this.addJsScript2 = engine.compile(addJs2);
 		this.ifScript = engine.compile(ifJs);
 	}
 
 	public static void main(String[] args) throws ScriptException {
-		NashornScriptEngine engine= (NashornScriptEngine)new ScriptEngineManager().getEngineByName("Nashorn");
-		String ifJs = " arg.age+(arg.pay+12)";
-		CompiledScript script = engine.compile(ifJs);
-		Bindings bindings = engine.createBindings();
-		bindings.put("arg",new Arg());
-		Object  o=  (Object) script.eval(bindings);
-		System.out.println(o);
+		Groovy groovy = new Groovy();
+		groovy.init();
+		System.out.println(groovy.simpleExpress());
+
 	}
 }

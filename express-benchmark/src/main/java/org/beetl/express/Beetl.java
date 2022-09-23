@@ -4,6 +4,7 @@ import com.googlecode.aviator.AviatorEvaluator;
 import com.googlecode.aviator.Expression;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
+import org.beetl.core.io.NoLockStringWriter;
 import org.beetl.core.resource.ClasspathResourceLoader;
 import org.beetl.core.resource.StringTemplateResourceLoader;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -22,20 +23,32 @@ public class Beetl extends BaseExpressBenchmark{
 
 	@Benchmark
 	public Object simpleExpress() {
-		 Map map = new HashMap();
-		 map.put("a",getAddValue());
-		 map.put("b",getAddValue2());
-		 Writer writer =  new StringWriter();
-		 Map values = gt.runScript("return a+(b+12);",map,writer,loader);
-		 return  values.get("return");
+		Arg arg = getArg();
+		Map map = new HashMap();
+		map.put("arg",arg);
+		Writer writer =  new NoLockStringWriter(0);
+		Map values = gt.runScript("return arg.age+(arg.pay+12);",map,writer,loader);
+		return  values.get("return");
 	}
+
+
 	@Benchmark
 	@Override
 	public Object ifExpresss() {
 		Map map = new HashMap();
-		map.put("a",1);
+		map.put("arg",getArg());
 		Writer writer =  new StringWriter();
-		Map values = gt.runScript("if(a==1) return true ; else return  false;",map,writer,loader);
+		Map values = gt.runScript("if(arg.age==10) return true ; else return  false;",map,writer,loader);
+		return  values.get("return");
+	}
+
+	@Override
+//	@Benchmark
+	public Object forExpresss() {
+		Map map = new HashMap();
+		map.put("arg",getArg());
+		Writer writer =  new StringWriter();
+		Map values = gt.runScript("if(arg.age==10) return true ; else return  false;",map,writer,loader);
 		return  values.get("return");
 	}
 
