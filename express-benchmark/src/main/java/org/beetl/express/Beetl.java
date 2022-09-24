@@ -17,6 +17,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Beetl extends BaseExpressBenchmark{
 
@@ -33,10 +34,13 @@ public class Beetl extends BaseExpressBenchmark{
 		return  values.get("return");
 	}
 
+	AtomicInteger atomicInteger = new AtomicInteger(0);
 	@Override
 	@Benchmark
 	public Set reflect() {
-		Script script = gt.getScript("return arg.age+(kk.pay+12);",loader);
+		String newName = "kk"+atomicInteger.incrementAndGet();
+		Script script = gt.getScript("return arg.age+("+newName+".pay+12);",loader);
+		//返回arg和newName，脚本中需要外部输入的变量
 		return script.program.metaData.globalIndexMap.keySet();
 	}
 
@@ -52,13 +56,13 @@ public class Beetl extends BaseExpressBenchmark{
 	}
 
 	@Override
-//	@Benchmark
+	@Benchmark
 	public Object forExpresss() {
 		Map map = new HashMap();
 		map.put("arg",getArg());
 		Writer writer =  new StringWriter();
-		Map values = gt.runScript("if(arg.age==10) return true ; else return  false;",map,writer,loader);
-		return  values.get("return");
+		Map values = gt.runScript("var c =0; for(var i=0;i<arg.age;i++){ c=c+1;} ",map,writer,loader);
+		return  values.get("c");
 	}
 
 	//	@Benchmark
@@ -82,6 +86,6 @@ public class Beetl extends BaseExpressBenchmark{
 	public  static void main(String[] args) throws IOException {
 		Beetl beetl = new Beetl();
 		beetl.init();
-		System.out.println(beetl.reflect());
+		System.out.println(beetl.forExpresss());
 	}
 }

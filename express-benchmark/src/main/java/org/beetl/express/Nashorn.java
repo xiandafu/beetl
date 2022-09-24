@@ -10,9 +10,11 @@ public class Nashorn extends BaseExpressBenchmark{
 	NashornScriptEngine engine= (NashornScriptEngine) new ScriptEngineManager().getEngineByName("Nashorn");
 	String  addJs2="arg.age+(arg.pay+12);";
 	String ifJs = "if(arg.age==10)  true ; else  false;";
+//	String forJs = "var c =0; for(var i=0;i<arg.age;i++){c=c+1;} return c;";
 
 	CompiledScript addJsScript2 = null;
 	CompiledScript ifScript = null;
+	CompiledScript forScript = null;
 	@Benchmark
 	public Object simpleExpress() {
 		try {
@@ -43,6 +45,7 @@ public class Nashorn extends BaseExpressBenchmark{
 	}
 
 	@Override
+//	@Benchmark
 	public Object forExpresss() {
 		return null;
 	}
@@ -51,15 +54,12 @@ public class Nashorn extends BaseExpressBenchmark{
 	public void init() throws ScriptException {
 		this.addJsScript2 = engine.compile(addJs2);
 		this.ifScript = engine.compile(ifJs);
+//		this.forScript = engine.compile(forJs);
 	}
 
 	public static void main(String[] args) throws ScriptException {
-		NashornScriptEngine engine= (NashornScriptEngine)new ScriptEngineManager().getEngineByName("Nashorn");
-		String ifJs = " arg.age+(arg.pay+12)";
-		CompiledScript script = engine.compile(ifJs);
-		Bindings bindings = engine.createBindings();
-		bindings.put("arg",new Arg());
-		Object  o=  (Object) script.eval(bindings);
-		System.out.println(o);
+		Nashorn nashorn = new Nashorn();
+		nashorn.init();
+		System.out.println(nashorn.forExpresss());
 	}
 }

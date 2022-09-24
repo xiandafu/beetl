@@ -8,6 +8,7 @@ import org.openjdk.jmh.annotations.Setup;
 public class Aviator extends BaseExpressBenchmark{
 	Expression addCompiledExp2;
 	Expression ifCompiledExp;
+	Expression forCompiledExp;
 	@Benchmark
 	public Object simpleExpress() {
 		Object result =
@@ -25,22 +26,24 @@ public class Aviator extends BaseExpressBenchmark{
 	}
 
 	@Override
+	@Benchmark
 	public Object forExpresss() {
-		return null;
+		Object result =
+				forCompiledExp.execute(forCompiledExp.newEnv("arg", getArg()));
+		return result;
 	}
 
 	@Setup
 	public void init(){
 		addCompiledExp2 = AviatorEvaluator.compile("arg.age+(arg.pay+12)");
 		ifCompiledExp = AviatorEvaluator.compile("let a = if(arg.age==10) {true}  else {false} ;");
+		forCompiledExp = AviatorEvaluator.compile("let c =0;for i in range(0,arg.age){c=c+1;} return c;");
 		return ;
 	}
 
 	public  static void main(String[] args) {
-		String expression = "arg.age+(arg.pay+12) ";
-		Expression addCompiledExp = AviatorEvaluator.compile(expression);
-		Object result =
-				addCompiledExp.execute(addCompiledExp.newEnv("arg", new Arg()));
-		System.out.println(result);
+		Aviator aviator = new Aviator();
+		aviator.init();
+		System.out.println(aviator.forExpresss());
 	}
 }

@@ -14,9 +14,11 @@ public class Groovy extends BaseExpressBenchmark{
 	GroovyScriptEngineImpl engine= null;
 	String  addJs2="arg.age+(arg.pay+12);";
 	String ifJs = "if(arg.age==10)  true ; else  false;";
+//	String forJs = "int c =0 ; for(int i=0;i<arg.age;i++){ c=c+1;}  return c>0;";
 
 	CompiledScript addJsScript2 = null;
 	CompiledScript ifScript = null;
+	CompiledScript forScript = null;
 	@Benchmark
 	public Object simpleExpress() {
 		try {
@@ -47,8 +49,19 @@ public class Groovy extends BaseExpressBenchmark{
 	}
 
 	@Override
+	@Benchmark
 	public Object forExpresss() {
-		return null;
+//		try {
+//			Bindings bindings = engine.createBindings();
+//			bindings.put("arg",getArg());
+//			Object  o=  (Object) forScript.eval(bindings);
+//			return o;
+//
+//		} catch (ScriptException e) {
+//			throw new RuntimeException(e);
+//		}
+		//不知道怎么写
+		throw new UnsupportedOperationException();
 	}
 
 	@Setup
@@ -56,12 +69,13 @@ public class Groovy extends BaseExpressBenchmark{
 		engine = new GroovyScriptEngineImpl();
 		this.addJsScript2 = engine.compile(addJs2);
 		this.ifScript = engine.compile(ifJs);
+//		this.forScript = engine.compile(forJs);
 	}
 
 	public static void main(String[] args) throws ScriptException {
 		Groovy groovy = new Groovy();
 		groovy.init();
-		System.out.println(groovy.simpleExpress());
+		System.out.println(groovy.forExpresss());
 
 	}
 }

@@ -19,24 +19,37 @@ public abstract  class BaseExpressBenchmark {
 	List args = Arrays.asList(arg);
 
 
-
+	/**
+	 * 测试简单表达式
+	 * @return
+	 */
 	public abstract  Object simpleExpress();
+
+	/**
+	 * 测试对脚本内部运行过程的输出
+	 * @return
+	 */
 	public  Set reflect(){
 		throw new UnsupportedOperationException();
 	}
 
-//	public abstract  Object callFunction();
-//	public abstract  Object complexCondition();
-
+	/**
+	 * 测试if语句
+	 * @return
+	 */
 	public abstract  Object ifExpresss();
+
+	/**
+	 * 测试循环语句
+	 * @return
+	 */
 	public abstract  Object forExpresss();
+
 	protected  Arg getArg(){
 		return arg;
 	}
 
-	protected  List<Arg> argList(){
-		return args;
-	}
+
 
 
 }
