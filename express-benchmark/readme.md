@@ -53,9 +53,9 @@ Spel.simpleExpress     thrpt    5    636251.839 ±   2553.017  ops/s
 
 # 测试结果
 
-JfireEL>> Aviator=Beetl >>Spel>>Groovy>>Nashorn
+JfireEL>> Aviator=Beetl=Jexl3 >>Spel>>Mvel=Groovy>>Nashorn
 
-* Spel和JfireEL是纯表达式引擎，Beetl,Groovy,Nashorn，Aviator则是脚本引擎
+* Spel和JfireEL是纯表达式引擎，Beetl,和Aviator，Mvel则是脚本引擎.Groovy，Nashorn是一个新的语言
 * reflect 方法是获取表达式需要的外边变量，比如这个对有些业务场景很管用，比如根据表达式可以提示用户需要输入哪些变量，`x+y/2`, 提示用户需要输入x和y ，目前自有Beetl支持
 
 

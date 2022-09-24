@@ -1,0 +1,1075 @@
+[
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Aviator.forExpresss",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 505122.64900454105,
+            "scoreError" : 8047.093916965232,
+            "scoreConfidence" : [
+                497075.5550875758,
+                513169.7429215063
+            ],
+            "scorePercentiles" : {
+                "0.0" : 503120.2010543066,
+                "50.0" : 505304.8848177054,
+                "90.0" : 508335.132935513,
+                "95.0" : 508335.132935513,
+                "99.0" : 508335.132935513,
+                "99.9" : 508335.132935513,
+                "99.99" : 508335.132935513,
+                "99.999" : 508335.132935513,
+                "99.9999" : 508335.132935513,
+                "100.0" : 508335.132935513
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    508335.132935513,
+                    505460.1630158877,
+                    505304.8848177054,
+                    503120.2010543066,
+                    503392.8631992927
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Aviator.ifExpresss",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 4841570.375621425,
+            "scoreError" : 199155.56796414172,
+            "scoreConfidence" : [
+                4642414.807657283,
+                5040725.943585567
+            ],
+            "scorePercentiles" : {
+                "0.0" : 4749391.443311327,
+                "50.0" : 4864501.902473037,
+                "90.0" : 4870499.647737253,
+                "95.0" : 4870499.647737253,
+                "99.0" : 4870499.647737253,
+                "99.9" : 4870499.647737253,
+                "99.99" : 4870499.647737253,
+                "99.999" : 4870499.647737253,
+                "99.9999" : 4870499.647737253,
+                "100.0" : 4870499.647737253
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    4865428.95282504,
+                    4858029.931760471,
+                    4864501.902473037,
+                    4749391.443311327,
+                    4870499.647737253
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Aviator.simpleExpress",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 3833971.461581594,
+            "scoreError" : 58216.18264524161,
+            "scoreConfidence" : [
+                3775755.278936352,
+                3892187.6442268356
+            ],
+            "scorePercentiles" : {
+                "0.0" : 3808108.4024388557,
+                "50.0" : 3840401.824708111,
+                "90.0" : 3845155.593273343,
+                "95.0" : 3845155.593273343,
+                "99.0" : 3845155.593273343,
+                "99.9" : 3845155.593273343,
+                "99.99" : 3845155.593273343,
+                "99.999" : 3845155.593273343,
+                "99.9999" : 3845155.593273343,
+                "100.0" : 3845155.593273343
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    3833355.9363452634,
+                    3845155.593273343,
+                    3808108.4024388557,
+                    3840401.824708111,
+                    3842835.5511423927
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Beetl.forExpresss",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 1662177.5696337405,
+            "scoreError" : 22894.564374256206,
+            "scoreConfidence" : [
+                1639283.0052594843,
+                1685072.1340079966
+            ],
+            "scorePercentiles" : {
+                "0.0" : 1652428.842424847,
+                "50.0" : 1662398.0296293471,
+                "90.0" : 1667530.0733356916,
+                "95.0" : 1667530.0733356916,
+                "99.0" : 1667530.0733356916,
+                "99.9" : 1667530.0733356916,
+                "99.99" : 1667530.0733356916,
+                "99.999" : 1667530.0733356916,
+                "99.9999" : 1667530.0733356916,
+                "100.0" : 1667530.0733356916
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    1666380.7206719148,
+                    1662150.1821069024,
+                    1662398.0296293471,
+                    1667530.0733356916,
+                    1652428.842424847
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Beetl.ifExpresss",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 4452056.05864781,
+            "scoreError" : 212775.83244709653,
+            "scoreConfidence" : [
+                4239280.226200713,
+                4664831.891094906
+            ],
+            "scorePercentiles" : {
+                "0.0" : 4356114.898318054,
+                "50.0" : 4468038.605681639,
+                "90.0" : 4491568.270554899,
+                "95.0" : 4491568.270554899,
+                "99.0" : 4491568.270554899,
+                "99.9" : 4491568.270554899,
+                "99.99" : 4491568.270554899,
+                "99.999" : 4491568.270554899,
+                "99.9999" : 4491568.270554899,
+                "100.0" : 4491568.270554899
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    4485956.201634258,
+                    4491568.270554899,
+                    4356114.898318054,
+                    4458602.317050195,
+                    4468038.605681639
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Beetl.reflect",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 65084.64923509695,
+            "scoreError" : 93128.63565491556,
+            "scoreConfidence" : [
+                -28043.98641981861,
+                158213.28489001252
+            ],
+            "scorePercentiles" : {
+                "0.0" : 26693.55250720579,
+                "50.0" : 69290.26361561063,
+                "90.0" : 87662.1903942325,
+                "95.0" : 87662.1903942325,
+                "99.0" : 87662.1903942325,
+                "99.9" : 87662.1903942325,
+                "99.99" : 87662.1903942325,
+                "99.999" : 87662.1903942325,
+                "99.9999" : 87662.1903942325,
+                "100.0" : 87662.1903942325
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    87662.1903942325,
+                    26693.55250720579,
+                    82529.4251677483,
+                    69290.26361561063,
+                    59247.8144906875
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Beetl.simpleExpress",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 4179089.1816891753,
+            "scoreError" : 46836.05723114425,
+            "scoreConfidence" : [
+                4132253.1244580313,
+                4225925.23892032
+            ],
+            "scorePercentiles" : {
+                "0.0" : 4163906.3572095647,
+                "50.0" : 4182705.371080176,
+                "90.0" : 4194828.55996382,
+                "95.0" : 4194828.55996382,
+                "99.0" : 4194828.55996382,
+                "99.9" : 4194828.55996382,
+                "99.99" : 4194828.55996382,
+                "99.999" : 4194828.55996382,
+                "99.9999" : 4194828.55996382,
+                "100.0" : 4194828.55996382
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    4183775.639272045,
+                    4163906.3572095647,
+                    4182705.371080176,
+                    4170229.980920272,
+                    4194828.55996382
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Groovy.ifExpresss",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 126909.75870874026,
+            "scoreError" : 13249.427090169815,
+            "scoreConfidence" : [
+                113660.33161857045,
+                140159.18579891007
+            ],
+            "scorePercentiles" : {
+                "0.0" : 121493.40899504922,
+                "50.0" : 127400.87873008088,
+                "90.0" : 131065.88449969846,
+                "95.0" : 131065.88449969846,
+                "99.0" : 131065.88449969846,
+                "99.9" : 131065.88449969846,
+                "99.99" : 131065.88449969846,
+                "99.999" : 131065.88449969846,
+                "99.9999" : 131065.88449969846,
+                "100.0" : 131065.88449969846
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    126970.14000791851,
+                    121493.40899504922,
+                    127618.48131095427,
+                    131065.88449969846,
+                    127400.87873008088
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Groovy.simpleExpress",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 129868.71336663367,
+            "scoreError" : 6054.48603099538,
+            "scoreConfidence" : [
+                123814.2273356383,
+                135923.19939762907
+            ],
+            "scorePercentiles" : {
+                "0.0" : 127911.49176955108,
+                "50.0" : 129759.1865156372,
+                "90.0" : 131786.96750944576,
+                "95.0" : 131786.96750944576,
+                "99.0" : 131786.96750944576,
+                "99.9" : 131786.96750944576,
+                "99.99" : 131786.96750944576,
+                "99.999" : 131786.96750944576,
+                "99.9999" : 131786.96750944576,
+                "100.0" : 131786.96750944576
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    129759.1865156372,
+                    128857.72787743916,
+                    131786.96750944576,
+                    131028.19316109514,
+                    127911.49176955108
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Jexl3.forExpresss",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 807990.5503202255,
+            "scoreError" : 15227.038898150558,
+            "scoreConfidence" : [
+                792763.511422075,
+                823217.5892183761
+            ],
+            "scorePercentiles" : {
+                "0.0" : 801449.333535956,
+                "50.0" : 808380.0966514872,
+                "90.0" : 811193.3718884567,
+                "95.0" : 811193.3718884567,
+                "99.0" : 811193.3718884567,
+                "99.9" : 811193.3718884567,
+                "99.99" : 811193.3718884567,
+                "99.999" : 811193.3718884567,
+                "99.9999" : 811193.3718884567,
+                "100.0" : 811193.3718884567
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    801449.333535956,
+                    808380.0966514872,
+                    811046.8035951845,
+                    807883.1459300431,
+                    811193.3718884567
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Jexl3.ifExpresss",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 4554117.245949223,
+            "scoreError" : 77102.96582294718,
+            "scoreConfidence" : [
+                4477014.2801262755,
+                4631220.21177217
+            ],
+            "scorePercentiles" : {
+                "0.0" : 4528191.99636439,
+                "50.0" : 4555346.5549283875,
+                "90.0" : 4580208.94867432,
+                "95.0" : 4580208.94867432,
+                "99.0" : 4580208.94867432,
+                "99.9" : 4580208.94867432,
+                "99.99" : 4580208.94867432,
+                "99.999" : 4580208.94867432,
+                "99.9999" : 4580208.94867432,
+                "100.0" : 4580208.94867432
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    4580208.94867432,
+                    4528191.99636439,
+                    4542275.6524145,
+                    4555346.5549283875,
+                    4564563.077364516
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Jexl3.simpleExpress",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 3891790.89999056,
+            "scoreError" : 27300.23546525677,
+            "scoreConfidence" : [
+                3864490.664525303,
+                3919091.135455817
+            ],
+            "scorePercentiles" : {
+                "0.0" : 3881706.0134086236,
+                "50.0" : 3893506.680255966,
+                "90.0" : 3899847.20323921,
+                "95.0" : 3899847.20323921,
+                "99.0" : 3899847.20323921,
+                "99.9" : 3899847.20323921,
+                "99.99" : 3899847.20323921,
+                "99.999" : 3899847.20323921,
+                "99.9999" : 3899847.20323921,
+                "100.0" : 3899847.20323921
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    3899847.20323921,
+                    3893506.680255966,
+                    3895913.306457283,
+                    3881706.0134086236,
+                    3887981.296591718
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.JfireEL.ifExpresss",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 2.8581500766250897E7,
+            "scoreError" : 71758.17319883232,
+            "scoreConfidence" : [
+                2.8509742593052063E7,
+                2.865325893944973E7
+            ],
+            "scorePercentiles" : {
+                "0.0" : 2.8557740939940017E7,
+                "50.0" : 2.858585268162049E7,
+                "90.0" : 2.860174433336857E7,
+                "95.0" : 2.860174433336857E7,
+                "99.0" : 2.860174433336857E7,
+                "99.9" : 2.860174433336857E7,
+                "99.99" : 2.860174433336857E7,
+                "99.999" : 2.860174433336857E7,
+                "99.9999" : 2.860174433336857E7,
+                "100.0" : 2.860174433336857E7
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    2.8567020784491822E7,
+                    2.8595145091833595E7,
+                    2.8557740939940017E7,
+                    2.860174433336857E7,
+                    2.858585268162049E7
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.JfireEL.simpleExpress",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 1.9883597066222504E7,
+            "scoreError" : 574334.5373089894,
+            "scoreConfidence" : [
+                1.9309262528913513E7,
+                2.0457931603531495E7
+            ],
+            "scorePercentiles" : {
+                "0.0" : 1.9619746075716004E7,
+                "50.0" : 1.993668552853003E7,
+                "90.0" : 1.9975878837865345E7,
+                "95.0" : 1.9975878837865345E7,
+                "99.0" : 1.9975878837865345E7,
+                "99.9" : 1.9975878837865345E7,
+                "99.99" : 1.9975878837865345E7,
+                "99.999" : 1.9975878837865345E7,
+                "99.9999" : 1.9975878837865345E7,
+                "100.0" : 1.9975878837865345E7
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    1.9975878837865345E7,
+                    1.993668552853003E7,
+                    1.9920300841679458E7,
+                    1.9965374047321673E7,
+                    1.9619746075716004E7
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Mvel.forExpresss",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 12076.17938734533,
+            "scoreError" : 149.09778273220485,
+            "scoreConfidence" : [
+                11927.081604613126,
+                12225.277170077534
+            ],
+            "scorePercentiles" : {
+                "0.0" : 12013.184596942436,
+                "50.0" : 12091.03121690936,
+                "90.0" : 12112.054058130556,
+                "95.0" : 12112.054058130556,
+                "99.0" : 12112.054058130556,
+                "99.9" : 12112.054058130556,
+                "99.99" : 12112.054058130556,
+                "99.999" : 12112.054058130556,
+                "99.9999" : 12112.054058130556,
+                "100.0" : 12112.054058130556
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    12013.184596942436,
+                    12067.382791782939,
+                    12091.03121690936,
+                    12097.244272961363,
+                    12112.054058130556
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Mvel.ifExpresss",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 232932.88017988927,
+            "scoreError" : 9983.343051137997,
+            "scoreConfidence" : [
+                222949.53712875128,
+                242916.22323102725
+            ],
+            "scorePercentiles" : {
+                "0.0" : 229088.8681622624,
+                "50.0" : 233772.89929972932,
+                "90.0" : 235486.3020698475,
+                "95.0" : 235486.3020698475,
+                "99.0" : 235486.3020698475,
+                "99.9" : 235486.3020698475,
+                "99.99" : 235486.3020698475,
+                "99.999" : 235486.3020698475,
+                "99.9999" : 235486.3020698475,
+                "100.0" : 235486.3020698475
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    234704.71818563252,
+                    233772.89929972932,
+                    231611.61318197456,
+                    235486.3020698475,
+                    229088.8681622624
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Mvel.simpleExpress",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 313232.3302202465,
+            "scoreError" : 13154.774147835276,
+            "scoreConfidence" : [
+                300077.55607241124,
+                326387.1043680818
+            ],
+            "scorePercentiles" : {
+                "0.0" : 307184.98877745663,
+                "50.0" : 314392.5461038968,
+                "90.0" : 315469.9993189102,
+                "95.0" : 315469.9993189102,
+                "99.0" : 315469.9993189102,
+                "99.9" : 315469.9993189102,
+                "99.99" : 315469.9993189102,
+                "99.999" : 315469.9993189102,
+                "99.9999" : 315469.9993189102,
+                "100.0" : 315469.9993189102
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    314392.5461038968,
+                    307184.98877745663,
+                    315469.9993189102,
+                    314910.419460233,
+                    314203.69744073605
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Nashorn.ifExpresss",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 9679.781366459798,
+            "scoreError" : 863.578220634993,
+            "scoreConfidence" : [
+                8816.203145824806,
+                10543.35958709479
+            ],
+            "scorePercentiles" : {
+                "0.0" : 9356.26290876565,
+                "50.0" : 9681.326451599003,
+                "90.0" : 9929.849506123543,
+                "95.0" : 9929.849506123543,
+                "99.0" : 9929.849506123543,
+                "99.9" : 9929.849506123543,
+                "99.99" : 9929.849506123543,
+                "99.999" : 9929.849506123543,
+                "99.9999" : 9929.849506123543,
+                "100.0" : 9929.849506123543
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    9356.26290876565,
+                    9590.435053475318,
+                    9681.326451599003,
+                    9929.849506123543,
+                    9841.032912335479
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Nashorn.simpleExpress",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 9402.317797190768,
+            "scoreError" : 1298.4521292698942,
+            "scoreConfidence" : [
+                8103.865667920874,
+                10700.769926460662
+            ],
+            "scorePercentiles" : {
+                "0.0" : 9044.088847042272,
+                "50.0" : 9256.690023779796,
+                "90.0" : 9782.047619755067,
+                "95.0" : 9782.047619755067,
+                "99.0" : 9782.047619755067,
+                "99.9" : 9782.047619755067,
+                "99.99" : 9782.047619755067,
+                "99.999" : 9782.047619755067,
+                "99.9999" : 9782.047619755067,
+                "100.0" : 9782.047619755067
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    9044.088847042272,
+                    9256.690023779796,
+                    9187.44086151073,
+                    9782.047619755067,
+                    9741.32163386597
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Spel.ifExpresss",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 842907.5039955744,
+            "scoreError" : 8502.099778720689,
+            "scoreConfidence" : [
+                834405.4042168538,
+                851409.6037742951
+            ],
+            "scorePercentiles" : {
+                "0.0" : 839544.292639604,
+                "50.0" : 843353.8617141782,
+                "90.0" : 845676.6912268074,
+                "95.0" : 845676.6912268074,
+                "99.0" : 845676.6912268074,
+                "99.9" : 845676.6912268074,
+                "99.99" : 845676.6912268074,
+                "99.999" : 845676.6912268074,
+                "99.9999" : 845676.6912268074,
+                "100.0" : 845676.6912268074
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    842587.1482586253,
+                    845676.6912268074,
+                    839544.292639604,
+                    843375.5261386574,
+                    843353.8617141782
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.35",
+        "benchmark" : "org.beetl.express.Spel.simpleExpress",
+        "mode" : "thrpt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Users/lijiazhi/Library/Java/JavaVirtualMachines/corretto-1.8.0_282/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+        ],
+        "jdkVersion" : "1.8.0_282",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.282-b08",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "1 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 659834.5520112794,
+            "scoreError" : 6909.684885680226,
+            "scoreConfidence" : [
+                652924.8671255992,
+                666744.2368969596
+            ],
+            "scorePercentiles" : {
+                "0.0" : 657772.6453772006,
+                "50.0" : 659746.6893107733,
+                "90.0" : 662695.9637786028,
+                "95.0" : 662695.9637786028,
+                "99.0" : 662695.9637786028,
+                "99.9" : 662695.9637786028,
+                "99.99" : 662695.9637786028,
+                "99.999" : 662695.9637786028,
+                "99.9999" : 662695.9637786028,
+                "100.0" : 662695.9637786028
+            },
+            "scoreUnit" : "ops/s",
+            "rawData" : [
+                [
+                    659178.9432026143,
+                    659778.5183872061,
+                    662695.9637786028,
+                    659746.6893107733,
+                    657772.6453772006
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    }
+]
+
+
