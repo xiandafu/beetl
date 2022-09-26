@@ -15,15 +15,75 @@
     <version>3.11.0.RELEASE</version>
     <dependencies>
         <dependency>
-            <groupId>com.ibeetl</groupId>
-            <artifactId>core</artifactId>
-            <version>3.11.0.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ibeetl</groupId>
-            <artifactId>ext</artifactId>
-            <version>3.11.0.RELEASE</version>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>4.9.3</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-maven-plugin</artifactId>
+                <version>4.9.2</version>
+                <executions>
+                    <execution>
+                        <id>antlr</id>
+                        <goals>
+                            <goal>antlr4</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${basedir}/src/main/java/org/beetl/core/parser
+                            </outputDirectory>
+                            <sourceDirectory>
+                                ${basedir}/../grammar
+                            </sourceDirectory>
+                            <arguments>
+                                <argument>-package</argument>
+                                <argument>org.beetl.core.parser</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.ibeetl</groupId>
+                                    <artifactId>beetl-core</artifactId>
+                                    <version>3.11.0.RELEASE</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.ibeetl</groupId>
+                                    <artifactId>beetl-ext</artifactId>
+                                    <version>3.11.0.RELEASE</version>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/classes</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

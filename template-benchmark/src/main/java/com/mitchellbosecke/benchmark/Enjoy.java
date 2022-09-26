@@ -3,18 +3,12 @@ package com.mitchellbosecke.benchmark;
 import com.jfinal.kit.Kv;
 import com.jfinal.template.Engine;
 import com.jfinal.template.Template;
-import com.jfinal.template.source.ClassPathSourceFactory;
-import com.mitchellbosecke.benchmark.io.CharStream;
-import com.mitchellbosecke.benchmark.io.NoneStream;
 import com.mitchellbosecke.benchmark.model.Stock;
 import freemarker.template.TemplateException;
-import org.beetl.core.io.CachedStringWriter;
-import org.beetl.core.io.NoLockStringWriter;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.Map;
 
 public class Enjoy extends BaseBenchmark {
