@@ -13,6 +13,14 @@
 * [org.beetl.express.Beetl](http://ibeetl.com/)
 * [Enjoy](http://jfinal.com/)
 
+还有些编译成class的模板引擎没有入选，因为他们语法更简单，且模板编译成class，功能有局限
+
+* te4j https://github.com/whilein/te4j
+* jte  https://github.com/casid/jte
+* httl http://httl.github.io/en/ 长时间不维护
+
+
+
 ## 运行
 
 
@@ -22,16 +30,16 @@
 
 
 
-## 目前结果（2022-9-18）越高越好
+## 目前结果（2022-9-27）越高越好
 ```
-Benchmark              Mode  Cnt      Score      Error  Units
-Beetl.benchmark       thrpt    5  87990.586 ± 1809.284  ops/s
-Enjoy.benchmark       thrpt    5  75279.986 ± 1094.466  ops/s
-Freemarker.benchmark  thrpt    5  23879.653 ±  554.552  ops/s
-Handlebars.benchmark  thrpt    5  21257.271 ±  386.994  ops/s
-Rocker.benchmark      thrpt    5  49405.710 ±  939.591  ops/s
-Thymeleaf.benchmark   thrpt    5   6812.129 ±  139.538  ops/s
-Velocity.benchmark    thrpt    5   7160.998 ± 1290.092  ops/s
+Beetl.benchmark       thrpt    5  141912.506 ± 19090.130  ops/s
+Enjoy.benchmark       thrpt    5  129350.516 ±  8206.576  ops/s
+Freemarker.benchmark  thrpt    5   48062.783 ±  9054.282  ops/s
+Handlebars.benchmark  thrpt    5   48505.286 ±  6078.944  ops/s
+Rocker.benchmark      thrpt    5  102699.041 ± 11827.123  ops/s
+Thymeleaf.benchmark   thrpt    5   14495.261 ±  1460.815  ops/s
+Velocity.benchmark    thrpt    5   12071.498 ±  4226.219  ops/s
+
 ```
 > 注意，较早版本性能测试包含了字节直接输出这种情况，考虑到大多数模板引擎不支持，取消了这种方式
 > （静态文本）字节直接输，不需要转码，对web性能有巨大提升

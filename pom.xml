@@ -19,7 +19,8 @@
         <module>beetl-antlr4.5-support</module>
 		<module>template-benchmark</module>
 		<module>express-benchmark</module>
-<!--		<module>beetl-antlr4.11-support</module>-->
+		<!-- 兼容antlr4.10，4.11  -->
+		<module>beetl-antlr4.11-support</module>
 	</modules>
 
 	<licenses>

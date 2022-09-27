@@ -22,7 +22,6 @@
             <scope>compile</scope>
         </dependency>
 
-
     </dependencies>
 
     <build>
@@ -57,7 +56,34 @@
                                 <argument>org.beetl.core.parser</argument>
                             </arguments>
 
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.ibeetl</groupId>
+                                    <artifactId>beetl-core</artifactId>
+                                    <version>3.11.0.RELEASE</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.ibeetl</groupId>
+                                    <artifactId>beetl-ext</artifactId>
+                                    <version>3.11.0.RELEASE</version>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/classes</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>

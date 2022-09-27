@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.ibeetl</groupId>
-    <artifactId>beetl-antlr4.5-suport</artifactId>
+    <artifactId>beetl-antlr4.5-support</artifactId>
     <version>3.11.0.RELEASE</version>
 
     <dependencies>
