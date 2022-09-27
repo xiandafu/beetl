@@ -1,89 +1,157 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <parent>
-        <groupId>com.ibeetl</groupId>
-        <artifactId>beetl-parent</artifactId>
-        <version>3.11.0.RELEASE</version>
-    </parent>
-
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<modelVersion>4.0.0</modelVersion>
+<!-- 支持antlr4.7,4.8, 4.9-->
+<parent>
     <groupId>com.ibeetl</groupId>
-    <artifactId>beetl</artifactId>
+    <artifactId>beetl-parent</artifactId>
     <version>3.11.0.RELEASE</version>
-    <dependencies>
-        <dependency>
+</parent>
+
+<groupId>com.ibeetl</groupId>
+<artifactId>beetl</artifactId>
+<version>3.11.0.RELEASE</version>
+<dependencies>
+    <dependency>
+        <groupId>org.antlr</groupId>
+        <artifactId>antlr4-runtime</artifactId>
+        <version>4.9.3</version>
+        <scope>compile</scope>
+    </dependency>
+</dependencies>
+<build>
+
+    <plugins>
+        <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>8</source>
+                <target>8</target>
+                <encoding>UTF-8</encoding>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <extensions>true</extensions>
+            <configuration>
+                <serverId>snapshots</serverId>
+                <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                <autoReleaseAfterClose>true</autoReleaseAfterClose>
+            </configuration>
+        </plugin>
+
+
+        <!-- Source -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>jar-no-fork</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>sign-artifacts</id>
+                    <phase>verify</phase>
+                    <goals>
+                        <goal>sign</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+                <excludes>
+                    <exclude>**/*.xml</exclude>
+                    <exclude>**/*.g4</exclude>
+                </excludes>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <version>2.8.2</version>
+            <configuration>
+                <skip>true</skip>
+            </configuration>
+        </plugin>
+
+        <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>8</source>
+                <target>8</target>
+                <encoding>UTF-8</encoding>
+            </configuration>
+        </plugin>
+        <plugin>
             <groupId>org.antlr</groupId>
-            <artifactId>antlr4-runtime</artifactId>
-            <version>4.9.3</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.antlr</groupId>
-                <artifactId>antlr4-maven-plugin</artifactId>
-                <version>4.9.2</version>
-                <executions>
-                    <execution>
-                        <id>antlr</id>
-                        <goals>
-                            <goal>antlr4</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>
-                                ${basedir}/src/main/java/org/beetl/core/parser
-                            </outputDirectory>
-                            <sourceDirectory>
-                                ${basedir}/../grammar
-                            </sourceDirectory>
-                            <arguments>
-                                <argument>-package</argument>
-                                <argument>org.beetl.core.parser</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.ibeetl</groupId>
-                                    <artifactId>beetl-core</artifactId>
-                                    <version>3.11.0.RELEASE</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>com.ibeetl</groupId>
-                                    <artifactId>beetl-ext</artifactId>
-                                    <version>3.11.0.RELEASE</version>
-                                </artifactItem>
-                            </artifactItems>
-                            <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+            <artifactId>antlr4-maven-plugin</artifactId>
+            <version>4.9.2</version>
+            <executions>
+                <execution>
+                    <id>antlr</id>
+                    <goals>
+                        <goal>antlr4</goal>
+                    </goals>
+                    <configuration>
+                        <outputDirectory>
+                            ${basedir}/src/main/java/org/beetl/core/parser
+                        </outputDirectory>
+                        <sourceDirectory>
+                            ${basedir}/../grammar
+                        </sourceDirectory>
+                        <arguments>
+                            <argument>-package</argument>
+                            <argument>org.beetl.core.parser</argument>
+                        </arguments>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+                <execution>
+                    <phase>prepare-package</phase>
+                    <goals>
+                        <goal>unpack</goal>
+                    </goals>
+                    <configuration>
+                        <artifactItems>
+                            <artifactItem>
+                                <groupId>com.ibeetl</groupId>
+                                <artifactId>beetl-core</artifactId>
+                                <version>3.11.0.RELEASE</version>
+                            </artifactItem>
+                            <artifactItem>
+                                <groupId>com.ibeetl</groupId>
+                                <artifactId>beetl-ext</artifactId>
+                                <version>3.11.0.RELEASE</version>
+                            </artifactItem>
+                        </artifactItems>
+                        <outputDirectory>${project.build.directory}/classes</outputDirectory>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
 
 </project>
