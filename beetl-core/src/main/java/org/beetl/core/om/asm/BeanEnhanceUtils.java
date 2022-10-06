@@ -181,7 +181,7 @@ final class BeanEnhanceUtils implements Constants {
      * 将 getter 方法转换为字段名称
      *
      * @param getterMethodName getXXX 方法名称
-     * @return {@param getterMethodName} 对应的字段名称
+     * @return {@code getterMethodName} 对应的字段名称
      */
     private static String getFieldNameFromGetterMethod(String getterMethodName) {
         String name = getterMethodName.replaceFirst(MethodName.GET, "");
@@ -250,7 +250,7 @@ final class BeanEnhanceUtils implements Constants {
      * 将 Integer 数组转换为 int 数组
      *
      * @param source Integer 数组
-     * @return {@param source} 对应的 int 数组
+     * @return {@code source} 对应的 int 数组
      */
     static int[] convertIntegerToPrimitiveType(Integer[] source) {
         int[] target = new int[source.length];

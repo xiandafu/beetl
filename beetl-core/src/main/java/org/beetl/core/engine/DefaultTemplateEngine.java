@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.beetl.core.AntlrProgramBuilder;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
@@ -15,7 +16,6 @@ import org.beetl.core.Resource;
 import org.beetl.core.TemplateEngine;
 import org.beetl.core.fun.ObjectUtil;
 import org.beetl.core.parser.BeetlAntlrErrorStrategy;
-import org.beetl.core.parser.BeetlParser;
 import org.beetl.core.parser.SyntaxErrorListener;
 import org.beetl.core.statement.AjaxStatement;
 import org.beetl.core.statement.Program;
@@ -36,7 +36,7 @@ public class DefaultTemplateEngine implements TemplateEngine, IGrammarConstants 
             VarRefAssign, VarRefAssignExp,
     };
 
-    static Method antlrParserMethod ;
+    static Method antlrParserTreeMethod;
     static  Object parserBuilder;
     static {
 		ininAntlrRuntime();
@@ -59,7 +59,9 @@ public class DefaultTemplateEngine implements TemplateEngine, IGrammarConstants 
 		} catch (NoSuchFieldException|IllegalAccessException e) {
 			throw new IllegalArgumentException("不支持的antlr版本",e);
 		}
-
+		/**
+		 * 当用户的系统有自己的antlr版本，与beetl自带的不匹配的时候
+		 */
 		try{
 			if(version.startsWith("4.10")||version.startsWith("4.11")||version.startsWith("4.12")){
 				parserBuilder  = ObjectUtil.tryInstance("org.beetl.core.engine.BeetlAntlrParser411",classLoader);
@@ -71,7 +73,7 @@ public class DefaultTemplateEngine implements TemplateEngine, IGrammarConstants 
 			if(parserBuilder==null){
 				throw new IllegalArgumentException("不支持的antlr版本:"+version+"，联系xiandafu@126.con 定制，或者参考源码antlr4.5-support");
 			}
-			antlrParserMethod = parserBuilder.getClass().getMethod("execute",new Class[]{Reader.class, DefaultErrorStrategy.class, BaseErrorListener.class});
+			antlrParserTreeMethod = parserBuilder.getClass().getMethod("execute",new Class[]{Reader.class, DefaultErrorStrategy.class, BaseErrorListener.class});
 
 		}catch(NoSuchMethodException | SecurityException ex){
 			throw new IllegalStateException(ex);
@@ -82,17 +84,18 @@ public class DefaultTemplateEngine implements TemplateEngine, IGrammarConstants 
     @Override
     public Program createProgram(Resource resource, Reader reader, Map<Integer, String> textMap, String cr,
                                  GroupTemplate gt) {
-        BeetlParser parser = null;
+		ParseTree tree = null;
         try {
         	//see getRuntimeMethod
-             parser = (BeetlParser)antlrParserMethod.invoke(parserBuilder,new Object[]{reader,antlrErrorStrategy,syntaxError});
+             tree = (ParseTree) antlrParserTreeMethod
+					 .invoke(parserBuilder,new Object[]{reader,antlrErrorStrategy,syntaxError});
         } catch (InvocationTargetException e) {
            throw new IllegalStateException(e.getTargetException());
         }catch(Exception ex){
             throw new IllegalStateException(ex);
         }
 
-        BeetlParser.ProgContext tree = parser.prog(); // 参见 BeetlParser.g4 中的 prog
+
         // 创建脚本运行程序
         Program program = new Program();
         program.res = resource;
@@ -126,7 +129,7 @@ public class DefaultTemplateEngine implements TemplateEngine, IGrammarConstants 
     }
 
     /**
-     * 子类可以加工{@param program}，修改或者添加包括静态文本或者Statement语句
+     * 子类可以加工{@code program}，修改或者添加包括静态文本或者Statement语句
      *
      * @param program 脚本运行程序
      */

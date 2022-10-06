@@ -73,10 +73,10 @@ public class IntIOWriter {
     }
 
     /**
-     * 输出 Integer 类型的 {@param integer} 到 {@param bw} 中
+     * 输出 Integer 类型的 {@code integer} 到 {@code bw} 中
      *
      * @param out   混合了字节和字符的Writer
-     * @param value 即将写入到 {@param bw} 中的 Integer 类型
+     * @param value 即将写入到 {@code bw} 中的 Integer 类型
      * @throws IOException {@link ByteWriter#writeNumberChars} 或 {@link ByteWriter#writeString}
      */
     public static void writeInt(ByteWriter out, int value) throws IOException {
@@ -101,10 +101,10 @@ public class IntIOWriter {
     }
 
     /**
-     * 输出 Long 类型的 {@param i} 到 {@param bw} 中
+     * 输出 Long 类型的 {@code i} 到 {@code bw} 中
      *
      * @param out   混合了字节和字符的Writer
-     * @param value 即将写入到 {@param bw} 中的 Long 类型
+     * @param value 即将写入到 {@code bw} 中的 Long 类型
      * @throws IOException {@link ByteWriter#writeNumberChars} 或 {@link ByteWriter#writeString}
      */
     public static void writeLong(ByteWriter out, long value) throws IOException {
@@ -122,11 +122,11 @@ public class IntIOWriter {
     }
 
     /**
-     * 将 {@param value} 转成字符串填充到buf中
+     * 将 {@code value} 转成字符串填充到buf中
      *
      * @param value           待填充进char[]中的数值
-     * @param valueStringSize {@param value} 字符串形式的字符个数
-     * @param res             将 {@param value} 填充到该字符数组中
+     * @param valueStringSize {@code value} 字符串形式的字符个数
+     * @param res             将 {@code value} 填充到该字符数组中
      */
     static void fillChars(int value, int valueStringSize, char[] res) {
         int q, r;
@@ -162,11 +162,11 @@ public class IntIOWriter {
     }
 
     /**
-     * 将 {@param value} 转成字符串填充到buf中
+     * 将 {@code value} 转成字符串填充到buf中
      *
      * @param value           待填充进char[]中的数值
-     * @param valueStringSize {@param value} 字符串形式的字符个数
-     * @param res             将 {@param value} 填充到该字符数组中
+     * @param valueStringSize {@code value} 字符串形式的字符个数
+     * @param res             将 {@code value} 填充到该字符数组中
      */
     static void fillChars(long value, int valueStringSize, char[] res) {
         long q;
@@ -218,7 +218,7 @@ public class IntIOWriter {
      * 计算一个正数的字符串形式所占的字符个数
      *
      * @param positiveNumber 必须是一个大于0的int类型
-     * @return {@param positiveNumber} 的字符串形式所占的字符个数，例如传入18，返回2
+     * @return {@code positiveNumber} 的字符串形式所占的字符个数，例如传入18，返回2
      */
     static int calcStringLength(@Range(from = 0, to = Integer.MAX_VALUE) int positiveNumber) {
         for (int i = 0; ; i++) {
@@ -232,7 +232,7 @@ public class IntIOWriter {
      * 计算一个正数的字符串形式所占的字符个数
      *
      * @param positiveNumber 必须是一个大于0的long类型
-     * @return {@param positiveNumber} 的字符串形式所占的字符个数，例如传入18，返回2
+     * @return {@code positiveNumber} 的字符串形式所占的字符个数，例如传入18，返回2
      */
     static int calcStringLength(@Range(from = 0, to = Long.MAX_VALUE) long positiveNumber) {
         for (int i = 0; ; i++) {

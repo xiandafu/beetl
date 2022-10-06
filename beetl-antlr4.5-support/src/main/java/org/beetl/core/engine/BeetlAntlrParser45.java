@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.DefaultErrorStrategy;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.beetl.core.parser.BeetlLexer;
 import org.beetl.core.parser.BeetlParser;
 
@@ -12,7 +13,7 @@ import java.io.Reader;
 
 public class BeetlAntlrParser45 {
 
-    public BeetlParser execute(Reader reader, DefaultErrorStrategy antlrErrorStrategy, BaseErrorListener syntaxError){
+    public ParseTree execute(Reader reader, DefaultErrorStrategy antlrErrorStrategy, BaseErrorListener syntaxError){
         BeetlLexer lexer;
         try {
             lexer = new BeetlLexer(new ANTLRInputStream(reader));
@@ -28,6 +29,6 @@ public class BeetlAntlrParser45 {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         BeetlParser parser = new BeetlParser(tokens);
         parser.setErrorHandler(antlrErrorStrategy);
-        return parser;
+        return parser.prog();
     }
 }

@@ -1,6 +1,6 @@
 /*
  [The "BSD license"]
- Copyright (c) 2011-2020  闲大赋 (李家智)
+ Copyright (c) 2011-2022  闲大赋 (李家智)
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -68,7 +68,7 @@ public class ClassSearch {
      *  - 先尝试从缓存中取
      *  - 再尝试用内置的或者配置的包名作为包名尝试加载
      *
-     * @return 返回 {@param name} 的类型，如果不成功会返回 null
+     * @return 返回 {@code name} 的类型，如果不成功会返回 null
      */
     public Class<?> getClassByName(String name) {
         ClassLoader classLoader = gt.getClassLoader();

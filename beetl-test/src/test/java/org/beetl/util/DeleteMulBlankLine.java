@@ -59,7 +59,7 @@ public class DeleteMulBlankLine {
     }
 
     /**
-     * 删除 {@param javaFile} 中多余的空行
+     * 删除 {@code javaFile} 中多余的空行
      *
      * @param javaFile *.java 文件
      */

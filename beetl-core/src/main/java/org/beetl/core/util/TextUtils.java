@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 
 /**
  * 文本工具类
- * 修改自 {@see android.text.TextUtil}
+ * 修改自 {@link android.text.TextUtil}
  */
 public class TextUtils {
 
@@ -394,7 +394,7 @@ public class TextUtils {
     /**
      * 返回给定字符串的长度
      *
-     * @return {@param s} 为 null 的情况下返回 0，否则返回其长度
+     * @return {@code s} 为 null 的情况下返回 0，否则返回其长度
      */
     public static int length(@Nullable String s) {
         return s != null ? s.length() : 0;
@@ -618,7 +618,7 @@ public class TextUtils {
     /**
      * 拼接若干个字符序列
      *
-     * @return 当 {@param text} 为 {@code null} 时，返回 {@code ""}
+     * @return 当 {@code text} 为 {@code null} 时，返回 {@code ""}
      */
     @NotNull
     public static CharSequence concat(CharSequence... text) {
@@ -640,7 +640,7 @@ public class TextUtils {
     /**
      * 返回给定的CharSequence是否包含任何可打印字符
      *
-     * @return true 表示 {@param str} 中包含可打印字符
+     * @return true 表示 {@code str} 中包含可打印字符
      */
     public static boolean isGraphic(CharSequence str) {
         final int len = str.length();
@@ -663,7 +663,7 @@ public class TextUtils {
     /**
      * 返回给定的CharSequence是否只包含数字
      *
-     * @return true 表示 {@param str} 中只包含数字
+     * @return true 表示 {@code str} 中只包含数字
      */
     public static boolean isDigitsOnly(CharSequence str) {
         final int len = str.length();
@@ -679,7 +679,7 @@ public class TextUtils {
     /**
      * 返回给定的字符是否为可打印的 ASCII 码
      *
-     * @return true 表示 {@param c} 是可打印的 ASCII 码
+     * @return true 表示 {@code c} 是可打印的 ASCII 码
      */
     public static boolean isPrintableAscii(final char c) {
         final int asciiFirst = 0x20;
@@ -690,7 +690,7 @@ public class TextUtils {
     /**
      * 返回给定的字符序列是否全是可打印的 ASCII 码
      *
-     * @return true 表示 {@param str} 中全是可打印的 ASCII 码
+     * @return true 表示 {@code str} 中全是可打印的 ASCII 码
      */
     public static boolean isPrintableAsciiOnly(final CharSequence str) {
         final int len = str.length();
@@ -821,7 +821,7 @@ public class TextUtils {
      * 判断字符串是否为空白
      *
      * @param str 给定字符串
-     * @return true表示 {@param str} 为空白
+     * @return true表示 {@code str} 为空白
      */
     public static boolean isBlank(String str) {
         return str == null || str.trim().isEmpty();

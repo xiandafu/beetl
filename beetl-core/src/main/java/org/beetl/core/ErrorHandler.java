@@ -1,6 +1,6 @@
 /*
  [The "BSD license"]
- Copyright (c) 2011-2020  闲大赋 (李家智)
+ Copyright (c) 2011-2022  闲大赋 (李家智)
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ public interface ErrorHandler {
      * 处理错误，错误输出到os流
      *
      * @param beeException 异常信息
-     * @param writer        异常信息通过 {@param writer} 输出
+     * @param writer        异常信息通过 {@code writer} 输出
      */
     void processException(BeetlException beeException, GroupTemplate groupTemplate,Writer writer);
 

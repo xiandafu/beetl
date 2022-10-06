@@ -4,7 +4,7 @@
 
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-parent</artifactId>
-	<version>3.11.0.RELEASE</version>
+	<version>3.12.0.RELEASE</version>
 	<name>com.ibeetl:beetl</name>
 	<description>java template language</description>
 	<url>ibeetl.com</url>
@@ -17,6 +17,8 @@
         <module>beetl</module>
 		<!-- 采用antlr4.5，兼容antlr4.6-->
         <module>beetl-antlr4.5-support</module>
+        <module>beetl-default-antlr4.9-support</module>
+        <module>beetl-dependency-all</module>
 		<module>template-benchmark</module>
 		<module>express-benchmark</module>
 		<!-- 兼容antlr4.10，4.11  -->
@@ -63,11 +65,52 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8.2</version>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <extensions>true</extensions>
                 <configuration>
-                    <skip>true</skip>
+                    <serverId>snapshots</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+
+            <!-- Source -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*.xml</exclude>
+                        <exclude>**/*.g4</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
         </plugins>

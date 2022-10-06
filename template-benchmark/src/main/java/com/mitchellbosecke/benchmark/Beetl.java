@@ -42,10 +42,11 @@ public class Beetl extends BaseBenchmark {
 	public String benchmark() throws IOException {
 		Template template = gt.getTemplate("/templates/stocks.beetl.html");
 		template.binding(context);
-		try(SoftReferenceWriter sw = SoftReferenceWriter.local()){
-			template.renderTo(sw);
-			return sw.toString();
-		}
+		return template.render();
+//		try(SoftReferenceWriter sw = SoftReferenceWriter.local()){
+//			template.renderTo(sw);
+//			return sw.toString();
+//		}
 
 	}
 

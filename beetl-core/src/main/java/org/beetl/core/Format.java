@@ -1,6 +1,6 @@
 /*
  [The "BSD license"]
- Copyright (c) 2011-2020  闲大赋 (李家智)
+ Copyright (c) 2011-2022  闲大赋 (李家智)
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,7 @@ package org.beetl.core;
 public interface Format {
 
     /**
-     * 按照 {@param pattern} 指定的模式对 {@param data} 对象进行格式化
+     * 按照 {@code pattern} 指定的模式对 {@code data} 对象进行格式化
      *
      * @param data    格式化对象
      * @param pattern 模式，格式换函数需要考虑到 pattern 为 null 的情况

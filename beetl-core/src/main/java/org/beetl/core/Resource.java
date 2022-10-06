@@ -1,6 +1,6 @@
 /*
  [The "BSD license"]
- Copyright (c) 2011-2020  闲大赋 (李家智)
+ Copyright (c) 2011-2022  闲大赋 (李家智)
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without

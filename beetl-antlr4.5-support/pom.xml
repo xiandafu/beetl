@@ -7,12 +7,12 @@
     <parent>
         <groupId>com.ibeetl</groupId>
         <artifactId>beetl-parent</artifactId>
-        <version>3.11.0.RELEASE</version>
+        <version>3.12.0.RELEASE</version>
     </parent>
 
     <groupId>com.ibeetl</groupId>
     <artifactId>beetl-antlr4.5-support</artifactId>
-    <version>3.11.0.RELEASE</version>
+    <version>3.12.0.RELEASE</version>
 
     <dependencies>
         <dependency>
@@ -20,6 +20,16 @@
             <artifactId>antlr4-runtime</artifactId>
             <version>4.5.3</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>beetl-core</artifactId>
+            <version>3.12.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>beetl-ext</artifactId>
+            <version>3.12.0.RELEASE</version>
         </dependency>
     </dependencies>
     <build>
@@ -72,25 +82,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*.xml</exclude>
-                        <exclude>**/*.g4</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8.2</version>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <source>8</source>
@@ -120,33 +111,6 @@
                                 <argument>org.beetl.core.parser</argument>
                             </arguments>
 
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.ibeetl</groupId>
-                                    <artifactId>beetl-core</artifactId>
-                                    <version>3.11.0.RELEASE</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>com.ibeetl</groupId>
-                                    <artifactId>beetl-ext</artifactId>
-                                    <version>3.11.0.RELEASE</version>
-                                </artifactItem>
-                            </artifactItems>
-                            <outputDirectory>${project.build.directory}/classes</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>

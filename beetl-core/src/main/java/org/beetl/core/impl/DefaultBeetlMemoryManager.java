@@ -15,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * 通过维护 Collection 的引用，来避免重复创建 Collection 的实例
  * 当 Collection 的容量较大时，MemoryManager的优势开始凸显，减少了 Collection 扩容的开销
  *
- * <pre>
+ * <pre>{@code
  *     // 以下例子演示了如何通过 DefaultBeetlMemoryManager 使代码性能提升了 45% (1058ms → 578ms)
  *     public void testRecoveryList() {
  *         String tag = "recoveryList#";
@@ -51,7 +51,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *             list.add(i);
  *         }
  *     }
- * </pre>
+ * }</pre>
  */
 public class DefaultBeetlMemoryManager implements IBeetlMemoryManager {
 

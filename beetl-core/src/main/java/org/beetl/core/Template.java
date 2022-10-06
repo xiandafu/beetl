@@ -1,6 +1,6 @@
 /*
  [The "BSD license"]
- Copyright (c) 2011-2020  闲大赋 (李家智)
+ Copyright (c) 2011-2022  闲大赋 (李家智)
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -38,6 +38,7 @@ import org.beetl.core.exception.BeetlException;
 import org.beetl.core.io.ByteWriter_Byte;
 import org.beetl.core.io.ByteWriter_Char;
 import org.beetl.core.io.NoLockStringWriter;
+import org.beetl.core.io.SoftReferenceWriter;
 import org.beetl.core.misc.BeetlUtil;
 import org.beetl.core.statement.*;
 
@@ -83,9 +84,18 @@ public class Template {
      * 获取模板输出的文本，结果是一个String
      */
     public String render() throws BeetlException {
-        NoLockStringWriter sw = new NoLockStringWriter();
-        renderTo(sw);
-        return sw.toString();
+    	if(cf.getCacheOutPutBuffer()!=0){
+			try(SoftReferenceWriter sw = SoftReferenceWriter.local(cf.getCacheOutPutBuffer())){
+				this.renderTo(sw);
+				String str = sw.toString();
+				return str;
+			}
+		}else{
+			NoLockStringWriter sw = new NoLockStringWriter();
+			renderTo(sw);
+			return sw.toString();
+		}
+
     }
 
 

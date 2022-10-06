@@ -7,12 +7,12 @@
     <parent>
         <groupId>com.ibeetl</groupId>
         <artifactId>beetl-parent</artifactId>
-        <version>3.11.0.RELEASE</version>
+        <version>3.12.0.RELEASE</version>
     </parent>
 
     <groupId>com.ibeetl</groupId>
     <artifactId>beetl-antlr4.11-suport</artifactId>
-    <version>3.11.0.RELEASE</version>
+    <version>3.12.0.RELEASE</version>
 
     <dependencies>
         <dependency>
@@ -133,12 +133,12 @@
                                 <artifactItem>
                                     <groupId>com.ibeetl</groupId>
                                     <artifactId>beetl-core</artifactId>
-                                    <version>3.11.0.RELEASE</version>
+                                    <version>3.12.0.RELEASE</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>com.ibeetl</groupId>
                                     <artifactId>beetl-ext</artifactId>
-                                    <version>3.11.0.RELEASE</version>
+                                    <version>3.12.0.RELEASE</version>
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>

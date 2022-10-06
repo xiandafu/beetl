@@ -7,24 +7,28 @@
     <parent>
         <groupId>com.ibeetl</groupId>
         <artifactId>beetl-parent</artifactId>
-        <version>3.11.0.RELEASE</version>
+        <version>3.12.0.RELEASE</version>
     </parent>
 
     <groupId>com.ibeetl</groupId>
     <artifactId>beetl-test</artifactId>
-    <version>3.11.0.RELEASE</version>
+    <version>3.12.0.RELEASE</version>
 
     <dependencies>
         <dependency>
             <groupId>com.ibeetl</groupId>
             <artifactId>beetl-core</artifactId>
-            <version>3.11.0.RELEASE</version>
+            <version>3.12.0.RELEASE</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>beetl-default-antlr4.9-support</artifactId>
+            <version>3.12.0.RELEASE</version>
+        </dependency>
         <dependency>
             <groupId>com.ibeetl</groupId>
             <artifactId>beetl-ext</artifactId>
-            <version>3.11.0.RELEASE</version>
+            <version>3.12.0.RELEASE</version>
         </dependency>
         <!-- 单元测试用于测试正确性 -->
         <dependency>

@@ -1,6 +1,6 @@
 /*
  [The "BSD license"]
- Copyright (c) 2011-2020  闲大赋 (李家智)
+ Copyright (c) 2011-2022  闲大赋 (李家智)
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -72,8 +72,8 @@ public class NoLockByteArrayOutputStream extends OutputStream {
      * 向流中写入一个字节数组
      *
      * @param src 字节数组
-     * @param off 在 {@param src} 中的起始下标
-     * @param len 在 {@param src} 中的长度
+     * @param off 在 {@code src} 中的起始下标
+     * @param len 在 {@code src} 中的长度
      */
     public void write(byte[] src, int off, int len) {
         int newPos = pos + len;

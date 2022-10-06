@@ -1,6 +1,6 @@
 /*
  [The "BSD license"]
- Copyright (c) 2011-2020  闲大赋 (李家智)
+ Copyright (c) 2011-2022  闲大赋 (李家智)
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -58,7 +58,7 @@ public interface ResourceLoader<T> extends Closeable ,java.io.Serializable  {
      * 根据key获取Resource
      *
      * @param key 根据 key 可以查找到对应的资源
-     * @return {@param key} 所对应的资源
+     * @return {@code key} 所对应的资源
      */
     Resource getResource(T key);
 
@@ -71,7 +71,7 @@ public interface ResourceLoader<T> extends Closeable ,java.io.Serializable  {
     boolean isModified(Resource key);
 
     /**
-     * 返回是否存在 {@param key} 所对应的资源
+     * 返回是否存在 {@code key} 所对应的资源
      *
      * @param key 根据 key 可以查找到对应的资源
      * @return true 表示存在，false 表示不存在

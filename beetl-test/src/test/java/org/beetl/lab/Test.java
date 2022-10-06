@@ -5,9 +5,7 @@ import org.beetl.core.Function;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.config.BeetlConfig;
-import org.beetl.core.io.SoftReferenceWriter;
 import org.beetl.core.resource.ClasspathResourceLoader;
-import org.beetl.ext.fn.Print;
 
 /**
  * @author xiandafu
@@ -20,7 +18,7 @@ class Test {
     private static final String TAG = "org.beetl.core.lab.Test";
 
     public static void main(String[] args) throws Exception {
-        Function fn = (Function)Test.class.getClassLoader().loadClass("org.beetl.ext.fn.Println").newInstance();
+
         ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("lab/");
         Configuration cfg = Configuration.defaultConfiguration();
 
@@ -29,11 +27,7 @@ class Test {
         for (int i = 0; i < 2; i++) {
             Template t = gt.getTemplate("/hello.txt");
 			t.binding("user",new TestUser());
-			try(SoftReferenceWriter sw = SoftReferenceWriter.local()){
-				t.renderTo(sw);
-				String str = sw.toString();
-				System.out.println(str);
-			}
+			System.out.println(t.render());
 
 
         }

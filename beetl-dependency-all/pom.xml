@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ibeetl</groupId>
+        <artifactId>beetl-parent</artifactId>
+        <version>3.12.0.RELEASE</version>
+    </parent>
+
+    <groupId>com.ibeetl</groupId>
+    <artifactId>beetl-dependency-all</artifactId>
+    <version>3.12.0.RELEASE</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.ibeetl</groupId>
+                                    <artifactId>beetl-default-antlr4.9-support</artifactId>
+                                    <version>3.12.0.RELEASE</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.ibeetl</groupId>
+                                    <artifactId>beetl-core</artifactId>
+                                    <version>3.12.0.RELEASE</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.ibeetl</groupId>
+                                    <artifactId>beetl-ext</artifactId>
+                                    <version>3.12.0.RELEASE</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.antlr</groupId>
+                                    <artifactId>antlr4-runtime</artifactId>
+                                    <version>4.9.3</version>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/classes</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

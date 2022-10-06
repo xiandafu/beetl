@@ -1,6 +1,6 @@
 /*
  [The "BSD license"]
- Copyright (c) 2011-2020  闲大赋 (李家智)
+ Copyright (c) 2011-2022  闲大赋 (李家智)
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,7 @@ public interface BodyContent {
     String getBody();
 
     /**
-     * 通过 {@param out} 写出暂存的内容
+     * 通过 {@code out} 写出暂存的内容
      */
     void fill(ByteWriter out) throws IOException;
 

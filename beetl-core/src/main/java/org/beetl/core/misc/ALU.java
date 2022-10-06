@@ -1,6 +1,6 @@
 /*
  [The "BSD license"]
- Copyright (c) 2011-2020  闲大赋 (李家智)
+ Copyright (c) 2011-2022  闲大赋 (李家智)
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -287,7 +287,7 @@ public class ALU {
     }
 
     /**
-     * 相加操作: {@param o1} + {@param o2}
+     * 相加操作: {@code o1} + {@code o2}
      *
      * @param o1    左值
      * @param o2    右值
@@ -335,13 +335,13 @@ public class ALU {
     }
 
     /**
-     * 相减操作: {@param o1} - {@param o2}
+     * 相减操作: {@code o1} - {@code o2}
      *
      * @param o1    左值
      * @param o2    右值
      * @param node1 AST结点
      * @param node2 AST结点
-     * @return {@param o1} 减 {@param o2} 的结果
+     * @return {@code o1} 减 {@code o2} 的结果
      */
     public static Object minus(final Object o1, final Object o2, final ASTNode node1, final ASTNode node2) {
         if (o1 != null && o2 != null) {
@@ -373,11 +373,11 @@ public class ALU {
     }
 
     /**
-     * 取反操作: -{@param o1}
+     * 取反操作: -{@code o1}
      *
      * @param o1   值
      * @param node AST 结点
-     * @return 对 {@param o1} 取反后的值
+     * @return 对 {@code o1} 取反后的值
      */
     public static Object negative(final Object o1, ASTNode node) {
         if (o1 != null) {
@@ -405,13 +405,13 @@ public class ALU {
     }
 
     /**
-     * 相乘操作: {@param o1} * {@param o2}
+     * 相乘操作: {@code o1} * {@code o2}
      *
      * @param o1    左值
      * @param o2    右值
      * @param node1 AST结点
      * @param node2 AST结点
-     * @return {@param o1} 乘以 {@param o2} 的结果
+     * @return {@code o1} 乘以 {@code o2} 的结果
      */
     public static Object mult(final Object o1, final Object o2, final ASTNode node1, final ASTNode node2) {
         if (o1 != null && o2 != null) {
@@ -441,13 +441,13 @@ public class ALU {
     }
 
     /**
-     * 相除操作: {@param o1} / {@param o2}
+     * 相除操作: {@code o1} / {@code o2}
      *
      * @param o1    左值
      * @param o2    右值
      * @param node1 AST结点
      * @param node2 AST结点
-     * @return {@param o1} 乘以 {@param o2} 的结果
+     * @return {@code o1} 乘以 {@code o2} 的结果
      */
     public static Object div(final Object o1, final Object o2, final ASTNode node1, final ASTNode node2) {
         if (o1 != null && o2 != null) {

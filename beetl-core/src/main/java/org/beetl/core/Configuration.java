@@ -1,6 +1,6 @@
 /*
  [The "BSD license"]
- Copyright (c) 2011-2020  闲大赋 (李家智)
+ Copyright (c) 2011-2022  闲大赋 (李家智)
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -134,6 +134,8 @@ public class Configuration {
     int bufferSize = 4096;
     int bufferNum = 64;
 
+	int cacheOutPutBuffer = 0;
+
     /** 模板是否整体使用安全输出功能，如果是，则不存在的值返回空，而不是报错 */
     boolean safeOutput = false;
 	/** 使用类来动态决定定界符，而不是通过配置『DELIMITER_PLACEHOLDER_START』*/
@@ -170,6 +172,7 @@ public class Configuration {
     public static final String SAFE_OUTPUT = "SAFE_OUTPUT";
     public static final String DELIMETER_CONFIG = "DELIMETER_CONFIG";
     public static final String CACHE = "CACHE";
+    public static final String CACHE_OUTPUT_BUFFER = "CACHE_OUTPUT_BUFFER";
 
     /** 配置文件的key */
     @MagicConstant(stringValues = {
@@ -182,7 +185,7 @@ public class Configuration {
             ERROR_HANDLER, MVC_STRICT, WEBAPP_EXT,
             HTML_TAG_SUPPORT, HTML_TAG_FLAG, HTML_TAG_ATTR_CONVERT, HTML_TAG_BINDING_ATTRIBUTE,
             IMPORT_PACKAGE, ENGINE, NATIVE_SECUARTY_MANAGER, RESOURCE_LOADER,
-            BUFFER_SIZE, BUFFER_NUM, SAFE_OUTPUT,DELIMETER_CONFIG,CACHE
+            BUFFER_SIZE, BUFFER_NUM, SAFE_OUTPUT,DELIMETER_CONFIG,CACHE,CACHE_OUTPUT_BUFFER
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface PropertiesKey {
@@ -393,7 +396,10 @@ public class Configuration {
             }
         } else if (key.equalsIgnoreCase(BUFFER_NUM)) {
             this.bufferNum = Integer.parseInt(value);
-        } else {
+        }else if(key.equalsIgnoreCase(CACHE_OUTPUT_BUFFER)){
+        	this.cacheOutPutBuffer = Integer.parseInt(value);
+		}
+        else {
             // 扩展
             if (key.startsWith("fn.") || key.startsWith("FN.")) {
                 String fn = checkValue(value);
@@ -798,6 +804,14 @@ public class Configuration {
 
 	public void setCacheClass(String cacheClass) {
 		this.cacheClass = cacheClass;
+	}
+
+	public int getCacheOutPutBuffer() {
+		return cacheOutPutBuffer;
+	}
+
+	public void setCacheOutPutBuffer(int cacheOutPutBuffer) {
+		this.cacheOutPutBuffer = cacheOutPutBuffer;
 	}
 
 	public static class HtmlTagHolder {
