@@ -20,6 +20,10 @@ Beetl 内核是脚本引擎，Beetl模板会被解析成脚本引擎执行渲染
 * reflect  能返回表达式的需要外部传入变量，如表达式`arg.age+(12+kk.pay)` 返回`[arg,kk]`
 * forExpresss 循环测试。
 
+测试方法
+>mvn clean package
+>jar -jar target/benchmarks
+
 如果脚本语言没有如上测试项目，则是不支持
 
 ```
