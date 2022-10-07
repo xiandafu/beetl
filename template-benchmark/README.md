@@ -30,15 +30,18 @@
 
 
 
-## 目前结果（2022-9-27）越高越好
+## 目前结果（2022-10-7）越高越好
+2线程并发
 ```
-Beetl.benchmark       thrpt    5  141912.506 ± 19090.130  ops/s
-Enjoy.benchmark       thrpt    5  129350.516 ±  8206.576  ops/s
-Freemarker.benchmark  thrpt    5   48062.783 ±  9054.282  ops/s
-Handlebars.benchmark  thrpt    5   48505.286 ±  6078.944  ops/s
-Rocker.benchmark      thrpt    5  102699.041 ± 11827.123  ops/s
-Thymeleaf.benchmark   thrpt    5   14495.261 ±  1460.815  ops/s
-Velocity.benchmark    thrpt    5   12071.498 ±  4226.219  ops/s
+Benchmark              Mode  Cnt       Score      Error  Units
+Beetl.benchmark       thrpt   10  163259.294 ±  881.253  ops/s
+Enjoy.benchmark       thrpt   10  146012.967 ± 2158.580  ops/s
+Freemarker.benchmark  thrpt   10   45228.490 ±  185.590  ops/s
+Handlebars.benchmark  thrpt   10   42875.302 ±  189.893  ops/s
+Rocker.benchmark      thrpt   10   95740.184 ±  513.397  ops/s
+Thymeleaf.benchmark   thrpt   10   12981.396 ±  130.663  ops/s
+Velocity.benchmark    thrpt   10   14120.852 ±  291.371  ops/s
+
 
 ```
 > 注意，较早版本性能测试包含了字节直接输出这种情况，考虑到大多数模板引擎不支持，取消了这种方式

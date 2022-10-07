@@ -11,8 +11,8 @@ import com.mitchellbosecke.benchmark.model.Stock;
 
 @Fork(1)
 @Warmup(iterations = 5,time=1)
-@Measurement(iterations =5 ,time=1,timeUnit=TimeUnit.SECONDS )
-@Threads(10)
+@Measurement(iterations =10 ,time=1,timeUnit=TimeUnit.SECONDS )
+@Threads(2)
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
 @State(Scope.Benchmark)

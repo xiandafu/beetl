@@ -45,15 +45,14 @@ QQ交流群：636321496(满),219324263(满),252010126
 Beetl>Enjoy>Rocker>>Freemarker>>Thymeleaf==Velociy
 
 ```
-Benchmark              Mode  Cnt      Score      Error  Units
-
-Beetl.benchmark       thrpt    5  141912.506 ± 19090.130  ops/s
-Enjoy.benchmark       thrpt    5  129350.516 ±  8206.576  ops/s
-Freemarker.benchmark  thrpt    5   48062.783 ±  9054.282  ops/s
-Handlebars.benchmark  thrpt    5   48505.286 ±  6078.944  ops/s
-Rocker.benchmark      thrpt    5  102699.041 ± 11827.123  ops/s
-Thymeleaf.benchmark   thrpt    5   14495.261 ±  1460.815  ops/s
-Velocity.benchmark    thrpt    5   12071.498 ±  4226.219  ops/s
+Benchmark              Mode  Cnt       Score      Error  Units
+Beetl.benchmark       thrpt   10  163259.294 ±  881.253  ops/s
+Enjoy.benchmark       thrpt   10  146012.967 ± 2158.580  ops/s
+Freemarker.benchmark  thrpt   10   45228.490 ±  185.590  ops/s
+Handlebars.benchmark  thrpt   10   42875.302 ±  189.893  ops/s
+Rocker.benchmark      thrpt   10   95740.184 ±  513.397  ops/s
+Thymeleaf.benchmark   thrpt   10   12981.396 ±  130.663  ops/s
+Velocity.benchmark    thrpt   10   14120.852 ±  291.371  ops/s
 
 ```
 
@@ -156,7 +155,7 @@ Beetl 3 中文文档
 * 能扩展模板引擎，实现高级功能
 * 能修改语法树，实现高级功能
 * 字符出和字节输出支持，高性能web表现
-* 高性能解释执行，提供特殊语法，如for{} elsefor{}
+* 高性能解释执行，提供特殊语法，如for{} elsefor{},安全输出语法，省略的三元表达式等
 * 支持html/xml Tag 语法
 * 内核是脚本引擎，除了模板外，也可以用于表达式和规则。
 
