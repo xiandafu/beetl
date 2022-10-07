@@ -2,10 +2,12 @@ package org.beetl.core.engine;
 
 import org.beetl.core.*;
 import org.beetl.core.resource.ClasspathResourceLoader;
+import org.testng.Assert;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * 格式验证，确保输出文本不会有多余空格，空行
@@ -46,6 +48,21 @@ public class MyEngineTest extends BasicTestCase
 			AssertJUnit.assertEquals(this.getFileContent("/engine/html_expected.html"), str);
 		}
 
+
+	}
+
+	@Test
+	public void testPlaceHolderEngine() throws Exception
+	{
+
+		GroupTemplate newGt = getGt();
+		PlaceHolderEngine myTemplateEngine = new PlaceHolderEngine();
+		newGt.setEngine(myTemplateEngine);
+		String id  ="/engine/placeholder_template.html";
+		Template t = newGt.getTemplate(id);
+		List<String> list = myTemplateEngine.all.get(id);
+		Assert.assertEquals(3,list.size());
+		System.out.println(list);
 
 	}
 
