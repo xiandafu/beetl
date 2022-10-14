@@ -30,6 +30,138 @@ typora-root-url: ../beetl3.0
 - 脚本引擎 
 - 规则引擎
 
+### 模板片段
+
+http://ibeetl.com/beetlonline/
+
+#### 1 定义变量
+
+像js那样定义变量和表达式，同时，支持类型说明
+
+```
+#: var a = 1,isCheck=false;
+#: var<String> list = getString(); //type declare
+<h1>hello ${a}</h1>
+
+```
+#### 2 循环输出
+
+支持js的各种语法，比如if，for，while，同时for循环支持elsefor
+
+```
+
+#: var array = getData();
+#: for(var item in array){
+<h1> ${itemLP.index}:${item}</h1>
+#:}elsefor {
+<h1> empty</h1>
+#:}
+
+```
+
+#### 3  使用自己喜欢的定界符，占位符
+
+比如使用`<%`和`%>` 代替  `#:`和`换行` 。beetl支持自定义定界符和占位符，并且，支持自定义俩对定界符和俩对占位符
+
+```html
+
+<% var array = [1,2,3]; 
+   for(var k in array){ %>
+<h1> #{kLP.index}:#{k}</h1>
+<% } %>
+
+```
+
+#### 4  调用方法
+
+```html
+${call(1)}
+${date(),"yyyy-MM-dd"}
+```
+
+#### 5  调用Java方法
+
+可以直接调用Java方法，这些方法能被安全管理
+
+```html
+${ @myList.size() }
+```
+
+#### 6 支持html 标签
+
+不仅仅是脚本语法，也支持标签语法
+
+```html
+<my:tag aa = "1">hello<、my:tag>
+  
+<my:setTag attr = "1"  var="b,c">${b},${c}<my:setTag>
+```
+
+
+
+#### 7 include 和 layout
+
+支持各种布局
+
+```javascript
+#： var page = "/common.html";
+#: include(page,{"title":"用户管理"}){}
+```
+
+
+
+#### 8 脚本和表达式引擎
+
+可以把beetl当成脚本引擎，它有丰富的功能和优秀的性能
+
+```javascript
+var a =1;
+return a+b;
+```
+
+
+
+#### 9 禁止语法
+
+可以禁止任何语法，使得模板跟简单清爽。 比如，不允许模板中出现 赋值语法，或者不允许复杂的表达式，或者不允许java直接调用
+
+```javascript
+# var a=1;//not allowd
+${a}
+```
+
+
+
+#### 10 遍历语法树
+
+可以很容易通过定制引擎获取模板结构,比如，能获取到如下模板需要外部输入a，且占位符使用了a和c变量,且调用了date方法
+
+```javascript
+#: var c = 1,d = date();
+${a},${c}
+
+
+```
+
+
+
+#### 11 定制语法树
+
+Paas应用，要求模板渲染不能超过一定次数，以避免jvm 死机,如下可禁止while循环不超过一定次数
+
+```javascript
+#: while(true){
+  <h1> hello </h1>
+#:}  
+
+```
+
+
+
+
+
+
+
 ### 介绍
 
 Beetl  ['biːtl]  3.0，从 [https://github.com/javamonkey/beetl2.0/](https://github.com/javamonkey/beetl2.0/) 迁移过来
