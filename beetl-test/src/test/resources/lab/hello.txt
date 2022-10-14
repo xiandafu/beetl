@@ -1,1 +1,7 @@
-abdfd
+<%
+var a = '''
+hello,go,"dfdsf"
+''';
+%>
+
+${a}

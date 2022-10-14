@@ -14,6 +14,7 @@ import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Resource;
 import org.beetl.core.TemplateEngine;
+import org.beetl.core.exception.BeetlException;
 import org.beetl.core.fun.ObjectUtil;
 import org.beetl.core.parser.BeetlAntlrErrorStrategy;
 import org.beetl.core.parser.SyntaxErrorListener;
@@ -90,7 +91,10 @@ public class DefaultTemplateEngine implements TemplateEngine, IGrammarConstants 
              tree = (ParseTree) antlrParserTreeMethod
 					 .invoke(parserBuilder,new Object[]{reader,antlrErrorStrategy,syntaxError});
         } catch (InvocationTargetException e) {
-           throw new IllegalStateException(e.getTargetException());
+            if(e.getTargetException() instanceof BeetlException){
+                throw  (BeetlException)e.getTargetException();
+            }
+            throw new IllegalStateException(e.getTargetException());
         }catch(Exception ex){
             throw new IllegalStateException(ex);
         }

@@ -104,7 +104,28 @@ FloatTypeSuffix : ('h'|'H') ;
 StringLiteral
     :  '"' ( EscapeSequence | ~('\\'|'"'|'\n'|'\r') )* '"'
     |  '\'' ( EscapeSequence | ~('\''|'\\'|'\n'|'\r') )* '\''
+    | LONG_STRING
+
     ;
+    
+
+fragment LONG_STRING
+ : '\'\'\'' LONG_STRING_ITEM*? '\'\'\''
+ | '"""' LONG_STRING_ITEM*? '"""'
+ ;
+fragment LONG_STRING_ITEM
+ : LONG_STRING_CHAR
+ | STRING_ESCAPE_SEQ
+ ;
+fragment LONG_STRING_CHAR
+ : ~'\\'
+ ;
+
+ fragment STRING_ESCAPE_SEQ
+  : '\\' .
+  | '\\' ('\n'|'\r')
+  ;
+
 
 fragment
 EscapeSequence

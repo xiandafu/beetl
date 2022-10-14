@@ -5,6 +5,8 @@ import org.beetl.core.Function;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.config.BeetlConfig;
+import org.beetl.core.exception.BeetlException;
+import org.beetl.core.exception.ErrorInfo;
 import org.beetl.core.resource.ClasspathResourceLoader;
 
 /**
@@ -26,8 +28,16 @@ class Test {
 
         for (int i = 0; i < 2; i++) {
             Template t = gt.getTemplate("/hello.txt");
+
 			t.binding("user",new TestUser());
-			System.out.println(t.render());
+            try{
+                System.out.println(t.render());
+            }catch (BeetlException ex){
+                ErrorInfo errorInfo = new ErrorInfo(ex);
+                System.out.println(errorInfo.toString());
+
+            }
+
 
 
         }
