@@ -4,7 +4,7 @@
 
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-parent</artifactId>
-	<version>3.12.0.RELEASE</version>
+	<version>3.13.0.RELEASE</version>
 	<name>com.ibeetl:beetl</name>
 	<description>java template language</description>
 	<url>ibeetl.com</url>

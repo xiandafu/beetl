@@ -1,7 +1,6 @@
 <%
-var a = '''
-hello,go,"dfdsf"
-''';
+var a = "a";
+var a =1;
 %>
 
 ${a}

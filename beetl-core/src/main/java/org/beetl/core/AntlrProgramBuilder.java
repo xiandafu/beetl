@@ -1568,8 +1568,13 @@ public class AntlrProgramBuilder {
 
     private String getStringValue(String strValue) {
         char[] ch = strValue.toCharArray();
+        int skipCount = 1;
+        if(ch.length>=6&&( (ch[0]=='"'&&ch[1]=='"'&&ch[2]=='"')
+				||ch[0]=='\''&&ch[1]=='\''&&ch[2]=='\'')){
+        	skipCount =3;
+		}
         StringBuilder sb = new StringBuilder(strValue.length());
-        for (int i = 1; i < ch.length - 1; i++) {
+        for (int i = skipCount; i < ch.length - skipCount; i++) {
             char c = ch[i];
             if (c == '\\') {
                 char spec = ch[++i];
